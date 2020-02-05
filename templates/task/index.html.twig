@@ -2,5 +2,9 @@
     <body>
         <h1>First controller become</h1>
         <p> Hello {{ hello }}</p>
+        <hr>
+        {% for task in tasks %}
+            <div><p>{{ task.id }}</p></div>
+        {% endfor %}
     </body>
 </html>
