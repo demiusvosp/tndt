@@ -4,7 +4,10 @@
         <p> Hello {{ hello }}</p>
         <hr>
         {% for task in tasks %}
-            <div><p>{{ task.id }}</p></div>
+            <div>
+                <h4><b>{{ task.no }}</b> - {{ task.caption }}</h4>
+                <p>{{ task.description }}</p>
+            </div>
         {% endfor %}
     </body>
 </html>

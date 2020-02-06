@@ -43,7 +43,7 @@ class Task
     /**
      * @var Project
      * @ORM\ManyToOne(targetEntity="Project")
-     * @ORM\JoinColumn(name="suffix", referencedColumnName="suffix")
+     * @ORM\JoinColumn(name="project_id", referencedColumnName="id")
      */
     private $project;
 
