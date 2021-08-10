@@ -1,4 +1,7 @@
 {
+    "composer/package-versions-deprecated": {
+        "version": "1.11.99.2"
+    },
     "doctrine/annotations": {
         "version": "1.0",
         "recipe": {
@@ -22,6 +25,9 @@
     },
     "doctrine/dbal": {
         "version": "v2.10.0"
+    },
+    "doctrine/deprecations": {
+        "version": "v0.5.3"
     },
     "doctrine/doctrine-bundle": {
         "version": "1.6",
@@ -78,20 +84,29 @@
     "doctrine/reflection": {
         "version": "v1.0.0"
     },
+    "doctrine/sql-formatter": {
+        "version": "1.1.1"
+    },
     "easycorp/easy-log-handler": {
-        "version": "1.0",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "master",
-            "version": "1.0",
-            "ref": "70062abc2cd58794d2a90274502f81b55cd9951b"
-        },
-        "files": [
-            "config/packages/dev/easy_log_handler.yaml"
-        ]
+        "version": "v1.0.9"
     },
     "jdorn/sql-formatter": {
         "version": "v1.2.17"
+    },
+    "kevinpapst/adminlte-bundle": {
+        "version": "0.9",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "0.9",
+            "ref": "dca6a91efc23d844326d2e90b47bdf48a5038fcf"
+        },
+        "files": [
+            "config/packages/admin_lte.yaml"
+        ]
+    },
+    "laminas/laminas-code": {
+        "version": "3.5.1"
     },
     "monolog/monolog": {
         "version": "1.25.1"
@@ -102,6 +117,9 @@
     "ocramius/proxy-manager": {
         "version": "2.5.0"
     },
+    "php": {
+        "version": "7.4"
+    },
     "psr/cache": {
         "version": "1.0.1"
     },
@@ -110,6 +128,9 @@
     },
     "psr/log": {
         "version": "1.1.1"
+    },
+    "symfony/asset": {
+        "version": "v4.3.11"
     },
     "symfony/cache": {
         "version": "v4.3.5"
@@ -209,6 +230,9 @@
     "symfony/http-kernel": {
         "version": "v4.3.5"
     },
+    "symfony/inflector": {
+        "version": "v4.3.11"
+    },
     "symfony/mime": {
         "version": "v4.3.5"
     },
@@ -229,11 +253,17 @@
             "config/packages/test/monolog.yaml"
         ]
     },
+    "symfony/options-resolver": {
+        "version": "v4.3.11"
+    },
     "symfony/orm-pack": {
         "version": "v1.0.7"
     },
     "symfony/polyfill-intl-idn": {
         "version": "v1.12.0"
+    },
+    "symfony/polyfill-intl-normalizer": {
+        "version": "v1.23.0"
     },
     "symfony/polyfill-mbstring": {
         "version": "v1.12.0"
@@ -250,6 +280,9 @@
     "symfony/profiler-pack": {
         "version": "v1.0.4"
     },
+    "symfony/property-access": {
+        "version": "v4.3.11"
+    },
     "symfony/routing": {
         "version": "4.2",
         "recipe": {
@@ -264,11 +297,48 @@
             "config/routes.yaml"
         ]
     },
+    "symfony/security-bundle": {
+        "version": "3.3",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "3.3",
+            "ref": "38d658ce68375d66d2cddc88892af8f08701e6e7"
+        },
+        "files": [
+            "config/packages/security.yaml"
+        ]
+    },
+    "symfony/security-core": {
+        "version": "v4.3.11"
+    },
+    "symfony/security-csrf": {
+        "version": "v4.3.11"
+    },
+    "symfony/security-guard": {
+        "version": "v4.3.11"
+    },
+    "symfony/security-http": {
+        "version": "v4.3.11"
+    },
     "symfony/service-contracts": {
         "version": "v1.1.7"
     },
     "symfony/stopwatch": {
         "version": "v4.3.5"
+    },
+    "symfony/translation": {
+        "version": "3.3",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "3.3",
+            "ref": "2ad9d2545bce8ca1a863e50e92141f0b9d87ffcd"
+        },
+        "files": [
+            "config/packages/translation.yaml",
+            "translations/.gitignore"
+        ]
     },
     "symfony/translation-contracts": {
         "version": "v1.1.7"
@@ -330,6 +400,9 @@
     },
     "twig/twig": {
         "version": "v2.12.1"
+    },
+    "webimpress/safe-writer": {
+        "version": "2.2.0"
     },
     "zendframework/zend-code": {
         "version": "3.4.0"

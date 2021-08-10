@@ -14,7 +14,7 @@ services:
   php:
     build:
       context: ./
-      dockerfile: './docker/php.dockerfile'
+      dockerfile: './docker/dev.php.dockerfile'
     volumes:
       - './:/var/www'
     links:

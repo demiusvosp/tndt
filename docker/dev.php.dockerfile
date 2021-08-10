@@ -28,6 +28,9 @@ RUN apt-get update && apt-get install -y \
 RUN apt-get install libonig-dev -y \
     && docker-php-ext-install mbstring
 
+# Install developer tools
+RUN apt-get install git -y
+
 # Install composer
 RUN curl -sS https://getcomposer.org/installer | php -- \
         --filename=composer \

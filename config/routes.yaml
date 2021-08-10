@@ -1,3 +1,12 @@
-index:
+#Common
+home:
     path: /
-    controller: App\Controller\TaskController::index
+    controller: App\Controller\DashboardController::index
+
+#Auth
+login:
+    path: /auth/login
+
+#User
+
+#Projects
