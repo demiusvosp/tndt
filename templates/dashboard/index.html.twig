@@ -1,1 +1,81 @@
 {% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} - {% trans %}dashboard{% endtrans %}{% endblock %}
+{% block page_title%}{% trans %}dashboard{% endtrans %}{% endblock %}
+{% block page_subtitle %}{% endblock %}
+
+{% block page_content %}
+    <section id="projects">
+        <h2 class="page-header">{% trans %}Projects{% endtrans %}:</h2>
+        <div class="row">
+        {% for project in projects %}
+            <div class="col-md-3">
+            {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
+                {% block box_title %}
+                    <b>{{ project.suffix }}</b> - {{ project.name }}
+                {% endblock %}
+                {% block box_body %}
+                    <small>{{ project.description|truncate(100, true) }}</small>
+                    <hr>
+
+                {% endblock %}
+            {% endembed %}
+            </div>
+        {% endfor %}
+        </div>
+    </section>
+
+    <div class="row">
+        <div class="col-lg-4">
+            <section id="latest_task">
+                <h2 class="page-header">{% trans %}Tasks{% endtrans %}:</h2>
+                <div class="row">
+                    <b>ABC-123</b> - Какая-то задача
+                </div>
+                <div class="row">
+                    <b>ABC-456</b> - Какая-то ещё задача
+                </div>
+                <div class="row">
+                    <b>PRJ-123</b> - Какая-то задача другого проекта
+                </div>
+                <div class="row">
+                    <b>LTN-1053</b> - Lorem ipsum
+                </div>
+            </section>
+        </div>
+        <div class="col-lg-4">
+            <section id="latest_docs">
+                <h2 class="page-header">{% trans %}Documents{% endtrans %}:</h2>
+                <div class="row">
+                    <b>ABC#123</b> - Какой-то документ
+                </div>
+                <div class="row">
+                    <b>ABC#456</b> - Какой-то ещё документ
+                </div>
+                <div class="row">
+                    <b>PRJ#123</b> - Небольшие мысли по поводу дальнейшего развития
+                </div>
+                <div class="row">
+                    <b>LTN#1053</b> - Lorem ipsum sit amet
+                </div>
+            </section>
+        </div>
+        <div class="col-lg-4">
+            <section id="latest_users">
+                <h2 class="page-header">{% trans %}Users{% endtrans %}:</h2>
+                <div class="row">
+                    <b>demius</b> - Администратор
+                </div>
+                <div class="row">
+                    <b>bezborodiy</b> - Дизайнер
+                </div>
+                <div class="row">
+                    <b>alloize</b> - PM проекта PRJ
+                </div>
+                <div class="row">
+                    <b>cult</b> - -
+                </div>
+            </section>
+        </div>
+    </div>
+{% endblock %}
