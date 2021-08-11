@@ -13,18 +13,23 @@ use Symfony\Component\HttpFoundation\Request;
 
 class ProjectController extends AbstractController
 {
+    public function  list(Request  $request)
+    {
+        return $this->render('project/list.html.twig');
+    }
+
     public function index(Request $request)
     {
-        return $this->render(':project:index.html.twig');
+        return $this->render('project/index.html.twig');
     }
 
     public function create(Request $request)
     {
-        return $this->render(':project:create.html.twig');
+        return $this->render('project/create.html.twig');
     }
 
     public function edit(Request $request)
     {
-        return $this->render(':project:edit.html.twig');
+        return $this->render('project/edit.html.twig');
     }
 }

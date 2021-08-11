@@ -13,7 +13,10 @@ home:
 project:
     path: /p/{suffix}
     controller: App\Controller\ProjectController::index
-project.new:
+project.list:
+    path: /project/list
+    controller: App\Controller\ProjectController::list
+project.create:
     path: /project/create
     controller: App\Controller\ProjectController::create
 project.edit:

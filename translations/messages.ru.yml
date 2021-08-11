@@ -4,6 +4,14 @@ Projects: Проекты
 Tasks: Задачи
 Documents: Документы
 Users: Пользователи
-project.edit: Редактирование проекта
-project.new: Создание проекта
 Support: Поддержка
+project:
+  edit: Редактирование проекта
+  create: Создание проекта
+  new_project: Новый проект
+  list: Список проектов
+menu:
+  homepage: Главная
+  projects: Проекты
+  project:
+    create: Новый...

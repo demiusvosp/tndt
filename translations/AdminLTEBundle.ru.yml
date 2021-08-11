@@ -1,0 +1,30 @@
+'Toggle navigation': 'Переключить отображение боковой панели'
+'Remember Me': 'Запомнить меня'
+'Sign in to start your session': Логин
+'Sign In': Войти
+'Sign out': Выйти
+Register: Зарегистрироваться
+Profile: 'Your profile'
+'Member since %date%': 'Member since %date%'
+Username: 'Имя пользователя'
+'Username or email address': 'Имя пользователя или электронная почта'
+Password: Пароль
+'Show homepage': 'Показать главную'
+'Back to login': 'Вернуться на страницу входа'
+'Reset your password': 'Восстановить пароль'
+'I forgot my password': 'Я забыл свой пароль'
+'Register a new account': 'Регистрация новой учетной записи'
+'View all': 'View all'
+'You have %count% notifications': 'You have 1 notification|You have %count% notifications'
+'You have %count% messages': 'You have 1 message|You have %count% messages'
+'You have %count% tasks': 'You have 1 task|You have %count% tasks'
+'%progress%% Complete': '%progress%% completed'
+registration.confirmed: 'Поздравляем %username%, ваш аккаунт подтвержден.'
+'- OR -': '__- OR -'
+'Sign in using Facebook': '__Sign in using Facebook'
+'Sign in using Google+': '__Sign in using Google+'
+'Admin LTE': '__Admin LTE'
+'A short subtitle for your page': '__A short subtitle for your page'
+Online: Online
+Search: Поиск
+Home: Главная

@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Class Project entity
  *
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\ProjectRepository::class")
  */
 class Project
 {
