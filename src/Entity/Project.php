@@ -7,6 +7,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -38,6 +39,20 @@ class Project
      * @Assert\Length(min=1, max=255)
      */
     private $name = '';
+
+    /**
+     * @var \DateTime
+     * @ORM\Column(type="datetime")
+     * @Gedmo\Timestampable(on="create")
+     */
+    private $createdAt;
+
+    /**
+     * @var \DateTime
+     * @ORM\Column(type="datetime")
+     * @Gedmo\Timestampable(on="update")
+     */
+    private $updatedAt;
 
     /**
      * @var string
@@ -95,6 +110,24 @@ class Project
         $this->name = $name;
 
         return $this;
+    }
+
+
+    /**
+     * @return \DateTime
+     */
+    public function getCreatedAt(): \DateTime
+    {
+        return $this->createdAt;
+    }
+
+
+    /**
+     * @return \DateTime
+     */
+    public function getUpdatedAt(): \DateTime
+    {
+        return $this->updatedAt;
     }
 
 
