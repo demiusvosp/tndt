@@ -7,11 +7,12 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class Project entity
  *
- * @ORM\Entity(repositoryClass="App\Repository\ProjectRepository::class")
+ * @ORM\Entity(repositoryClass="App\Repository\ProjectRepository")
  */
 class Project
 {
@@ -21,25 +22,29 @@ class Project
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue
      */
-    private $id;
+    private $id = 0;
 
     /**
      * @var string
      * @ORM\Column(type="string", length=8, unique=true)
+     * @Assert\Length(min=1, max=8)
      */
-    private $suffix;
+    private $suffix = '';
 
     /**
      * @var string
      * @ORM\Column(type="string")
+     * @Assert\NotBlank()
+     * @Assert\Length(min=1, max=255)
      */
-    private $name;
+    private $name = '';
 
     /**
      * @var string
      * @ORM\Column(type="text")
+     * @Assert\Length(max=1000)
      */
-    private $description;
+    private $description = '';
 
 
     /**

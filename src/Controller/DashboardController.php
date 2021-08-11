@@ -8,8 +8,7 @@
 namespace App\Controller;
 
 
-use App\Entity\Project;
-use App\Services\ProjectManager;
+use App\Service\ProjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 

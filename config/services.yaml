@@ -34,4 +34,4 @@ services:
             - { name: kernel.event_listener, event: theme.breadcrumb, method: onSetupMenu }
 
     project.manager:
-        class: App\Services\ProjectManager
+        class: App\Service\ProjectManager

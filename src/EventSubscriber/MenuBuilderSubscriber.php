@@ -8,7 +8,7 @@ declare(strict_types=1);
 
 namespace App\EventSubscriber;
 
-use App\Services\ProjectManager;
+use App\Service\ProjectManager;
 use KevinPapst\AdminLTEBundle\Event\BreadcrumbMenuEvent;
 use KevinPapst\AdminLTEBundle\Event\SidebarMenuEvent;
 use KevinPapst\AdminLTEBundle\Model\MenuItemModel;

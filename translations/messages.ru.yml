@@ -1,18 +1,20 @@
+Create: Создать
 dashboard: Обзор
-search: Поиск
-Projects: Проекты
-Tasks: Задачи
+Description: Описание
 Documents: Документы
-Users: Пользователи
+Edit: Редактировать
+Name: Название
+menu.homepage: Главная
+menu.projects: Проекты
+menu.project.create: Новый...
+Projects: Проекты
+project.edit: 'Редактирование проекта'
+project.create: 'Создание проекта'
+project.new_project: 'Новый проект'
+project.not_found: 'Проект не найден'
+project.list: 'Список проектов'
+search: Поиск
+Suffix: Cуффикс
 Support: Поддержка
-project:
-  edit: Редактирование проекта
-  create: Создание проекта
-  new_project: Новый проект
-  not_found: Проект не найден
-  list: Список проектов
-menu:
-  homepage: Главная
-  projects: Проекты
-  project:
-    create: Новый...
+Tasks: Задачи
+Users: Пользователи
