@@ -6,7 +6,7 @@ doctrine:
         driver: 'mysql'
         server_version: '5.7'
 
-        override_url: false
+        override_url: true
 
         # only needed for MySQL
         charset: utf8mb4
