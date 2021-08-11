@@ -9,6 +9,7 @@ project:
   edit: Редактирование проекта
   create: Создание проекта
   new_project: Новый проект
+  not_found: Проект не найден
   list: Список проектов
 menu:
   homepage: Главная

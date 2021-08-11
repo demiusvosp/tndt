@@ -16,10 +16,9 @@ use Symfony\Component\HttpFoundation\Request;
 
 class DashboardController extends AbstractController
 {
-
     public function index(Request $request, ProjectManager $projectManager)
     {
-        $projects = $projectManager->getPopularProjects(4);
+        $projects = $projectManager->getPopularProjectsSnippets(4);
         return $this->render('dashboard/index.html.twig', ['projects' => $projects]);
     }
 }

@@ -8,6 +8,7 @@ declare(strict_types=1);
 
 namespace App\EventSubscriber;
 
+use App\Services\ProjectManager;
 use KevinPapst\AdminLTEBundle\Event\BreadcrumbMenuEvent;
 use KevinPapst\AdminLTEBundle\Event\SidebarMenuEvent;
 use KevinPapst\AdminLTEBundle\Model\MenuItemModel;
@@ -15,6 +16,12 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class MenuBuilderSubscriber implements EventSubscriberInterface
 {
+    private $projectManager;
+
+    public function __construct(ProjectManager $projectManager)
+    {
+        $this->projectManager = $projectManager;
+    }
 
     public static function getSubscribedEvents(): array
     {
@@ -33,14 +40,27 @@ class MenuBuilderSubscriber implements EventSubscriberInterface
     {
         //@TODO вытащить состав меню в конфигурацию (возможно даже с признаками логики)
 
-        $projects =  new MenuItemModel('projects', 'menu.projects', 'project.list');
-        $projects->addChild(
+        $route = $event->getRequest()->get('_route');
+        $projectsMenu =  new MenuItemModel('projects', 'menu.projects', 'project.list', []);
+
+        $currentProject = $this->projectManager->getCurrentProject($event->getRequest());
+        if ($currentProject) {
+            $currentProjectMenu = new MenuItemModel(
+                'current_project.index',
+                $currentProject->getName(),
+                'project.index',
+                ['suffix' => $currentProject->getSuffix()]
+            );
+            $projectsMenu->addChild($currentProjectMenu);
+        }
+        $projectsMenu->addChild(
             new MenuItemModel('project.create', 'menu.project.create', 'project.create', [])
         );
-        $event->addItem($projects);
+        $event->addItem($projectsMenu);
+
 
         $this->activateByRoute(
-            $event->getRequest()->get('_route'),
+            $route,
             $event->getItems()
         );
     }
@@ -54,7 +74,8 @@ class MenuBuilderSubscriber implements EventSubscriberInterface
         foreach ($items as $item) {
             if ($item->hasChildren()) {
                 $this->activateByRoute($route, $item->getChildren());
-            } elseif ($item->getRoute() === $route) {
+            }
+            if ($item->getRoute() === $route) {
                 $item->setIsActive(true);
             }
         }

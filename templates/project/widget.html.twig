@@ -1,0 +1,14 @@
+{% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
+    {% if description_length is not defined %}
+        {% set description_length = 100 %}
+    {% endif %}
+    {% block box_title %}
+        <a href="{{ path('project.index', {suffix:project.suffix}) }}"><b>{{ project.suffix }}</b> - {{ project.name }}</a>
+    {% endblock %}
+    {% block box_body %}
+        <small>
+            {{ (description_length == 0) ? project.description : project.description|truncate(description_length, true) }}
+        </small>
+        <hr>
+    {% endblock %}
+{% endembed %}

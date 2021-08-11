@@ -5,5 +5,7 @@
 {% block page_subtitle %}{% endblock %}
 
 {% block page_content %}
-    Здесь будет dashboard проекта
+    <div class="row">
+        {% embed 'project/widget.html.twig' with {'description_length': 0} %}{% endembed %}
+    </div>
 {% endblock %}

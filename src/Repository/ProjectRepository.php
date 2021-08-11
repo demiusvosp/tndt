@@ -19,4 +19,8 @@ class ProjectRepository extends ServiceEntityRepository
         parent::__construct($registry, Project::class);
     }
 
+    public function findBySuffix(string $suffix): ?Project
+    {
+        return $this->findOneBy(['suffix' => $suffix]);
+    }
 }

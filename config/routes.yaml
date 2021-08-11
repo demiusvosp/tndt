@@ -10,7 +10,7 @@ home:
 #User
 
 #Projects
-project:
+project.index:
     path: /p/{suffix}
     controller: App\Controller\ProjectController::index
 project.list:

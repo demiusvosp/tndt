@@ -5,5 +5,21 @@
 {% block page_subtitle %}{% endblock %}
 
 {% block page_content %}
-    Здесь будет кусок dashboard касающийся проектов и их менеджмента
+    <div class="row">
+        {% for project in projects %}
+            <div class="col-md-3">
+                {% embed 'project/widget.html.twig' with {'description_length': 500} %}{% endembed %}
+            </div>
+        {% endfor %}
+        <div class="col-md-3">
+            {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
+                {% block box_title %}
+                    {{ 'project.new_project'|trans }}
+                {% endblock %}
+                {% block box_body %}
+                    <a class="btn btn-success btn-lg" href="{{ path('project.create') }}">{{ 'project.create'|trans }}</a>
+                {% endblock %}
+            {% endembed %}
+        </div>
+    </div>
 {% endblock %}

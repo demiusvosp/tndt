@@ -6,20 +6,11 @@
 
 {% block page_content %}
     <section id="projects">
-        <h2 class="page-header">{% trans %}Projects{% endtrans %}:</h2>
+        <h2 class="page-header"><a href="{{ path('project.list') }}">{% trans %}Projects{% endtrans %}</a>:</h2>
         <div class="row">
         {% for project in projects %}
             <div class="col-md-3">
-            {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
-                {% block box_title %}
-                    <b>{{ project.suffix }}</b> - {{ project.name }}
-                {% endblock %}
-                {% block box_body %}
-                    <small>{{ project.description|truncate(100, true) }}</small>
-                    <hr>
-
-                {% endblock %}
-            {% endembed %}
+            {% embed 'project/widget.html.twig' %}{% endembed %}
             </div>
         {% endfor %}
             <div class="col-md-3">
