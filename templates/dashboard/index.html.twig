@@ -1,4 +1,5 @@
 {% extends 'base.html.twig' %}
+{% import 'project/macro.html.twig' as mProject %}
 
 {% block title %}{{ parent() }} - {% trans %}dashboard{% endtrans %}{% endblock %}
 {% block page_title%}{% trans %}dashboard{% endtrans %}{% endblock %}
@@ -10,7 +11,7 @@
         <div class="row">
         {% for project in projects %}
             <div class="col-md-3">
-            {% embed 'project/widget.html.twig' %}{% endembed %}
+                {{ mProject.snippet(project) }}
             </div>
         {% endfor %}
             <div class="col-md-3">

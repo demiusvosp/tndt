@@ -1,4 +1,5 @@
 {% extends 'base.html.twig' %}
+{% import 'project/macro.html.twig' as mProject %}
 
 {% block title %}{{ 'project.list'|trans }}{% endblock %}
 {% block page_title%}{{ 'project.list'|trans }}{% endblock %}
@@ -8,7 +9,7 @@
     <div class="row">
         {% for project in projects %}
             <div class="col-md-3">
-                {% embed 'project/widget.html.twig' with {'description_length': 500} %}{% endembed %}
+                {{ mProject.snippet(project, 500) }}
             </div>
         {% endfor %}
         <div class="col-md-3">

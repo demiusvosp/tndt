@@ -1,11 +1,12 @@
 {% extends 'base.html.twig' %}
+{% import 'project/macro.html.twig' as mProject %}
 
-{% block title %}Имя проекта{% endblock %}
-{% block page_title%}Имя проекта{% endblock %}
+{% block title %}{{ project.name}}{% endblock %}
+{% block page_title%}{% endblock %}
 {% block page_subtitle %}{% endblock %}
 
 {% block page_content %}
     <div class="row">
-        {% embed 'project/widget.html.twig' with {'description_length': 0} %}{% endembed %}
+        {{ mProject.snippet(project, 0) }}
     </div>
 {% endblock %}
