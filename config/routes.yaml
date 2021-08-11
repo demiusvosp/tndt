@@ -4,9 +4,20 @@ home:
     controller: App\Controller\DashboardController::index
 
 #Auth
-login:
-    path: /auth/login
+#login:
+#    path: /auth/login
 
 #User
 
 #Projects
+project:
+    path: /p/{suffix}
+    controller: App\Controller\ProjectController::index
+project.new:
+    path: /project/create
+    controller: App\Controller\ProjectController::create
+project.edit:
+    path: /project/edit
+    controller: App\Controller\ProjectController::edit
+
+#Tasks

@@ -1,2 +1,8 @@
 dashboard: Dashboard
 search: Search
+Projects: Projects
+Tasks: Tasks
+Documents: Documents
+Users: Users
+project.edit: Edit project
+project.new: Create project
