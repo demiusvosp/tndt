@@ -3,6 +3,36 @@
 {% block title %}Yatt{% endblock %}
 {% block logo_mini %}Yatt{% endblock %}
 {% block logo_large %}Yatt{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('app') }}
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('app') }}
+{% endblock %}
+
+{% block navbar_start %}
+    {% set projects = project_manager.getPopularProjectsSnippets(5) %}
+    {% set current_project = project_manager.currentProject(app.request) %}
+    <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ 'Projects'|trans }}</a>
+        <ul class="dropdown-menu" role="menu">
+            {% for project in projects %}
+                <li>
+                    <a href="{{ path('project.index', {'suffix': project.suffix}) }}">
+                        {% if current_project and current_project.suffix == project.suffix %}
+                            <i class="fa fa-check"></i>
+                        {% else %}
+                            <i class="fa fa-fw"></i>
+                        {% endif %}
+                        {{ project.name }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    </li>
+{% endblock %}
 
 {% block footer %}
     {% include 'footer.html.twig' %}

@@ -30,7 +30,13 @@ class ProjectManager
 
     public function getPopularProjectsSnippets(int $limit = 5): array
     {
-        return $this->projectRepository->findAll();
+        $projects = $this->projectRepository->findBy([], null, $limit);
+        /** @var Project $project */
+        foreach ($projects as $project) {
+            static::$loadedProjects[$project->getSuffix()] = $project;
+        }
+
+        return $projects;
     }
 
 
