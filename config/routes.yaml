@@ -20,7 +20,7 @@ project.create:
     path: /project/create
     controller: App\Controller\ProjectController::create
 project.edit:
-    path: /project/edit
+    path: /project/{suffix}/edit
     controller: App\Controller\ProjectController::edit
 
 #Tasks

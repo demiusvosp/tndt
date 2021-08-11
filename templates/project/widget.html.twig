@@ -5,6 +5,9 @@
     {% block box_title %}
         <a href="{{ path('project.index', {suffix:project.suffix}) }}"><b>{{ project.suffix }}</b> - {{ project.name }}</a>
     {% endblock %}
+    {% block box_tools %}
+        <a class="btn btn-warning btn-xs" href="{{ path('project.edit', {'suffix': project.suffix}) }}" title="{{ 'Edit'|trans }}"><i class="fa fa-edit"></i></a>
+    {% endblock %}
     {% block box_body %}
         <small>
             {{ (description_length == 0) ? project.description : project.description|truncate(description_length, true) }}

@@ -9,6 +9,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\Project;
+use App\Form\EditProjectType;
 use App\Form\NewProjectType;
 use App\Service\ProjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -71,6 +72,16 @@ class ProjectController extends AbstractController
 
     public function edit(Request $request)
     {
-        return $this->render('project/edit.html.twig');
+        $project = $this->projectManager->getCurrentProject($request);
+
+        $form = $this->createForm(EditProjectType::class, $project);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($project);
+            $em->flush();
+        }
+
+        return $this->render('project/edit.html.twig', ['project' => $project, 'form' => $form->createView()]);
     }
 }

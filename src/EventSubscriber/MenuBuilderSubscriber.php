@@ -51,6 +51,8 @@ class MenuBuilderSubscriber implements EventSubscriberInterface
                 'project.index',
                 ['suffix' => $currentProject->getSuffix()]
             );
+            $currentProjectMenu
+                ->addChild( new MenuItemModel('project.edit', 'menu.project.edit', 'project.edit', ['suffix' => $currentProject->getSuffix()]));
             $projectsMenu->addChild($currentProjectMenu);
         }
         $projectsMenu->addChild(

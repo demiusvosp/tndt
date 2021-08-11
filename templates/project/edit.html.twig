@@ -5,5 +5,19 @@
 {% block page_subtitle %}{% endblock %}
 
 {% block page_content %}
-    Здесь будет форма редактирования проекта
+    {{ form_start(form) }}
+    {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
+        {% block box_title %}
+            {# пока это повторяет заголовок, но может это будет многостраницчный мастер, и десь будет описание шага #}
+        {% endblock %}
+        {% block box_body %}
+            {{ form_row(form.name) }}
+            {{ form_row(form.description) }}
+            <hr>
+            <div class="pull-right">
+             <button type="submit" class="btn btn-success">{{ 'Edit'|trans }}</button>
+            </div>
+        {% endblock %}
+    {% endembed %}
+    {{ form_end(form) }}
 {% endblock %}
