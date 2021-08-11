@@ -55,6 +55,12 @@ class Project
     private $updatedAt;
 
     /**
+     * @var bool
+     * @ORM\Column (type="boolean")
+     */
+    private $isArchived = false;
+
+    /**
      * @var string
      * @ORM\Column(type="text")
      * @Assert\Length(max=1000)
@@ -77,18 +83,6 @@ class Project
     public function getSuffix(): string
     {
         return $this->suffix;
-    }
-
-
-    /**
-     * @param string $suffix
-     * @return Project
-     */
-    public function setSuffix(string $suffix): Project
-    {
-        $this->suffix = $suffix;
-
-        return $this;
     }
 
 
@@ -128,6 +122,22 @@ class Project
     public function getUpdatedAt(): \DateTime
     {
         return $this->updatedAt;
+    }
+
+
+    /**
+     * @return bool
+     */
+    public function isArchived(): bool
+    {
+        return $this->isArchived;
+    }
+
+
+    public function doArchive(): void
+    {
+        $this->isArchived = true;
+        //@TODO послать событие закрытия проекта, чтобы все могли проверить
     }
 
 

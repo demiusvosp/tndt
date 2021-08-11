@@ -84,4 +84,14 @@ class ProjectController extends AbstractController
 
         return $this->render('project/edit.html.twig', ['project' => $project, 'form' => $form->createView()]);
     }
+
+    public function archive(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $project = $this->projectManager->getCurrentProject($request);
+        $project->setIsArchived(true);
+        $em->flush();
+
+        return $this->redirectToRoute('project.list');
+    }
 }

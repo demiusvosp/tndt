@@ -22,5 +22,21 @@ project.create:
 project.edit:
     path: /project/{suffix}/edit
     controller: App\Controller\ProjectController::edit
+project.archive:
+    path: /project/{suffix}/archive
+    controller: App\Controller\ProjectController::archive
 
 #Tasks
+task.index:
+    path: /p/{suffix}-{no}
+    controller: App\Controller\TaskController::index
+task.create:
+    path: /p/{suffix}/task/create
+    controller: App\Controller\TaskController::create
+task.edit:
+    path: /p/{suffix}-{no}/edit
+    controller: App\Controller\TaskController::edit
+task.close:
+    path: /p/{suffix}-{no}/close
+    controller: App\Controller\TaskController::close
+#Docs
