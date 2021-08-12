@@ -6,6 +6,8 @@
         "regenerator-runtime": "^0.13.2",
         "stimulus": "^2.0.0",
         "jquery": "^3.4",
+        "jquery-ui": "^1.12",
+        "bootstrap-sass": "^3.4",
         "webpack-notifier": "^1.13.0"
     },
     "license": "UNLICENSED",

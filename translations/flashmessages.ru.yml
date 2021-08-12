@@ -1,0 +1,4 @@
+project:
+  archive.success: Проект архивирован
+  create.success: Проект создан
+  edit.success: Проект отредактирован

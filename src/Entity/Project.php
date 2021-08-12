@@ -87,6 +87,21 @@ class Project
 
 
     /**
+     * @param string $suffix
+     * @return Project
+     */
+    public function setSuffix(string $suffix): Project
+    {
+        if (!empty($this->suffix)) {
+            throw new \DomainException('Нельзя менять суффикс существующему проекту');
+        }
+        $this->suffix = $suffix;
+
+        return $this;
+    }
+
+
+    /**
      * @return string
      */
     public function getName(): string
