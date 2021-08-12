@@ -32,6 +32,9 @@ Encore
     // but, you probably want this, unless you're building a single-page app
     .enableSingleRuntimeChunk()
 
+    // Да, я все еще его использую, сходу заменить его на Stimulus весьма не просто
+    .autoProvidejQuery()
+
     /*
      * FEATURE CONFIG
      *
@@ -55,7 +58,7 @@ Encore
         config.corejs = 3;
     })
 
-    // enables Sass/SCSS support
+    // enables Sass/SCSS support (штука клевая, но нам опять же не жизненно необходима)
     //.enableSassLoader()
 
     // uncomment if you use TypeScript

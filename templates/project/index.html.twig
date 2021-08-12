@@ -7,6 +7,30 @@
 
 {% block page_content %}
     <div class="row">
-        {{ mProject.snippet(project, 0) }}
+        <div class="col-md-8">
+            {{ mProject.snippet(project, 0) }}
+        </div>
+        <div class="col-md-2">
+            {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
+                {% block box_title %}
+                    {{ 'ControlPanel'|trans }}
+                {% endblock  %}
+                {% block box_body %}
+                    <div class="btn-group-vertical" role="toolbar" aria-label="{{ 'ControlPanel'|trans }}">
+                        <button class="btn btn-secondary" href="{{ path('project.edit', {'suffix':project.suffix}) }}">{{ 'Edit'|trans }}</button>
+                        <button
+                                class="btn btn-secondary btn-danger need-confirm"
+                                data-action="{{ path('project.archive', {'suffix':project.suffix}) }}"
+                                data-text="{{ 'project.archive.confirm'|trans|nl2br }}"
+                        >
+                            {{ 'Archive'|trans }}
+                        </button>
+                    </div>
+                    <script type="application/javascript">
+
+                    </script>
+                {% endblock %}
+            {% endembed %}
+        </div>
     </div>
 {% endblock %}

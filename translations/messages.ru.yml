@@ -1,3 +1,9 @@
+Archive: Удалить в архив
+confirm:
+  title: Вы уверены?
+  yes: Да
+  no: Нет
+ControlPanel: Панель управления
 Create: Создать
 dashboard: Обзор
 Description: Описание
@@ -9,11 +15,16 @@ menu.projects: Проекты
 menu.project.create: Новый...
 menu.project.edit: Редактирование
 Projects: Проекты
-project.edit: 'Редактирование проекта'
-project.create: 'Создание проекта'
-project.new_project: 'Новый проект'
-project.not_found: 'Проект не найден'
-project.list: 'Список проектов'
+project:
+  archive.confirm: Отправка проекта в архив закроет все задачи по нему и завершит все релизы. \r\n Действие нельзя будет отменить. Вы действительно зотите продолжить?
+  archive.success: Проект архивирован
+  create: Создание проекта
+  create.success: Проект создан
+  edit: Редактирование проекта
+  edit.success: Проект отредактирован
+  new_project: Новый проект
+  not_found: Проект не найден
+  list: Список проектов
 search: Поиск
 Suffix: Cуффикс
 Support: Поддержка

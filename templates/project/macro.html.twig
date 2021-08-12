@@ -9,6 +9,9 @@
 {% endmacro %}
 
 {% macro snippet(project, descriptionLength = 100, link = true) %}
+    {# @TODO подумать а удобнее он нам в виде макроса, или шаблона. Хотя с дргуой стороны, там где он нужен
+      шаблоном сильно все меняется, может сделать шаблон, который сунуть в макрос или использовать отдельно (а это вобще законно)
+    #}
     {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
         {% block box_title %}
             {#  почему-то не работает
@@ -22,9 +25,6 @@
             {% if link %}
                 </a>
             {% endif %}
-        {% endblock %}
-        {% block box_tools %}
-            <a class="btn btn-warning btn-xs" href="{{ path('project.edit', {'suffix': project.suffix}) }}" title="{{ 'Edit'|trans }}"><i class="fa fa-edit"></i></a>
         {% endblock %}
         {% block box_body %}
             <small>

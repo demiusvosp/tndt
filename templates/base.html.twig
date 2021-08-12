@@ -12,6 +12,10 @@
     {{ encore_entry_script_tags('app') }}
 {% endblock %}
 
+{% block page_content_before %}
+    {% include 'modals.html.twig' %}
+{% endblock %}
+
 {% block navbar_start %}
     {% set projects = project_manager.getPopularProjectsSnippets(5) %}
     {% set current_project = project_manager.currentProject(app.request) %}

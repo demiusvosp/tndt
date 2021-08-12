@@ -63,6 +63,7 @@ class ProjectController extends AbstractController
             $project = $form->getData();
             $em->persist($project);
             $em->flush();
+            $this->addFlash('success', $this->translator->trans('project.create.success'));
             return $this->redirectToRoute('project.index', ['suffix' => $project->getSuffix()]);
         }
 
@@ -80,6 +81,7 @@ class ProjectController extends AbstractController
             $em = $this->getDoctrine()->getManager();
             $em->persist($project);
             $em->flush();
+            $this->addFlash('success', $this->translator->trans('project.edit.success'));
         }
 
         return $this->render('project/edit.html.twig', ['project' => $project, 'form' => $form->createView()]);
@@ -89,8 +91,9 @@ class ProjectController extends AbstractController
     {
         $em = $this->getDoctrine()->getManager();
         $project = $this->projectManager->getCurrentProject($request);
-        $project->setIsArchived(true);
+        $project->doArchive();
         $em->flush();
+        $this->addFlash('warning', $this->translator->trans('project.archive.success'));
 
         return $this->redirectToRoute('project.list');
     }
