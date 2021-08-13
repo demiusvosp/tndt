@@ -33,20 +33,20 @@ class Task
      * @var int
      * @ORM\Column(type="integer")
      */
-    private $no;
+    private $no = 0;
 
     /**
      * @var string
      * @ORM\Column(type="string", length=8)
      */
-    private $suffix;
+    private $suffix = '';
 
     /**
      * @var Project
      * @ORM\ManyToOne(targetEntity="Project", fetch="EAGER")
      * @ORM\JoinColumn(name="suffix", referencedColumnName="suffix")
      */
-    private $project;
+    private $project = null;
 
     /**
      * @var \DateTime
@@ -74,15 +74,20 @@ class Task
      * @Assert\NotBlank()
      * @Assert\Length(min=1, max=255)
      */
-    private $caption;
+    private $caption = '';
 
     /**
      * @var string
      * @ORM\Column(type="text")
      * @Assert\Length(max=1000)
      */
-    private $description;
+    private $description = '';
 
+
+    public function __construct(Project $project)
+    {
+        $this->setProject($project);
+    }
 
     /**
      * @return int
@@ -91,7 +96,6 @@ class Task
     {
         return $this->id;
     }
-
 
     /**
      * Получить номер задачи
@@ -103,13 +107,15 @@ class Task
         return $this->no;
     }
 
-    public function setNo(int $no): void
+    public function setNo(int $no): self
     {
         if (empty($this->no)) {
             $this->no = $no;
         } else {
             throw new \DomainException('Нельзя менять номер задачи');
         }
+
+        return $this;
     }
 
     /**
@@ -117,11 +123,10 @@ class Task
      *
      * @return string
      */
-    public function getFullNo(): string
+    public function getTaskId(): string
     {
         return $this->suffix . '-' . $this->no;
     }
-
 
     /**
      * Получить код проекта
@@ -133,24 +138,22 @@ class Task
         return $this->suffix;
     }
 
-
     /**
      * @return Project
      */
-    public function getProject(): Project
+    public function getProject(): ?Project
     {
         return $this->project;
     }
-
 
     /**
      * @param Project $project
      * @return Task
      */
-    public function setProject(Project $project)
+    public function setProject(Project $project): self
     {
         $this->project = $project;
-        //$this->suffix = $project->getSuffix(); вобще это избыточно, должно быть достаточно или этого или строки выше
+        $this->suffix = $project->getSuffix();
 
         return $this;
     }
@@ -181,7 +184,6 @@ class Task
         return $this->caption;
     }
 
-
     /**
      * @param string $caption
      * @return Task
@@ -193,7 +195,6 @@ class Task
         return $this;
     }
 
-
     /**
      * @return string
      */
@@ -201,7 +202,6 @@ class Task
     {
         return $this->description;
     }
-
 
     /**
      * @param string $description

@@ -28,9 +28,10 @@ class TaskRepository extends ServiceEntityRepository
 
     public function getLastNo($suffix): int
     {
-        $q = $this->getEntityManager()->createQuery('SELECT t.no FROM App\Entity\Task t ORDER BY no DESC')
+        $q = $this->getEntityManager()->createQuery('SELECT t.no FROM App\Entity\Task t ORDER BY t.no DESC')
             ->setMaxResults(1);
 
-        return $q->getScalarResult() ?? 0;
+        $result = $q->getScalarResult();
+        return (is_numeric($result)) ? $result : 0;
     }
 }

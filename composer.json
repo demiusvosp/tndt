@@ -9,6 +9,7 @@
         "ext-ctype": "*",
         "ext-iconv": "*",
         "easycorp/easy-log-handler": "^1.0",
+        "happyr/entity-exists-validation-constraint": "^1.0",
         "kevinpapst/adminlte-bundle": "^3.0",
         "stof/doctrine-extensions-bundle": "^1.6",
         "symfony/asset": "4.4.*",
@@ -26,6 +27,7 @@
         "symfony/validator": "4.4.*",
         "symfony/webpack-encore-bundle": "^1.12",
         "symfony/yaml": "4.4.*",
+        "tetranz/select2entity-bundle": "^3.1",
         "twig/extensions": "^1.5"
     },
     "require-dev": {

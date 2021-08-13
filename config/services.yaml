@@ -45,3 +45,7 @@ services:
         class: App\Service\ProjectManager
         arguments:
             - '@App\Repository\ProjectRepository'
+
+    Happyr\Validator\Constraint\EntityExistValidator:
+        arguments: [ '@doctrine.orm.entity_manager' ]
+        tags: [ 'validator.constraint_validator' ]

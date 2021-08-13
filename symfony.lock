@@ -99,6 +99,9 @@
     "gedmo/doctrine-extensions": {
         "version": "v3.1.0"
     },
+    "happyr/entity-exists-validation-constraint": {
+        "version": "1.0.0"
+    },
     "jdorn/sql-formatter": {
         "version": "v1.2.17"
     },

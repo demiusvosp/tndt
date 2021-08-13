@@ -1,4 +1,4 @@
-{% macro badge(project, withName = true, link = true) %}
+{% macro badge(project, withName = false, link = false) %}
     {% if link %}
         <a class="invisible_link" href="{{ path('project.index', {'suffix': project.suffix}) }}">
     {% endif %}
@@ -21,7 +21,7 @@
         {% block box_title %}
             {#  почему-то не работает
             {% import _self as macros %}
-            {{ macros.badge(project, withLink) }}
+            {{ macros.badge(project, true, link) }}
                 Поэтому пока ниже копипаста макроса badge
             #}
             {% if link %}

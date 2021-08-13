@@ -30,8 +30,11 @@ project.archive:
 task.index:
     path: /p/{taskId<\w+-\d+>}
     controller: App\Controller\TaskController::index
-task.create:
-    path: /p/{suffix}/task/create
+task.global_create:
+    path: /task/create
+    controller: App\Controller\TaskController::create
+task.project_create:
+    path: /p/{suffix<\w+>}/task/create
     controller: App\Controller\TaskController::create
 task.edit:
     path: /p/{taskId<\w+-\d+>}/edit

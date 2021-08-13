@@ -10,6 +10,8 @@
 {% block javascripts %}
 {#    {{ parent() }}#}
     {{ encore_entry_script_tags('app') }}
+{# @TODO добавить при реализации умных выпадающих списков с поиском   #}
+{#    <script src="{{ asset('bundles/tetranzselect2entity/js/select2entity.js') }}"></script>#}
 {% endblock %}
 
 {% block page_content_before %}
@@ -17,9 +19,12 @@
 {% endblock %}
 
 {% block navbar_start %}
-    {% set projects = project_manager.getPopularProjectsSnippets(5) %}
     {% set current_project = project_manager.currentProject(app.request) %}
+    <li>
+        <a href="{{ (current_project) ? path('task.project_create', {'suffix':current_project.suffix}) : path('task.global_create') }}">{{ 'Create_task'|trans }}</a>
+    </li>
     <li class="dropdown">
+        {% set projects = project_manager.getPopularProjectsSnippets(5) %}
         <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ 'Projects'|trans }}</a>
         <ul class="dropdown-menu" role="menu">
             {% for project in projects %}

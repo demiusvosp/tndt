@@ -60,17 +60,16 @@ class ProjectController extends AbstractController
 
     public function create(Request $request): Response
     {
-        $form = $this->createForm(NewType::class);
+        $project = new Project();
+        $form = $this->createForm(NewType::class, $project);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            /** @var Project $project */
-            $project = $form->getData();
             $em->persist($project);
             $em->flush();
             $this->addFlash('success', 'project.create.success');
-            return $this->redirectToRoute('project.index', ['suffix' => $project->getSuffix()]);
+//            return $this->redirectToRoute('project.index', ['suffix' => $project->getSuffix()]);
         }
 
         return $this->render('project/create.html.twig', ['form' => $form->createView()]);

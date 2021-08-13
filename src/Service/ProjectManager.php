@@ -27,7 +27,10 @@ class ProjectManager
         $this->projectRepository = $projectRepository;
     }
 
-
+    /**
+     * @param int $limit
+     * @return Project[]
+     */
     public function getPopularProjectsSnippets(int $limit = 5): array
     {
         $projects = $this->projectRepository->findBy(['isArchived' => false], ['updatedAt' => 'desc'], $limit);
@@ -42,9 +45,6 @@ class ProjectManager
 
     public function getCurrentProject(Request $request): ?Project
     {
-        if (!preg_match('~^project\.~', $request->get('_route'))) {
-            return null;
-        }
         $suffix = $request->get('suffix');
         if (!$suffix) {
             return null;

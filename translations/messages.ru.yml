@@ -1,11 +1,13 @@
 Archive: Удалить в архив
 archived: в архиве
+Caption: Заголовок
 confirm:
   title: Вы уверены?
   yes: Да
   no: Нет
 ControlPanel: Панель управления
 Create: Создать
+Create_task: Создать задачу
 dashboard: Обзор
 Description: Описание
 Documents: Документы
@@ -30,5 +32,8 @@ Suffix: Cуффикс
 Support: Поддержка
 Tasks: Задачи
 task:
+  project: Проект
   not_found: Задача не найдена
+  create: Создать задачу
+  create.project.help: Проект, к которому будет прикреплена задача.
 Users: Пользователи

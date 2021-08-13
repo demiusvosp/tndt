@@ -19,17 +19,17 @@ class Project
 {
     /**
      * @var integer
-     * @ORM\Id
      * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue
+     * @ORM\GeneratedValue(strategy="NONE")
      */
     private $id = 0;
 
     /**
      * @var string
-     * @ORM\Column(type="string", length=8, unique=true)
+     * @ORM\Id
+     * @ORM\Column(type="string", length=8)
      * @Assert\Length(min=1, max=8)
-     * @Assert\Regex("/^\w$/")
+     * @Assert\Regex("/^\w+$/")
      */
     private $suffix = '';
 
