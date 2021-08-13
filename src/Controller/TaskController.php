@@ -12,7 +12,6 @@ use App\Form\DTO\Task\NewTaskDTO;
 use App\Form\Type\Task\NewType;
 use App\Repository\TaskRepository;
 use App\Service\ProjectManager;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\Translation\TranslatorInterface;

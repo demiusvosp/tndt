@@ -1,0 +1,16 @@
+{% macro badge(task, withName = false, link = false) %}
+    {% if link %}
+        <a class="invisible_link" href="{{ path('task.index', {'taskId': task.taskId}) }}">
+    {% endif %}
+    <span {{ task.isClosed ? 'class="task-closed"' }}>
+        <i class="fa fa-tasks-alt"></i>
+        <b>{{ task.taskId }}</b>
+        {% if withName %}
+            - {{ task.caption }}
+            {% if task.isClosed %}<span class="label label-default">{{ 'closed'|trans }}</span>{% endif %}
+        {% endif %}
+    </span>
+    {% if link %}
+        </a>
+    {% endif %}
+{% endmacro %}

@@ -1,6 +1,8 @@
 Archive: Удалить в архив
 archived: в архиве
 Caption: Заголовок
+Close: Закрыть
+closed: закрыта
 confirm:
   title: Вы уверены?
   yes: Да
@@ -8,6 +10,7 @@ confirm:
 ControlPanel: Панель управления
 Create: Создать
 Create_task: Создать задачу
+CreatedAt: Создана
 dashboard: Обзор
 Description: Описание
 Documents: Документы
@@ -17,6 +20,7 @@ menu.homepage: Главная
 menu.projects: Проекты
 menu.project.create: Новый...
 menu.project.edit: Редактирование
+Project: Проект
 Projects: Проекты
 project:
   archive.confirm: Отправка проекта в архив закроет все задачи по нему и завершит все релизы. \r\n Действие нельзя будет отменить. Вы действительно зотите продолжить?
@@ -32,8 +36,10 @@ Suffix: Cуффикс
 Support: Поддержка
 Tasks: Задачи
 task:
+  close.confirm: Ну вобще здесь не нужен такой модальный диалог. Нужен контекстный маленький и с формой описания причины закрытия (и возможной сеной состояни)
   project: Проект
   not_found: Задача не найдена
   create: Создать задачу
   create.project.help: Проект, к которому будет прикреплена задача.
+UpdatedAt: Обновлена
 Users: Пользователи

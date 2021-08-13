@@ -1,9 +1,58 @@
 {% extends 'base.html.twig' %}
+{% import 'task/macro.html.twig' as mTask %}
 
 
-{% block title %}  {% endblock %}
-{% block page_title%}{% endblock %}
+{% block title %} {{ task.taskId }} - {{ task.caption }} {% endblock %}
+{% block page_title%} {{ mTask.badge(task, true) }} {% endblock %}
 {% block page_subtitle %}{% endblock %}
 
 {% block page_content %}
+    <div class="row">
+        <div class="col-md-8">
+            {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
+                {% import 'project/macro.html.twig' as mProject %}
+                {% import 'task/macro.html.twig' as mTask %}
+                {% block box_title %}
+                    {{ mTask.badge(task, true) }}
+                {% endblock %}
+                {% block box_body %}
+                    <div class="row">
+                        <div class="col-md-4">
+                            {{ 'Project'|trans }}: {{ mProject.badge(task.project, false, true) }}
+                        </div>
+                        <div class="col-md-4">
+                            {{ 'CreatedAt'|trans }}: {{ task.createdAt|date('d F Y  H:i:s') }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <i>Здесь будут набираться другие признаки - статус, категория, автор, тип, теги</i>
+                        </div>
+                        <div class="col-md-4">{{ 'UpdatedAt'|trans }}: {{ task.updatedAt|date('d F Y  H:i:s') }}</div>
+                    </div>
+                    <hr>
+                    <p>{{ task.description|markdown_to_html }}</p>
+                {% endblock %}
+            {% endembed %}
+        </div>
+        <div class="col-md-2">
+            {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
+                {% block box_title %}
+                    {{ 'ControlPanel'|trans }}
+                {% endblock  %}
+                {% block box_body %}
+                    <div class="btn-group-vertical" role="toolbar" aria-label="{{ 'ControlPanel'|trans }}">
+                        <a class="btn btn-default btn-secondary" href="{{ path('task.edit', {'taskId':task.taskId}) }}">{{ 'Edit'|trans }}</a>
+                        <button
+                                class="btn btn-secondary btn-warning need-confirm"
+                                data-action="{{ path('task.close', {'taskId':task.taskId}) }}"
+                                data-text="{{ 'task.close.confirm'|trans|nl2br }}"
+                        >
+                            {{ 'Close'|trans }}
+                        </button>
+                    </div>
+                {% endblock %}
+            {% endembed %}
+        </div>
+    </div>
 {% endblock %}
