@@ -9,17 +9,14 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\Project;
-use App\Form\EditProjectType;
-use App\Form\NewProjectType;
+use App\Form\DTO\Project\ProjectListFilterDTO;
+use App\Form\Type\EditProjectType;
+use App\Form\Type\NewProjectType;
+use App\Form\Type\Project\ListFilterType;
 use App\Service\ProjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Validator\Constraints\Length;
-use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ProjectController extends AbstractController
@@ -35,10 +32,19 @@ class ProjectController extends AbstractController
     }
 
 
-    public function  list(Request  $request)
+    public function  list(Request $request)
     {
-        $projects = $this->projectManager->getPopularProjectsSnippets(50);
-        return $this->render('project/list.html.twig', ['projects' => $projects]);
+        $filterData = new ProjectListFilterDTO();
+        $filterForm = $this->createForm(ListFilterType::class, $filterData);
+
+        $filterForm->handleRequest($request);
+        if ($filterForm->isSubmitted() && !$filterForm->isValid()) {
+            $this->addFlash('warning', 'filterForm.error');
+        }
+
+        $projectRepository = $this->getDoctrine()->getRepository(Project::class);
+        $projects = $projectRepository->findBy($filterData->getFilterCriteria(), ['updatedAt' => 'desc'], 50);
+        return $this->render('project/list.html.twig', ['projects' => $projects, 'filterForm' => $filterForm->createView()]);
     }
 
 

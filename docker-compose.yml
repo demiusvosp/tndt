@@ -17,6 +17,8 @@ services:
       dockerfile: './docker/dev.php.dockerfile'
     volumes:
       - './:/var/www'
+    ports:
+      - 4004:9000
     links:
       - mysql
     environment:
@@ -32,6 +34,8 @@ services:
       MYSQL_DATABASE: '${DB_NAME}'
     volumes:
       - './var/mysql:/var/lib/mysql:rw'
+    ports:
+      - 4003:3306
 
   pma:
     image: phpmyadmin/phpmyadmin

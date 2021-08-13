@@ -17,7 +17,7 @@
                 {% endblock  %}
                 {% block box_body %}
                     <div class="btn-group-vertical" role="toolbar" aria-label="{{ 'ControlPanel'|trans }}">
-                        <button class="btn btn-secondary" href="{{ path('project.edit', {'suffix':project.suffix}) }}">{{ 'Edit'|trans }}</button>
+                        <a class="btn btn-default btn-secondary" href="{{ path('project.edit', {'suffix':project.suffix}) }}">{{ 'Edit'|trans }}</a>
                         <button
                                 class="btn btn-secondary btn-danger need-confirm"
                                 data-action="{{ path('project.archive', {'suffix':project.suffix}) }}"
@@ -26,9 +26,6 @@
                             {{ 'Archive'|trans }}
                         </button>
                     </div>
-                    <script type="application/javascript">
-
-                    </script>
                 {% endblock %}
             {% endembed %}
         </div>

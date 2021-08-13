@@ -6,7 +6,7 @@
  */
 declare(strict_types=1);
 
-namespace App\Form;
+namespace App\Form\Type;
 
 use App\Entity\Project;
 use Symfony\Component\Form\AbstractType;
@@ -19,7 +19,7 @@ class NewProjectType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('suffix', TextType::class)
+            ->add('suffix', TextType::class, ['help' => 'project.create.suffix.help'])
             ->add('name', TextType::class)
             ->add('description', TextType::class, ['required' => false, 'empty_data' => '',]);
     }

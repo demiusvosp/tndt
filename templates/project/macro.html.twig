@@ -2,7 +2,12 @@
     {% if link %}
         <a class="invisible_link" href="{{ path('project.index', {'suffix': project.suffix}) }}">
     {% endif %}
-    <i class="fa fa-tasks-alt"></i><b>{{ project.suffix }}</b>{% if withName %} - {{ project.name }}{% endif %}
+        <i class="fa fa-tasks-alt"></i>
+        <b {{ project.isArchived ? 'class="style-deleted"' }}>{{ project.suffix }}</b>
+        {% if withName %}
+            - {{ project.name }}
+            {% if project.isArchived %}<span class="label label-default">{{ 'archived'|trans }}</span>{% endif %}
+        {% endif %}
     {% if link %}
         </a>
     {% endif %}
@@ -17,17 +22,21 @@
             {#  почему-то не работает
             {% import _self as macros %}
             {{ macros.badge(project, withLink) }}
+                Поэтому пока ниже копипаста макроса badge
             #}
             {% if link %}
                 <a class="invisible_link" href="{{ path('project.index', {'suffix': project.suffix}) }}">
             {% endif %}
-            <i class="fa fa-tasks-alt"></i><b>{{ project.suffix }}</b> - {{ project.name }}
+                <i class="fa fa-tasks-alt"></i>
+                <b {{ project.isArchived ? 'class="style-deleted"' }}>{{ project.suffix }}</b>
+                - {{ project.name }}
+                {% if project.isArchived %}<span class="label label-default label-sm">{{ 'archived'|trans }}</span>{% endif %}
             {% if link %}
                 </a>
             {% endif %}
         {% endblock %}
         {% block box_body %}
-            <small>
+            <small  {{ project.isArchived ? 'class="style-disabled"' }}>
                 {{ (descriptionLength == 0) ? project.description : project.description|truncate(descriptionLength, true) }}
             </small>
             <hr>

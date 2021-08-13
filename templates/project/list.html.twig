@@ -2,7 +2,19 @@
 {% import 'project/macro.html.twig' as mProject %}
 
 {% block title %}{{ 'project.list'|trans }}{% endblock %}
-{% block page_title%}{{ 'project.list'|trans }}{% endblock %}
+{% block page_title%}
+    {{ 'project.list'|trans }}
+    <span class="dropdown">
+        <button class="btn btn-default dropdown-toggle" data-toggle="dropdown"><i class="fa fa-filter"></i> </button>
+        <ul class="dropdown-menu" role="menu">
+            {{ form_start(filterForm, {'attr': {'class': 'autoupdate'}}) }}
+            <li>
+                {{ form_widget(filterForm.isArchived) }}
+            </li>
+            {{ form_end(filterForm) }}
+        </ul>
+    </span>
+{% endblock %}
 {% block page_subtitle %}{% endblock %}
 
 {% block page_content %}

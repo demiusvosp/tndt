@@ -9,17 +9,24 @@ import './bootstrap.js';
 // Собственно сам js
 console.log('running');
 
+/**
+ * Autoupdate - small form will submited on change any field
+ */
+$('form.autoupdate').on('change', 'button,input', function (event) {
+    event.delegateTarget.submit();
+});
+
 // Modal
 $('.need-confirm').on('click', function (event) {
     event.preventDefault();
     let $dialog = $('#modalConfirm');
-    $('.modal-body', $dialog).html(event.currentTarget.dataset.text);
+    $('.modal-body', $dialog).html(event.target.dataset.text);
     $dialog.on('hide.bs.modal', function (event) {
         $('modal_body', this).html('');
     });
     $dialog.modal('show');
 
-    $('.btn-success', $dialog).on('click', {'action': event.currentTarget.dataset.action}, function () {
+    $('.btn-success', $dialog).on('click', {'action': event.target.dataset.action}, function () {
         document.location = event.currentTarget.dataset.action;
     })
 });
