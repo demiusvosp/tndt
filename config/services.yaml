@@ -28,10 +28,20 @@ services:
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
-    app.breadcrumbs_listener:
+    # Event Subscribers and Listeners
+
+    App\EventSubscriber\MenuBuilderSubscriber:
         class: App\EventSubscriber\MenuBuilderSubscriber
         tags:
             - { name: kernel.event_listener, event: theme.breadcrumb, method: onSetupMenu }
 
-    project.manager:
+    App\EventSubscriber\TaskGeneratorListener:
+        class: App\EventSubscriber\TaskGeneratorListener
+        tags:
+            - { name: doctrine.event_listener, event: prePersist }
+
+    # Various Services
+    App\Service\ProjectManager:
         class: App\Service\ProjectManager
+        arguments:
+            - '@App\Repository\ProjectRepository'

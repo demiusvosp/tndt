@@ -8,4 +8,4 @@ twig:
     globals:
         app_version: '%app.version%'
         support_url: '%app.support_url%'
-        project_manager: '@project.manager'
+        project_manager: '@App\Service\ProjectManager'

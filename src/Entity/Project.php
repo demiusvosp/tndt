@@ -55,7 +55,7 @@ class Project
     private $updatedAt;
 
     /**
-     * @var bool
+     * @var boolean
      * @ORM\Column (type="boolean")
      */
     private $isArchived = false;

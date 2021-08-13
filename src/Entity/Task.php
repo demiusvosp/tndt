@@ -7,19 +7,20 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\Mapping\UniqueConstraint;
-
+use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class Task
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\TaskRepository")
  * @ORM\Table(
- *     uniqueConstraints={@UniqueConstraint(name="idx_full_no",columns={"suffix","no"})}
+ *     name="task",
+ *     uniqueConstraints={@ORM\UniqueConstraint(name="idx_full_no", columns={"suffix","no"})},
+ *     indexes={@ORM\Index(name="isClosed", columns={"is_closed"})}
  * )
  */
 class Task
 {
-
     /**
      * @var int
      * @ORM\Id
@@ -42,20 +43,43 @@ class Task
 
     /**
      * @var Project
-     * @ORM\ManyToOne(targetEntity="Project")
-     * @ORM\JoinColumn(name="project_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="Project", fetch="EAGER")
+     * @ORM\JoinColumn(name="suffix", referencedColumnName="suffix")
      */
     private $project;
 
     /**
+     * @var \DateTime
+     * @ORM\Column(type="datetime")
+     * @Gedmo\Timestampable(on="create")
+     */
+    private $createdAt;
+
+    /**
+     * @var \DateTime
+     * @ORM\Column(type="datetime")
+     * @Gedmo\Timestampable(on="update")
+     */
+    private $updatedAt;
+
+    /**
+     * @var boolean
+     * @ORM\Column (type="boolean")
+     */
+    private $isClosed = false;
+
+    /**
      * @var string
      * @ORM\Column(type="string")
+     * @Assert\NotBlank()
+     * @Assert\Length(min=1, max=255)
      */
     private $caption;
 
     /**
      * @var string
      * @ORM\Column(type="text")
+     * @Assert\Length(max=1000)
      */
     private $description;
 
@@ -79,6 +103,14 @@ class Task
         return $this->no;
     }
 
+    public function setNo(int $no): void
+    {
+        if (empty($this->no)) {
+            $this->no = $no;
+        } else {
+            throw new \DomainException('Нельзя менять номер задачи');
+        }
+    }
 
     /**
      * Получить полный номер задачи
@@ -118,10 +150,28 @@ class Task
     public function setProject(Project $project)
     {
         $this->project = $project;
+        //$this->suffix = $project->getSuffix(); вобще это избыточно, должно быть достаточно или этого или строки выше
 
         return $this;
     }
 
+    /**
+     * @return bool
+     */
+    public function isClosed(): bool
+    {
+        return $this->isClosed;
+    }
+
+    /**
+     * @param bool $isClosed
+     * @return Task
+     */
+    public function setIsClosed(bool $isClosed): Task
+    {
+        $this->isClosed = $isClosed;
+        return $this;
+    }
 
     /**
      * @return string
