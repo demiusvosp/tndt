@@ -6,7 +6,7 @@
  */
 declare(strict_types=1);
 
-namespace App\Form\Type;
+namespace App\Form\Type\Project;
 
 use App\Entity\Project;
 use Symfony\Component\Form\AbstractType;
@@ -14,7 +14,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class EditProjectType extends AbstractType
+class EditType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {

@@ -29,6 +29,7 @@ class Project
      * @var string
      * @ORM\Column(type="string", length=8, unique=true)
      * @Assert\Length(min=1, max=8)
+     * @Assert\Regex("/^\w$/")
      */
     private $suffix = '';
 

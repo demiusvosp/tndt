@@ -10,13 +10,13 @@ namespace App\Controller;
 
 use App\Entity\Project;
 use App\Form\DTO\Project\ProjectListFilterDTO;
-use App\Form\Type\EditProjectType;
-use App\Form\Type\NewProjectType;
+use App\Form\Type\Project\EditType;
+use App\Form\Type\Project\NewType;
 use App\Form\Type\Project\ListFilterType;
 use App\Service\ProjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ProjectController extends AbstractController
@@ -32,7 +32,7 @@ class ProjectController extends AbstractController
     }
 
 
-    public function  list(Request $request)
+    public function  list(Request $request): Response
     {
         $filterData = new ProjectListFilterDTO();
         $filterForm = $this->createForm(ListFilterType::class, $filterData);
@@ -48,19 +48,19 @@ class ProjectController extends AbstractController
     }
 
 
-    public function index(Request $request)
+    public function index(Request $request): Response
     {
         $project = $this->projectManager->getCurrentProject($request);
         if (!$project) {
-            throw new NotFoundHttpException($this->translator->trans('project.not_found'));
+            throw $this->createNotFoundException($this->translator->trans('project.not_found'));
         }
         return $this->render('project/index.html.twig', ['project' => $project]);
     }
 
 
-    public function create(Request $request)
+    public function create(Request $request): Response
     {
-        $form = $this->createForm(NewProjectType::class);
+        $form = $this->createForm(NewType::class);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -77,11 +77,14 @@ class ProjectController extends AbstractController
     }
 
 
-    public function edit(Request $request)
+    public function edit(Request $request): Response
     {
         $project = $this->projectManager->getCurrentProject($request);
+        if (!$project) {
+            throw $this->createNotFoundException($this->translator->trans('project.not_found'));
+        }
 
-        $form = $this->createForm(EditProjectType::class, $project);
+        $form = $this->createForm(EditType::class, $project);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
@@ -93,10 +96,14 @@ class ProjectController extends AbstractController
         return $this->render('project/edit.html.twig', ['project' => $project, 'form' => $form->createView()]);
     }
 
-    public function archive(Request $request)
+    public function archive(Request $request): Response
     {
         $em = $this->getDoctrine()->getManager();
         $project = $this->projectManager->getCurrentProject($request);
+        if (!$project) {
+            throw $this->createNotFoundException($this->translator->trans('project.not_found'));
+        }
+
         $project->doArchive();
         $em->flush();
         $this->addFlash('warning', 'project.archive.success');

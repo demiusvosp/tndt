@@ -11,7 +11,7 @@ home:
 
 #Projects
 project.index:
-    path: /p/{suffix}
+    path: /p/{suffix<\w+>}
     controller: App\Controller\ProjectController::index
 project.list:
     path: /project/list
@@ -20,23 +20,24 @@ project.create:
     path: /project/create
     controller: App\Controller\ProjectController::create
 project.edit:
-    path: /project/{suffix}/edit
+    path: /project/{suffix<\w+>}/edit
     controller: App\Controller\ProjectController::edit
 project.archive:
-    path: /project/{suffix}/archive
+    path: /project/{suffix<\w+>}/archive
     controller: App\Controller\ProjectController::archive
 
 #Tasks
 task.index:
-    path: /p/{suffix}-{no}
+    path: /p/{taskId<\w+-\d+>}
     controller: App\Controller\TaskController::index
 task.create:
     path: /p/{suffix}/task/create
     controller: App\Controller\TaskController::create
 task.edit:
-    path: /p/{suffix}-{no}/edit
+    path: /p/{taskId<\w+-\d+>}/edit
     controller: App\Controller\TaskController::edit
 task.close:
-    path: /p/{suffix}-{no}/close
+    path: /p/{taskId<\w+-\d+>}/close
     controller: App\Controller\TaskController::close
+
 #Docs
