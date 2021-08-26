@@ -8,6 +8,7 @@
         "php": "7.4.*",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "ext-mbstring": "*",
         "easycorp/easy-log-handler": "^1.0",
         "erusev/parsedown": "^1.7",
         "happyr/entity-exists-validation-constraint": "^1.0",

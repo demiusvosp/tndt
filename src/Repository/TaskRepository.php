@@ -30,9 +30,9 @@ class TaskRepository extends ServiceEntityRepository
     {
         $q = $this->getEntityManager()->createQuery('SELECT t.no FROM App\Entity\Task t ORDER BY t.no DESC')
             ->setMaxResults(1);
+        $result = $q->getSingleScalarResult();
 
-        $result = $q->getScalarResult();
-        return (is_numeric($result)) ? $result : 0;
+        return (is_numeric($result)) ? (int)$result : 0;
     }
 
     /**

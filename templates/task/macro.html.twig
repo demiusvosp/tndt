@@ -6,7 +6,7 @@
         <i class="fa fa-tasks-alt"></i>
         <b>{{ task.taskId }}</b>
         {% if withName %}
-            - {{ task.caption }}
+            - {{ task.caption|truncate(100) }}
             {% if task.isClosed %}<span class="label label-default">{{ 'closed'|trans }}</span>{% endif %}
         {% endif %}
     </span>

@@ -31,6 +31,7 @@
         </div>
     </div>
     <div class="row">
+        <div class="col-md-10">
         {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
             {% block box_title %}{{ 'Tasks'|trans }}{% endblock %}
             {% block box_body %}
@@ -44,7 +45,7 @@
                     {%  for task in tasks %}
                         <tr>
                             <td><a href="{{ path('task.index', {'taskId': task.taskId}) }}">{{ task.no }}</a></td>
-                            <td><a href="{{ path('task.index', {'taskId': task.taskId}) }}">{{ task.caption }}</a></td>
+                            <td><a href="{{ path('task.index', {'taskId': task.taskId}) }}">{{ task.caption|truncate(160) }}</a></td>
                             <td>{{ task.createdAt|date('d F Y  H:i:s') }}</td>
                             <td>{{ task.updatedAt|date('d F Y  H:i:s') }}</td>
                         </tr>
@@ -52,5 +53,6 @@
                 </table>
             {% endblock %}
         {% endembed %}
+        </div>
     </div>
 {% endblock %}

@@ -45,7 +45,7 @@ class ProjectManager
 
     public function getCurrentProject(Request $request): ?Project
     {
-        $suffix = $request->get('suffix');
+        $suffix = $this->getSuffix($request);
         if (!$suffix) {
             return null;
         }
@@ -73,5 +73,25 @@ class ProjectManager
         }
 
         static::$loadedProjects[$project->getSuffix()] = $project;
+    }
+
+    private function getSuffix(Request $request): ?string
+    {
+        $suffix = $request->get('suffix');
+        if ($suffix) {
+            return $suffix;
+        }
+
+        $taskId = $request->get('taskId');
+        if ($taskId && preg_match('/^(\w+)-\d+$/', $taskId, $matches) && !empty($matches[1])) {
+            return $matches[1];
+        }
+
+        $docId = $request->get('docId');
+        if ($taskId && preg_match('/^(\w+)#\d+$/', $docId, $matches) && !empty($matches[1])) {
+            return $matches[1];
+        }
+
+        return null;
     }
 }

@@ -179,8 +179,12 @@ class Task
     /**
      * @return string
      */
-    public function getCaption(): string
+    public function getCaption(?int $limit = null): string
     {
+        if ($limit && mb_strlen($this->caption) > $limit) {
+            return mb_strcut($this->caption, 0, $limit-3) . '...';
+        }
+
         return $this->caption;
     }
 

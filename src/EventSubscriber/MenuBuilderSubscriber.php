@@ -8,6 +8,7 @@ declare(strict_types=1);
 
 namespace App\EventSubscriber;
 
+use App\Repository\TaskRepository;
 use App\Service\ProjectManager;
 use KevinPapst\AdminLTEBundle\Event\BreadcrumbMenuEvent;
 use KevinPapst\AdminLTEBundle\Event\SidebarMenuEvent;
@@ -16,11 +17,15 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class MenuBuilderSubscriber implements EventSubscriberInterface
 {
-    private $projectManager;
+    const BREADCRUMB_ITEM_LENGTH = 40;
 
-    public function __construct(ProjectManager $projectManager)
+    private $projectManager;
+    private $taskRepository;
+
+    public function __construct(ProjectManager $projectManager, TaskRepository $taskRepository)
     {
         $this->projectManager = $projectManager;
+        $this->taskRepository = $taskRepository;
     }
 
     public static function getSubscribedEvents(): array
@@ -41,9 +46,8 @@ class MenuBuilderSubscriber implements EventSubscriberInterface
         //@TODO вытащить состав меню в конфигурацию (возможно даже с признаками логики)
 
         $route = $event->getRequest()->get('_route');
-        $projectsMenu =  new MenuItemModel('projects', 'menu.projects', 'project.list', []);
-
         $currentProject = $this->projectManager->getCurrentProject($event->getRequest());
+
         if ($currentProject) {
             $currentProjectMenu = new MenuItemModel(
                 'current_project.index',
@@ -52,14 +56,57 @@ class MenuBuilderSubscriber implements EventSubscriberInterface
                 ['suffix' => $currentProject->getSuffix()]
             );
             $currentProjectMenu
-                ->addChild( new MenuItemModel('project.edit', 'menu.project.edit', 'project.edit', ['suffix' => $currentProject->getSuffix()]));
-            $projectsMenu->addChild($currentProjectMenu);
-        }
-        $projectsMenu->addChild(
-            new MenuItemModel('project.create', 'menu.project.create', 'project.create', [])
-        );
-        $event->addItem($projectsMenu);
+                ->addChild( new MenuItemModel(
+                    'project.edit',
+                    'menu.project.edit',
+                    'project.edit',
+                    ['suffix' => $currentProject->getSuffix()]
+                ));
 
+            if (preg_match('/^task./', $route)) {
+                $taskMenu = new MenuItemModel(
+                    'project.tasks',
+                    'menu.project.tasks',
+                    'project.index',
+                    ['suffix' => $currentProject->getSuffix()]
+                );
+                if ($taskId = $event->getRequest()->get('taskId')) {
+                    $currentTask = $this->taskRepository->findByTaskId($taskId);
+                    if ($currentTask) {
+                        $currentTaskMenu = new MenuItemModel(
+                            'task.index',
+                            $currentTask->getCaption(self::BREADCRUMB_ITEM_LENGTH),
+                            'task.index',
+                            ['taskId' => $taskId]
+                        );
+                        $currentTaskMenu->addChild(new MenuItemModel(
+                            'task.edit',
+                            'menu.task.edit',
+                            'task.edit',
+                            ['taskId' => $taskId]
+                        ));
+                        $taskMenu
+                            ->addChild($currentTaskMenu);
+                    }
+                }
+
+                $taskMenu->addChild(new MenuItemModel(
+                    'task.create',
+                    'menu.task.create',
+                    'task.project_create',
+                    ['suffix' => $currentProject->getSuffix()]
+                ));
+
+                $currentProjectMenu->addChild($taskMenu);
+            }
+            $event->addItem($currentProjectMenu);
+        } else {
+            $projectsMenu =  new MenuItemModel('projects', 'menu.projects', 'project.list', []);
+            $projectsMenu->addChild(
+                new MenuItemModel('project.create', 'menu.project.create', 'project.create', [])
+            );
+            $event->addItem($projectsMenu);
+        }
 
         $this->activateByRoute(
             $route,

@@ -19,7 +19,9 @@ class TaskGeneratorListener
         $entity = $args->getEntity();
         if ($entity instanceof Task) {
             $repo = $args->getEntityManager()->getRepository(Task::class);
-            $entity->setNo($repo->getLastNo($entity->getSuffix()) + 1);
+            $lastNo = $repo->getLastNo($entity->getSuffix());
+
+            $entity->setNo($lastNo + 1);
         }
     }
 }

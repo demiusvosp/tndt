@@ -16,10 +16,16 @@ Description: Описание
 Documents: Документы
 Edit: Редактировать
 Name: Название
-menu.homepage: Главная
-menu.projects: Проекты
-menu.project.create: Новый...
-menu.project.edit: Редактирование
+menu:
+  homepage: Главная
+  projects: Проекты
+  project:
+    create: Новый...
+    edit: Редактирование
+    tasks: Задачи
+  task:
+    create: Новая...
+    edit: Редактирование
 Project: Проект
 Projects: Проекты
 project:
