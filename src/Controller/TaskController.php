@@ -9,7 +9,8 @@ namespace App\Controller;
 use App\Entity\Project;
 use App\Entity\Task;
 use App\Form\DTO\Task\NewTaskDTO;
-use App\Form\Type\Task\NewType;
+use App\Form\Type\Task\EditType as TaskEditType;
+use App\Form\Type\Task\NewType as TaskNewType;
 use App\Repository\TaskRepository;
 use App\Service\ProjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -46,7 +47,7 @@ class TaskController extends AbstractController
             $formData->setProject($currentProject->getSuffix());
         }
 
-        $form = $this->createForm(NewType::class, $formData);
+        $form = $this->createForm(TaskNewType::class, $formData);
 
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()) {
@@ -71,8 +72,19 @@ class TaskController extends AbstractController
         if (!$task) {
             throw $this->createNotFoundException($this->translator->trans('task.not_found'));
         }
+        $form = $this->createForm(TaskEditType::class, $task);
 
-        return $this->render('task/edit.html.twig', []);
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($task);
+            $em->flush();
+
+            $this->addFlash('success', 'task.edit.success');
+            return $this->redirectToRoute('task.index', ['taskId' => $task->getTaskId()]);
+        }
+
+        return $this->render('task/edit.html.twig', ['task' => $task, 'form' => $form->createView()]);
     }
 
     public function close(Request $request)

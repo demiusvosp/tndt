@@ -4,3 +4,4 @@ project:
   edit.success: Проект отредактирован
 task:
   create.success: Задача создана
+  edit.success: Задача создана

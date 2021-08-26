@@ -1,9 +1,25 @@
 {% extends 'base.html.twig' %}
+{% import 'project/macro.html.twig' as mProject %}
 
-
-{% block title %}  {% endblock %}
-{% block page_title%}{% endblock %}
+{% block title %}{% trans %}task.edit{% endtrans %}{% endblock %}
+{% block page_title%}
+    {{ task.taskId }} -
+    {% trans %}task.edit{% endtrans %}
+{% endblock %}
 {% block page_subtitle %}{% endblock %}
 
 {% block page_content %}
+    {{ form_start(form) }}
+    {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
+        {% block box_title %}
+            {# пока это повторяет заголовок, но может это будет многостраницчный мастер, и десь будет описание шага #}
+        {% endblock %}
+        {% block box_body %}
+            {{ form_row(form.caption) }}
+            {{ form_row(form.description) }}
+            <hr>
+            <button type="submit" class="btn btn-success">{{ 'Edit'|trans }}</button>
+        {% endblock %}
+    {% endembed %}
+    {{ form_end(form) }}
 {% endblock %}
