@@ -34,4 +34,13 @@ class TaskRepository extends ServiceEntityRepository
         $result = $q->getScalarResult();
         return (is_numeric($result)) ? $result : 0;
     }
+
+    /**
+     * @param string $projectSuffix
+     * @return Task[]|array
+     */
+    public function findByProject(string $projectSuffix)
+    {
+        return $this->findBy(['suffix' => $projectSuffix]);
+    }
 }

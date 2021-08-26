@@ -9,6 +9,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\Project;
+use App\Entity\Task;
 use App\Form\DTO\Project\ProjectListFilterDTO;
 use App\Form\Type\Project\EditType;
 use App\Form\Type\Project\NewType;
@@ -54,7 +55,13 @@ class ProjectController extends AbstractController
         if (!$project) {
             throw $this->createNotFoundException($this->translator->trans('project.not_found'));
         }
-        return $this->render('project/index.html.twig', ['project' => $project]);
+        $tasks = $this->getDoctrine()->getRepository(Task::class)
+            ->findByProject($project->getSuffix());
+
+        return $this->render(
+            'project/index.html.twig',
+            ['project' => $project, 'tasks' => $tasks]
+        );
     }
 
 

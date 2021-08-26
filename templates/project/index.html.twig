@@ -30,4 +30,27 @@
             {% endembed %}
         </div>
     </div>
+    <div class="row">
+        {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
+            {% block box_title %}{{ 'Tasks'|trans }}{% endblock %}
+            {% block box_body %}
+                <table class="table table-condensed">
+                    <tr>
+                        <th>#</th>
+                        <th>{{ 'task.caption'|trans }}</th>
+                        <th>{{ 'task.created'|trans }}</th>
+                        <th>{{ 'task.updated'|trans }}</th>
+                    </tr>
+                    {%  for task in tasks %}
+                        <tr>
+                            <td><a href="{{ path('task.index', {'taskId': task.taskId}) }}">{{ task.no }}</a></td>
+                            <td><a href="{{ path('task.index', {'taskId': task.taskId}) }}">{{ task.caption }}</a></td>
+                            <td>{{ task.createdAt|date('d F Y  H:i:s') }}</td>
+                            <td>{{ task.updatedAt|date('d F Y  H:i:s') }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            {% endblock %}
+        {% endembed %}
+    </div>
 {% endblock %}
