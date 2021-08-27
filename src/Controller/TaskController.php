@@ -94,7 +94,11 @@ class TaskController extends AbstractController
             throw $this->createNotFoundException($this->translator->trans('task.not_found'));
         }
 
-        return $this->redirectToRoute('task.index');
+        $task->close();
+        $this->getDoctrine()->getManager()->flush();
+        $this->addFlash('warning', 'task.close.success');
+
+        return $this->redirectToRoute('project.index', ['suffix' => $task->getSuffix()]);
     }
 
 }

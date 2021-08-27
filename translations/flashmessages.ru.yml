@@ -5,3 +5,4 @@ project:
 task:
   create.success: Задача создана
   edit.success: Задача создана
+  close.success: Задача закрыта

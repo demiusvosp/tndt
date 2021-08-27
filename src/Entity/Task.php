@@ -170,9 +170,9 @@ class Task
      * @param bool $isClosed
      * @return Task
      */
-    public function setIsClosed(bool $isClosed): Task
+    public function close(): Task
     {
-        $this->isClosed = $isClosed;
+        $this->isClosed = true;
         return $this;
     }
 

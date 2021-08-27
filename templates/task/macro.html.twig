@@ -1,16 +1,62 @@
+{% macro no(task) %}
+    {% if task.isClosed() %}<s>{% endif %}
+    <a class="invisible_link" href="{{ path('task.index', {'taskId': task.taskId}) }}">{{ task.no }}</a>
+    {% if task.isClosed() %}</s>{% endif %}
+{% endmacro %}
+
+{% macro caption(task, limit = null) %}
+    {% if task.isClosed() %}<s>{% endif %}
+    <a class="invisible_link" href="{{ path('task.index', {'taskId': task.taskId}) }}">
+        {{ task.caption(limit) }}
+    </a>
+    {% if task.isClosed() %}</s>{% endif %}
+{% endmacro %}
+
 {% macro badge(task, withName = false, link = false) %}
     {% if link %}
         <a class="invisible_link" href="{{ path('task.index', {'taskId': task.taskId}) }}">
     {% endif %}
     <span {{ task.isClosed ? 'class="task-closed"' }}>
         <i class="fa fa-tasks-alt"></i>
-        <b>{{ task.taskId }}</b>
+        {% import _self as this %}
+        {{ this.no(task) }}
         {% if withName %}
-            - {{ task.caption|truncate(100) }}
+            - {{ this.caption(task, 100) }}
             {% if task.isClosed %}<span class="label label-default">{{ 'closed'|trans }}</span>{% endif %}
         {% endif %}
     </span>
     {% if link %}
         </a>
     {% endif %}
+{% endmacro %}
+
+{% macro smallTable(tasks) %}
+    {% import _self as this %}
+    <ul class="list-unstyled">
+        {% for task in tasks %}
+            <li>
+                <b>{{ this.badge(task) }}</b> - {{ this.caption(task, 160) }}
+            </li>
+        {% endfor %}
+    </ul>
+{% endmacro %}
+
+{% macro table(tasks) %}
+    {% import _self as this %}
+    <table class="table table-condensed">
+        <tr>
+            <th>#</th>
+            <th>{{ 'task.caption'|trans }}</th>
+            <th>{{ 'task.created'|trans }}</th>
+            <th>{{ 'task.updated'|trans }}</th>
+        </tr>
+        {%  for task in tasks %}
+            <tr>
+                <td>{{ this.no(task) }}</td>
+                <td>{{ this.caption(task, 160) }}</td>
+                <td>{{ task.createdAt|date('d F Y  H:i:s') }}</td>
+                <td>{{ task.updatedAt|date('d F Y  H:i:s') }}</td>
+            </tr>
+        {% endfor %}
+    </table>
 {% endmacro %}

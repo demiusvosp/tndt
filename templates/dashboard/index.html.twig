@@ -31,15 +31,10 @@
         <div class="col-md-4">
             <section id="latest_task">
                 {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
+                    {% import 'task/macro.html.twig' as mTask %}
                     {% block box_title %}{% trans %}Tasks{% endtrans %}:{% endblock %}
                     {% block box_body %}
-                        <ul class="list-unstyled">
-                        {% for task in tasks %}
-                            <li>
-                                <b>{{ task.taskId }}</b> - {{ task.caption(60)}}
-                            </li>
-                        {% endfor %}
-                        </ul>
+                        {{ mTask.smallTable(tasks) }}
                     {% endblock %}
                 {% endembed %}
             </section>
