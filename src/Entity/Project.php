@@ -42,6 +42,12 @@ class Project
     private $name = '';
 
     /**
+     * @var string
+     * @ORM\Column(type="string", length=100)
+     */
+    private $icon = '';
+
+    /**
      * @var \DateTime
      * @ORM\Column(type="datetime")
      * @Gedmo\Timestampable(on="create")
@@ -77,7 +83,6 @@ class Project
         return $this->id;
     }
 
-
     /**
      * @return string
      */
@@ -85,7 +90,6 @@ class Project
     {
         return $this->suffix;
     }
-
 
     /**
      * @param string $suffix
@@ -101,7 +105,6 @@ class Project
         return $this;
     }
 
-
     /**
      * @return string
      */
@@ -109,7 +112,6 @@ class Project
     {
         return $this->name;
     }
-
 
     /**
      * @param string $name
@@ -122,6 +124,23 @@ class Project
         return $this;
     }
 
+    /**
+     * @return string
+     */
+    public function getIcon(): string
+    {
+        return !empty($this->icon) ? $this->icon : 'fa fa-project-diagram';
+    }
+
+    /**
+     * @param string $icon
+     * @return Project
+     */
+    public function setIcon(string $icon): Project
+    {
+        $this->icon = $icon;
+        return $this;
+    }
 
     /**
      * @return \DateTime
@@ -131,7 +150,6 @@ class Project
         return $this->createdAt;
     }
 
-
     /**
      * @return \DateTime
      */
@@ -139,7 +157,6 @@ class Project
     {
         return $this->updatedAt;
     }
-
 
     /**
      * @return bool
@@ -149,13 +166,11 @@ class Project
         return $this->isArchived;
     }
 
-
     public function doArchive(): void
     {
         $this->isArchived = true;
         //@TODO послать событие закрытия проекта, чтобы все могли проверить
     }
-
 
     /**
      * @return string
@@ -164,7 +179,6 @@ class Project
     {
         return $this->description;
     }
-
 
     /**
      * @param string $description

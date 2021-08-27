@@ -38,7 +38,90 @@ class MenuBuilderSubscriber implements EventSubscriberInterface
 
     public function onSetupSidebar(SidebarMenuEvent $event): void
     {
+        $route = $event->getRequest()->get('_route');
+        $currentProject = $this->projectManager->getCurrentProject($event->getRequest());
 
+        if ($currentProject) {
+            $event->addItem(new MenuItemModel(
+                'current_project.index',
+                $currentProject->getName(),
+                'project.index',
+                ['suffix' => $currentProject->getSuffix()],
+                $currentProject->getIcon()
+            ));
+            $event->addItem( new MenuItemModel(
+                    'project.edit',
+                    'menu.project.edit',
+                    'project.edit',
+                    ['suffix' => $currentProject->getSuffix()],
+                    'fa fa-cogs'
+                ));
+
+            $taskMenu = new MenuItemModel(
+                'project.tasks',
+                'menu.project.tasks',
+                'project.index',
+                ['suffix' => $currentProject->getSuffix()],
+                'fa fa-tasks'
+            );
+            if (preg_match('/^task./', $route)) {
+                if ($taskId = $event->getRequest()->get('taskId')) {
+                    $currentTask = $this->taskRepository->findByTaskId($taskId);
+                    if ($currentTask) {
+                        $currentTaskMenu = new MenuItemModel(
+                            'task.index',
+                            $currentTask->getCaption(self::BREADCRUMB_ITEM_LENGTH),
+                            'task.index',
+                            ['taskId' => $taskId],
+                            'fa fa-tasks'
+                        );
+                        $currentTaskMenu->addChild(new MenuItemModel(
+                            'task.edit',
+                            'menu.task.edit',
+                            'task.edit',
+                            ['taskId' => $taskId],
+                            'fa fa-edit'
+                        ));
+                        $taskMenu
+                            ->addChild($currentTaskMenu);
+                    }
+                }
+            }
+            $taskMenu->addChild(new MenuItemModel(
+                'task.create',
+                'menu.task.create',
+                'task.project_create',
+                ['suffix' => $currentProject->getSuffix()],
+                'fa fa-plus-square'
+            ));
+
+            $event->addItem($taskMenu);
+        } else {
+            $projectsMenu =  new MenuItemModel(
+                'projects',
+                'menu.projects',
+                'project.list',
+                [],
+                'fa fa-tasks-alt'
+            );
+            $projectsMenu->addChild(
+                new MenuItemModel('project.create', 'menu.project.create', 'project.create', [])
+            );
+            $event->addItem($projectsMenu);
+        }
+
+        $event->addItem(new MenuItemModel(
+            'about',
+            'menu.dashboard.about',
+            'about',
+            [],
+            'fa fa-info'
+        ));
+
+        $this->activateByRoute(
+            $route,
+            $event->getItems()
+        );
     }
 
     public function onSetupMenu(SidebarMenuEvent $event): void

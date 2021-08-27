@@ -20,6 +20,7 @@ class EditType extends AbstractType
     {
         $builder
             ->add('name', TextType::class)
+            ->add('icon', TextType::class, ['help' => 'project.icon.help'])
             ->add('description', TextType::class, ['required' => false, 'empty_data' => '',]);
     }
 

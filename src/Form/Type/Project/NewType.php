@@ -21,6 +21,7 @@ class NewType extends AbstractType
         $builder
             ->add('suffix', TextType::class, ['help' => 'project.create.suffix.help'])
             ->add('name', TextType::class)
+            ->add('icon', TextType::class, ['help' => 'project.icon.help'])
             ->add('description', TextType::class, ['required' => false, 'empty_data' => '',]);
     }
 
