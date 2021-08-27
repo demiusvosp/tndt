@@ -31,4 +31,11 @@ class DashboardController extends AbstractController
             ['projects' => $projects, 'tasks' => $tasks]
         );
     }
+
+    public function about(Request $request)
+    {
+        $about = file_get_contents('../README.md');
+
+        return $this->render('dashboard/about.html.twig', ['about_text' => $about]);
+    }
 }

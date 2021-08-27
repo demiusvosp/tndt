@@ -108,6 +108,12 @@ class MenuBuilderSubscriber implements EventSubscriberInterface
             $event->addItem($projectsMenu);
         }
 
+        $event->addItem(new MenuItemModel(
+            'about',
+            'menu.dashboard.about',
+            'about'
+        ));
+
         $this->activateByRoute(
             $route,
             $event->getItems()

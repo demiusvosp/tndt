@@ -1,3 +1,4 @@
+About: О системе
 Archive: Удалить в архив
 archived: в архиве
 Caption: Заголовок
@@ -17,6 +18,7 @@ Documents: Документы
 Edit: Редактировать
 Name: Название
 menu:
+  dashboard.about: О системе
   homepage: Главная
   projects: Проекты
   project:

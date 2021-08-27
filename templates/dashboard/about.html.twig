@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+{% import 'project/macro.html.twig' as mProject %}
+
+{% block title %}{{ parent() }} - {% trans %}About{% endtrans %}{% endblock %}
+{% block page_title%}{% trans %}About{% endtrans %}{% endblock %}
+{% block page_subtitle %}{% endblock %}
+
+{% block page_content %}
+    {{ about_text|markdown_to_html }}
+    <div class="row" style="height: 20em;">&nbsp;</div>
+{% endblock %}

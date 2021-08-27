@@ -2,6 +2,9 @@
 home:
     path: /
     controller: App\Controller\DashboardController::index
+about:
+    path: /about
+    controller: App\Controller\DashboardController::about
 
 #Auth
 #login:
