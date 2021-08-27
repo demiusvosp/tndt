@@ -16,6 +16,7 @@ dashboard: Обзор
 Description: Описание
 Documents: Документы
 Edit: Редактировать
+Edit_project: Настроить проект
 Name: Название
 menu:
   dashboard.about: О системе

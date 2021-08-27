@@ -23,3 +23,17 @@ a.invisible_link, a.invisible_link:hover {
 .dropdown-menu li .checkbox {
     margin: 10px 1em;
 }
+
+.btn-group-vertical .btn-group-vertical {
+    margin-bottom: 5px;
+}
+
+.btn-group-vertical .btn:first-child:not(:last-child) {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.btn-group-vertical .btn:not(:first-child) {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
