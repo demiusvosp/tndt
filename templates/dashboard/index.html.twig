@@ -28,55 +28,70 @@
     </section>
 
     <div class="row">
-        <div class="col-lg-4">
+        <div class="col-md-4">
             <section id="latest_task">
-                <h2 class="page-header">{% trans %}Tasks{% endtrans %}:</h2>
-                <div class="row">
-                    <b>ABC-123</b> - Какая-то задача
-                </div>
-                <div class="row">
-                    <b>ABC-456</b> - Какая-то ещё задача
-                </div>
-                <div class="row">
-                    <b>PRJ-123</b> - Какая-то задача другого проекта
-                </div>
-                <div class="row">
-                    <b>LTN-1053</b> - Lorem ipsum
-                </div>
+                {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
+                    {% block box_title %}{% trans %}Tasks{% endtrans %}:{% endblock %}
+                    {% block box_body %}
+                        <ul class="list-unstyled">
+                        {% for task in tasks %}
+                            <li>
+                                <b>{{ task.taskId }}</b> - {{ task.caption(60)}}
+                            </li>
+                        {% endfor %}
+                        </ul>
+                    {% endblock %}
+                {% endembed %}
             </section>
         </div>
-        <div class="col-lg-4">
+        <div class="col-md-4">
             <section id="latest_docs">
-                <h2 class="page-header">{% trans %}Documents{% endtrans %}:</h2>
-                <div class="row">
-                    <b>ABC#123</b> - Какой-то документ
-                </div>
-                <div class="row">
-                    <b>ABC#456</b> - Какой-то ещё документ
-                </div>
-                <div class="row">
-                    <b>PRJ#123</b> - Небольшие мысли по поводу дальнейшего развития
-                </div>
-                <div class="row">
-                    <b>LTN#1053</b> - Lorem ipsum sit amet
-                </div>
+                {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
+                    {% block box_title %}{% trans %}Documents{% endtrans %}:{% endblock %}
+                    {% block box_body %}
+                        <ul class="list-unstyled">
+{#                            {% for task in tasks %}#}
+                                <li>
+                                    <b>ABC#123</b> - Какой-то документ
+                                </li>
+                                <li>
+                                    <b>ABC#456</b> - Какой-то ещё документ
+                                </li>
+                                <li>
+                                    <b>PRJ#123</b> - Небольшие мысли по поводу дальнейшего развития
+                                </li>
+                                <li>
+                                    <b>LTN#1053</b> - Lorem ipsum sit amet
+                                </li>
+{#                            {% endfor %}#}
+                        </ul>
+                    {% endblock %}
+                {% endembed %}
             </section>
         </div>
-        <div class="col-lg-4">
+        <div class="col-md-4">
             <section id="latest_users">
-                <h2 class="page-header">{% trans %}Users{% endtrans %}:</h2>
-                <div class="row">
-                    <b>demius</b> - Администратор
-                </div>
-                <div class="row">
-                    <b>bezborodiy</b> - Дизайнер
-                </div>
-                <div class="row">
-                    <b>alloize</b> - PM проекта PRJ
-                </div>
-                <div class="row">
-                    <b>cult</b> - -
-                </div>
+                {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
+                    {% block box_title %}{% trans %}Users{% endtrans %}:{% endblock %}
+                    {% block box_body %}
+                        <ul class="list-unstyled">
+                            {#                            {% for task in tasks %}#}
+                            <li>
+                                <b>demius</b> - Администратор
+                            </li>
+                            <li>
+                                <b>bezborodiy</b> - Дизайнер
+                            </li>
+                            <li>
+                                <b>alloize</b> - PM проекта PRJ
+                            </li>
+                            <li>
+                                <b>cult</b> - -
+                            </li>
+                            {#                            {% endfor %}#}
+                        </ul>
+                    {% endblock %}
+                {% endembed %}
             </section>
         </div>
     </div>

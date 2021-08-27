@@ -8,6 +8,7 @@
 namespace App\Controller;
 
 
+use App\Repository\TaskRepository;
 use App\Service\ProjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,9 +16,19 @@ use Symfony\Component\HttpFoundation\Request;
 
 class DashboardController extends AbstractController
 {
-    public function index(Request $request, ProjectManager $projectManager)
+    private const PROJECT_LENGTH = 4;
+    private const TASK_LENGTH = 5;
+    private const DOC_LENGTH = 5;
+    private const USER_LENGTH = 5;
+
+    public function index(Request $request, ProjectManager $projectManager, TaskRepository $taskRepository)
     {
-        $projects = $projectManager->getPopularProjectsSnippets(4);
-        return $this->render('dashboard/index.html.twig', ['projects' => $projects]);
+        $projects = $projectManager->getPopularProjectsSnippets(self::PROJECT_LENGTH);
+        $tasks = $taskRepository->getPopularTasks(self::TASK_LENGTH);
+
+        return $this->render(
+            'dashboard/index.html.twig',
+            ['projects' => $projects, 'tasks' => $tasks]
+        );
     }
 }

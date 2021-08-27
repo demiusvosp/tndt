@@ -22,6 +22,8 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ProjectController extends AbstractController
 {
+    private const TASK_BLOCK_LIMIT = 10;
+
     private $translator;
     private $projectManager;
 
@@ -56,7 +58,7 @@ class ProjectController extends AbstractController
             throw $this->createNotFoundException($this->translator->trans('project.not_found'));
         }
         $tasks = $this->getDoctrine()->getRepository(Task::class)
-            ->findByProject($project->getSuffix());
+            ->findByProject($project->getSuffix(), self::TASK_BLOCK_LIMIT);
 
         return $this->render(
             'project/index.html.twig',

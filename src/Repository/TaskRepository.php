@@ -39,8 +39,13 @@ class TaskRepository extends ServiceEntityRepository
      * @param string $projectSuffix
      * @return Task[]|array
      */
-    public function findByProject(string $projectSuffix)
+    public function findByProject(string $projectSuffix, $limit): array
     {
-        return $this->findBy(['suffix' => $projectSuffix]);
+        return $this->findBy(['suffix' => $projectSuffix], [], $limit);
+    }
+
+    public function getPopularTasks($limit): array
+    {
+        return $this->findBy(['isClosed' => false], ['updatedAt' => 'desc'], $limit);
     }
 }
