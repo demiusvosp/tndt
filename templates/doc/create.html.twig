@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+{% import 'project/macro.html.twig' as mProject %}
+
+{% block title %}{{ 'Create_doc'|trans }}{% endblock %}
+{% block page_title%}
+    {% set current_project = project_manager.currentProject(app.request) %}
+    {% if current_project %}{{ mProject.badge(current_project) }} - {% endif %}
+    {{ 'Create_doc'|trans }}
+{% endblock %}
+{% block page_subtitle %}{% endblock %}
+
+{% block page_content %}
+{% endblock %}

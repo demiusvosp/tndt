@@ -10,32 +10,46 @@ confirm:
   no: Нет
 ControlPanel: Панель управления
 Create: Создать
+Create_doc: Создать документ
 Create_task: Создать задачу
 CreatedAt: Создана
 dashboard: Обзор
 Description: Описание
+Doc_list: Список документов
 Documents: Документы
+doc:
+  edit: Редактирование
+  not_found: Документ не найден
 Edit: Редактировать
 Edit_project: Настроить проект
 Name: Название
 breadcrumb:
   dashboard.about: О системе
+  doc:
+    create: Новый...
   projects: Проекты
   project:
     edit: Настройки
     tasks: Задачи
+    docs: Документы
   task:
-    create: Новая задача
+    create: Новая...
 menu:
   dashboard.about: О системе
+  doc:
+    create: Создать документ
+    edit: Редактирование
   homepage: Главная
   projects: Проекты
   project:
-    create: Новый...
+    create: Созать проект
+    docs: Список докуменов
+    docs_menu: Документы
     edit: Настройки
-    tasks: Задачи
+    tasks: Список задач
+    tasks_menu: Задачи
   task:
-    create: Новая...
+    create: Создать задачу
     edit: Редактирование
 Project: Проект
 Projects: Проекты

@@ -10,9 +10,7 @@ namespace App\Repository;
 
 use App\Entity\Task;
 use App\Form\DTO\ListSortDTO;
-use App\Form\DTO\Task\ListFilterDTO;
 use App\Form\ToFindCriteriaInterface;
-use App\Form\Type\Task\ListFilterType;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
@@ -24,9 +22,9 @@ class TaskRepository extends ServiceEntityRepository
         parent::__construct($registry, Task::class);
     }
 
-    public function findByTaskId(string $taskId)
+    public function getByTaskId(string $taskId)
     {
-        list($suffix, $no) = explode('-', $taskId);
+        [$suffix, $no] = explode(Task::TASKID_SEPARATOR, $taskId);
 
         return $this->findOneBy(['suffix' => $suffix, 'no' => $no]);
     }

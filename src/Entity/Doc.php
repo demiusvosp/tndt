@@ -1,9 +1,11 @@
 <?php
 /**
  * User: demius
- * Date: 05.11.19
- * Time: 23:09
+ * Date: 28.08.2021
+ * Time: 23:07
  */
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -11,17 +13,14 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Class Task
- * @ORM\Entity(repositoryClass="App\Repository\TaskRepository")
- * @ORM\Table(
- *     name="task",
- *     uniqueConstraints={@ORM\UniqueConstraint(name="idx_full_no", columns={"suffix","no"})},
- *     indexes={@ORM\Index(name="isClosed", columns={"is_closed"})}
- * )
+ * Class Project entity
+ *
+ * @ORM\Entity(repositoryClass="App\Repository\DocRepository")
  */
-class Task
+class Doc
 {
-    public const TASKID_SEPARATOR = '-';
+    public const DOCID_SEPARATOR = '#';
+    private const ABSTRACT_FROM_BODY_LIMIT = 500;
 
     /**
      * @var int
@@ -68,7 +67,7 @@ class Task
      * @var boolean
      * @ORM\Column (type="boolean")
      */
-    private $isClosed = false;
+    private $isArchive = false;
 
     /**
      * @var string
@@ -76,20 +75,31 @@ class Task
      * @Assert\NotBlank()
      * @Assert\Length(min=1, max=255)
      */
-    private $caption = '';
+    private $caption;
 
     /**
      * @var string
-     * @ORM\Column(type="text")
-     * @Assert\Length(max=5000)
+     * @ORM\Column(type="string", length=255)
+     * @Gedmo\Slug(fields={"caption"}, unique_base="suffix")
+     * @Assert\NotBlank()
+     * @Assert\Length(min=1, max=255)
      */
-    private $description = '';
+    private $slug;
 
+    /**
+     * @var string
+     * @ORM\Column(type="string", length=1000)
+     * @Assert\Length(max=1000)
+     */
+    private $abstract;
 
-    public function __construct(Project $project)
-    {
-        $this->setProject($project);
-    }
+    /**
+     * @var string
+     * @ORM\Column(type="string", length=5000)
+     * @Assert\NotBlank()
+     * @Assert\Length(max=1000)
+     */
+    private $body;
 
     /**
      * @return int
@@ -100,8 +110,6 @@ class Task
     }
 
     /**
-     * Получить номер задачи
-     *
      * @return int
      */
     public function getNo(): int
@@ -109,30 +117,22 @@ class Task
         return $this->no;
     }
 
-    public function setNo(int $no): self
+    /**
+     * @param int $no
+     * @return Doc
+     */
+    public function setNo(int $no): Doc
     {
-        if (empty($this->no)) {
-            $this->no = $no;
-        } else {
-            throw new \DomainException('Нельзя менять номер задачи');
-        }
-
+        $this->no = $no;
         return $this;
     }
 
-    /**
-     * Получить полный номер задачи
-     *
-     * @return string
-     */
-    public function getTaskId(): string
+    public function getDocId(): string
     {
-        return $this->suffix . self::TASKID_SEPARATOR . $this->no;
+        return $this->suffix . self::DOCID_SEPARATOR . $this->no;
     }
 
     /**
-     * Получить код проекта
-     *
      * @return string
      */
     public function getSuffix(): string
@@ -150,73 +150,12 @@ class Task
 
     /**
      * @param Project $project
-     * @return Task
+     * @return Doc
      */
-    public function setProject(Project $project): self
+    public function setProject(Project $project): Doc
     {
         $this->project = $project;
         $this->suffix = $project->getSuffix();
-
-        return $this;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isClosed(): bool
-    {
-        return $this->isClosed;
-    }
-
-    /**
-     * @param bool $isClosed
-     * @return Task
-     */
-    public function close(): Task
-    {
-        $this->isClosed = true;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getCaption(?int $limit = null): string
-    {
-        if ($limit && mb_strlen($this->caption) > $limit) {
-            return mb_strcut($this->caption, 0, $limit-3) . '...';
-        }
-
-        return $this->caption;
-    }
-
-    /**
-     * @param string $caption
-     * @return Task
-     */
-    public function setCaption(string $caption)
-    {
-        $this->caption = $caption;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getDescription(): string
-    {
-        return $this->description;
-    }
-
-    /**
-     * @param string $description
-     * @return Task
-     */
-    public function setDescription(string $description)
-    {
-        $this->description = $description;
-
         return $this;
     }
 
@@ -236,5 +175,86 @@ class Task
         return $this->updatedAt;
     }
 
+    /**
+     * @return bool
+     */
+    public function isArchive(): bool
+    {
+        return $this->isArchive;
+    }
 
+    /**
+     * @param bool $isArchive
+     * @return Doc
+     */
+    public function setIsArchive(bool $isArchive): Doc
+    {
+        $this->isArchive = $isArchive;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCaption(): string
+    {
+        return $this->caption;
+    }
+
+    /**
+     * @param string $caption
+     * @return Doc
+     */
+    public function setCaption(string $caption): Doc
+    {
+        $this->caption = $caption;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSlug(): string
+    {
+        return $this->slug;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAbstract(): string
+    {
+        if (empty($this->abstract)) {
+            return mb_strcut($this->body, self::ABSTRACT_FROM_BODY_LIMIT) . '...';
+        }
+        return $this->abstract;
+    }
+
+    /**
+     * @param string $abstract
+     * @return Doc
+     */
+    public function setAbstract(string $abstract): Doc
+    {
+        $this->abstract = $abstract;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBody(): string
+    {
+        return $this->body;
+    }
+
+    /**
+     * @param string $body
+     * @return Doc
+     */
+    public function setBody(string $body): Doc
+    {
+        $this->body = $body;
+        return $this;
+    }
 }

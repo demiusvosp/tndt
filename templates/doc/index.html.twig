@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+{% import 'doc/macro.html.twig' as mDoc %}
+
+
+{% block title %} {{ doc.docId }} - {{ doc.caption }} {% endblock %}
+{% block page_title%} {{ mDoc.badge(doc, true) }} {% endblock %}
+{% block page_subtitle %}{% endblock %}
+
+{% block page_content %}
+    Страница документа
+{% endblock %}

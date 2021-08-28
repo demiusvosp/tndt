@@ -1,0 +1,23 @@
+{% macro caption(doc, limit = null) %}
+    <a class="invisible_link" href="{{ path('doc.index', {'docId': doc.docId}) }}">
+        {{ doc.caption(limit) }}
+    </a>
+{% endmacro %}
+
+{% macro badge(doc, withName = false, link = false) %}
+    {% if link %}
+        <a class="invisible_link" href="{{ path('doc.index', {'docId': doc.docId}) }}">
+    {% endif %}
+    <span {{ doc.isArchived ? 'class="text-muted"' }}>
+        <i class="far fa-file-alt"></i>
+        {% import _self as this %}
+        {{ this.no(doc) }}
+        {% if withName %}
+            - {{ doc.caption(100) }}
+            {% if doc.isArchived %}<span class="label label-default">{{ 'archived'|trans }}</span>{% endif %}
+        {% endif %}
+    </span>
+    {% if link %}
+        </a>
+    {% endif %}
+{% endmacro %}

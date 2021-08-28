@@ -70,7 +70,7 @@ class TaskController extends AbstractController
 
     public function index(Request $request)
     {
-        $task = $this->taskRepository->findByTaskId($request->get('taskId'));
+        $task = $this->taskRepository->getByTaskId($request->get('taskId'));
         if (!$task) {
             throw $this->createNotFoundException($this->translator->trans('task.not_found'));
         }
@@ -107,7 +107,7 @@ class TaskController extends AbstractController
 
     public function edit(Request $request)
     {
-        $task = $this->taskRepository->findByTaskId($request->get('taskId'));
+        $task = $this->taskRepository->getByTaskId($request->get('taskId'));
         if (!$task) {
             throw $this->createNotFoundException($this->translator->trans('task.not_found'));
         }
@@ -128,7 +128,7 @@ class TaskController extends AbstractController
 
     public function close(Request $request)
     {
-        $task = $this->taskRepository->findByTaskId($request->get('taskId'));
+        $task = $this->taskRepository->getByTaskId($request->get('taskId'));
         if (!$task) {
             throw $this->createNotFoundException($this->translator->trans('task.not_found'));
         }
