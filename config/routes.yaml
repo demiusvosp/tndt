@@ -30,6 +30,9 @@ project.archive:
     controller: App\Controller\ProjectController::archive
 
 #Tasks
+task.list:
+    path: /p/{suffix<\w+>}/tasks
+    controller: App\Controller\TaskController::list
 task.index:
     path: /p/{taskId<\w+-\d+>}
     controller: App\Controller\TaskController::index

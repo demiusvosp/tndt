@@ -18,6 +18,14 @@ Documents: Документы
 Edit: Редактировать
 Edit_project: Настроить проект
 Name: Название
+breadcrumb:
+  dashboard.about: О системе
+  projects: Проекты
+  project:
+    edit: Настройки
+    tasks: Задачи
+  task:
+    create: Новая задача
 menu:
   dashboard.about: О системе
   homepage: Главная
@@ -52,8 +60,10 @@ task:
   create.project.help: Проект, к которому будет прикреплена задача.
   close.confirm: Ну вобще здесь не нужен такой модальный диалог. Нужен контекстный маленький и с формой описания причины закрытия (и возможной сеной состояни)
   edit: Редактирование задачи
-  project: Проект
   not_found: Задача не найдена
+  project: Проект
+  show_closed: Показывать закрытые
   updated: Обновлена
+Task_list: Список задач
 UpdatedAt: Обновлена
 Users: Пользователи

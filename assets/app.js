@@ -13,6 +13,7 @@ console.log('running');
  * Autoupdate - small form will submited on change any field
  */
 $('form.autoupdate').on('change', 'button,input', function (event) {
+    console.log('submit autoupdate form');
     event.delegateTarget.submit();
 });
 
@@ -21,7 +22,7 @@ $('.need-confirm').on('click', function (event) {
     event.preventDefault();
     let $dialog = $('#modalConfirm');
     $('.modal-body', $dialog).html(event.target.dataset.text);
-    $dialog.on('hide.bs.modal', function (event) {
+    $dialog.on('hide.bs.modal', function () {
         $('modal_body', this).html('');
     });
     $dialog.modal('show');

@@ -9,7 +9,12 @@ declare(strict_types=1);
 namespace App\Repository;
 
 use App\Entity\Task;
+use App\Form\DTO\ListSortDTO;
+use App\Form\DTO\Task\ListFilterDTO;
+use App\Form\ToFindCriteriaInterface;
+use App\Form\Type\Task\ListFilterType;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
 
 class TaskRepository extends ServiceEntityRepository
@@ -39,9 +44,30 @@ class TaskRepository extends ServiceEntityRepository
      * @param string $projectSuffix
      * @return Task[]|array
      */
-    public function findByProject(string $projectSuffix, $limit): array
+    public function getByProjectBlock(string $projectSuffix, $limit): array
     {
-        return $this->findBy(['suffix' => $projectSuffix], [], $limit);
+        return $this->findBy(['suffix' => $projectSuffix], ['updatedAt' => 'desc'], $limit);
+    }
+
+    /**
+     * @param ToFindCriteriaInterface $filter
+     * @param ListSortDTO $sort
+     * @return Query
+     */
+    public function findByFilter(ToFindCriteriaInterface $filter, ListSortDTO $sort): Query
+    {
+        $qb = $this->createQueryBuilder('task');
+        $criteria = $filter->getFilterCriteria();
+        foreach ($criteria as $field => $value) {
+            $qb->andWhere($qb->expr()->eq('task.' . $field, ':' . $field))
+                ->setParameter($field, $value);
+        }
+
+        if (!empty($sort->getSortField())) {
+            $qb->addOrderBy($sort->getSortField(), $sort->getSortOrder());
+        }
+
+        return $qb->getQuery();
     }
 
     public function getPopularTasks($limit): array

@@ -41,6 +41,14 @@ class MenuBuilderSubscriber implements EventSubscriberInterface
         $route = $event->getRequest()->get('_route');
         $currentProject = $this->projectManager->getCurrentProject($event->getRequest());
 
+        $event->addItem(new MenuItemModel(
+            'projects',
+            'breadcrumb.projects',
+            'project.list',
+            [],
+            'fa fa-project-diagram'
+        ));
+
         if ($currentProject) {
             $event->addItem(new MenuItemModel(
                 'current_project.index',
@@ -51,7 +59,7 @@ class MenuBuilderSubscriber implements EventSubscriberInterface
             ));
             $event->addItem( new MenuItemModel(
                     'project.edit',
-                    'menu.project.edit',
+                    'breadcrumb.project.edit',
                     'project.edit',
                     ['suffix' => $currentProject->getSuffix()],
                     'fa fa-cogs'
@@ -59,11 +67,18 @@ class MenuBuilderSubscriber implements EventSubscriberInterface
 
             $taskMenu = new MenuItemModel(
                 'project.tasks',
-                'menu.project.tasks',
-                'project.index',
+                'breadcrumb.project.tasks',
+                'task.list',
                 ['suffix' => $currentProject->getSuffix()],
                 'fa fa-tasks'
             );
+            $taskMenu->addChild(new MenuItemModel(
+                'project.tasks',
+                'breadcrumb.project.tasks',
+                'task.list',
+                ['suffix' => $currentProject->getSuffix()],
+                'fa fa-tasks'
+            ));
             if (preg_match('/^task./', $route)) {
                 if ($taskId = $event->getRequest()->get('taskId')) {
                     $currentTask = $this->taskRepository->findByTaskId($taskId);
@@ -77,7 +92,7 @@ class MenuBuilderSubscriber implements EventSubscriberInterface
                         );
                         $currentTaskMenu->addChild(new MenuItemModel(
                             'task.edit',
-                            'menu.task.edit',
+                            'breadcrumb.task.edit',
                             'task.edit',
                             ['taskId' => $taskId],
                             'fa fa-edit'
@@ -89,30 +104,18 @@ class MenuBuilderSubscriber implements EventSubscriberInterface
             }
             $taskMenu->addChild(new MenuItemModel(
                 'task.create',
-                'menu.task.create',
+                'breadcrumb.task.create',
                 'task.project_create',
                 ['suffix' => $currentProject->getSuffix()],
                 'fa fa-plus-square'
             ));
 
             $event->addItem($taskMenu);
-        } else {
-            $projectsMenu =  new MenuItemModel(
-                'projects',
-                'menu.projects',
-                'project.list',
-                [],
-                'fa fa-tasks-alt'
-            );
-            $projectsMenu->addChild(
-                new MenuItemModel('project.create', 'menu.project.create', 'project.create', [])
-            );
-            $event->addItem($projectsMenu);
         }
 
         $event->addItem(new MenuItemModel(
             'about',
-            'menu.dashboard.about',
+            'breadcrumb.dashboard.about',
             'about',
             [],
             'fa fa-info'
@@ -150,7 +153,7 @@ class MenuBuilderSubscriber implements EventSubscriberInterface
                 $taskMenu = new MenuItemModel(
                     'project.tasks',
                     'menu.project.tasks',
-                    'project.index',
+                    'task.list',
                     ['suffix' => $currentProject->getSuffix()]
                 );
                 if ($taskId = $event->getRequest()->get('taskId')) {

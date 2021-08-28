@@ -35,7 +35,7 @@ class ProjectController extends AbstractController
     }
 
 
-    public function  list(Request $request): Response
+    public function list(Request $request): Response
     {
         $filterData = new ProjectListFilterDTO();
         $filterForm = $this->createForm(ListFilterType::class, $filterData);
@@ -58,7 +58,7 @@ class ProjectController extends AbstractController
             throw $this->createNotFoundException($this->translator->trans('project.not_found'));
         }
         $tasks = $this->getDoctrine()->getRepository(Task::class)
-            ->findByProject($project->getSuffix(), self::TASK_BLOCK_LIMIT);
+            ->getByProjectBlock($project->getSuffix(), self::TASK_BLOCK_LIMIT);
 
         return $this->render(
             'project/index.html.twig',
