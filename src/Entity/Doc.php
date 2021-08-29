@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Entity(repositoryClass="App\Repository\DocRepository")
  */
-class Doc
+class Doc implements NoInterface
 {
     public const DOCID_SEPARATOR = '#';
     private const ABSTRACT_FROM_BODY_LIMIT = 500;
@@ -67,7 +67,7 @@ class Doc
      * @var boolean
      * @ORM\Column (type="boolean")
      */
-    private $isArchive = false;
+    private $isArchived = false;
 
     /**
      * @var string
@@ -101,6 +101,15 @@ class Doc
      */
     private $body;
 
+
+    /**
+     * @param Project $project
+     */
+    public function __construct(Project $project)
+    {
+        $this->setProject($project);
+    }
+
     /**
      * @return int
      */
@@ -121,7 +130,7 @@ class Doc
      * @param int $no
      * @return Doc
      */
-    public function setNo(int $no): Doc
+    public function setNo(int $no): self
     {
         $this->no = $no;
         return $this;
@@ -178,26 +187,30 @@ class Doc
     /**
      * @return bool
      */
-    public function isArchive(): bool
+    public function isArchived(): bool
     {
-        return $this->isArchive;
+        return $this->isArchived;
     }
 
     /**
      * @param bool $isArchive
      * @return Doc
      */
-    public function setIsArchive(bool $isArchive): Doc
+    public function setIsArchived(bool $isArchived): Doc
     {
-        $this->isArchive = $isArchive;
+        $this->isArchived = $isArchived;
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getCaption(): string
+    public function getCaption(?int $limit = null): string
     {
+        if ($limit && mb_strlen($this->caption) > $limit) {
+            return mb_strcut($this->caption, 0, $limit-3) . '...';
+        }
+
         return $this->caption;
     }
 

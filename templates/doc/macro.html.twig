@@ -11,7 +11,7 @@
     <span {{ doc.isArchived ? 'class="text-muted"' }}>
         <i class="far fa-file-alt"></i>
         {% import _self as this %}
-        {{ this.no(doc) }}
+        {{ doc.docId }}
         {% if withName %}
             - {{ doc.caption(100) }}
             {% if doc.isArchived %}<span class="label label-default">{{ 'archived'|trans }}</span>{% endif %}

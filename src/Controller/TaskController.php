@@ -13,7 +13,7 @@ use App\Form\DTO\Task\ListFilterDTO;
 use App\Form\DTO\Task\NewTaskDTO;
 use App\Form\Type\Task\EditType as TaskEditType;
 use App\Form\Type\Task\ListFilterType;
-use App\Form\Type\Task\NewType as TaskNewType;
+use App\Form\Type\Task\NewTaskType;
 use App\Repository\TaskRepository;
 use App\Service\ProjectManager;
 use Knp\Component\Pager\PaginatorInterface;
@@ -86,7 +86,7 @@ class TaskController extends AbstractController
             $formData->setProject($currentProject->getSuffix());
         }
 
-        $form = $this->createForm(TaskNewType::class, $formData);
+        $form = $this->createForm(NewTaskType::class, $formData);
 
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()) {

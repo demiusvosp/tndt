@@ -12,10 +12,12 @@ use App\Entity\Task;
 use App\Form\DTO\ListSortDTO;
 use App\Form\ToFindCriteriaInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
+use function Symfony\Component\DependencyInjection\Loader\Configurator\expr;
 
-class TaskRepository extends ServiceEntityRepository
+class TaskRepository extends ServiceEntityRepository implements NoEntityRepositoryInterface
 {
     public function __construct(ManagerRegistry $registry)
     {
@@ -31,11 +33,18 @@ class TaskRepository extends ServiceEntityRepository
 
     public function getLastNo($suffix): int
     {
-        $q = $this->getEntityManager()->createQuery('SELECT t.no FROM App\Entity\Task t ORDER BY t.no DESC')
+        $qb = $this->createQueryBuilder('t');
+        $qb->select('t.no')
+            ->where($qb->expr()->eq('t.suffix', ':suffix'))
+            ->setParameter('suffix', $suffix)
+            ->orderBy('t.no', 'DESC')
             ->setMaxResults(1);
-        $result = $q->getSingleScalarResult();
 
-        return (is_numeric($result)) ? (int)$result : 0;
+        try {
+            return (int)$qb->getQuery()->getSingleScalarResult();
+        } catch (NoResultException $e) {
+            return 0;
+        }
     }
 
     /**

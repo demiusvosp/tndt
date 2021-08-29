@@ -8,17 +8,18 @@ declare(strict_types=1);
 
 namespace App\EventSubscriber;
 
+use App\Entity\NoInterface;
 use App\Entity\Task;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class TaskGeneratorListener
+class NoGeneratorListener
 {
     public function prePersist(LifecycleEventArgs $args): void
     {
         $entity = $args->getEntity();
-        if ($entity instanceof Task) {
-            $repo = $args->getEntityManager()->getRepository(Task::class);
+        if ($entity instanceof NoInterface) {
+            $repo = $args->getEntityManager()->getRepository(get_class($entity));
             $lastNo = $repo->getLastNo($entity->getSuffix());
 
             $entity->setNo($lastNo + 1);

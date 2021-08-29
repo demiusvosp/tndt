@@ -1,36 +1,46 @@
 <?php
 /**
  * User: demius
- * Date: 26.08.2021
- * Time: 23:14
+ * Date: 11.08.2021
+ * Time: 20:30
  */
 declare(strict_types=1);
 
-namespace App\Form\Type\Task;
+namespace App\Form\Type\Project;
 
-use App\Entity\Task;
+use App\Entity\Project;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class EditType extends AbstractType
+class NewProjectType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add(
-                'caption',
+                'suffix',
                 TextType::class,
-                ['label' => 'task.caption.label', 'help' => 'task.caption.help']
+                ['label' => 'project.suffix.label', 'help' => 'project.suffix.help']
+            )
+            ->add(
+                'name',
+                TextType::class,
+                ['label' => 'project.name.label', 'help' => 'project.name.help']
+            )
+            ->add(
+                'icon',
+                TextType::class,
+                ['label' => 'project.icon.label', 'help' => 'project.icon.help']
             )
             ->add(
                 'description',
                 TextareaType::class,
                 [
-                    'label' => 'task.description.label',
-                    'help' => 'task.description.help',
+                    'label' => 'project.description.label',
+                    'help' => 'project.description.help',
                     'required' => false,
                     'empty_data' => '',
                 ]
@@ -39,6 +49,6 @@ class EditType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefault('data_class', Task::class);
+        $resolver->setDefault('data_class', Project::class);
     }
 }

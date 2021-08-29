@@ -19,7 +19,7 @@
     <span {{ task.isClosed ? 'class="task-closed"' }}>
         <i class="fa fa-tasks-alt"></i>
         {% import _self as this %}
-        {{ this.no(task) }}
+        {{ task.taskId }}
         {% if withName %}
             - {{ this.caption(task, 100) }}
             {% if task.isClosed %}<span class="label label-default">{{ 'closed'|trans }}</span>{% endif %}

@@ -19,7 +19,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     indexes={@ORM\Index(name="isClosed", columns={"is_closed"})}
  * )
  */
-class Task
+class Task implements NoInterface
 {
     public const TASKID_SEPARATOR = '-';
 

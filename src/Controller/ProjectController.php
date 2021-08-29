@@ -12,7 +12,7 @@ use App\Entity\Project;
 use App\Entity\Task;
 use App\Form\DTO\Project\ProjectListFilterDTO;
 use App\Form\Type\Project\EditType;
-use App\Form\Type\Project\NewType;
+use App\Form\Type\Project\NewProjectType;
 use App\Form\Type\Project\ListFilterType;
 use App\Service\ProjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -70,7 +70,7 @@ class ProjectController extends AbstractController
     public function create(Request $request): Response
     {
         $project = new Project();
-        $form = $this->createForm(NewType::class, $project);
+        $form = $this->createForm(NewProjectType::class, $project);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {

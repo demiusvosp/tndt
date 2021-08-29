@@ -1,8 +1,12 @@
+doc:
+  archive.success: Задача закрыта
+  create.success: Документ создан
+  edit.success: Документ отредактирован
 project:
   archive.success: Проект архивирован
   create.success: Проект создан
   edit.success: Проект отредактирован
 task:
   create.success: Задача создана
-  edit.success: Задача создана
   close.success: Задача закрыта
+  edit.success: Задача отредактирована

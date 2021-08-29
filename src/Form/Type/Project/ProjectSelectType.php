@@ -6,7 +6,7 @@
  */
 declare(strict_types=1);
 
-namespace App\Form\Type;
+namespace App\Form\Type\Project;
 
 use App\Service\ProjectManager;
 use Symfony\Component\Form\AbstractType;

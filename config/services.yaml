@@ -32,11 +32,12 @@ services:
 
     App\EventSubscriber\MenuBuilderSubscriber:
         class: App\EventSubscriber\MenuBuilderSubscriber
-        tags:
-            - { name: kernel.event_listener, event: theme.breadcrumb, method: onSetupMenu }
+#        tags:
+#            - { name: kernel.event_listener, event: theme.breadcrumb, method: onSetupBreadcrumbs }
+#            - { name: kernel.event_listener, event: theme.sidebar, method: onSetupSidebar }
 
-    App\EventSubscriber\TaskGeneratorListener:
-        class: App\EventSubscriber\TaskGeneratorListener
+    App\EventSubscriber\NoGeneratorListener:
+        class: App\EventSubscriber\NoGeneratorListener
         tags:
             - { name: doctrine.event_listener, event: prePersist }
 
