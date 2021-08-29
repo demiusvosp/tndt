@@ -29,13 +29,6 @@ services:
     # please note that last definitions always *replace* previous ones
 
     # Event Subscribers and Listeners
-
-    App\EventSubscriber\MenuBuilderSubscriber:
-        class: App\EventSubscriber\MenuBuilderSubscriber
-#        tags:
-#            - { name: kernel.event_listener, event: theme.breadcrumb, method: onSetupBreadcrumbs }
-#            - { name: kernel.event_listener, event: theme.sidebar, method: onSetupSidebar }
-
     App\EventSubscriber\NoGeneratorListener:
         class: App\EventSubscriber\NoGeneratorListener
         tags:

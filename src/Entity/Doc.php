@@ -20,7 +20,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Doc implements NoInterface
 {
     public const DOCID_SEPARATOR = '#';
-    private const ABSTRACT_FROM_BODY_LIMIT = 500;
+    private const ABSTRACT_FROM_BODY_LIMIT = 1000;
 
     /**
      * @var int
@@ -88,16 +88,15 @@ class Doc implements NoInterface
 
     /**
      * @var string
-     * @ORM\Column(type="string", length=1000)
+     * @ORM\Column(type="text", length=1000)
      * @Assert\Length(max=1000)
      */
     private $abstract;
 
     /**
      * @var string
-     * @ORM\Column(type="string", length=5000)
+     * @ORM\Column(type="text")
      * @Assert\NotBlank()
-     * @Assert\Length(max=1000)
      */
     private $body;
 
@@ -166,6 +165,15 @@ class Doc implements NoInterface
         $this->project = $project;
         $this->suffix = $project->getSuffix();
         return $this;
+    }
+
+    /**
+     * Получить элементы необходимые для построения урла к документу
+     * @return array ['slug', 'sufffix]
+     */
+    public function getUrlParams(): array
+    {
+        return ['slug' => $this->slug, 'suffix' => $this->suffix];
     }
 
     /**
@@ -238,7 +246,7 @@ class Doc implements NoInterface
     public function getAbstract(): string
     {
         if (empty($this->abstract)) {
-            return mb_strcut($this->body, self::ABSTRACT_FROM_BODY_LIMIT) . '...';
+            return mb_strcut($this->body, 0, self::ABSTRACT_FROM_BODY_LIMIT) . '...';
         }
         return $this->abstract;
     }

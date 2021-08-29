@@ -1,0 +1,24 @@
+{% if active is not defined or adminlte_direct_include is defined %}
+    {% set active = adminlte_breadcrumbs(app.request) %}
+{% endif %}
+{% if active is defined and active is not null %}
+<ol class="breadcrumb">
+    <li>
+        <a href="{{ path('home'|route_alias) }}">
+            <i class="fas fa-tachometer-alt"></i>
+            {{ 'breadcrumb.home'|trans() }}
+        </a>
+    </li>
+    {% if active %}
+        {% for item in active %}
+            <li><a href="{{ item.route is empty ? '#' : '/' in item.route ? item.route : path(item.route|route_alias, item.routeArgs) }}">
+                {% if 'breadcrumb.' in item.label %}
+                    {{ item.label|trans }}
+                {% else %}
+                    {{ item.label }}
+                {% endif %}
+            </a></li>
+        {% endfor %}
+    {% endif %}
+</ol>
+{% endif %}

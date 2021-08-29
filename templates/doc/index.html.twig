@@ -1,11 +1,58 @@
 {% extends 'base.html.twig' %}
-{% import 'doc/macro.html.twig' as mDoc %}
 
 
 {% block title %} {{ doc.docId }} - {{ doc.caption }} {% endblock %}
-{% block page_title%} {{ mDoc.badge(doc, true) }} {% endblock %}
+{% block page_title%} {% endblock %}
 {% block page_subtitle %}{% endblock %}
 
 {% block page_content %}
-    Страница документа
+    <div class="row">
+        <div class="col-md-10">
+            {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
+                {% import 'doc/macro.html.twig' as mDoc %}
+
+                {% block box_title %}
+                    {{ mDoc.badge(doc, true) }}
+                {% endblock %}
+                {% block box_body %}
+                    {% if doc.abstract %}
+                        <div class="panel panel-default">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#abstract-panel"><div class="panel-heading">
+                                <h3 class="panel-title">{{ 'Abstract'|trans }}</h3>
+                            </div></a>
+                            <div id="abstract-panel" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    {{ doc.abstract|markdown_to_html }}
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                    <p>{{ doc.body|markdown_to_html }}</p>
+                {% endblock %}
+            {% endembed %}
+        </div>
+        <div class="col-md-2">
+            {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
+                {% block box_title %}
+                    {{ 'ControlPanel'|trans }}
+                {% endblock  %}
+                {% block box_body %}
+                    <div class="btn-group-vertical" role="toolbar" aria-label="{{ 'ControlPanel'|trans }}">
+                        <a class="btn btn-default btn-secondary" href="{{ path('doc.edit', {'slug':doc.slug, 'suffix': doc.suffix}) }}">{{ 'Edit'|trans }}</a>
+                        {% if doc.archived %}
+                            <a class="btn btn-default btn-success" href="{{ path('doc.archive', doc.getUrlParams) }}">{{ 'Unarchive'|trans }}</a>
+                        {% else %}
+                            <button
+                                    class="btn btn-secondary btn-warning need-confirm"
+                                    data-action="{{ path('doc.archive', doc.getUrlParams) }}"
+                                    data-text="{{ 'doc.archive.confirm'|trans|nl2br }}"
+                            >
+                                {{ 'Archive'|trans }}
+                            </button>
+                        {% endif %}
+                    </div>
+                {% endblock %}
+            {% endembed %}
+        </div>
+    </div>
 {% endblock %}

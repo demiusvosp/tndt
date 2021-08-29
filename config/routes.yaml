@@ -53,15 +53,18 @@ task.close:
 doc.list:
     path: /p/{suffix<\w+>}/docs
     controller: App\Controller\DocController::list
-doc.index:
-    path: /p/{slug}
-    controller: App\Controller\DocController::index
 doc.global_create:
     path: /doc/create
     controller: App\Controller\DocController::create
 doc.project_create:
     path: /p/{suffix<\w+>}/doc/create
     controller: App\Controller\DocController::create
+doc.index:
+    path: /p/{suffix<\w+>}/doc/{slug}
+    controller: App\Controller\DocController::index
 doc.edit:
-    path: /p/{slug}/edit
+    path: /p/{suffix<\w+>}/doc/{slug}/edit
     controller: App\Controller\DocController::edit
+doc.archive:
+    path: /p/{suffix<\w+>}/doc/{slug}/archive
+    controller: App\Controller\DocController::archive

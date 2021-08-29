@@ -54,7 +54,7 @@ class MenuBuilderSubscriber implements EventSubscriberInterface
 
         if ($currentProject) {
             $event->addItem(new MenuItemModel(
-                'current_project.index',
+                'project.index',
                 $currentProject->getName(),
                 'project.index',
                 ['suffix' => $currentProject->getSuffix()],
@@ -203,7 +203,8 @@ class MenuBuilderSubscriber implements EventSubscriberInterface
                     'project.tasks',
                     'breadcrumb.project.tasks',
                     'task.list',
-                    ['suffix' => $currentProject->getSuffix()]
+                    ['suffix' => $currentProject->getSuffix()],
+                    'fa fa-tasks'
                 );
                 if ($taskId = $event->getRequest()->get('taskId')) {
                     $currentTask = $this->taskRepository->getByTaskId($taskId);
@@ -234,6 +235,46 @@ class MenuBuilderSubscriber implements EventSubscriberInterface
 
                 $currentProjectMenu->addChild($taskMenu);
             }
+
+            if (preg_match('/^doc./', $route)) {
+                $docMenu = new MenuItemModel(
+                    'project.docs',
+                    'breadcrumb.project.docs',
+                    'doc.list',
+                    ['suffix' => $currentProject->getSuffix()],
+                    'far fa-copy'
+                );
+
+                if ($docSlug = $event->getRequest()->get('slug')) {
+                    $currentDoc = $this->docRepository->getBySlug($docSlug);
+                    if ($currentDoc) {
+                        $currentDocMenu = new MenuItemModel(
+                            'doc.index',
+                            $currentDoc->getCaption(self::BREADCRUMB_ITEM_LENGTH),
+                            'doc.index',
+                            ['slug' => $currentDoc->getSlug(), 'suffix' => $currentDoc->getSuffix()]
+                        );
+                        $currentDocMenu->addChild(new MenuItemModel(
+                            'doc.edit',
+                            'breadcrumb.doc.edit',
+                            'doc.edit',
+                            ['slug' => $currentDoc->getSlug(), 'suffix' => $currentDoc->getSuffix()]
+                        ));
+                        $docMenu
+                            ->addChild($currentDocMenu);
+                    }
+                }
+
+                $docMenu->addChild(new MenuItemModel(
+                    'doc.create',
+                    'breadcrumb.doc.create',
+                    'doc.project_create',
+                    ['suffix' => $currentProject->getSuffix()]
+                ));
+
+                $currentProjectMenu->addChild($docMenu);
+            }
+
             $event->addItem($currentProjectMenu);
         } else {
             $projectsMenu =  new MenuItemModel('projects', 'breadcrumb.projects', 'project.list', []);

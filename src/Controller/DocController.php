@@ -48,8 +48,9 @@ class DocController extends AbstractController
 
     public function index(Request $request)
     {
+        $project = $this->projectManager->getCurrentProject($request);
         $doc = $this->docRepository->getBySlug($request->get('slug'));
-        if (!$doc) {
+        if (!$doc || $doc->getSuffix() !== $project->getSuffix()) {
             throw $this->createNotFoundException($this->translator->trans('doc.not_found'));
         }
 
@@ -79,7 +80,7 @@ class DocController extends AbstractController
             $em->flush();
 
             $this->addFlash('success', 'doc.create.success');
-            return $this->redirectToRoute('doc.index', ['slug' => $doc->getSlug()]);
+            return $this->redirectToRoute('doc.index', $doc->getUrlParams());
         }
 
         return $this->render('doc/create.html.twig', ['form' => $form->createView()]);
@@ -87,11 +88,28 @@ class DocController extends AbstractController
 
     public function edit(Request $request)
     {
+        $project = $this->projectManager->getCurrentProject($request);
         $doc = $this->docRepository->getBySlug($request->get('slug'));
-        if (!$doc) {
+        if (!$doc || $doc->getSuffix() !== $project) {
             throw $this->createNotFoundException($this->translator->trans('doc.not_found'));
         }
 
         return $this->render('doc/edit.html.twig', ['doc' => $doc]);
+    }
+
+    public function archive(Request $request)
+    {
+        $project = $this->projectManager->getCurrentProject($request);
+        $em = $this->getDoctrine()->getManager();
+        $doc = $this->docRepository->getBySlug($request->get('slug'));
+        if (!$doc || $doc->getSuffix() !== $project) {
+            throw $this->createNotFoundException($this->translator->trans('doc.not_found'));
+        }
+
+        $doc->setIsArchived(!$doc->isArchived());
+        $em->flush();
+        $this->addFlash('success', $doc->isArchived() ? 'doc.archived' : 'doc.unarchived');
+
+        return $this->redirectToRoute('doc.index', $doc->getUrlParams());
     }
 }

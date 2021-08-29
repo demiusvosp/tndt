@@ -81,7 +81,6 @@ class Task implements NoInterface
     /**
      * @var string
      * @ORM\Column(type="text")
-     * @Assert\Length(max=5000)
      */
     private $description = '';
 
