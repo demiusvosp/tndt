@@ -60,11 +60,11 @@ doc.project_create:
     path: /p/{suffix<\w+>}/doc/create
     controller: App\Controller\DocController::create
 doc.index:
-    path: /p/{suffix<\w+>}/doc/{slug}
+    path: /p/{suffix<\w+>}/doc/{slug<[\w\d-]+>}
     controller: App\Controller\DocController::index
 doc.edit:
-    path: /p/{suffix<\w+>}/doc/{slug}/edit
+    path: /p/{suffix<\w+>}/doc/{slug<[\w\d-]+>}/edit
     controller: App\Controller\DocController::edit
 doc.archive:
-    path: /p/{suffix<\w+>}/doc/{slug}/archive
+    path: /p/{suffix<\w+>}/doc/{slug<[\w\d-]+>}/archive
     controller: App\Controller\DocController::archive

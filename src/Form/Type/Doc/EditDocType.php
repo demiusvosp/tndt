@@ -33,6 +33,7 @@ class EditDocType extends AbstractType
                 [
                     'label' => 'doc.abstract.label',
                     'help' => 'doc.abstract.help',
+                    'attr' => ['rows' => 8],
                     'required' => false,
                     'empty_data' => '',
                 ]
@@ -43,6 +44,7 @@ class EditDocType extends AbstractType
                 [
                     'label' => 'doc.body.label',
                     'help' => 'doc.body.help',
+                    'attr' => ['rows' => 80],
                     'required' => false,
                     'empty_data' => '',
                 ]

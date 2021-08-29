@@ -15,7 +15,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class EditType extends AbstractType
+class EditTaskType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -31,6 +31,7 @@ class EditType extends AbstractType
                 [
                     'label' => 'task.description.label',
                     'help' => 'task.description.help',
+                    'attr' => ['rows' => 20],
                     'required' => false,
                     'empty_data' => '',
                 ]

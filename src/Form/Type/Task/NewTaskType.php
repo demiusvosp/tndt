@@ -37,6 +37,7 @@ class NewTaskType extends AbstractType
                 [
                     'label' => 'task.description.label',
                     'help' => 'task.description.help',
+                    'attr' => ['rows' => 20],
                     'required' => false,
                     'empty_data' => '',
                 ]

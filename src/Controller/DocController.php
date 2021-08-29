@@ -11,6 +11,7 @@ namespace App\Controller;
 use App\Entity\Doc;
 use App\Entity\Project;
 use App\Form\DTO\Doc\NewDocDTO;
+use App\Form\Type\Doc\EditDocType;
 use App\Form\Type\Doc\NewDocType;
 use App\Repository\DocRepository;
 use App\Service\ProjectManager;
@@ -90,11 +91,22 @@ class DocController extends AbstractController
     {
         $project = $this->projectManager->getCurrentProject($request);
         $doc = $this->docRepository->getBySlug($request->get('slug'));
-        if (!$doc || $doc->getSuffix() !== $project) {
+        if (!$doc || $doc->getSuffix() !== $project->getSuffix()) {
             throw $this->createNotFoundException($this->translator->trans('doc.not_found'));
         }
+        $form = $this->createForm(EditDocType::class, $doc);
 
-        return $this->render('doc/edit.html.twig', ['doc' => $doc]);
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($doc);
+            $em->flush();
+
+            $this->addFlash('success', 'doc.edit.success');
+            return $this->redirectToRoute('doc.index', $doc->getUrlParams());
+        }
+
+        return $this->render('doc/edit.html.twig', ['doc' => $doc, 'form' => $form->createView()]);
     }
 
     public function archive(Request $request)

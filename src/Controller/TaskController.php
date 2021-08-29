@@ -11,7 +11,7 @@ use App\Entity\Task;
 use App\Form\DTO\ListSortDTO;
 use App\Form\DTO\Task\ListFilterDTO;
 use App\Form\DTO\Task\NewTaskDTO;
-use App\Form\Type\Task\EditType as TaskEditType;
+use App\Form\Type\Task\EditTaskType;
 use App\Form\Type\Task\ListFilterType;
 use App\Form\Type\Task\NewTaskType;
 use App\Repository\TaskRepository;
@@ -111,7 +111,7 @@ class TaskController extends AbstractController
         if (!$task) {
             throw $this->createNotFoundException($this->translator->trans('task.not_found'));
         }
-        $form = $this->createForm(TaskEditType::class, $task);
+        $form = $this->createForm(EditTaskType::class, $task);
 
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()) {
