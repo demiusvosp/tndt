@@ -14,6 +14,8 @@ use App\Form\DTO\Project\ProjectListFilterDTO;
 use App\Form\Type\Project\EditType;
 use App\Form\Type\Project\NewProjectType;
 use App\Form\Type\Project\ListFilterType;
+use App\Repository\DocRepository;
+use App\Repository\TaskRepository;
 use App\Service\ProjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,6 +25,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class ProjectController extends AbstractController
 {
     private const TASK_BLOCK_LIMIT = 10;
+    private const DOC_BLOCK_LIMIT = 10;
 
     private $translator;
     private $projectManager;
@@ -51,18 +54,18 @@ class ProjectController extends AbstractController
     }
 
 
-    public function index(Request $request): Response
+    public function index(Request $request, TaskRepository $taskRepository, DocRepository $docRepository): Response
     {
         $project = $this->projectManager->getCurrentProject($request);
         if (!$project) {
             throw $this->createNotFoundException($this->translator->trans('project.not_found'));
         }
-        $tasks = $this->getDoctrine()->getRepository(Task::class)
-            ->getByProjectBlock($project->getSuffix(), self::TASK_BLOCK_LIMIT);
+        $tasks = $taskRepository->getPopularTasks(self::TASK_BLOCK_LIMIT, $project->getSuffix());
+        $docs = $docRepository->getPopularDocs(self::DOC_BLOCK_LIMIT, $project->getSuffix());
 
         return $this->render(
             'project/index.html.twig',
-            ['project' => $project, 'tasks' => $tasks]
+            ['project' => $project, 'tasks' => $tasks, 'docs' => $docs]
         );
     }
 

@@ -21,14 +21,14 @@
                             {{ 'Project'|trans }}: {{ mProject.badge(task.project, false, true) }}
                         </div>
                         <div class="col-md-4">
-                            {{ 'CreatedAt'|trans }}: {{ task.createdAt|date('d F Y  H:i:s') }}
+                            {{ 'CreatedAt'|trans }}: {{ task.createdAt|localizeddate('medium', 'medium') }}
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-4">
                             <i>Здесь будут набираться другие признаки - статус, категория, автор, тип, теги</i>
                         </div>
-                        <div class="col-md-4">{{ 'UpdatedAt'|trans }}: {{ task.updatedAt|date('d F Y  H:i:s') }}</div>
+                        <div class="col-md-4">{{ 'UpdatedAt'|trans }}: {{ task.updatedAt|localizeddate('medium', 'medium') }}</div>
                     </div>
                     <hr>
                     <p>{{ task.description|markdown_to_html }}</p>

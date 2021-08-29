@@ -6,6 +6,6 @@ services:
 
     # Uncomment any lines below to activate that Twig extension
     #Twig\Extensions\ArrayExtension: null
-    Twig\Extensions\DateExtension: null
-    #Twig\Extensions\IntlExtension: null
+    #Twig\Extensions\DateExtension: null # заменил на knp-time-bundle умеющим в локализацию
+    Twig\Extensions\IntlExtension: null
     Twig\Extensions\TextExtension: null

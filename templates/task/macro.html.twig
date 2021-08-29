@@ -54,8 +54,8 @@
             <tr>
                 <td>{{ this.no(task) }}</td>
                 <td>{{ this.caption(task, 160) }}</td>
-                <td>{{ task.createdAt|date('d F Y  H:i:s') }}</td>
-                <td>{{ task.updatedAt|date('d F Y  H:i:s') }}</td>
+                <td>{{ task.createdAt|ago }}</td>
+                <td>{{ task.updatedAt|ago }}</td>{# localizeddate('medium', 'medium') #}
             </tr>
         {% endfor %}
     </table>

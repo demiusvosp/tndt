@@ -28,7 +28,7 @@
     </li>
     <li class="dropdown">
         {% set projects = project_manager.getPopularProjectsSnippets(5) %}
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ 'Projects'|trans }}</a>
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ 'Projects'|trans }} <span class="caret"></span></a>
         <ul class="dropdown-menu" role="menu">
             {% for project in projects %}
                 <li>

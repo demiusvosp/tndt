@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3ee452c673acfb7d641973fb0f69ca3b",
+    "content-hash": "7d9fbfb1e5243197a7fb1c77654d08aa",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -2161,6 +2161,79 @@
                 "source": "https://github.com/KnpLabs/KnpPaginatorBundle/tree/v5.6.0"
             },
             "time": "2021-06-11T09:38:48+00:00"
+        },
+        {
+            "name": "knplabs/knp-time-bundle",
+            "version": "v1.16.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/KnpLabs/KnpTimeBundle.git",
+                "reference": "cfbef12c504cd656075f056b8158ccb753c0474d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/KnpLabs/KnpTimeBundle/zipball/cfbef12c504cd656075f056b8158ccb753c0474d",
+                "reference": "cfbef12c504cd656075f056b8158ccb753c0474d",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.2.5",
+                "symfony/config": "^4.3|^5.0",
+                "symfony/dependency-injection": "^4.3|^5.0",
+                "symfony/translation": "^4.3|^5.0"
+            },
+            "conflict": {
+                "phpunit/phpunit": "<8.0"
+            },
+            "require-dev": {
+                "symfony/framework-bundle": "^4.3|^5.0",
+                "symfony/phpunit-bridge": "^5.2",
+                "symfony/templating": "^4.3|^5.0",
+                "symfony/twig-bundle": "^4.3|^5.0"
+            },
+            "suggest": {
+                "symfony/twig-bundle": "to use the Twig `time_diff()` function or `|ago` filter"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Knp\\Bundle\\TimeBundle\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "KnpLabs Team",
+                    "homepage": "http://knplabs.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "http://github.com/KnpLabs/KnpTimeBundle/contributors"
+                }
+            ],
+            "description": "Making your dates look sensible and descriptive",
+            "homepage": "http://github.com/KnpLabs/KnpTimeBundle",
+            "keywords": [
+                "bundle",
+                "date",
+                "descriptive time",
+                "knp",
+                "knplabs",
+                "time"
+            ],
+            "support": {
+                "issues": "https://github.com/KnpLabs/KnpTimeBundle/issues",
+                "source": "https://github.com/KnpLabs/KnpTimeBundle/tree/v1.16.1"
+            },
+            "time": "2021-07-13T11:56:11+00:00"
         },
         {
             "name": "laminas/laminas-code",

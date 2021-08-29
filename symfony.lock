@@ -120,6 +120,9 @@
             "config/packages/admin_lte.yaml"
         ]
     },
+    "knplabs/knp-time-bundle": {
+        "version": "v1.16.1"
+    },
     "laminas/laminas-code": {
         "version": "3.5.1"
     },

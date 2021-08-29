@@ -47,4 +47,20 @@ class DocRepository extends ServiceEntityRepository implements NoEntityRepositor
             return 0;
         }
     }
+
+    /**
+     * @param int $limit
+     * @param string|null $projectSuffix
+     * @return Doc[]
+     */
+    public function getPopularDocs(int $limit, ?string $projectSuffix = null): array
+    {
+        $criteria = ['isArchived' => false];
+        if($projectSuffix) {
+            $criteria['suffix'] = $projectSuffix;
+        }
+
+        return $this->findBy($criteria, ['updatedAt' => 'desc'], $limit);
+    }
+
 }

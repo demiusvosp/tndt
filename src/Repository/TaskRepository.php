@@ -48,12 +48,18 @@ class TaskRepository extends ServiceEntityRepository implements NoEntityReposito
     }
 
     /**
-     * @param string $projectSuffix
-     * @return Task[]|array
+     * @param int $limit
+     * @param string|null $projectSuffix
+     * @return Task[]
      */
-    public function getByProjectBlock(string $projectSuffix, $limit): array
+    public function getPopularTasks(int $limit, ?string $projectSuffix = null): array
     {
-        return $this->findBy(['suffix' => $projectSuffix], ['updatedAt' => 'desc'], $limit);
+        $criteria = ['isClosed' => false];
+        if($projectSuffix) {
+            $criteria['suffix'] = $projectSuffix;
+        }
+
+        return $this->findBy($criteria, ['updatedAt' => 'desc'], $limit);
     }
 
     /**
@@ -77,8 +83,4 @@ class TaskRepository extends ServiceEntityRepository implements NoEntityReposito
         return $qb->getQuery();
     }
 
-    public function getPopularTasks($limit): array
-    {
-        return $this->findBy(['isClosed' => false], ['updatedAt' => 'desc'], $limit);
-    }
 }

@@ -14,6 +14,7 @@ Create_doc: Создать документ
 Create_task: Создать задачу
 CreatedAt: Создана
 dashboard: Обзор
+Docs: Документы
 Doc_list: Список документов
 Documents: Документы
 doc:
@@ -26,14 +27,18 @@ doc:
     label: Содержимое
     help: Полное содержимое документа
   caption:
-    label: Заголовок документа.
+    label: Заголовок
     help: Используется для идентификации, поэтому желательн делать возможно короче.
+  created:
+    label: Создан
   create.success: Документ создан
   edit: Редактирование
   not_found: Документ не найден
   project:
     label: Проект
     help: Проект, к которому будет прикреплен документ.
+  updated:
+    label: Обновлен
 Edit: Редактировать
 Edit_project: Настроить проект
 breadcrumb:

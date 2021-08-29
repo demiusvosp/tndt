@@ -45,20 +45,11 @@
                     {% block box_title %}{% trans %}Documents{% endtrans %}:{% endblock %}
                     {% block box_body %}
                         <ul class="list-unstyled">
-{#                            {% for task in tasks %}#}
+                            {% for doc in docs %}
                                 <li>
-                                    <b>ABC#123</b> - Какой-то документ
+                                    <b>{{ doc.docId }}</b> - {{ doc.caption(160) }}
                                 </li>
-                                <li>
-                                    <b>ABC#456</b> - Какой-то ещё документ
-                                </li>
-                                <li>
-                                    <b>PRJ#123</b> - Небольшие мысли по поводу дальнейшего развития
-                                </li>
-                                <li>
-                                    <b>LTN#1053</b> - Lorem ipsum sit amet
-                                </li>
-{#                            {% endfor %}#}
+                            {% endfor %}
                         </ul>
                     {% endblock %}
                 {% endembed %}
