@@ -33,6 +33,7 @@ doc:
     label: Создан
   create.success: Документ создан
   edit: Редактирование
+  No: "#"
   not_found: Документ не найден
   project:
     label: Проект
@@ -107,6 +108,7 @@ task:
     label: Описание
     help: Подробное ТЗ по задачи. Можно использовтаь markdown для выразительноти
   edit: Редактирование задачи
+  No: "№"
   not_found: Задача не найдена
   project:
     label: Проект

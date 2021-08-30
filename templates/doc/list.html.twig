@@ -7,16 +7,39 @@
 {% block page_content %}
     {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
         {% import 'project/macro.html.twig' as mProject %}
-        {% import 'task/macro.html.twig' as mTask %}
+        {% import 'doc/macro.html.twig' as mDoc %}
 
         {% block box_title %}
             {{ mProject.badge(project) }} - {{ 'Doc_list'|trans }}
         {% endblock %}
         {% block box_body %}
-            Здесь будет табличка со списком документов (для тех кто не написал себе удобное оглавление, ну и для менеджмента может быть удобно
+            <table class="table table-condensed">
+                <tr>
+                    <th>{{ knp_pagination_sortable(docs, 'doc.No'|trans, 'doc.no') }}</th>
+                    <th>{{ knp_pagination_sortable(docs, 'doc.caption.label'|trans, 'doc.caption') }}</th>
+                    <th>{{ knp_pagination_sortable(docs, 'doc.created.label'|trans, 'doc.createdAt') }}</th>
+                    <th>{{ knp_pagination_sortable(docs, 'doc.updated.label'|trans, 'doc.updatedAt') }}</th>
+                </tr>
+                {%  for doc in docs %}
+                    <tr>
+                        <td>
+                            <a class="invisible_link" href="{{ path('doc.index', doc.getUrlParams) }}">
+                                {{ doc.no }}
+                            </a>
+                        </td>
+                        <td>
+                            <a class="invisible_link" href="{{ path('doc.index', doc.getUrlParams) }}">
+                                {{ doc.caption(160) }}
+                            </a>
+                        </td>
+                        <td>{{ doc.createdAt|ago }}</td>
+                        <td>{{ doc.updatedAt|ago }}</td> {# localizeddate('medium', 'medium') #}
+                    </tr>
+                {% endfor %}
+            </table>
             <hr>
             <nav class="text-center">
-{#                {{ knp_pagination_render(docs) }}#}
+                {{ knp_pagination_render(docs) }}
             </nav>
         {% endblock %}
     {% endembed %}

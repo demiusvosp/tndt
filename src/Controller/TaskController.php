@@ -8,7 +8,6 @@ namespace App\Controller;
 
 use App\Entity\Project;
 use App\Entity\Task;
-use App\Form\DTO\ListSortDTO;
 use App\Form\DTO\Task\ListFilterDTO;
 use App\Form\DTO\Task\NewTaskDTO;
 use App\Form\Type\Task\EditTaskType;
@@ -53,11 +52,8 @@ class TaskController extends AbstractController
             $this->addFlash('warning', 'filterForm.error');
         }
 
-        $sortData = new ListSortDTO();
-        $sortData->handleRequest($request);
-
         $tasks = $paginator->paginate(
-            $this->taskRepository->findByFilter($filterData, $sortData),
+            $this->taskRepository->findByFilter($filterData),
             $request->query->getInt('page', 1),
             self::TASK_PER_PAGE
         );

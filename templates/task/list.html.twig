@@ -22,7 +22,22 @@
 {#                    <button type="submit">OK</button>#}
 {#                {{ form_end(filterForm) }}#}
 {#            </nav>#}
-            {{ mTask.table(tasks) }}
+            <table class="table table-condensed">
+                <tr>
+                    <th>{{ knp_pagination_sortable(tasks, 'task.No'|trans, 'task.no') }}</th>
+                    <th>{{ knp_pagination_sortable(tasks, 'task.caption.label'|trans, 'task.caption') }}</th>
+                    <th>{{ knp_pagination_sortable(tasks, 'task.created.label'|trans, 'task.createdAt') }}</th>
+                    <th>{{ knp_pagination_sortable(tasks, 'task.updated.label'|trans, 'task.updatedAt') }}</th>
+                </tr>
+                {%  for task in tasks %}
+                    <tr>
+                        <td>{{ mTask.no(task) }}</td>
+                        <td>{{ mTask.caption(task, 160) }}</td>
+                        <td>{{ task.createdAt|ago }}</td>
+                        <td>{{ task.updatedAt|ago }}</td>{# localizeddate('medium', 'medium') #}
+                    </tr>
+                {% endfor %}
+            </table>
             <hr>
             <nav class="center-block">
                 {{ knp_pagination_render(tasks) }}

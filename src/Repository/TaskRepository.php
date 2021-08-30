@@ -9,13 +9,11 @@ declare(strict_types=1);
 namespace App\Repository;
 
 use App\Entity\Task;
-use App\Form\DTO\ListSortDTO;
 use App\Form\ToFindCriteriaInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
-use function Symfony\Component\DependencyInjection\Loader\Configurator\expr;
 
 class TaskRepository extends ServiceEntityRepository implements NoEntityRepositoryInterface
 {
@@ -64,20 +62,15 @@ class TaskRepository extends ServiceEntityRepository implements NoEntityReposito
 
     /**
      * @param ToFindCriteriaInterface $filter
-     * @param ListSortDTO $sort
      * @return Query
      */
-    public function findByFilter(ToFindCriteriaInterface $filter, ListSortDTO $sort): Query
+    public function findByFilter(ToFindCriteriaInterface $filter): Query
     {
         $qb = $this->createQueryBuilder('task');
         $criteria = $filter->getFilterCriteria();
         foreach ($criteria as $field => $value) {
             $qb->andWhere($qb->expr()->eq('task.' . $field, ':' . $field))
                 ->setParameter($field, $value);
-        }
-
-        if (!empty($sort->getSortField())) {
-            $qb->addOrderBy($sort->getSortField(), $sort->getSortOrder());
         }
 
         return $qb->getQuery();

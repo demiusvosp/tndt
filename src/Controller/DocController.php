@@ -15,13 +15,14 @@ use App\Form\Type\Doc\EditDocType;
 use App\Form\Type\Doc\NewDocType;
 use App\Repository\DocRepository;
 use App\Service\ProjectManager;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class DocController extends AbstractController
 {
-    private const TASK_PER_PAGE = 50;
+    private const DOC_PER_PAGE = 50;
 
     private $translator;
     private $docRepository;
@@ -37,13 +38,19 @@ class DocController extends AbstractController
         $this->projectManager = $projectManager;
     }
 
-    public function list(Request $request)
+    public function list(Request $request, PaginatorInterface $paginator)
     {
         $project = $this->projectManager->getCurrentProject($request);
 
+        $docs = $paginator->paginate(
+            $this->docRepository->findByFilter(['suffix' => $project->getSuffix()]),
+            $request->query->getInt('page', 1),
+            self::DOC_PER_PAGE
+        );
+
         return $this->render(
             'doc/list.html.twig',
-            ['project' => $project]
+            ['project' => $project, 'docs' => $docs]
         );
     }
 

@@ -11,6 +11,7 @@ namespace App\Repository;
 use App\Entity\Doc;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NoResultException;
+use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
 
 class DocRepository extends ServiceEntityRepository implements NoEntityRepositoryInterface
@@ -61,6 +62,18 @@ class DocRepository extends ServiceEntityRepository implements NoEntityRepositor
         }
 
         return $this->findBy($criteria, ['updatedAt' => 'desc'], $limit);
+    }
+
+    public function findByFilter(array $filter): Query
+    {
+        $qb = $this->createQueryBuilder('doc');
+
+        foreach ($filter as $field => $value) {
+            $qb->andWhere($qb->expr()->eq('doc.' . $field, ':' . $field))
+                ->setParameter($field, $value);
+        }
+
+        return $qb->getQuery();
     }
 
 }
