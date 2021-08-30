@@ -121,7 +121,7 @@ class DocController extends AbstractController
         $project = $this->projectManager->getCurrentProject($request);
         $em = $this->getDoctrine()->getManager();
         $doc = $this->docRepository->getBySlug($request->get('slug'));
-        if (!$doc || $doc->getSuffix() !== $project) {
+        if (!$doc || $doc->getSuffix() !== $project->getSuffix()) {
             throw $this->createNotFoundException($this->translator->trans('doc.not_found'));
         }
 

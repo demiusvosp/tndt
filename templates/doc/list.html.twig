@@ -24,12 +24,17 @@
                     <tr>
                         <td>
                             <a class="invisible_link" href="{{ path('doc.index', doc.getUrlParams) }}">
-                                {{ doc.no }}
+                                <span class="{{ doc.isArchived ? 'text-muted' }}">
+                                    {{ doc.no }}
+                                </span>
                             </a>
                         </td>
                         <td>
                             <a class="invisible_link" href="{{ path('doc.index', doc.getUrlParams) }}">
-                                {{ doc.caption(160) }}
+                                <span class="{{ doc.isArchived ? 'text-muted' }}">
+                                    {{ doc.caption(160) }}
+                                </span>
+                                {% if doc.isArchived %}<span class="label label-default">{{ 'archived'|trans }}</span>{% endif %}
                             </a>
                         </td>
                         <td>{{ doc.createdAt|ago }}</td>
