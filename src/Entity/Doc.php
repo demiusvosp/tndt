@@ -221,7 +221,7 @@ class Doc implements NoInterface
     public function getCaption(?int $limit = null): string
     {
         if ($limit && mb_strlen($this->caption) > $limit) {
-            return mb_strcut($this->caption, 0, $limit-3) . '...';
+            return mb_substr($this->caption, 0, $limit-3) . '...';
         }
 
         return $this->caption;
@@ -251,7 +251,7 @@ class Doc implements NoInterface
     public function getAbstract(): string
     {
         if (empty($this->abstract)) {
-            return mb_strcut($this->body, 0, self::ABSTRACT_FROM_BODY_LIMIT) . '...';
+            return mb_substr($this->body, 0, self::ABSTRACT_FROM_BODY_LIMIT) . '...';
         }
         return $this->abstract;
     }

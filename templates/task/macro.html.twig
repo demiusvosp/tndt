@@ -30,17 +30,6 @@
     {% endif %}
 {% endmacro %}
 
-{% macro smallTable(tasks) %}
-    {% import _self as this %}
-    <ul class="list-unstyled">
-        {% for task in tasks %}
-            <li>
-                <b>{{ this.badge(task) }}</b> - {{ this.caption(task, 160) }}
-            </li>
-        {% endfor %}
-    </ul>
-{% endmacro %}
-
 {% macro table(tasks) %}
     {% import _self as this %}
     <table class="table table-condensed">

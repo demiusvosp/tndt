@@ -183,7 +183,7 @@ class Task implements NoInterface
     public function getCaption(?int $limit = null): string
     {
         if ($limit && mb_strlen($this->caption) > $limit) {
-            return mb_strcut($this->caption, 0, $limit-3) . '...';
+            return mb_substr($this->caption, 0, $limit-3) . '...';
         }
 
         return $this->caption;

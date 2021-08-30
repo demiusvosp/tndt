@@ -1,12 +1,12 @@
 {% macro caption(doc, limit = null) %}
-    <a class="invisible_link" href="{{ path('doc.index', {'docId': doc.docId}) }}">
+    <a class="invisible_link" href="{{ path('doc.index', doc.getUrlParams) }}">
         {{ doc.caption(limit) }}
     </a>
 {% endmacro %}
 
 {% macro badge(doc, withName = false, link = false) %}
     {% if link %}
-        <a class="invisible_link" href="{{ path('doc.index', {'docId': doc.docId}) }}">
+        <a class="invisible_link" href="{{ path('doc.index', doc.getUrlParams) }}">
     {% endif %}
     <span {{ doc.isArchived ? 'class="text-muted"' }}>
         <i class="far fa-file-alt"></i>
