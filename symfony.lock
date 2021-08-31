@@ -129,6 +129,9 @@
     "monolog/monolog": {
         "version": "1.25.1"
     },
+    "nikic/php-parser": {
+        "version": "v4.12.0"
+    },
     "ocramius/package-versions": {
         "version": "1.5.1"
     },
@@ -205,6 +208,9 @@
     "symfony/dependency-injection": {
         "version": "v4.3.5"
     },
+    "symfony/deprecation-contracts": {
+        "version": "v2.4.0"
+    },
     "symfony/doctrine-bridge": {
         "version": "v4.3.6"
     },
@@ -274,6 +280,15 @@
     },
     "symfony/intl": {
         "version": "v4.4.27"
+    },
+    "symfony/maker-bundle": {
+        "version": "1.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "1.0",
+            "ref": "fadbfe33303a76e25cb63401050439aa9b1a9c7f"
+        }
     },
     "symfony/mime": {
         "version": "v4.3.5"

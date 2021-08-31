@@ -1,0 +1,4 @@
+security:
+  password_hashers:
+    App\Entity\User:
+      cost: 4

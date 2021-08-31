@@ -7,6 +7,8 @@ parameters:
     app.version: 0.1
     app.support_url: http://tasks.demius.ru/p/tndt
 
+    mail.sender_user: service@tasks.demius.ru
+
 services:
     # default configuration for services in *this* file
     _defaults:

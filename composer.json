@@ -37,9 +37,9 @@
         "twig/markdown-extra": "^3.3"
     },
     "require-dev": {
-        "roave/security-advisories": "dev-latest"
-        ,
+        "roave/security-advisories": "dev-latest",
         "symfony/debug-pack": "^1.0",
+        "symfony/maker-bundle": "^1.33",
         "symfony/var-dumper": "4.4.*"
     },
     "config": {

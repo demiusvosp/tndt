@@ -7,10 +7,15 @@ about:
     controller: App\Controller\DashboardController::about
 
 #Auth
-#login:
-#    path: /auth/login
+app.login:
+    path: /auth/login
+app.logout:
+    path: /auth/logout
 
 #User
+user.profile:
+    path: /user/profile
+    controller: App\Controller\UserController::profile
 
 #Projects
 project.index:
