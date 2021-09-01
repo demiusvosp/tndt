@@ -9,8 +9,10 @@ about:
 #Auth
 app.login:
     path: /auth/login
+    controller: App\Controller\AuthController:login
 app.logout:
     path: /auth/logout
+    controller: App\Controller\AuthController:logout
 
 #User
 user.profile:

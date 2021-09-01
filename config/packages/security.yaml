@@ -23,11 +23,11 @@ security:
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication
             form_login:
-                login_path: login
-                check_path: login
+                login_path: app.login
+                check_path: app.login
 
             logout:
-                path: logout
+                path: app.logout
                 target: home
             guard:
                 authenticators:

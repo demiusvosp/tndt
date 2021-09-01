@@ -1,24 +1,36 @@
-{% extends 'base.html.twig' %}
+{% extends 'auth/base.html.twig' %}
 
-{% block title %}Log in!{% endblock %}
+{% block login_box_msg %}
+    {{ 'Login'|trans }}
+{% endblock %}
 
-{% block body %}
-<form method="post">
+{% block login_box_error %}
     {% if error %}
         <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
     {% endif %}
+{% endblock %}
 
+{% block login_form %}
+<form method="post">
     {% if app.user %}
         <div class="mb-3">
             You are logged in as {{ app.user.username }}, <a href="{{ path('app.login') }}">Logout</a>
         </div>
     {% endif %}
 
-    <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-    <label for="inputUsername">Username</label>
-    <input type="text" value="{{ last_username }}" name="username" id="inputUsername" class="form-control" autocomplete="username" required autofocus>
-    <label for="inputPassword">Password</label>
-    <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
+    <div class="form-group has-feedback">
+        <input type="text" name="username" id="inputUsername" class="form-control" placeholder="{{ 'Username'|trans({}, 'AdminLTEBundle') }}" value="{{ last_username|default('') }}">
+        <label for="inputUsername">
+            <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+        </label>
+    </div>
+
+    <div class="form-group has-feedback">
+        <input name="password" type="password" id="inputPassword" class="form-control" placeholder="{{ 'Password'|trans({}, 'AdminLTEBundle') }}">
+        <label for="inputPassword">
+            <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+        </label>
+    </div>
 
     <input type="hidden" name="_csrf_token"
            value="{{ csrf_token('authenticate') }}"
@@ -27,16 +39,33 @@
     {#
         Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
         See https://symfony.com/doc/current/security/remember_me.html
-
-        <div class="checkbox mb-3">
-            <label>
-                <input type="checkbox" name="_remember_me"> Remember me
-            </label>
+        <div class="form-group">
+            <input id="remember_me" name="_remember_me" type="checkbox">
+            <label for="remember_me">{{ 'Remember Me'|trans({}, 'AdminLTEBundle') }}</label>
         </div>
     #}
 
-    <button class="btn btn-lg btn-primary" type="submit">
-        Sign in
-    </button>
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary btn-block">{{ 'Sign In'|trans({}, 'AdminLTEBundle') }}</button>
+    </div>
 </form>
+{% endblock %}
+
+{% block login_social_auth %}
+    {# Пока не реализуем #}
+{% endblock %}
+
+{% block login_actions %}
+{# @TODO когда будет майлер, - реализовтаь эти роуты #}
+{#    {% if 'adminlte_password_reset'|route_alias != 'adminlte_password_reset' %}#}
+{#        <a href="{{ path('adminlte_password_reset'|route_alias) }}">#}
+{#            {{ 'I forgot my password'|trans({}, 'AdminLTEBundle') }}#}
+{#        </a>#}
+{#        <br>#}
+{#    {% endif %}#}
+{#    {% if 'adminlte_registration'|route_alias != 'adminlte_registration' %}#}
+{#        <a href="{{ path('adminlte_registration'|route_alias) }}" class="text-center">#}
+{#            {{ 'Register a new account'|trans({}, 'AdminLTEBundle') }}#}
+{#        </a>#}
+{#    {% endif %}#}
 {% endblock %}

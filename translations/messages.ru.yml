@@ -42,6 +42,7 @@ doc:
     label: Обновлен
 Edit: Редактировать
 Edit_project: Настроить проект
+Login: Войти
 breadcrumb:
   dashboard.about: О системе
   doc:

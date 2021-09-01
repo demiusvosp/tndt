@@ -28,8 +28,8 @@ class UserMenuBuilderSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-//            NavbarUserEvent::class => ['onShowUser', 100],
-//            SidebarUserEvent::class => ['onShowUser', 100],
+            NavbarUserEvent::class => ['onShowUser', 100],
+            SidebarUserEvent::class => ['onShowUser', 100],
         ];
     }
 
@@ -46,7 +46,8 @@ class UserMenuBuilderSubscriber implements EventSubscriberInterface
 
         $userMenu = new UserModel();
         $userMenu->setName($user->getUsername())
-            ->setId($user->getId());
+            ->setId($user->getId())
+            ->setMemberSince($user->getCreatedAt());
 
         $event->setUser($userMenu);
     }

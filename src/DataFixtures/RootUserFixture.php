@@ -10,6 +10,8 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class RootUserFixture extends Fixture implements FixtureGroupInterface
 {
+    private const ROOT_PASSWORD = 'root';
+
     private UserPasswordEncoderInterface $passwordEncoder;
 
     public function __construct(UserPasswordEncoderInterface $passwordEncoder)
@@ -29,7 +31,7 @@ class RootUserFixture extends Fixture implements FixtureGroupInterface
         $root->setEmail('');
         $root->setEnabled(true);
         $root->setRoles([User::ROLE_ROOT]);
-        $root->setPassword($this->passwordEncoder->encodePassword($root, 'root'));
+        $root->setPassword($this->passwordEncoder->encodePassword($root, self::ROOT_PASSWORD));
         $manager->persist($root);
 
         $manager->flush();
