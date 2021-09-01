@@ -15,9 +15,10 @@ elif [[ $1 == 'update' ]]; then
         exit -1
 
     fi
-  
+elif [[ $1 == 'dump' ]]; then
+    docker exec tndt_mysql_1 sh -c 'exec mysqldump -uroot -p"$MYSQL_ROOT_PASSWORD" "$DB_NAME"' > ./var/dumps/database.sql
 else
-    echo "Usage: ./db_schema.sh validate|update"
+    echo "Usage: ./db_schema.sh validate|update|dump"
   
 fi
 
