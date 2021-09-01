@@ -1,10 +1,12 @@
 {% extends '@AdminLTE/layout/default-layout.html.twig' %}
 
 {% block title %}TnDT{% endblock %}
-{% block logo_mini %}TnDT{% endblock %}
-{% block logo_large %}TnDT{% endblock %}
+{% block logo_mini %}<b>T</b>&<b>DT</b>{% endblock %}
+{% block logo_large %}<b>Tsak</b>&<b>DocTracker</b>{% endblock %}
 {% block stylesheets %}
 {#    {{ parent() }}#}
+    <link type="image/x-icon" rel="shortcut icon" href="{{ asset('build/images/favicon.ico') }}">
+    <link rel="icon" type="image/png" href="{{ asset('build/images/favicon.png') }}" />
     {{ encore_entry_link_tags('app') }}
 {% endblock %}
 {% block javascripts %}

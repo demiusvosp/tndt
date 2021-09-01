@@ -9,6 +9,9 @@ import './bootstrap.js';
 // Собственно сам js
 console.log('running');
 
+// $(document).on('expanded.pushMenu', function(event) { console.log('sidebar expanded'); });
+// $(document).on('collapsed.pushMenu', function(event) { console.log('sidebar collapsed'); });
+
 /**
  * Autoupdate - small form will submited on change any field
  */
