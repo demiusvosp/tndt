@@ -45,9 +45,9 @@ class UserMenuBuilderSubscriber implements EventSubscriberInterface
         }
 
         $userMenu = new UserModel();
-        $userMenu->setName($user->getUsername())
-            ->setId($user->getId())
-            ->setMemberSince($user->getCreatedAt());
+        $userMenu->setUsername($user->getUsername())
+            ->setName($user->getName())
+            ->setId($user->getId());
 
         $event->setUser($userMenu);
     }

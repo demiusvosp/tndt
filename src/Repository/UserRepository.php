@@ -45,9 +45,15 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
                 $qb->expr()->eq('u.username', 'login'),
                 $qb->expr()->eq('u.email', 'login')
             ))
+            ->andWhere($qb->expr()->not('u.locked'))
             ->setParameter('login', $usernameOrEmail);
 
         return $qb->getQuery()->getOneOrNullResult();
+    }
+
+    public function getByUsername($username)
+    {
+        return $this->findOneBy(['username' => $username]);
     }
 
     // /**

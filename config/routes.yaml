@@ -18,6 +18,18 @@ app.logout:
 user.profile:
     path: /user/profile
     controller: App\Controller\UserController::profile
+user.index:
+    path: /user/{username<[\w\d.-_]+>}
+    controller: App\Controller\UserController::index
+user.list:
+    path: /user/list
+    controller: App\Controller\UserController::list
+user.create:
+    path: /user/create
+    controller: App\Controller\UserController::create
+user.edit:
+    path: /user/{username<[\w\d.-_]+>}/edit
+    controller: App\Controller\UserController::edit
 
 #Projects
 project.index:

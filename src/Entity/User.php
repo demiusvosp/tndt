@@ -28,15 +28,20 @@ class User implements UserInterface, Serializable
     protected int $id;
 
     /**
-     * @ORM\Column(type="string", length=180, unique=true)
+     * @ORM\Column(type="string", length=80, unique=true)
      */
     protected string $username;
+
+    /**
+     * @ORM\Column(type="string", length=80)
+     */
+    protected string $name = '';
 
     /**
      * @ORM\Column(type="string", length=255, unique=true)
      * @Assert\Email()
      */
-    protected string $email;
+    protected string $email = '';
 
     /**
      * @ORM\Column(type="json")
@@ -52,7 +57,7 @@ class User implements UserInterface, Serializable
     /**
      * @ORM\Column(type="boolean")
      */
-    protected bool $enabled;
+    protected bool $locked = false;
 
     /**
      * @var \DateTime
@@ -64,7 +69,7 @@ class User implements UserInterface, Serializable
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    protected DateTime $lastLogin;
+    protected ?DateTime $lastLogin = null;
 
     /**
      * @return int
@@ -89,6 +94,24 @@ class User implements UserInterface, Serializable
     public function setUsername(string $username): User
     {
         $this->username = $username;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->name ?? $this->username ?? $this->email;
+    }
+
+    /**
+     * @param string $name
+     * @return User
+     */
+    public function setName(string $name): User
+    {
+        $this->name = $name;
         return $this;
     }
 
@@ -129,6 +152,26 @@ class User implements UserInterface, Serializable
     }
 
     /**
+     * @param string $role
+     * @return $this
+     */
+    public function addRole(string $role): User
+    {
+        $this->roles = array_unique(array_merge($this->roles, [$role]));
+        return $this;
+    }
+
+    /**
+     * @param string $role
+     * @return $this
+     */
+    public function removeRole(string $role): User
+    {
+        $this->roles = array_diff($this->roles, [$role]);
+        return $this;
+    }
+
+    /**
      * @return string
      */
     public function getPassword(): string
@@ -149,25 +192,28 @@ class User implements UserInterface, Serializable
     /**
      * @return bool
      */
-    public function isEnabled(): bool
+    public function isLocked(): bool
     {
-        return $this->enabled;
+        return $this->locked;
     }
 
     /**
-     * @param bool $enabled
+     * @param bool $locked
      * @return User
      */
-    public function setEnabled(bool $enabled): User
+    public function setLocked(bool $locked): User
     {
-        $this->enabled = $enabled;
+        if($locked) {
+            $this->removeRole(self::ROLE_USER);
+        }
+        $this->locked = $locked;
         return $this;
     }
 
     /**
-     * @return DateTime
+     * @return DateTime|null
      */
-    public function getLastLogin(): DateTime
+    public function getLastLogin(): ?DateTime
     {
         return $this->lastLogin;
     }
@@ -220,7 +266,7 @@ class User implements UserInterface, Serializable
             $this->id,
             $this->username,
             $this->password,
-            $this->enabled
+            $this->locked
         ));
     }
 
@@ -230,7 +276,7 @@ class User implements UserInterface, Serializable
             $this->id,
             $this->username,
             $this->password,
-            $this->enabled,
+            $this->locked,
         ] = unserialize($data, array('allowed_classes' => false));
     }
 }

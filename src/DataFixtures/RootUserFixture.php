@@ -28,8 +28,9 @@ class RootUserFixture extends Fixture implements FixtureGroupInterface
     {
         $root = new User();
         $root->setUsername('root');
+        $root->setName('root');
         $root->setEmail('');
-        $root->setEnabled(true);
+        $root->setLocked(false);
         $root->setRoles([User::ROLE_ROOT]);
         $root->setPassword($this->passwordEncoder->encodePassword($root, self::ROOT_PASSWORD));
         $manager->persist($root);

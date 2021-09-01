@@ -2,6 +2,18 @@ About: О системе
 Abstract: Синопсис
 Archive: Убрать в архив
 archived: в архиве
+breadcrumb:
+  dashboard.about: О системе
+  doc:
+    create: Новый...
+  home: Главная
+  projects: Проекты
+  project:
+    edit: Настройки
+    tasks: Задачи
+    docs: Документы
+  task:
+    create: Новая...
 Close: Закрыть
 closed: закрыта
 confirm:
@@ -42,19 +54,9 @@ doc:
     label: Обновлен
 Edit: Редактировать
 Edit_project: Настроить проект
+Edit_user: Редактировать профиль
+locked: заблокирован
 Login: Войти
-breadcrumb:
-  dashboard.about: О системе
-  doc:
-    create: Новый...
-  home: Главная
-  projects: Проекты
-  project:
-    edit: Настройки
-    tasks: Задачи
-    docs: Документы
-  task:
-    create: Новая...
 menu:
   dashboard.about: О системе
   doc:
@@ -72,6 +74,7 @@ menu:
   task:
     create: Создать задачу
     edit: Редактирование
+Never_logined: Ни разу не входил
 Project: Проект
 Projects: Проекты
 project:
@@ -94,6 +97,7 @@ project:
     label: Cуффикс
     help: Суффикс является уникальным идентификатором проекта, используемым задачами, документами для идентификации, являясь ссылкой в текстах документации и описаниях задач. После создания его уже нельзя будет изменить. Должен содержать от одного до 8 букв или цифр без пробелов.
   show_archive: Показать архивные
+Profile: Профиль
 search: Поиск
 Support: Поддержка
 Tasks: Задачи
@@ -119,5 +123,18 @@ task:
     label: Обновлена
 Task_list: Список задач
 UpdatedAt: Обновлена
+user:
+  createdAt:
+    label: Зарегистрирован
+  email:
+    label: E-mail
+    help: Опционален. По нему можно авторизовываться, для проектов где не приняты логины/ники
+  name:
+    label: Имя пользователя
+    help: Опционален. Для проектов где приняты формальные имена
+  lastLogin:
+    label: Заходил
+  username:
+    label: Имя пользователя
 Users: Пользователи
 Unarchive: Вернуть из архива

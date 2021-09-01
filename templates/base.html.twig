@@ -52,6 +52,23 @@
         </li>
     {% endif %}
 {% endblock %}
+{% block navbar_messages %}
+{% endblock %}
+{% block navbar_notifications %}
+{% endblock %}
+{% block navbar_tasks %}
+{% endblock %}
+{% block navbar_user %}
+    {% include 'user/navbar_menu.html.twig' %}
+{% endblock %}
+{% block navbar_end %}{% endblock %}
+{% block navbar_control_sidebar_toggle %}
+    {% if admin_lte_context.control_sidebar is defined and admin_lte_context.control_sidebar is not empty %}
+        <li>
+            <a href="#" data-toggle="control-sidebar"><i class="fas fa-cogs"></i></a>
+        </li>
+    {% endif %}
+{% endblock %}
 
 {% block footer %}
     {% include 'footer.html.twig' %}
