@@ -15,10 +15,10 @@
         {% block box_body %}
             <table class="table table-condensed">
                 <tr>
-                    <th>{{ knp_pagination_sortable(docs, 'doc.No'|trans, 'doc.no') }}</th>
-                    <th>{{ knp_pagination_sortable(docs, 'doc.caption.label'|trans, 'doc.caption') }}</th>
-                    <th>{{ knp_pagination_sortable(docs, 'doc.created.label'|trans, 'doc.createdAt') }}</th>
-                    <th>{{ knp_pagination_sortable(docs, 'doc.updated.label'|trans, 'doc.updatedAt') }}</th>
+                    <th>{{ knp_pagination_sortable(docs, 'doc.No'|trans, 't.no') }}</th>
+                    <th>{{ knp_pagination_sortable(docs, 'doc.caption.label'|trans, 't.caption') }}</th>
+                    <th>{{ knp_pagination_sortable(docs, 'doc.created.label'|trans, 't.createdAt') }}</th>
+                    <th>{{ knp_pagination_sortable(docs, 'doc.updated.label'|trans, 't.updatedAt') }}</th>
                 </tr>
                 {%  for doc in docs %}
                     <tr>

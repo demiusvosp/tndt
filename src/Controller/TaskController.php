@@ -8,6 +8,7 @@ namespace App\Controller;
 
 use App\Entity\Project;
 use App\Entity\Task;
+use App\Exception\CurrentProjectNotFoundException;
 use App\Form\DTO\Task\ListFilterDTO;
 use App\Form\DTO\Task\NewTaskDTO;
 use App\Form\Type\Task\EditTaskType;
@@ -18,6 +19,7 @@ use App\Service\ProjectManager;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 
@@ -25,9 +27,9 @@ class TaskController extends AbstractController
 {
     private const TASK_PER_PAGE = 50;
 
-    private $translator;
-    private $taskRepository;
-    private $projectManager;
+    private TranslatorInterface $translator;
+    private TaskRepository $taskRepository;
+    private ProjectManager $projectManager;
 
     public function __construct(
         TranslatorInterface $translator,
@@ -39,12 +41,14 @@ class TaskController extends AbstractController
         $this->projectManager = $projectManager;
     }
 
-    public function list(Request $request, PaginatorInterface $paginator)
+    public function list(Request $request, PaginatorInterface $paginator): Response
     {
         $project = $this->projectManager->getCurrentProject($request);
+        if (!$project) {
+            throw new CurrentProjectNotFoundException();
+        }
 
-        $filterData = new ListFilterDTO();
-        $filterData->setProject($project->getSuffix());
+        $filterData = new ListFilterDTO($project->getSuffix());
         $filterForm = $this->createForm(ListFilterType::class, $filterData);
 
         $filterForm->handleRequest($request);
@@ -53,7 +57,7 @@ class TaskController extends AbstractController
         }
 
         $tasks = $paginator->paginate(
-            $this->taskRepository->findByFilter($filterData),
+            $this->taskRepository->getQueryByFilter($filterData),
             $request->query->getInt('page', 1),
             self::TASK_PER_PAGE
         );
@@ -64,7 +68,7 @@ class TaskController extends AbstractController
         );
     }
 
-    public function index(Request $request)
+    public function index(Request $request): Response
     {
         $task = $this->taskRepository->getByTaskId($request->get('taskId'));
         if (!$task) {
@@ -74,7 +78,7 @@ class TaskController extends AbstractController
         return $this->render('task/index.html.twig', ['task' => $task]);
     }
 
-    public function create(Request $request, ProjectManager $projectManager)
+    public function create(Request $request, ProjectManager $projectManager): Response
     {
         $formData = new NewTaskDTO();
         $currentProject = $projectManager->getCurrentProject($request);
@@ -101,7 +105,7 @@ class TaskController extends AbstractController
         return $this->render('task/create.html.twig', ['form' => $form->createView()]);
     }
 
-    public function edit(Request $request)
+    public function edit(Request $request): Response
     {
         $task = $this->taskRepository->getByTaskId($request->get('taskId'));
         if (!$task) {
@@ -122,7 +126,7 @@ class TaskController extends AbstractController
         return $this->render('task/edit.html.twig', ['task' => $task, 'form' => $form->createView()]);
     }
 
-    public function close(Request $request)
+    public function close(Request $request): Response
     {
         $task = $this->taskRepository->getByTaskId($request->get('taskId'));
         if (!$task) {

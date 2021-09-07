@@ -1,11 +1,13 @@
 About: О системе
 Abstract: Синопсис
+Administrate: Администрирование
 Archive: Убрать в архив
 archived: в архиве
 breadcrumb:
   dashboard.about: О системе
   doc:
     create: Новый...
+    edit: Редактирование
   home: Главная
   projects: Проекты
   project:
@@ -14,10 +16,11 @@ breadcrumb:
     docs: Документы
   task:
     create: Новая...
+    edit: Редактирование
   user:
-    home: Пользователи
+    create: Новый...
     edit: Редактирование профиля
-
+    home: Пользователи
 Close: Закрыть
 closed: закрыта
 confirm:
@@ -28,6 +31,7 @@ ControlPanel: Панель управления
 Create: Создать
 Create_doc: Создать документ
 Create_task: Создать задачу
+Create_user: Создать пользователя
 CreatedAt: Создана
 dashboard: Обзор
 Docs: Документы
@@ -78,6 +82,7 @@ menu:
   task:
     create: Создать задачу
     edit: Редактирование
+  users: Пользователи
 Never_logined: Ни разу не входил
 Project: Проект
 Projects: Проекты
@@ -128,6 +133,8 @@ task:
 Task_list: Список задач
 UpdatedAt: Обновлена
 user:
+  controls:
+    label: Действия
   createdAt:
     label: Зарегистрирован
   edit: Редактирование профиля
@@ -152,4 +159,5 @@ user:
   username:
     label: Имя пользователя
 Users: Пользователи
+User_list: Список польователей
 Unarchive: Вернуть из архива

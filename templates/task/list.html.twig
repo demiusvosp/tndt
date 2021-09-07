@@ -24,10 +24,10 @@
 {#            </nav>#}
             <table class="table table-condensed">
                 <tr>
-                    <th>{{ knp_pagination_sortable(tasks, 'task.No'|trans, 'task.no') }}</th>
-                    <th>{{ knp_pagination_sortable(tasks, 'task.caption.label'|trans, 'task.caption') }}</th>
-                    <th>{{ knp_pagination_sortable(tasks, 'task.created.label'|trans, 'task.createdAt') }}</th>
-                    <th>{{ knp_pagination_sortable(tasks, 'task.updated.label'|trans, 'task.updatedAt') }}</th>
+                    <th>{{ knp_pagination_sortable(tasks, 'task.No'|trans, 't.no') }}</th>
+                    <th>{{ knp_pagination_sortable(tasks, 'task.caption.label'|trans, 't.caption') }}</th>
+                    <th>{{ knp_pagination_sortable(tasks, 'task.created.label'|trans, 't.createdAt') }}</th>
+                    <th>{{ knp_pagination_sortable(tasks, 'task.updated.label'|trans, 't.updatedAt') }}</th>
                 </tr>
                 {%  for task in tasks %}
                     <tr>

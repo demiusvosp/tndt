@@ -18,22 +18,17 @@ class ListFilterDTO implements ToFindCriteriaInterface
     /** @var bool */
     private $addClosed = true;
 
+    public function __construct($projectSuffix)
+    {
+        $this->project = $projectSuffix;
+    }
+
     /**
      * @return string
      */
     public function getProject(): string
     {
         return $this->project;
-    }
-
-    /**
-     * @param string $project
-     * @return ListFilterDTO
-     */
-    public function setProject(string $project): ListFilterDTO
-    {
-        $this->project = $project;
-        return $this;
     }
 
     /**

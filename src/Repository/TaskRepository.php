@@ -9,14 +9,14 @@ declare(strict_types=1);
 namespace App\Repository;
 
 use App\Entity\Task;
-use App\Form\ToFindCriteriaInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NoResultException;
-use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
 
 class TaskRepository extends ServiceEntityRepository implements NoEntityRepositoryInterface
 {
+    use ByFilterCriteriaQueryTrait;
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Task::class);
@@ -58,22 +58,6 @@ class TaskRepository extends ServiceEntityRepository implements NoEntityReposito
         }
 
         return $this->findBy($criteria, ['updatedAt' => 'desc'], $limit);
-    }
-
-    /**
-     * @param ToFindCriteriaInterface $filter
-     * @return Query
-     */
-    public function findByFilter(ToFindCriteriaInterface $filter): Query
-    {
-        $qb = $this->createQueryBuilder('task');
-        $criteria = $filter->getFilterCriteria();
-        foreach ($criteria as $field => $value) {
-            $qb->andWhere($qb->expr()->eq('task.' . $field, ':' . $field))
-                ->setParameter($field, $value);
-        }
-
-        return $qb->getQuery();
     }
 
 }

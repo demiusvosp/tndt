@@ -10,6 +10,8 @@ namespace App\Controller;
 
 use App\Entity\Doc;
 use App\Entity\Project;
+use App\Exception\CurrentProjectNotFoundException;
+use App\Form\DTO\Doc\ListFilterDTO;
 use App\Form\DTO\Doc\NewDocDTO;
 use App\Form\Type\Doc\EditDocType;
 use App\Form\Type\Doc\NewDocType;
@@ -18,15 +20,16 @@ use App\Service\ProjectManager;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class DocController extends AbstractController
 {
     private const DOC_PER_PAGE = 50;
 
-    private $translator;
-    private $docRepository;
-    private $projectManager;
+    private TranslatorInterface $translator;
+    private DocRepository $docRepository;
+    private ProjectManager $projectManager;
 
     public function __construct(
         TranslatorInterface $translator,
@@ -38,12 +41,16 @@ class DocController extends AbstractController
         $this->projectManager = $projectManager;
     }
 
-    public function list(Request $request, PaginatorInterface $paginator)
+    public function list(Request $request, PaginatorInterface $paginator): Response
     {
         $project = $this->projectManager->getCurrentProject($request);
+        if (!$project) {
+            throw new CurrentProjectNotFoundException();
+        }
+        $filterData = new ListFilterDTO($project->getSuffix());
 
         $docs = $paginator->paginate(
-            $this->docRepository->findByFilter(['suffix' => $project->getSuffix()]),
+            $this->docRepository->getQueryByFilter($filterData),
             $request->query->getInt('page', 1),
             self::DOC_PER_PAGE
         );
@@ -54,9 +61,12 @@ class DocController extends AbstractController
         );
     }
 
-    public function index(Request $request)
+    public function index(Request $request): Response
     {
         $project = $this->projectManager->getCurrentProject($request);
+        if (!$project) {
+            throw new CurrentProjectNotFoundException();
+        }
         $doc = $this->docRepository->getBySlug($request->get('slug'));
         if (!$doc || $doc->getSuffix() !== $project->getSuffix()) {
             throw $this->createNotFoundException($this->translator->trans('doc.not_found'));
@@ -65,7 +75,7 @@ class DocController extends AbstractController
         return $this->render('doc/index.html.twig', ['doc' => $doc]);
     }
 
-    public function create(Request $request, ProjectManager $projectManager)
+    public function create(Request $request, ProjectManager $projectManager): Response
     {
         $formData = new NewDocDTO();
         $currentProject = $projectManager->getCurrentProject($request);
@@ -94,9 +104,12 @@ class DocController extends AbstractController
         return $this->render('doc/create.html.twig', ['form' => $form->createView()]);
     }
 
-    public function edit(Request $request)
+    public function edit(Request $request): Response
     {
         $project = $this->projectManager->getCurrentProject($request);
+        if (!$project) {
+            throw new CurrentProjectNotFoundException();
+        }
         $doc = $this->docRepository->getBySlug($request->get('slug'));
         if (!$doc || $doc->getSuffix() !== $project->getSuffix()) {
             throw $this->createNotFoundException($this->translator->trans('doc.not_found'));
@@ -116,9 +129,12 @@ class DocController extends AbstractController
         return $this->render('doc/edit.html.twig', ['doc' => $doc, 'form' => $form->createView()]);
     }
 
-    public function archive(Request $request)
+    public function archive(Request $request): Response
     {
         $project = $this->projectManager->getCurrentProject($request);
+        if (!$project) {
+            throw new CurrentProjectNotFoundException();
+        }
         $em = $this->getDoctrine()->getManager();
         $doc = $this->docRepository->getBySlug($request->get('slug'));
         if (!$doc || $doc->getSuffix() !== $project->getSuffix()) {

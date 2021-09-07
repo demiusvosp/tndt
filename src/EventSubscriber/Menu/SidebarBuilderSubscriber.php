@@ -8,12 +8,14 @@ declare(strict_types=1);
 
 namespace App\EventSubscriber\Menu;
 
+use App\Entity\User;
 use App\Repository\DocRepository;
 use App\Repository\TaskRepository;
 use App\Service\ProjectManager;
 use KevinPapst\AdminLTEBundle\Event\SidebarMenuEvent;
 use KevinPapst\AdminLTEBundle\Model\MenuItemModel;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Security\Core\Security;
 
 class SidebarBuilderSubscriber implements EventSubscriberInterface
 {
@@ -22,12 +24,19 @@ class SidebarBuilderSubscriber implements EventSubscriberInterface
     private ProjectManager $projectManager;
     private TaskRepository $taskRepository;
     private DocRepository $docRepository;
+    private Security $security;
 
-    public function __construct(ProjectManager $projectManager, TaskRepository $taskRepository, DocRepository $docRepository)
+    public function __construct(
+        ProjectManager $projectManager,
+        TaskRepository $taskRepository,
+        DocRepository $docRepository,
+        Security $security
+    )
     {
         $this->projectManager = $projectManager;
         $this->taskRepository = $taskRepository;
         $this->docRepository = $docRepository;
+        $this->security = $security;
     }
 
     public static function getSubscribedEvents(): array
@@ -157,6 +166,16 @@ class SidebarBuilderSubscriber implements EventSubscriberInterface
                 'project.edit',
                 ['suffix' => $currentProject->getSuffix()],
                 'fa fa-cogs'
+            ));
+        }
+
+        if($this->security->isGranted(User::ROLE_ROOT)) {
+            $event->addItem(new MenuItemModel(
+                'users',
+                'menu.users',
+                'user.list',
+                [],
+                'fa fa-users'
             ));
         }
 

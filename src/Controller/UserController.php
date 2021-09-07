@@ -10,9 +10,11 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\DTO\User\EditUserDTO;
+use App\Form\DTO\User\ListFilterDTO;
 use App\Form\Type\User\AdminEditProfileType;
 use App\Form\Type\User\EditProfileType;
 use App\Repository\UserRepository;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -30,6 +32,10 @@ class UserController extends AbstractController
         $this->userRepository = $userRepository;
     }
 
+    /**
+     * @param Request $request
+     * @return Response
+     */
     public function profile(Request $request): Response
     {
         $user = $this->getUser();
@@ -37,7 +43,12 @@ class UserController extends AbstractController
         return $this->render('user\profile.html.twig', ['user' => $user]);
     }
 
-    public function index(Request $request)
+    /**
+     * @IsGranted("ROLE_USER")
+     * @param Request $request
+     * @return Response
+     */
+    public function index(Request $request): Response
     {
         if ($request->query->get('username')) {
             $user = $this->userRepository->getByUsername($request->get('username'));
@@ -51,12 +62,19 @@ class UserController extends AbstractController
         return $this->render('user\index.html.twig', ['user' => $user, 'isSelf' => ($user === $this->getUser())]);
     }
 
-    public function list(Request $request)
+    public function list(Request $request, PaginatorInterface $paginator): Response
     {
+        $filterData = new ListFilterDTO();
+        $users = $paginator->paginate(
+            $this->userRepository->getQueryByFilter($filterData),
+            $request->query->getInt('page', 1),
+            self::USER_PER_PAGE
+        );
 
+        return $this->render('user/list.html.twig', ['users' => $users]);
     }
 
-    public function create(Request $request)
+    public function create(Request $request): Response
     {
 
     }
@@ -64,7 +82,7 @@ class UserController extends AbstractController
     public function edit(
         Request $request,
         AuthorizationCheckerInterface $authorizationChecker,
-        UserPasswordEncoderInterface $passwordEncoder)
+        UserPasswordEncoderInterface $passwordEncoder): Response
     {
         if ($authorizationChecker->isGranted(User::ROLE_ROOT)) {
             $user = $this->userRepository->getByUsername($request->get('username'));
