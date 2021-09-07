@@ -11,3 +11,8 @@ task:
   create.success: Задача создана
   close.success: Задача закрыта
   edit.success: Задача отредактирована
+user:
+  edit:
+    password_changed: Пароль изменен
+    success: Пользователь отредактирован
+  self_edit.success: Ваш профиль отредактирован

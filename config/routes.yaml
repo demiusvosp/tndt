@@ -19,7 +19,7 @@ user.profile:
     path: /user/profile
     controller: App\Controller\UserController::profile
 user.index:
-    path: /user/{username<[\w\d.-_]+>}
+    path: /user/{username<[\w\d\.-]+>}
     controller: App\Controller\UserController::index
 user.list:
     path: /user/list
@@ -28,7 +28,7 @@ user.create:
     path: /user/create
     controller: App\Controller\UserController::create
 user.edit:
-    path: /user/{username<[\w\d.-_]+>}/edit
+    path: /user/{username<[\w\d\.-]+>}/edit
     controller: App\Controller\UserController::edit
 
 #Projects

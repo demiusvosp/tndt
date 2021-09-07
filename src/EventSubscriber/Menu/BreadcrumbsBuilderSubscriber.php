@@ -10,6 +10,7 @@ namespace App\EventSubscriber\Menu;
 
 use App\Repository\DocRepository;
 use App\Repository\TaskRepository;
+use App\Repository\UserRepository;
 use App\Service\ProjectManager;
 use KevinPapst\AdminLTEBundle\Event\BreadcrumbMenuEvent;
 use KevinPapst\AdminLTEBundle\Event\SidebarMenuEvent;
@@ -23,12 +24,19 @@ class BreadcrumbsBuilderSubscriber implements EventSubscriberInterface
     private ProjectManager $projectManager;
     private TaskRepository $taskRepository;
     private DocRepository $docRepository;
+    private UserRepository $userRepository;
 
-    public function __construct(ProjectManager $projectManager, TaskRepository $taskRepository, DocRepository $docRepository)
+    public function __construct(
+        ProjectManager $projectManager,
+        TaskRepository $taskRepository,
+        DocRepository $docRepository,
+        UserRepository $userRepository
+    )
     {
         $this->projectManager = $projectManager;
         $this->taskRepository = $taskRepository;
         $this->docRepository = $docRepository;
+        $this->userRepository = $userRepository;
     }
 
     public static function getSubscribedEvents(): array
@@ -144,6 +152,37 @@ class BreadcrumbsBuilderSubscriber implements EventSubscriberInterface
                 new MenuItemModel('project.create', 'breadcrumb.project.create', 'project.create', [])
             );
             $event->addItem($projectsMenu);
+        }
+
+        if (preg_match('/^user./', $route)) {
+            $userMenu = new MenuItemModel(
+                'user.home',
+                'breadcrumb.user.home',
+                'user.list',
+                [],
+                'fa fa-users'
+            );
+            if ($username = $event->getRequest()->get('username')) {
+                $user = $this->userRepository->getByUsername($username);
+                if ($user) {
+                    $currentUserMenu = new MenuItemModel(
+                        'user.index',
+                        $user->getUsername(),
+                        'user.index',
+                        ['username' => $username],
+                        'fa fa-user'
+                    );
+                    $currentUserMenu->addChild(new MenuItemModel(
+                        'user.edit',
+                        'breadcrumb.user.edit',
+                        'user.edit',
+                        ['username' => $username],
+                    ));
+                    $userMenu->addChild($currentUserMenu);
+                }
+            }
+
+            $event->addItem($userMenu);
         }
 
         $event->addItem(new MenuItemModel(
