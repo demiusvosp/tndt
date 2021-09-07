@@ -8,6 +8,7 @@
         "php": "7.4.*",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "ext-json": "*",
         "ext-mbstring": "*",
         "easycorp/easy-log-handler": "^1.0",
         "erusev/parsedown": "^1.7",
@@ -34,8 +35,7 @@
         "tetranz/select2entity-bundle": "^3.1",
         "twig/extensions": "^1.5",
         "twig/extra-bundle": "^3.3",
-        "twig/markdown-extra": "^3.3",
-        "ext-json": "*"
+        "twig/markdown-extra": "^3.3"
     },
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^3.4",

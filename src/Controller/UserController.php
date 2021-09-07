@@ -17,11 +17,13 @@ use App\Form\Type\User\EditProfileType;
 use App\Form\Type\User\NewUserType;
 use App\Repository\UserRepository;
 use Knp\Component\Pager\PaginatorInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class UserController extends AbstractController
 {
@@ -32,17 +34,6 @@ class UserController extends AbstractController
     public function __construct(UserRepository $userRepository)
     {
         $this->userRepository = $userRepository;
-    }
-
-    /**
-     * @param Request $request
-     * @return Response
-     */
-    public function profile(Request $request): Response
-    {
-        $user = $this->getUser();
-
-        return $this->render('user\profile.html.twig', ['user' => $user]);
     }
 
     /**
@@ -64,6 +55,12 @@ class UserController extends AbstractController
         return $this->render('user\index.html.twig', ['user' => $user, 'isSelf' => ($user === $this->getUser())]);
     }
 
+    /**
+     * @IsGranted("ROLE_ROOT")
+     * @param Request $request
+     * @param PaginatorInterface $paginator
+     * @return Response
+     */
     public function list(Request $request, PaginatorInterface $paginator): Response
     {
         $filterData = new ListFilterDTO();
@@ -76,6 +73,12 @@ class UserController extends AbstractController
         return $this->render('user/list.html.twig', ['users' => $users]);
     }
 
+    /**
+     * @IsGranted("ROLE_ROOT")
+     * @param Request $request
+     * @param UserPasswordEncoderInterface $passwordEncoder
+     * @return Response
+     */
     public function create(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
     {
         $formData = new NewUserDTO();
@@ -97,6 +100,13 @@ class UserController extends AbstractController
         return $this->render('user/create.html.twig', ['form' => $form->createView()]);
     }
 
+    /**
+     * @IsGranted("ROLE_USER")
+     * @param Request $request
+     * @param AuthorizationCheckerInterface $authorizationChecker
+     * @param UserPasswordEncoderInterface $passwordEncoder
+     * @return Response
+     */
     public function edit(
         Request $request,
         AuthorizationCheckerInterface $authorizationChecker,
@@ -104,9 +114,11 @@ class UserController extends AbstractController
     {
         if ($authorizationChecker->isGranted(User::ROLE_ROOT)) {
             $user = $this->userRepository->findByUsername($request->get('username'));
-
         } else {
             $user = $this->getUser();
+            if ($user->getUsername() !== $request->get('username')) {
+                throw new AccessDeniedException('User can edit only self profile');
+            }
         }
 
         if (!$user) {
