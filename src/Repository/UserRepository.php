@@ -43,54 +43,26 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     {
         $qb = $this->createQueryBuilder('u');
         $qb->select('u');
-        $qb->where($qb->expr()->eq('u.username', 'login'));
+        $qb->where($qb->expr()->eq('u.username', ':login'))
+            ->setParameter('login', $usernameOrEmail);
         /*
          * так как в наших user case важнее возможность ставить нескольким пользователям одинаковый email, а
          * авторизоваться через него не особо надо, убираем такую возможность, с идеей потом это как-то совместить
          * (например разрешить email вместо username или с отметкой какой email разрешен для входа)
          */
 //        $qb->where($qb->expr()->orX(
-//            $qb->expr()->eq('u.username', 'login'),
-//            $qb->expr()->eq('u.email', 'login')
+//            $qb->expr()->eq('u.username', ':login'),
+//            $qb->expr()->eq('u.email', ':login')
 //        ));
-        $qb->andWhere($qb->expr()->not('u.locked'))
-            ->setParameter('login', $usernameOrEmail);
+        $qb->andWhere($qb->expr()->neq('u.locked', true));
 
         return $qb->getQuery()->getOneOrNullResult();
     }
 
-    public function getByUsername($username)
+    public function findByUsername($username): ?User
     {
         return $this->findOneBy(['username' => $username]);
     }
 
-    // /**
-    //  * @return User[] Returns an array of User objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('u')
-            ->andWhere('u.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('u.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?User
-    {
-        return $this->createQueryBuilder('u')
-            ->andWhere('u.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 
 }

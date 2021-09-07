@@ -163,7 +163,7 @@ class BreadcrumbsBuilderSubscriber implements EventSubscriberInterface
                 'fa fa-users'
             );
             if ($username = $event->getRequest()->get('username')) {
-                $user = $this->userRepository->getByUsername($username);
+                $user = $this->userRepository->findByUsername($username);
                 if ($user) {
                     $currentUserMenu = new MenuItemModel(
                         'user.index',

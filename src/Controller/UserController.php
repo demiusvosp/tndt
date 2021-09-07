@@ -53,7 +53,7 @@ class UserController extends AbstractController
     public function index(Request $request): Response
     {
         if ($request->get('username')) {
-            $user = $this->userRepository->getByUsername($request->get('username'));
+            $user = $this->userRepository->findByUsername($request->get('username'));
         } else {
             $user = $this->getUser();
         }
@@ -103,7 +103,7 @@ class UserController extends AbstractController
         UserPasswordEncoderInterface $passwordEncoder): Response
     {
         if ($authorizationChecker->isGranted(User::ROLE_ROOT)) {
-            $user = $this->userRepository->getByUsername($request->get('username'));
+            $user = $this->userRepository->findByUsername($request->get('username'));
 
         } else {
             $user = $this->getUser();
