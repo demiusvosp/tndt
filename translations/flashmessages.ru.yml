@@ -15,4 +15,5 @@ user:
   edit:
     password_changed: Пароль изменен
     success: Пользователь отредактирован
+  create.success: Пользователь создан
   self_edit.success: Ваш профиль отредактирован

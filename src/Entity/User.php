@@ -38,7 +38,7 @@ class User implements UserInterface, Serializable
     protected string $name = '';
 
     /**
-     * @ORM\Column(type="string", length=255, unique=true)
+     * @ORM\Column(type="string", length=255)
      * @Assert\Email()
      */
     protected string $email = '';
@@ -100,9 +100,20 @@ class User implements UserInterface, Serializable
     /**
      * @return string
      */
-    public function getName(): string
+    public function getName($strictName = false): string
     {
-        return $this->name ?? $this->username ?? $this->email;
+        if ($this->name) {
+            return $this->name;
+        }
+        if (!$strictName) {
+            if ($this->username) {
+                return $this->username;
+            }
+            if($this->email) {
+                return $this->email;
+            }
+        }
+        return '';
     }
 
     /**
@@ -138,7 +149,10 @@ class User implements UserInterface, Serializable
      */
     public function getRoles(): array
     {
-        return $this->roles;
+        $roles = $this->roles;
+        $roles[] = User::ROLE_USER;
+
+        return array_unique($roles);
     }
 
     /**

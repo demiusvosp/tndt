@@ -42,12 +42,18 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     public function loadUserByUsername($usernameOrEmail)
     {
         $qb = $this->createQueryBuilder('u');
-        $qb->select('u')
-            ->where($qb->expr()->orX(
-                $qb->expr()->eq('u.username', 'login'),
-                $qb->expr()->eq('u.email', 'login')
-            ))
-            ->andWhere($qb->expr()->not('u.locked'))
+        $qb->select('u');
+        $qb->where($qb->expr()->eq('u.username', 'login'));
+        /*
+         * так как в наших user case важнее возможность ставить нескольким пользователям одинаковый email, а
+         * авторизоваться через него не особо надо, убираем такую возможность, с идеей потом это как-то совместить
+         * (например разрешить email вместо username или с отметкой какой email разрешен для входа)
+         */
+//        $qb->where($qb->expr()->orX(
+//            $qb->expr()->eq('u.username', 'login'),
+//            $qb->expr()->eq('u.email', 'login')
+//        ));
+        $qb->andWhere($qb->expr()->not('u.locked'))
             ->setParameter('login', $usernameOrEmail);
 
         return $qb->getQuery()->getOneOrNullResult();

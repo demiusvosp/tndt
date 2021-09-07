@@ -22,16 +22,14 @@ class EditUserDTO
 
     /**
      * @var string
-     * @Assert\NotBlank()
      */
-    private string $name;
+    private string $name = '';
 
     /**
      * @var string
-     * @Assert\NotBlank()
      * @Assert\Email()
      */
-    private string $email;
+    private string $email = '';
 
     /**
      * @var string|null

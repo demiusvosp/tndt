@@ -11,8 +11,10 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\DTO\User\EditUserDTO;
 use App\Form\DTO\User\ListFilterDTO;
+use App\Form\DTO\User\NewUserDTO;
 use App\Form\Type\User\AdminEditProfileType;
 use App\Form\Type\User\EditProfileType;
+use App\Form\Type\User\NewUserType;
 use App\Repository\UserRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -50,7 +52,7 @@ class UserController extends AbstractController
      */
     public function index(Request $request): Response
     {
-        if ($request->query->get('username')) {
+        if ($request->get('username')) {
             $user = $this->userRepository->getByUsername($request->get('username'));
         } else {
             $user = $this->getUser();
@@ -74,9 +76,25 @@ class UserController extends AbstractController
         return $this->render('user/list.html.twig', ['users' => $users]);
     }
 
-    public function create(Request $request): Response
+    public function create(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
     {
+        $formData = new NewUserDTO();
+        $form = $this->createForm(NewUserType::class, $formData);
 
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()) {
+            $user = new User();
+            $formData->fillProfile($user);
+            $user->setPassword($passwordEncoder->encodePassword($user, $formData->getPassword()));
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($user);
+            $em->flush();
+            $this->addFlash('success', 'user.create.success');
+            return $this->redirectToRoute('user.index', ['username' => $user->getUsername()]);
+        }
+
+        return $this->render('user/create.html.twig', ['form' => $form->createView()]);
     }
 
     public function edit(

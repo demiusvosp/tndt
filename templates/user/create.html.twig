@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'Create_user'|trans }}{% endblock %}
+{% block page_title%}
+{% endblock %}
+{% block page_subtitle %}{% endblock %}
+
+{% block page_content %}
+    {{ form_start(form) }}
+    {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
+        {% block box_title %}
+            {{ 'Create_user'|trans }}
+        {% endblock %}
+        {% block box_body %}
+            {{ form_row(form.username) }}
+            {{ form_row(form.name) }}
+            {{ form_row(form.email) }}
+            {{ form_row(form.password) }}
+            <hr>
+            <button type="submit" class="btn btn-success">{{ 'Create'|trans }}</button>
+        {% endblock %}
+    {% endembed %}
+    {{ form_end(form) }}
+{% endblock %}
