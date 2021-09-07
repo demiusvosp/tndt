@@ -22,16 +22,18 @@
                             <th>{{ knp_pagination_sortable(users, 'user.email.label'|trans, 't.email') }}</th>
                             <th>{{ knp_pagination_sortable(users, 'user.createdAt.label'|trans, 't.createdAt') }}</th>
                             <th>{{ knp_pagination_sortable(users, 'user.lastLogin.label'|trans, 't.lastLogin') }}</th>
-                            <th>{{ 'user.controls.label' }}</th>
+                            <th>{{ 'user.controls.label'|trans }}</th>
                         </tr>
                         {%  for user in users %}
                             <tr>
-                                <td>{{ user.id }}</td>
+                                <td><a href="{{ path('user.index', {'username': user.username}) }}" class="invisible_link">
+                                        {{ user.id }}
+                                </a></td>
                                 <td>{{ mUser.badge(user) }}</td>
                                 <td>{{ user.name }}</td>
                                 <td>{{ user.email }}</td>
                                 <td>{{ user.createdAt|ago }}</td>
-                                <td>{{ user.lastLogin|ago }}</td>{# localizeddate('medium', 'medium') #}
+                                <td>{{ user.lastLogin|ago }}</td>
                                 <td><a class="btn btn-default btn-sm" href="{{ path('user.edit', {'username': user.username}) }}"><i class="fa fa-edit"></i></a></td>
                             </tr>
                         {% endfor %}

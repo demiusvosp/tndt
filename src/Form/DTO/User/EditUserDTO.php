@@ -84,12 +84,12 @@ class EditUserDTO
     }
 
     /**
-     * @param string $name
+     * @param string|null $name
      * @return EditUserDTO
      */
-    public function setName(string $name): EditUserDTO
+    public function setName(?string $name): EditUserDTO
     {
-        $this->name = $name;
+        $this->name = (string) $name;
         return $this;
     }
 
@@ -102,12 +102,12 @@ class EditUserDTO
     }
 
     /**
-     * @param string $email
+     * @param string|null $email
      * @return EditUserDTO
      */
-    public function setEmail(string $email): EditUserDTO
+    public function setEmail(?string $email): EditUserDTO
     {
-        $this->email = $email;
+        $this->email = (string) $email;
         return $this;
     }
 
@@ -119,7 +119,7 @@ class EditUserDTO
         return $this->password;
     }
 
-    /**
+    /** заказ 108266 время 20:49
      * @param string|null $password
      * @return EditUserDTO
      */

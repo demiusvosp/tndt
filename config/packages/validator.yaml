@@ -6,3 +6,8 @@ framework:
         # For instance, basic validation constraints will be inferred from Doctrine's metadata.
         auto_mapping:
             App\Entity\: []
+
+services:
+    Happyr\Validator\Constraint\EntityExistValidator:
+        arguments: [ '@doctrine.orm.entity_manager' ]
+        tags: [ 'validator.constraint_validator' ]

@@ -20,7 +20,7 @@ class AdminEditProfileType extends EditProfileType
             ->add(
                 'locked',
                 CheckboxType::class,
-                ['label' => 'user.locked.label', 'help' => 'user.locked.help']
+                ['required' => false, 'label' => 'user.locked.label', 'help' => 'user.locked.help']
             );
     }
 }

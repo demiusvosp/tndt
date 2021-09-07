@@ -9,3 +9,13 @@ services:
     #Twig\Extensions\DateExtension: null # заменил на knp-time-bundle умеющим в локализацию
     Twig\Extensions\IntlExtension: null
     Twig\Extensions\TextExtension: null
+
+    App\Service\Twig\TimeExtension:
+        class: App\Service\Twig\TimeExtension
+        arguments: ['@time.datetime_formatter', '@translator' ]
+        tags:
+            - { name: twig.extension }
+
+    time.twig.extension.time:
+        alias: App\Service\Twig\TimeExtension
+        public: true
