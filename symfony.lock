@@ -105,9 +105,6 @@
     "doctrine/sql-formatter": {
         "version": "1.1.1"
     },
-    "easycorp/easy-log-handler": {
-        "version": "v1.0.9"
-    },
     "erusev/parsedown": {
         "version": "1.7.4"
     },
@@ -143,6 +140,9 @@
     },
     "monolog/monolog": {
         "version": "1.25.1"
+    },
+    "myclabs/php-enum": {
+        "version": "1.8.3"
     },
     "nikic/php-parser": {
         "version": "v4.12.0"
@@ -228,9 +228,6 @@
         "files": [
             "config/packages/dev/debug.yaml"
         ]
-    },
-    "symfony/debug-pack": {
-        "version": "v1.0.7"
     },
     "symfony/dependency-injection": {
         "version": "v4.3.5"
@@ -340,9 +337,6 @@
     "symfony/options-resolver": {
         "version": "v4.3.11"
     },
-    "symfony/orm-pack": {
-        "version": "v1.0.7"
-    },
     "symfony/polyfill-intl-icu": {
         "version": "v1.23.0"
     },
@@ -366,9 +360,6 @@
     },
     "symfony/polyfill-php81": {
         "version": "v1.23.0"
-    },
-    "symfony/profiler-pack": {
-        "version": "v1.0.4"
     },
     "symfony/property-access": {
         "version": "v4.3.11"
@@ -449,9 +440,6 @@
             "config/routes/dev/twig.yaml",
             "templates/base.html.twig"
         ]
-    },
-    "symfony/twig-pack": {
-        "version": "v1.0.0"
     },
     "symfony/validator": {
         "version": "4.3",
