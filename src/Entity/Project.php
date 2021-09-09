@@ -6,6 +6,9 @@
  */
 namespace App\Entity;
 
+use App\Security\UserRolesEnum;
+use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -14,16 +17,16 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Class Project entity
  *
  * @ORM\Entity(repositoryClass="App\Repository\ProjectRepository")
+ * @ORM\Table(
+ *     name="project",
+ *     indexes={
+ *          @ORM\Index(name="isArchived", columns={"is_archived"}),
+ *          @ORM\Index(name="isPublic", columns={"is_public"})
+ *     }
+ * )
  */
 class Project
 {
-    /**
-     * @var integer
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="NONE")
-     */
-    private $id = 0;
-
     /**
      * @var string
      * @ORM\Id
@@ -31,7 +34,7 @@ class Project
      * @Assert\Length(min=1, max=8)
      * @Assert\Regex("/^\w+$/")
      */
-    private $suffix = '';
+    private string $suffix = '';
 
     /**
      * @var string
@@ -39,48 +42,57 @@ class Project
      * @Assert\NotBlank()
      * @Assert\Length(min=1, max=255)
      */
-    private $name = '';
+    private string $name = '';
 
     /**
      * @var string
      * @ORM\Column(type="string", length=100)
      */
-    private $icon = '';
+    private string $icon = '';
 
     /**
-     * @var \DateTime
+     * @var DateTime
      * @ORM\Column(type="datetime")
      * @Gedmo\Timestampable(on="create")
      */
-    private $createdAt;
+    private DateTime $createdAt;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      * @ORM\Column(type="datetime")
      * @Gedmo\Timestampable(on="update")
      */
-    private $updatedAt;
+    private DateTime $updatedAt;
 
     /**
-     * @var boolean
+     * @var bool
      * @ORM\Column (type="boolean")
      */
-    private $isArchived = false;
+    private bool $isArchived = false;
+
+    /**
+     * @var bool
+     * @ORM\Column (type="boolean")
+     */
+    private bool $isPublic = true;
+
+    /**
+     * @var ProjectUser[]
+     * @ORM\OneToMany (targetEntity="App\Entity\ProjectUser", mappedBy="project")
+     */
+    private $projectUsers;
 
     /**
      * @var string
      * @ORM\Column(type="text")
      * @Assert\Length(max=1000)
      */
-    private $description = '';
+    private string $description = '';
 
 
-    /**
-     * @return int
-     */
-    public function getId(): int
+    public function __construct()
     {
-        return $this->id;
+        $this->projectUsers = new ArrayCollection();
     }
 
     /**
@@ -143,17 +155,17 @@ class Project
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
-    public function getCreatedAt(): \DateTime
+    public function getCreatedAt(): DateTime
     {
         return $this->createdAt;
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
-    public function getUpdatedAt(): \DateTime
+    public function getUpdatedAt(): DateTime
     {
         return $this->updatedAt;
     }
@@ -166,10 +178,87 @@ class Project
         return $this->isArchived;
     }
 
+    /**
+     * Отправить проект в архив
+     */
     public function doArchive(): void
     {
         $this->isArchived = true;
         //@TODO послать событие закрытия проекта, чтобы все могли проверить
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPublic(): bool
+    {
+        return $this->isPublic;
+    }
+
+    /**
+     * @param bool $isPublic
+     * @return Project
+     */
+    public function setIsPublic(bool $isPublic): Project
+    {
+        $this->isPublic = $isPublic;
+        return $this;
+    }
+
+    /**
+     * @return User|null
+     */
+    public function getPm(): ?User
+    {
+        foreach ($this->projectUsers as $projectUser) {
+            if ($projectUser->getRole() === UserRolesEnum::ROLE_PM()) {
+                return $projectUser->getUser();
+            }
+        }
+        return null;
+    }
+
+    /**
+     * @param User $pm
+     * @return Project
+     */
+    public function setPm(User $pm): Project
+    {
+        $exist = false;
+        foreach ($this->projectUsers as $projectUser) {
+            if($projectUser->getRole()->is(UserRolesEnum::ROLE_PM())) {
+                $projectUser->setUser($pm);
+                $exist = true;
+            }
+        }
+        if(!$exist) {
+            $projectUser = new ProjectUser();
+            $projectUser->setProject($this);
+            $projectUser->setUser($pm);
+            $projectUser->setRole(UserRolesEnum::ROLE_PM());
+
+            $this->projectUsers->add($projectUser);
+            // вопрос надо ли для него вызывать persist и где?
+        }
+        return $this;
+    }
+
+    /**
+     * @return ProjectUser[]
+     */
+    public function getProjectUsers(): array
+    {
+        return $this->projectUsers;
+    }
+
+    /**
+     * @param ProjectUser[] $projectUsers
+     * @return Project
+     */
+    public function setProjectUsers(array $projectUsers): Project
+    {
+        $this->projectUsers = $projectUsers;
+        return $this;
     }
 
     /**

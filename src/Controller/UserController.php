@@ -16,6 +16,7 @@ use App\Form\Type\User\AdminEditProfileType;
 use App\Form\Type\User\EditProfileType;
 use App\Form\Type\User\NewUserType;
 use App\Repository\UserRepository;
+use App\Security\UserRolesEnum;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -112,7 +113,7 @@ class UserController extends AbstractController
         AuthorizationCheckerInterface $authorizationChecker,
         UserPasswordEncoderInterface $passwordEncoder): Response
     {
-        if ($authorizationChecker->isGranted(User::ROLE_ROOT)) {
+        if ($authorizationChecker->isGranted(UserRolesEnum::ROLE_ROOT)) {
             $user = $this->userRepository->findByUsername($request->get('username'));
         } else {
             $user = $this->getUser();
@@ -126,7 +127,7 @@ class UserController extends AbstractController
         }
         $formData = new EditUserDTO($user);
 
-        if ($authorizationChecker->isGranted(User::ROLE_ROOT)) {
+        if ($authorizationChecker->isGranted(UserRolesEnum::ROLE_ROOT)) {
             $form = $this->createForm(AdminEditProfileType::class, $formData);
             if ($user === $this->getUser()) {
                 // не дадим root поля для выстрела себе в ногу

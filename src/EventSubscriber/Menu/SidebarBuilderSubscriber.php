@@ -11,6 +11,7 @@ namespace App\EventSubscriber\Menu;
 use App\Entity\User;
 use App\Repository\DocRepository;
 use App\Repository\TaskRepository;
+use App\Security\UserRolesEnum;
 use App\Service\ProjectManager;
 use KevinPapst\AdminLTEBundle\Event\SidebarMenuEvent;
 use KevinPapst\AdminLTEBundle\Model\MenuItemModel;
@@ -169,7 +170,7 @@ class SidebarBuilderSubscriber implements EventSubscriberInterface
             ));
         }
 
-        if($this->security->isGranted(User::ROLE_ROOT)) {
+        if($this->security->isGranted(UserRolesEnum::ROLE_ROOT)) {
             $event->addItem(new MenuItemModel(
                 'users',
                 'menu.users',

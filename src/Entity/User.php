@@ -3,7 +3,9 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use App\Security\UserRolesEnum;
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Serializable;
@@ -16,10 +18,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class User implements UserInterface, Serializable
 {
-    public const ROLE_USER = 'ROLE_USER';
-    public const ROLE_ROOT = 'ROLE_ROOT';
-
-
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -44,11 +42,6 @@ class User implements UserInterface, Serializable
     protected string $email = '';
 
     /**
-     * @ORM\Column(type="json")
-     */
-    protected array $roles = [];
-
-    /**
      * The hashed password
      * @ORM\Column(type="string")
      */
@@ -60,7 +53,18 @@ class User implements UserInterface, Serializable
     protected bool $locked = false;
 
     /**
-     * @var \DateTime
+     * @ORM\Column(type="json")
+     */
+    protected array $roles = [];
+
+    /**
+     * @var ProjectUser[]
+     * @ORM\OneToMany (targetEntity="App\Entity\ProjectUser", mappedBy="user")
+     */
+    protected $projectUsers;
+
+    /**
+     * @var DateTime
      * @ORM\Column(type="datetime")
      * @Gedmo\Timestampable(on="create")
      */
@@ -70,6 +74,11 @@ class User implements UserInterface, Serializable
      * @ORM\Column(type="datetime", nullable=true)
      */
     protected ?DateTime $lastLogin = null;
+
+    public function __construct()
+    {
+        $this->projectUsers = new ArrayCollection();
+    }
 
     /**
      * @return int
@@ -145,12 +154,51 @@ class User implements UserInterface, Serializable
     }
 
     /**
+     * @return string
+     */
+    public function getPassword(): string
+    {
+        return $this->password;
+    }
+
+    /**
+     * @param string $hashedPassword
+     * @return User
+     */
+    public function setPassword(string $hashedPassword): User
+    {
+        $this->password = $hashedPassword;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isLocked(): bool
+    {
+        return $this->locked;
+    }
+
+    /**
+     * @param bool $locked
+     * @return User
+     */
+    public function setLocked(bool $locked): User
+    {
+        if($locked) {
+            $this->removeRole(UserRolesEnum::ROLE_USER);
+        }
+        $this->locked = $locked;
+        return $this;
+    }
+
+    /**
      * @return array
      */
     public function getRoles(): array
     {
         $roles = $this->roles;
-        $roles[] = User::ROLE_USER;
+        $roles[] = UserRolesEnum::ROLE_USER;
 
         return array_unique($roles);
     }
@@ -186,41 +234,20 @@ class User implements UserInterface, Serializable
     }
 
     /**
-     * @return string
+     * @return ProjectUser[]
      */
-    public function getPassword(): string
+    public function getProjectUsers(): array
     {
-        return $this->password;
+        return $this->projectUsers;
     }
 
     /**
-     * @param string $hashedPassword
+     * @param ProjectUser[] $projectUsers
      * @return User
      */
-    public function setPassword(string $hashedPassword): User
+    public function setProjectUsers(array $projectUsers): User
     {
-        $this->password = $hashedPassword;
-        return $this;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isLocked(): bool
-    {
-        return $this->locked;
-    }
-
-    /**
-     * @param bool $locked
-     * @return User
-     */
-    public function setLocked(bool $locked): User
-    {
-        if($locked) {
-            $this->removeRole(self::ROLE_USER);
-        }
-        $this->locked = $locked;
+        $this->projectUsers = $projectUsers;
         return $this;
     }
 

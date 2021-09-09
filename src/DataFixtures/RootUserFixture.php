@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\User;
+use App\Security\UserRolesEnum;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -31,7 +32,7 @@ class RootUserFixture extends Fixture implements FixtureGroupInterface
         $root->setName('root');
         $root->setEmail('');
         $root->setLocked(false);
-        $root->setRoles([User::ROLE_ROOT]);
+        $root->setRoles([UserRolesEnum::ROLE_ROOT]);
         $root->setPassword($this->passwordEncoder->encodePassword($root, self::ROOT_PASSWORD));
         $manager->persist($root);
 
