@@ -64,5 +64,19 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         return $this->findOneBy(['username' => $username]);
     }
 
+    public function getPopularUsers(int $limit, $projectSuffix = null)
+    {
+        $qb = $this->createQueryBuilder('u')
+            ->where('u.locked = false')
+            ->setMaxResults($limit);
 
+        if($projectSuffix) {
+            $qb->join('u.projectUser', 'pu', 'WITH', 'pu.project_suffix = :suffix')
+                ->andWhere($qb->expr()->isNotNull('pu.role'));
+        }
+
+        $qb->orderBy('u.lastLogin', 'DESC');
+
+        return $qb->getQuery()->getResult();
+    }
 }

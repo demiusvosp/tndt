@@ -37,8 +37,6 @@ services:
             - { name: doctrine.event_listener, event: prePersist }
 
     # Various Services
-    App\Service\ProjectManager:
-        class: App\Service\ProjectManager
-        arguments:
-            - '@App\Repository\ProjectRepository'
+    project_manager:
+        alias: App\Services\ProjectManager
 

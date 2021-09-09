@@ -10,9 +10,11 @@ namespace App\Controller;
 
 use App\Repository\DocRepository;
 use App\Repository\TaskRepository;
+use App\Repository\UserRepository;
 use App\Service\ProjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 
 class DashboardController extends AbstractController
@@ -26,20 +28,22 @@ class DashboardController extends AbstractController
         Request $request,
         ProjectManager $projectManager,
         TaskRepository $taskRepository,
-        DocRepository $docRepository
-    )
+        DocRepository $docRepository,
+        UserRepository $userRepository
+    ): Response
     {
         $projects = $projectManager->getPopularProjectsSnippets(self::PROJECT_LENGTH);
         $tasks = $taskRepository->getPopularTasks(self::TASK_LENGTH);
         $docs = $docRepository->getPopularDocs(self::DOC_LENGTH);
+        $users = $userRepository->getPopularUsers(self::USER_LENGTH);
 
         return $this->render(
             'dashboard/index.html.twig',
-            ['projects' => $projects, 'tasks' => $tasks, 'docs' => $docs]
+            ['projects' => $projects, 'tasks' => $tasks, 'docs' => $docs, 'users' => $users]
         );
     }
 
-    public function about(Request $request)
+    public function about(Request $request): Response
     {
         $about = file_get_contents('../README.md');
 

@@ -197,8 +197,18 @@ class User implements UserInterface, Serializable
      */
     public function getRoles(): array
     {
+        // глобальные роли
         $roles = $this->roles;
-        $roles[] = UserRolesEnum::ROLE_USER;
+
+        // роли в проектах
+        foreach ($this->projectUsers as $projectUser) {
+            $roles[] = $projectUser->getSyntheticRole();
+        }
+
+        // общая роль любого зарегистрированного пользователя, если у него нет более специфичной роли
+        if(count($roles) === 0) {
+            $roles[] = UserRolesEnum::ROLE_USER;
+        }
 
         return array_unique($roles);
     }

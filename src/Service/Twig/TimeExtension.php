@@ -25,13 +25,13 @@ class TimeExtension extends BaseTimeExtension
 
     public function getFilters(): array
     {
-        return array(
+        return [
             new TwigFilter(
                 'ago',
-                array($this, 'diff'),
-                array('is_safe' => array('html'))
+                [$this, 'diff'],
+                ['is_safe' => ['html']]
             ),
-        );
+        ];
     }
 
     public function diff($since = null, $to = null, $locale = null): string

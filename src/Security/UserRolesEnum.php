@@ -39,9 +39,43 @@ class UserRolesEnum extends Enum
         ];
     }
 
-    public function getProjectRoles(): array
+    public static function getProjectRoles(): array
     {
         return [self::ROLE_PM, self::ROLE_STAFF, self::ROLE_VISITOR];
+    }
+
+    public function label(): string
+    {
+        return self::labels()[$this->value];
+    }
+
+    /**
+     * Создает имя роли определяющее, что данная роль пользователя специфична только для конкретного проекта
+     * Например PM проекта ABC не будет ROLE_PM (любого проекта), а определяться как ROLE_PM_ABC
+     *
+     * @param $projectSuffix
+     * @return string
+     */
+    public function getSyntheticRole($projectSuffix): string
+    {
+        if (in_array($this->value, self::getProjectRoles(), true)) {
+            return $this->value . '_' . $projectSuffix;
+        }
+        return $this->value;
+    }
+
+    /**
+     * @param string $syntheticRole
+     * @return array []|[role, project]
+     */
+    public static function explodeSyntheticRole(string $syntheticRole): array
+    {
+        $matches = [];
+        if (preg_match('/^ROLE_([\w]+)_([a-zA-Z0-9]+)$/', $syntheticRole, $matches) && count($matches) === 3) {
+            return [$matches[1], $matches[2]];
+        }
+
+        return [];
     }
 
     public function is($value): bool

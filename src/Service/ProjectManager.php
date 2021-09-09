@@ -17,10 +17,22 @@ class ProjectManager
     /**
      * @var ProjectRepository
      */
-    private $projectRepository;
+    private ProjectRepository $projectRepository;
 
-    private static $loadedProjects = [];
+    /**
+     * Кеш используемых проектов, чтобы не искать их заново если они уже есть.
+     * @TODO Честно говоря сомнительной надобности повторение IM UoW, запросы и так уникальны условиями (а потому не закешируешь), а по PK ищется быстро
+     *      Возможно стоит рассмотреть кеширование между запросами, или вобще отказаться от этого кеша
+     * @var array
+     */
+    private array $loadedProjects = [];
 
+    /**
+     * @var array
+     * Кеш имен проектов по суффиксам.
+     * @TODO вынести в кеш, живущий между запросами
+     */
+    private array $projectNames = [];
 
     public function __construct(ProjectRepository $projectRepository)
     {
@@ -36,7 +48,8 @@ class ProjectManager
         $projects = $this->projectRepository->findBy(['isArchived' => false], ['updatedAt' => 'desc'], $limit);
         /** @var Project $project */
         foreach ($projects as $project) {
-            static::$loadedProjects[$project->getSuffix()] = $project;
+            $this->loadedProjects[$project->getSuffix()] = $project;
+            $this->projectNames[$project->getSuffix()] = $project->getName();
         }
 
         return $projects;
@@ -50,13 +63,14 @@ class ProjectManager
             return null;
         }
 
-        if (isset(static::$loadedProjects[$suffix])) {
-            return static::$loadedProjects[$suffix];
+        if (isset($this->loadedProjects[$suffix])) {
+            return $this->loadedProjects[$suffix];
         }
 
-        static::$loadedProjects[$suffix] = $this->projectRepository->findBySuffix($suffix);
+        $this->loadedProjects[$suffix] = $this->projectRepository->findBySuffix($suffix);
+        $this->projectNames[$suffix] = $this->loadedProjects[$suffix]->getName();
 
-        return static::$loadedProjects[$suffix];
+        return $this->loadedProjects[$suffix];
     }
 
 
@@ -68,11 +82,12 @@ class ProjectManager
         if (is_string($project)) {
             $project = $this->projectRepository->findBySuffix($project);
             if (!$project instanceof Project) {
-                unset(static::$loadedProjects[$project]);
+                unset($this->loadedProjects[$project]);
             }
         }
 
-        static::$loadedProjects[$project->getSuffix()] = $project;
+        $this->loadedProjects[$project->getSuffix()] = $project;
+        $this->projectNames[$project->getSuffix()] = $project->getName();
     }
 
     private function getSuffix(Request $request): ?string
@@ -93,5 +108,22 @@ class ProjectManager
         }
 
         return null;
+    }
+
+    /**
+     * Если нам нужно только имя проекта, без целого объекта
+     * @param string $projectSuffix
+     * @return string
+     */
+    public function getNameBySuffix(string $projectSuffix): string
+    {
+        if (!isset($this->projectNames[$projectSuffix])) {
+            $qb = $this->projectRepository->createQueryBuilder('p');
+            $qb->select('p.name')
+                ->where($qb->expr()->eq('p.suffix', $projectSuffix))
+                ->setMaxResults(1);
+            $this->projectNames[$projectSuffix] = $qb->getQuery()->getScalarResult();
+        }
+        return $this->projectNames[$projectSuffix];
     }
 }

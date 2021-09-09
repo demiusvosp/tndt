@@ -180,12 +180,8 @@ class Task implements NoInterface
     /**
      * @return string
      */
-    public function getCaption(?int $limit = null): string
+    public function getCaption(): string
     {
-        if ($limit && mb_strlen($this->caption) > $limit) {
-            return mb_substr($this->caption, 0, $limit-3) . '...';
-        }
-
         return $this->caption;
     }
 

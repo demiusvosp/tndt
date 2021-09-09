@@ -1,6 +1,6 @@
 {% macro caption(doc, limit = null) %}
     <a class="invisible_link" href="{{ path('doc.index', doc.getUrlParams) }}">
-        {{ doc.caption(limit) }}
+        {{ doc.caption()|u.truncate(limit) }}
     </a>
 {% endmacro %}
 
@@ -13,7 +13,7 @@
         {% import _self as this %}
         {{ doc.docId }}
         {% if withName %}
-            - {{ doc.caption(100) }}
+            - {{ doc.caption|u.truncate(100) }}
             {% if doc.isArchived %}<span class="label label-default">{{ 'archived'|trans }}</span>{% endif %}
         {% endif %}
     </span>
@@ -34,7 +34,7 @@
         {%  for doc in docs %}
             <tr>
                 <td><a class="invisible_link" href="{{ path('doc.index', doc.getUrlParams) }}">{{ doc.no }}</a></td>
-                <td>{{ doc.caption(160) }}</td>
+                <td>{{ doc.caption|u.truncate(160) }}</td>
                 <td>{{ doc.createdAt|ago }}</td>
                 <td>{{ doc.updatedAt|ago }}</td> {# localizeddate('medium', 'medium') #}
             </tr>

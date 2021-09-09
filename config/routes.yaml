@@ -15,9 +15,6 @@ app.logout:
     controller: App\Controller\AuthController:logout
 
 #User
-user.profile:
-    path: /user/profile
-    controller: App\Controller\UserController::profile
 user.list:
     path: /user.managment/list
     controller: App\Controller\UserController::list
@@ -53,7 +50,7 @@ task.list:
     path: /p/{suffix<\w+>}/tasks
     controller: App\Controller\TaskController::list
 task.index:
-    path: /p/{taskId<\w+-\d+>}
+    path: /p/{taskId<\w+\-\d+>}
     controller: App\Controller\TaskController::index
 task.global_create:
     path: /task/create
@@ -62,10 +59,10 @@ task.project_create:
     path: /p/{suffix<\w+>}/task/create
     controller: App\Controller\TaskController::create
 task.edit:
-    path: /p/{taskId<\w+-\d+>}/edit
+    path: /p/{taskId<\w+\-\d+>}/edit
     controller: App\Controller\TaskController::edit
 task.close:
-    path: /p/{taskId<\w+-\d+>}/close
+    path: /p/{taskId<\w+\-\d+>}/close
     controller: App\Controller\TaskController::close
 
 #Docs
@@ -79,11 +76,11 @@ doc.project_create:
     path: /p/{suffix<\w+>}/doc/create
     controller: App\Controller\DocController::create
 doc.index:
-    path: /p/{suffix<\w+>}/doc/{slug<[\w\d-]+>}
+    path: /p/{suffix<\w+>}/doc/{slug<[\w\d\-_]+>}
     controller: App\Controller\DocController::index
 doc.edit:
-    path: /p/{suffix<\w+>}/doc/{slug<[\w\d-]+>}/edit
+    path: /p/{suffix<\w+>}/doc/{slug<[\w\d\-_]+>}/edit
     controller: App\Controller\DocController::edit
 doc.archive:
-    path: /p/{suffix<\w+>}/doc/{slug<[\w\d-]+>}/archive
+    path: /p/{suffix<\w+>}/doc/{slug<[\w\d\-_]+>}/archive
     controller: App\Controller\DocController::archive

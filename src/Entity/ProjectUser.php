@@ -23,10 +23,16 @@ use Symfony\Component\Validator\Constraints as Assert;
 class ProjectUser
 {
     /**
+     * @var string
+     * @ORM\Column (type="string", length=8, nullable="false")
+     */
+    private string $suffix;
+
+    /**
      * @var Project
      * @ORM\Id
      * @ORM\ManyToOne (targetEntity="App\Entity\Project", inversedBy="projectUsers")
-     * @ORM\JoinColumn (name="project_suffix", referencedColumnName="suffix", nullable=false)
+     * @ORM\JoinColumn (name="suffix", referencedColumnName="suffix", nullable=false)
      */
     private Project $project;
 
@@ -87,6 +93,11 @@ class ProjectUser
     public function getRole(): UserRolesEnum
     {
         return new UserRolesEnum($this->role);
+    }
+
+    public function getSyntheticRole(): string
+    {
+        return $this->getRole()->getSyntheticRole($this->suffix);
     }
 
     /**

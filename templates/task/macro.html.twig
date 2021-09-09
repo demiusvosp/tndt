@@ -7,7 +7,7 @@
 {% macro caption(task, limit = null) %}
     {% if task.isClosed() %}<s>{% endif %}
     <a class="invisible_link" href="{{ path('task.index', {'taskId': task.taskId}) }}">
-        {{ task.caption(limit) }}
+        {{ task.caption|u.truncate(limit) }}
     </a>
     {% if task.isClosed() %}</s>{% endif %}
 {% endmacro %}

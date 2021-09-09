@@ -65,23 +65,15 @@
         <div class="col-md-4">
             <section id="latest_users">
                 {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
+                    {% import 'user/macro.html.twig' as mUser %}
                     {% block box_title %}{% trans %}Users{% endtrans %}:{% endblock %}
                     {% block box_body %}
                         <ul class="list-unstyled">
-                            {#                            {% for task in tasks %}#}
-                            <li>
-                                <b>demius</b> - Администратор
-                            </li>
-                            <li>
-                                <b>bezborodiy</b> - Дизайнер
-                            </li>
-                            <li>
-                                <b>alloize</b> - PM проекта PRJ
-                            </li>
-                            <li>
-                                <b>cult</b> - -
-                            </li>
-                            {#                            {% endfor %}#}
+                            {% for user in users %}
+                                <li>
+                                    <b>{{ mUser.badge(user) }}</b> - {{ role_label_list(user.roles)|u.truncate(80) }}
+                                </li>
+                            {% endfor %}
                         </ul>
                     {% endblock %}
                 {% endembed %}
