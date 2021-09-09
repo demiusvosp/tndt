@@ -8,12 +8,16 @@ declare(strict_types=1);
 
 namespace App\Form\Type\Project;
 
-use App\Entity\Project;
+use App\Form\DTO\Project\NewProjectDTO;
+use App\Form\Type\User\UserSelectType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use App\Entity\User;
 
 class NewProjectType extends AbstractType
 {
@@ -33,7 +37,17 @@ class NewProjectType extends AbstractType
             ->add(
                 'icon',
                 TextType::class,
-                ['label' => 'project.icon.label', 'help' => 'project.icon.help']
+                ['required' => false, 'label' => 'project.icon.label', 'help' => 'project.icon.help']
+            )
+            ->add(
+                'pm',
+                UserSelectType::class,
+                ['label' => 'project.pm.label', 'help' => 'project.pm.help']
+            )
+            ->add(
+                'isPublic',
+                CheckboxType::class,
+                ['required' => false, 'label' => 'project.isPublic.label', 'help' => 'project.isPublic.help']
             )
             ->add(
                 'description',
@@ -43,12 +57,13 @@ class NewProjectType extends AbstractType
                     'help' => 'project.description.help',
                     'required' => false,
                     'empty_data' => '',
+                    'attr' => ['rows' => 10],
                 ]
             );
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefault('data_class', Project::class);
+        $resolver->setDefault('data_class', NewProjectDTO::class);
     }
 }

@@ -3,7 +3,10 @@
 namespace App\Repository;
 
 use App\Entity\User;
+use App\Form\ToFindCriteriaInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
@@ -25,16 +28,21 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         parent::__construct($registry, User::class);
     }
 
+    protected function andNotLocking(QueryBuilder $qb)
+    {
+        $qb->andWhere($qb->expr()->neq('u.locked', true));
+    }
+
     /**
      * Used to upgrade (rehash) the user's password automatically over time.
      */
-    public function upgradePassword(UserInterface $user, string $newHashedPassword): void
+    public function upgradePassword(UserInterface $user, string $newEncodedPassword): void
     {
         if (!$user instanceof User) {
             throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', \get_class($user)));
         }
 
-        $user->setPassword($newHashedPassword);
+        $user->setPassword($newEncodedPassword);
         $this->_em->persist($user);
         $this->_em->flush();
     }
@@ -54,7 +62,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 //            $qb->expr()->eq('u.username', ':login'),
 //            $qb->expr()->eq('u.email', ':login')
 //        ));
-        $qb->andWhere($qb->expr()->neq('u.locked', true));
+        $this->andNotLocking($qb);
 
         return $qb->getQuery()->getOneOrNullResult();
     }
@@ -64,7 +72,12 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         return $this->findOneBy(['username' => $username]);
     }
 
-    public function getPopularUsers(int $limit, $projectSuffix = null)
+    /**
+     * @param int $limit
+     * @param string|null $projectSuffix
+     * @return User[]
+     */
+    public function getPopularUsers(int $limit = 5, string $projectSuffix = null): array
     {
         $qb = $this->createQueryBuilder('u')
             ->where('u.locked = false')
@@ -76,6 +89,44 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         }
 
         $qb->orderBy('u.lastLogin', 'DESC');
+
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * @param ToFindCriteriaInterface $filter
+     * @return Query
+     */
+    public function getQueryByFilter(ToFindCriteriaInterface $filter): Query
+    {
+        $qb = $this->createQueryBuilder('t');
+        foreach ($filter->getFilterCriteria() as $field => $value) {
+            $qb->andWhere($qb->expr()->eq('t.' . $field, ':' . $field))
+                ->setParameter($field, $value);
+        }
+        $qb->leftJoin('t.projectUsers', 'pu');
+
+        return $qb->getQuery();
+    }
+
+    /**
+     * @param string $search
+     * @param int $limit
+     * @return User[]
+     */
+    public function searchUser(string $search, int $limit): array
+    {
+        $qb = $this->createQueryBuilder('u');
+        $this->andNotLocking($qb);
+
+        $qb->andWhere(
+            $qb->expr()->orX(
+                $qb->expr()->like('u.username', $search),
+                $qb->expr()->like('u.name', $search),
+                $qb->expr()->like('u.email', $search)
+            )
+        );
+        $qb->setMaxResults($limit);
 
         return $qb->getQuery()->getResult();
     }

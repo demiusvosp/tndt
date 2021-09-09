@@ -78,7 +78,9 @@ class Project
 
     /**
      * @var ProjectUser[]
-     * @ORM\OneToMany (targetEntity="App\Entity\ProjectUser", mappedBy="project")
+     * @ORM\OneToMany (targetEntity="App\Entity\ProjectUser", mappedBy="project", cascade={"all"})
+     * @ORM\JoinColumn (name="suffix", referencedColumnName="suffix")
+     * // , fetch="EAGER" пока не нужно, но напрашивается
      */
     private $projectUsers;
 
@@ -90,8 +92,9 @@ class Project
     private string $description = '';
 
 
-    public function __construct()
+    public function __construct(string $suffix)
     {
+        $this->suffix = $suffix;
         $this->projectUsers = new ArrayCollection();
     }
 
@@ -101,20 +104,6 @@ class Project
     public function getSuffix(): string
     {
         return $this->suffix;
-    }
-
-    /**
-     * @param string $suffix
-     * @return Project
-     */
-    public function setSuffix(string $suffix): Project
-    {
-        if (!empty($this->suffix)) {
-            throw new \DomainException('Нельзя менять суффикс существующему проекту');
-        }
-        $this->suffix = $suffix;
-
-        return $this;
     }
 
     /**
@@ -231,6 +220,7 @@ class Project
                 $exist = true;
             }
         }
+
         if(!$exist) {
             $projectUser = new ProjectUser();
             $projectUser->setProject($this);

@@ -9,7 +9,6 @@ declare(strict_types=1);
 namespace App\Form\Type\Doc;
 
 use App\Entity\Doc;
-use App\Form\DTO\Doc\NewDocDTO;
 use App\Form\Type\Project\ProjectSelectType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;

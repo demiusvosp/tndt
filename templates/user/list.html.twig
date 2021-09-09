@@ -20,6 +20,7 @@
                             <th>{{ knp_pagination_sortable(users, 'user.username.label'|trans, 't.username') }}</th>
                             <th>{{ knp_pagination_sortable(users, 'user.name.label'|trans, 't.name') }}</th>
                             <th>{{ knp_pagination_sortable(users, 'user.email.label'|trans, 't.email') }}</th>
+                            <th>{{ knp_pagination_sortable(users, 'user.roles.label'|trans, 't.roles') }}</th>
                             <th>{{ knp_pagination_sortable(users, 'user.createdAt.label'|trans, 't.createdAt') }}</th>
                             <th>{{ knp_pagination_sortable(users, 'user.lastLogin.label'|trans, 't.lastLogin') }}</th>
                             <th>{{ 'user.controls.label'|trans }}</th>
@@ -32,6 +33,7 @@
                                 <td>{{ mUser.badge(user) }}</td>
                                 <td>{{ user.name }}</td>
                                 <td>{{ user.email }}</td>
+                                <td>{{ role_label_list(user.roles) }}</td>
                                 <td>{{ user.createdAt|ago }}</td>
                                 <td>{{ user.lastLogin|ago }}</td>
                                 <td><a class="btn btn-default btn-sm" href="{{ path('user.edit', {'username': user.username}) }}"><i class="fa fa-edit"></i></a></td>

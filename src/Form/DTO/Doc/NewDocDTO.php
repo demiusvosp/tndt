@@ -8,6 +8,8 @@ declare(strict_types=1);
 
 namespace App\Form\DTO\Doc;
 
+use App\Entity\Doc;
+use App\Entity\Project;
 use Happyr\Validator\Constraint\EntityExist;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -18,26 +20,27 @@ class NewDocDTO
      * @Assert\NotBlank()
      * @EntityExist(entity="App\Entity\Project", property="suffix")
      */
-    private $project;
+    private string $project;
 
     /**
      * @var string
      * @Assert\NotBlank()
      * @Assert\Length(min=1, max=255)
      */
-    private $caption = '';
+    private string $caption = '';
 
     /**
      * @var string
      * @Assert\Length(max=1000)
      */
-    private $abstract = '';
+    private string $abstract = '';
 
     /**
      * @var string
      * @Assert\Length(max=5000)
      */
     private $body = '';
+
 
     /**
      * @return string

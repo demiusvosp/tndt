@@ -45,11 +45,11 @@ class ProjectUser
     private User $user;
 
     /**
-     * @var UserRolesEnum
+     * @var string
      * @ORM\Column (type="string", nullable=false)
      * @Assert\Choice(callback={"App\Security\UserRolesEnum", "getProjectRoles"})
      */
-    private UserRolesEnum $role;
+    private string $role;
 
     /**
      * @return Project

@@ -10,12 +10,14 @@ namespace App\Controller;
 
 use App\Entity\Project;
 use App\Entity\Task;
+use App\Form\DTO\Project\NewProjectDTO;
 use App\Form\DTO\Project\ProjectListFilterDTO;
 use App\Form\Type\Project\EditType;
 use App\Form\Type\Project\NewProjectType;
 use App\Form\Type\Project\ListFilterType;
 use App\Repository\DocRepository;
 use App\Repository\TaskRepository;
+use App\Repository\UserRepository;
 use App\Service\ProjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,8 +29,8 @@ class ProjectController extends AbstractController
     private const TASK_BLOCK_LIMIT = 10;
     private const DOC_BLOCK_LIMIT = 10;
 
-    private $translator;
-    private $projectManager;
+    private TranslatorInterface $translator;
+    private ProjectManager $projectManager;
 
 
     public function __construct(TranslatorInterface $translator, ProjectManager $projectManager)
@@ -70,13 +72,22 @@ class ProjectController extends AbstractController
     }
 
 
-    public function create(Request $request): Response
+    public function create(Request $request, UserRepository $userRepository): Response
     {
-        $project = new Project();
-        $form = $this->createForm(NewProjectType::class, $project);
+        $formData = new NewProjectDTO();
+        $form = $this->createForm(NewProjectType::class, $formData);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            /* из-за того, что formData DTO и он глупый, что-то более сложное, чем прямой setинг полей в него
+             * не вынесешь. Надо или отказываться от функций типа DTO::fillEntity(), или выносить их в логику работы с сущностями
+             * Либо Filllers/UserFiller->create() либо UserManager->createFromData(), но так себе, что они знают про DTO,
+             * получаются функции вырываемые из одного места. Тогда уж Fillers/UserFiller->create(UserDataInterface)
+             */
+
+            $user = $userRepository->find($formData->getPm());
+            $project = $formData->createEntity();
+            $project->setPm($user);
             $em = $this->getDoctrine()->getManager();
             $em->persist($project);
             $em->flush();
@@ -99,7 +110,6 @@ class ProjectController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $em->persist($project);
             $em->flush();
             $this->addFlash('success', 'project.edit.success');
         }
