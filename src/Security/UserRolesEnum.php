@@ -72,10 +72,14 @@ class UserRolesEnum extends Enum
     {
         $matches = [];
         if (preg_match('/^ROLE_([\w]+)_([a-zA-Z0-9]+)$/', $syntheticRole, $matches) && count($matches) === 3) {
-            return [$matches[1], $matches[2]];
+            return [(string) $matches[1], (string) $matches[2]];
         }
 
-        return [];
+        /*
+         * Не очень красиво, но иначе не работает [$role, $project] = explodeSyntheticRole(), а выбрасывать и
+         * ловить ради этого исключение не очень хочется. Хотя наверное и правильно, но не для единственного места.
+         */
+        return [null, null];
     }
 
     public function is($value): bool

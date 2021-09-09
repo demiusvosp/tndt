@@ -19,6 +19,7 @@ use App\Repository\DocRepository;
 use App\Repository\TaskRepository;
 use App\Repository\UserRepository;
 use App\Service\ProjectManager;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -71,7 +72,12 @@ class ProjectController extends AbstractController
         );
     }
 
-
+    /**
+     * @IsGranted("ROLE_ROOT")
+     * @param Request $request
+     * @param UserRepository $userRepository
+     * @return Response
+     */
     public function create(Request $request, UserRepository $userRepository): Response
     {
         $formData = new NewProjectDTO();
@@ -92,13 +98,17 @@ class ProjectController extends AbstractController
             $em->persist($project);
             $em->flush();
             $this->addFlash('success', 'project.create.success');
-//            return $this->redirectToRoute('project.index', ['suffix' => $project->getSuffix()]);
+            return $this->redirectToRoute('project.index', ['suffix' => $project->getSuffix()]);
         }
 
         return $this->render('project/create.html.twig', ['form' => $form->createView()]);
     }
 
-
+    /**
+     * @IsGranted("ROLE_PM")
+     * @param Request $request
+     * @return Response
+     */
     public function edit(Request $request): Response
     {
         $project = $this->projectManager->getCurrentProject($request);
