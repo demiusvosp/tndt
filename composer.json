@@ -11,7 +11,7 @@
         "ext-json": "*",
         "ext-mbstring": "*",
         "composer/package-versions-deprecated": "1.11.99.3",
-        "doctrine/common": "^2",
+        "doctrine/common": "^3.1",
         "doctrine/doctrine-bundle": "^2",
         "doctrine/doctrine-migrations-bundle": "^2",
         "doctrine/orm": "^2",
@@ -38,10 +38,10 @@
         "symfony/webpack-encore-bundle": "^1.12",
         "symfony/yaml": "4.4.*",
         "tetranz/select2entity-bundle": "^3.1",
-        "twig/extensions": "^1.5",
         "twig/extra-bundle": "^3.3",
         "twig/markdown-extra": "^3.3",
-        "twig/twig": "^2.12|^3.0"
+        "twig/string-extra": "^3.3",
+        "twig/twig": "^3.0"
     },
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^3.4",

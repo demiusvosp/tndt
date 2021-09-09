@@ -37,7 +37,7 @@
         {% endblock %}
         {% block box_body %}
             <small  {{ project.isArchived ? 'class="style-disabled"' }}>
-                {{ (descriptionLength == 0) ? project.description : project.description|truncate(descriptionLength, true) }}
+                {{ (descriptionLength == 0) ? project.description : project.description|u.truncate(descriptionLength, true) }}
             </small>
             <hr>
         {% endblock %}

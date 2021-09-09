@@ -11,3 +11,14 @@ twig:
         app_version: '%app.version%'
         support_url: '%app.support_url%'
         project_manager: '@App\Service\ProjectManager'
+
+services:
+    App\Service\Twig\TimeExtension:
+        class: App\Service\Twig\TimeExtension
+        arguments: ['@time.datetime_formatter', '@translator' ]
+        tags:
+            - { name: twig.extension }
+
+    time.twig.extension.time:
+        alias: App\Service\Twig\TimeExtension
+        public: true
