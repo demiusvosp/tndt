@@ -49,7 +49,8 @@ class EditUserDTO
         $this->password = '';
     }
 
-    public function fillProfile(User $user): void {
+    public function fillProfile(User $user): void
+    {
         $user->setName($this->name);
         $user->setEmail($this->email);
         if ($this->locked !== null) {

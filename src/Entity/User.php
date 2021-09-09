@@ -59,7 +59,7 @@ class User implements UserInterface, Serializable
 
     /**
      * @var ProjectUser[]
-     * @ORM\OneToMany (targetEntity="App\Entity\ProjectUser", mappedBy="user", fetch="EAGER")
+     * @ORM\OneToMany (targetEntity="App\Entity\ProjectUser", mappedBy="user")
      * @ORM\JoinColumn (name="id", referencedColumnName="user_id", nullable=false)
      */
     protected $projectUsers;

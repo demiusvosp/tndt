@@ -10,9 +10,10 @@ namespace App\Controller;
 
 use App\Entity\Project;
 use App\Entity\Task;
+use App\Form\DTO\Project\EditProjectDTO;
 use App\Form\DTO\Project\NewProjectDTO;
 use App\Form\DTO\Project\ProjectListFilterDTO;
-use App\Form\Type\Project\EditType;
+use App\Form\Type\Project\EditProjectType;
 use App\Form\Type\Project\NewProjectType;
 use App\Form\Type\Project\ListFilterType;
 use App\Repository\DocRepository;
@@ -21,6 +22,7 @@ use App\Repository\UserRepository;
 use App\Service\ProjectManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -109,17 +111,28 @@ class ProjectController extends AbstractController
      * @param Request $request
      * @return Response
      */
-    public function edit(Request $request): Response
+    public function edit(Request $request, UserRepository $userRepository): Response
     {
         $project = $this->projectManager->getCurrentProject($request);
         if (!$project) {
             throw $this->createNotFoundException($this->translator->trans('project.not_found'));
         }
 
-        $form = $this->createForm(EditType::class, $project);
+        $formData = new EditProjectDTO($project);
+        $form = $this->createForm(EditProjectType::class, $formData);
+
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+            if ($project->getPm()->getId() !== $formData->getPm()) {
+                $newPm = $userRepository->find($formData->getPm());
+                if (!$newPm) {
+                    $form->addError(new FormError('project.pm.error.not_found'));
+                } else {
+                    $project->setPm($newPm);
+                }
+            }
+            $formData->fillEntity($project);
             $em->flush();
             $this->addFlash('success', 'project.edit.success');
         }

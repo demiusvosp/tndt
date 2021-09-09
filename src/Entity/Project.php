@@ -173,6 +173,7 @@ class Project
     public function doArchive(): void
     {
         $this->isArchived = true;
+        $this->isPublic = false;
         //@TODO послать событие закрытия проекта, чтобы все могли проверить
     }
 
@@ -200,7 +201,7 @@ class Project
     public function getPm(): ?User
     {
         foreach ($this->projectUsers as $projectUser) {
-            if ($projectUser->getRole() === UserRolesEnum::ROLE_PM()) {
+            if ($projectUser->getRole()->is(UserRolesEnum::ROLE_PM)) {
                 return $projectUser->getUser();
             }
         }
