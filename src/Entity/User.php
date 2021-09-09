@@ -6,6 +6,7 @@ use App\Repository\UserRepository;
 use App\Security\UserRolesEnum;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Serializable;
@@ -58,9 +59,9 @@ class User implements UserInterface, Serializable
     protected array $roles = [];
 
     /**
+     * @TODO связь корректная, но всегда находит только 1 первую запись, даже если запрос по связи возвращает несколько результатов. (Может отсутствие сквозного id путает IM)
      * @var ProjectUser[]
      * @ORM\OneToMany (targetEntity="App\Entity\ProjectUser", mappedBy="user")
-     * @ORM\JoinColumn (name="id", referencedColumnName="user_id", nullable=false)
      */
     protected $projectUsers;
 
@@ -202,7 +203,7 @@ class User implements UserInterface, Serializable
         $roles = $this->roles;
 
         // роли в проектах
-        foreach ($this->projectUsers as $projectUser) {
+        foreach ($this->getProjectUsers() as $projectUser) {
             $roles[] = $projectUser->getSyntheticRole();
         }
 
@@ -220,6 +221,7 @@ class User implements UserInterface, Serializable
      */
     public function setRoles(array $roles): User
     {
+        // @TODO здесь вырезать рои проектов и переложить в user->projectUsers
         $this->roles = $roles;
         return $this;
     }
@@ -245,9 +247,9 @@ class User implements UserInterface, Serializable
     }
 
     /**
-     * @return ProjectUser[]
+     * @return ProjectUser[]|Collection
      */
-    public function getProjectUsers(): array
+    public function getProjectUsers(): Collection
     {
         return $this->projectUsers;
     }

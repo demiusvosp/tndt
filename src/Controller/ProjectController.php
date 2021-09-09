@@ -124,7 +124,7 @@ class ProjectController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            if ($project->getPm()->getId() !== $formData->getPm()) {
+            if ($project->getPm() === null || $project->getPm()->getId() !== $formData->getPm()) {
                 $newPm = $userRepository->find($formData->getPm());
                 if (!$newPm) {
                     $form->addError(new FormError('project.pm.error.not_found'));

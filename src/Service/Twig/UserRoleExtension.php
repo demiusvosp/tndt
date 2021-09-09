@@ -87,6 +87,9 @@ MESSAGE);
 
     public function roleLabelList(array $roles): string
     {
+        /*
+         * @TODO возможно стоить группировать этот список по профессиям или проектам, это стоит делать здесь
+         */
         $labelList = [];
         foreach ($roles as $role) {
             $labelList[] = $this->roleLabel($role);
