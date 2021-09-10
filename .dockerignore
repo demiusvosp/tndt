@@ -1,0 +1,11 @@
+### Symfony template
+
+# Cache, session files and logs (Symfony3)
+/var/*
+
+# Managed by Composer
+#/bin/*
+!bin/console
+!bin/symfony_requirements
+/vendor/
+

@@ -14,7 +14,7 @@ services:
   php:
     build:
       context: ./
-      dockerfile: './docker/dev.php.dockerfile'
+      dockerfile: './docker/${APP_ENV}.php.dockerfile'
     volumes:
       - './:/var/www'
     ports:

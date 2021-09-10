@@ -28,6 +28,10 @@ RUN apt-get update && apt-get install -y \
 RUN apt-get install libonig-dev -y \
     && docker-php-ext-install mbstring
 
+RUN docker-php-ext-install opcache
+
+COPY ./docker/dev.opcache.ini /usr/local/etc/php/conf.d/opcache.ini
+
 # Install developer tools
 RUN apt-get install git -y
 
