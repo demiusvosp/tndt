@@ -72,7 +72,7 @@ menu:
     create: Создать документ
     edit: Редактирование
   homepage: Главная
-  projects: Проекты
+  projects: Все проекты
   project:
     create: Созать проект
     docs: Список докуменов

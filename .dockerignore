@@ -1,11 +1,22 @@
-### Symfony template
+### IDE
+.idea
 
-# Cache, session files and logs (Symfony3)
-/var/*
+### git
+.git
 
-# Managed by Composer
-#/bin/*
-!bin/console
-!bin/symfony_requirements
+###> symfony/framework-bundle ###
+/.env.local
+/.env.local.php
+/.env.*.local
+/public/bundles/
+/var/
 /vendor/
+
+###> symfony/webpack-encore-bundle ###
+/node_modules/
+/public/build/
+npm-debug.log
+yarn-error.log
+###< symfony/webpack-encore-bundle ###
+
 
