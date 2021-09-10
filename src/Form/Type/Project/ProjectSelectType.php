@@ -23,16 +23,17 @@ class ProjectSelectType extends AbstractType
         $this->projectManager = $projectManager;
     }
 
-    public function getParent()
+    public function getParent(): string
     {
 //        return Select2EntityType::class;
         return ChoiceType::class;
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'choices' => $this->getProjects(),
+            'choice_translation_domain' => false,
         ]);
     }
 

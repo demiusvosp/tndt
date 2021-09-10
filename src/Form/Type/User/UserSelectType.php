@@ -31,6 +31,7 @@ class UserSelectType extends AbstractType
     {
         $resolver->setDefaults([
             'choices' => $this->getUsers(),
+            'choice_translation_domain' => false,
         ]);
     }
 
