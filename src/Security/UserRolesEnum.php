@@ -73,7 +73,7 @@ class UserRolesEnum extends Enum
     public function getSyntheticRole($projectSuffix): string
     {
         if (in_array($this->value, self::getProjectRoles(), true)) {
-            return $this->value . '_' . $projectSuffix;
+            return 'P' . $this->value . '_' . $projectSuffix;
         }
         return $this->value;
     }

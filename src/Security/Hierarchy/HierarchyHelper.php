@@ -21,9 +21,6 @@ class HierarchyHelper
         $this->permissionMapCache = $permissionMapCache;
     }
 
-    /**
-     * По идее это должен делать конфигуратор, но у нас он почему-то не запускается
-     */
     public function configure(): void
     {
         if (!$this->permissionMapCache->hasItem(UserPermissionsEnum::getProjectRoles()[0])) {
@@ -46,9 +43,10 @@ class HierarchyHelper
         } else {
             foreach ($cachedMap as $role => $permissions) {
                 $cacheItem = $this->permissionMapCache->getItem($role);
-                $cacheItem->set($permissions);
-
-                $this->permissionMapCache->save($cacheItem);
+                if (!$cacheItem->isHit()) {
+                    $cacheItem->set($permissions);
+                    $this->permissionMapCache->save($cacheItem);
+                }
             }
         }
     }
