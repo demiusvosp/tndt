@@ -73,7 +73,11 @@ class UserRolesEnum extends Enum
     public function getSyntheticRole($projectSuffix): string
     {
         if (in_array($this->value, self::getProjectRoles(), true)) {
-            return 'P' . $this->value . '_' . $projectSuffix;
+            /* Можно подумать, что для процесса обратного explodeSyntheticRole(), необходимо в начале добавлять 'P' .
+             * но все роли, к которым надо добавлять суффикс проекта и так начинаются с PROLE_, а не ROLE_ (так как
+             * не должны обрабатываться RoleVoter'ом)
+             */
+            return $this->value . '_' . $projectSuffix;
         }
         return $this->value;
     }

@@ -53,9 +53,6 @@ class EditUserDTO
     {
         $user->setName($this->name);
         $user->setEmail($this->email);
-        if ($this->locked !== null) {
-            $user->setLocked($this->locked);
-        }
     }
 
     /**
@@ -135,7 +132,7 @@ class EditUserDTO
     /**
      * @return bool|null
      */
-    public function isLocked(): ?bool
+    public function getLocked(): ?bool
     {
         return $this->locked;
     }

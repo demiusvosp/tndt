@@ -75,7 +75,7 @@ class ProjectController extends AbstractController
     }
 
     /**
-     * @IsGranted("ROLE_ROOT")
+     * @IsGranted("PERM_PROJECT_CREATE")
      * @param Request $request
      * @param UserRepository $userRepository
      * @return Response
@@ -107,7 +107,7 @@ class ProjectController extends AbstractController
     }
 
     /**
-     * @IsGranted("PROLE_PM")
+     * @IsGranted("PERM_PROJECT_SETTINGS")
      * @param Request $request
      * @return Response
      */
@@ -140,6 +140,11 @@ class ProjectController extends AbstractController
         return $this->render('project/edit.html.twig', ['project' => $project, 'form' => $form->createView()]);
     }
 
+    /**
+     * @IsGranted("PERM_PROJECT_ARCHIVE")
+     * @param Request $request
+     * @return Response
+     */
     public function archive(Request $request): Response
     {
         $em = $this->getDoctrine()->getManager();

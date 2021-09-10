@@ -68,16 +68,10 @@ class UserRoleExtension extends AbstractExtension
             return $this->translator->trans($role->label());
         }
 
-        /**
-         *  @var string $projectRole
-         *  @var string $projectSuffix
-         */
         [$projectRole, $projectSuffix] = UserRolesEnum::explodeSyntheticRole($role);
         if (empty($projectRole) || empty($projectSuffix)) {
-            throw new \InvalidArgumentException(<<<'MESSAGE'
-    Невозможно интерпретировать роль ' . $role . '. Роль должна или быть списке UserRolesEnum, или быть 
-    правильно составленной синтетической ролью ROLE_<NAME>_<PROJECT>
-MESSAGE);
+            throw new \InvalidArgumentException("Невозможно интерпретировать роль $role. Роль должна или 
+                быть списке UserRolesEnum, или быть правильно составленной синтетической ролью PROLE_<NAME>_<PROJECT>");
         }
 
         return $this->translator->trans($projectRole)

@@ -21,14 +21,14 @@
                             {{ 'task.project.label'|trans }}: {{ mProject.badge(task.project, false, true) }}
                         </div>
                         <div class="col-md-4">
-                            {{ 'task.created.label'|trans }}: {{ task.createdAt|localizeddate('medium', 'medium') }}
+                            {{ 'task.created.label'|trans }}: {{ task.createdAt|ago }}
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-4">
                             <i>Здесь будут набираться другие признаки - статус, категория, автор, тип, теги</i>
                         </div>
-                        <div class="col-md-4">{{ 'task.updated.label'|trans }}: {{ task.updatedAt|localizeddate('medium', 'medium') }}</div>
+                        <div class="col-md-4">{{ 'task.updated.label'|trans }}: {{ task.updatedAt|ago }}</div>
                     </div>
                     <hr>
                     <p>{{ task.description|markdown_to_html }}</p>
@@ -42,14 +42,18 @@
                 {% endblock  %}
                 {% block box_body %}
                     <div class="btn-group-vertical" role="toolbar" aria-label="{{ 'ControlPanel'|trans }}">
-                        <a class="btn btn-default btn-secondary" href="{{ path('task.edit', {'taskId':task.taskId}) }}">{{ 'Edit'|trans }}</a>
-                        <button
-                                class="btn btn-secondary btn-warning need-confirm"
-                                data-action="{{ path('task.close', {'taskId':task.taskId}) }}"
-                                data-text="{{ 'task.close.confirm'|trans|nl2br }}"
-                        >
-                            {{ 'Close'|trans }}
-                        </button>
+                        {% if is_granted("PERM_TASK_EDIT") %}
+                            <a class="btn btn-default btn-secondary" href="{{ path('task.edit', {'taskId':task.taskId}) }}">{{ 'Edit'|trans }}</a>
+                        {% endif %}
+                        {% if is_granted("PERM_TASK_CLOSE") %}
+                            <button
+                                    class="btn btn-secondary btn-warning need-confirm"
+                                    data-action="{{ path('task.close', {'taskId':task.taskId}) }}"
+                                    data-text="{{ 'task.close.confirm'|trans|nl2br }}"
+                            >
+                                {{ 'Close'|trans }}
+                            </button>
+                        {% endif %}
                     </div>
                 {% endblock %}
             {% endembed %}

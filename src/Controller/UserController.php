@@ -16,6 +16,7 @@ use App\Form\Type\User\AdminEditProfileType;
 use App\Form\Type\User\EditProfileType;
 use App\Form\Type\User\NewUserType;
 use App\Repository\UserRepository;
+use App\Security\UserPermissionsEnum;
 use App\Security\UserRolesEnum;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -57,7 +58,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @IsGranted("ROLE_ROOT")
+     * @IsGranted("PERM_USER_LIST")
      * @param Request $request
      * @param PaginatorInterface $paginator
      * @return Response
@@ -75,7 +76,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @IsGranted("ROLE_ROOT")
+     * @IsGranted("PERM_USER_CREATE")
      * @param Request $request
      * @param UserPasswordEncoderInterface $passwordEncoder
      * @return Response
@@ -113,7 +114,7 @@ class UserController extends AbstractController
         AuthorizationCheckerInterface $authorizationChecker,
         UserPasswordEncoderInterface $passwordEncoder): Response
     {
-        if ($authorizationChecker->isGranted(UserRolesEnum::ROLE_ROOT)) {
+        if ($authorizationChecker->isGranted(UserPermissionsEnum::PERM_USER_EDIT)) {
             $user = $this->userRepository->findByUsername($request->get('username'));
         } else {
             $user = $this->getUser();
@@ -141,6 +142,11 @@ class UserController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid() && $formData->getId() === $user->getId()) {
             $formData->fillProfile($user);
+            if($authorizationChecker->isGranted(UserPermissionsEnum::PERM_USER_LOCK)
+                && $formData->getLocked() !== null
+            ) {
+                $user->setLocked((bool) $formData->getLocked());
+            }
             if (!empty($formData->getPassword())) {
                 $this->addFlash('warning', 'user.edit.password_changed');
                 $user->setPassword($passwordEncoder->encodePassword($user, $formData->getPassword()));

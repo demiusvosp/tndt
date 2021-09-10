@@ -18,6 +18,7 @@ use App\Form\Type\Doc\NewDocType;
 use App\Repository\DocRepository;
 use App\Service\ProjectManager;
 use Knp\Component\Pager\PaginatorInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -75,6 +76,12 @@ class DocController extends AbstractController
         return $this->render('doc/index.html.twig', ['doc' => $doc]);
     }
 
+    /**
+     * @IsGranted ("PERM_DOC_CREATE")
+     * @param Request $request
+     * @param ProjectManager $projectManager
+     * @return Response
+     */
     public function create(Request $request, ProjectManager $projectManager): Response
     {
         $formData = new NewDocDTO();
@@ -104,6 +111,11 @@ class DocController extends AbstractController
         return $this->render('doc/create.html.twig', ['form' => $form->createView()]);
     }
 
+    /**
+     * @IsGranted ("PERM_DOC_EDIT")
+     * @param Request $request
+     * @return Response
+     */
     public function edit(Request $request): Response
     {
         $project = $this->projectManager->getCurrentProject($request);
@@ -129,6 +141,11 @@ class DocController extends AbstractController
         return $this->render('doc/edit.html.twig', ['doc' => $doc, 'form' => $form->createView()]);
     }
 
+    /**
+     * @IsGranted ("PERM_DOC_ARCHIVE")
+     * @param Request $request
+     * @return Response
+     */
     public function archive(Request $request): Response
     {
         $project = $this->projectManager->getCurrentProject($request);

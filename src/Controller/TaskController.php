@@ -17,6 +17,7 @@ use App\Form\Type\Task\NewTaskType;
 use App\Repository\TaskRepository;
 use App\Service\ProjectManager;
 use Knp\Component\Pager\PaginatorInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -78,6 +79,12 @@ class TaskController extends AbstractController
         return $this->render('task/index.html.twig', ['task' => $task]);
     }
 
+    /**
+     * @IsGranted("PERM_TASK_CREATE")
+     * @param Request $request
+     * @param ProjectManager $projectManager
+     * @return Response
+     */
     public function create(Request $request, ProjectManager $projectManager): Response
     {
         $formData = new NewTaskDTO();
@@ -105,6 +112,11 @@ class TaskController extends AbstractController
         return $this->render('task/create.html.twig', ['form' => $form->createView()]);
     }
 
+    /**
+     * @IsGranted ("PERM_TASK_EDIT")
+     * @param Request $request
+     * @return Response
+     */
     public function edit(Request $request): Response
     {
         $task = $this->taskRepository->getByTaskId($request->get('taskId'));
@@ -126,6 +138,11 @@ class TaskController extends AbstractController
         return $this->render('task/edit.html.twig', ['task' => $task, 'form' => $form->createView()]);
     }
 
+    /**
+     * @IsGranted ("PERM_TASK_CLOSE")
+     * @param Request $request
+     * @return Response
+     */
     public function close(Request $request): Response
     {
         $task = $this->taskRepository->getByTaskId($request->get('taskId'));
@@ -139,5 +156,4 @@ class TaskController extends AbstractController
 
         return $this->redirectToRoute('project.index', ['suffix' => $task->getSuffix()]);
     }
-
 }

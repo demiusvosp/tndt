@@ -72,8 +72,13 @@ class HierarchyHelper
      */
     public function has(string $requestedItem, string $subjectItem): bool
     {
+        if($requestedItem === $subjectItem) {
+            /* включающая логика, позволяет ограничивать доступ не только через полномочия, но и через саму роль,
+             * принадлежащую пользователю
+             */
+            return true;
+        }
         $cacheItem = $this->permissionMapCache->getItem($subjectItem);
-
         if(!$cacheItem->isHit()) {
             return false;
         }

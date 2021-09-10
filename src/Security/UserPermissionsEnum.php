@@ -10,6 +10,12 @@ namespace App\Security;
 
 class UserPermissionsEnum extends UserRolesEnum
 {
+    // User Permissions
+    public const PERM_USER_CREATE = 'PERM_USER_CREATE';
+    public const PERM_USER_LIST = 'PERM_USER_LIST';
+    public const PERM_USER_EDIT = 'PERM_USER_EDIT';
+    public const PERM_USER_LOCK = 'PERM_USER_LOCK';
+
     // Project Permissions
     public const PERM_PROJECT_CREATE = 'PERM_PROJECT_CREATE';
     public const PERM_PROJECT_SETTINGS = 'PERM_PROJECT_SETTINGS';
@@ -41,8 +47,12 @@ class UserPermissionsEnum extends UserRolesEnum
     public static function getHierarchy(): array
     {
         return [
-            // избыточная вещь, руту и так все можно, сделано на будущее, когда эти полномочия разрешат кому-то еще
-//            self::ROLE_ROOT => [
+            // сейчас у нас нет выделенного менеджера юзеров или модератора, эти пермишены доступны только root
+//            self::ROLE_USER_MANAGER => [
+//                self::PERM_USER_CREATE,
+//                self::PERM_USER_LIST,
+//                self::PERM_USER_LOCK,
+//                self::PERM_USER_LOCK,
 //                self::PERM_PROJECT_CREATE
 //            ],
             self::PROLE_PM => [
