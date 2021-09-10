@@ -73,6 +73,9 @@
 {% block sidebar_search %}
     {# @TODO вернуть когда будет реализован поиск по треккеру #}
 {% endblock %}
+{% block sidebar_nav %}
+    {% include 'bundles/AdminLTEBundle/Sidebar/menu.html.twig' with {'adminlte_direct_include': true} %}
+{% endblock %}
 
 {% block footer %}
     {% include 'footer.html.twig' %}
