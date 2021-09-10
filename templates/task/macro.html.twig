@@ -7,7 +7,9 @@
 {% macro caption(task, limit = null) %}
     {% if task.isClosed() %}<s>{% endif %}
     <a class="invisible_link" href="{{ path('task.index', {'taskId': task.taskId}) }}">
-        {{ task.caption|u.truncate(limit) }}
+        {% set label = task.caption %}
+        {% if limit %}{% set label = label|u.truncate(limit, '...') %}{% endif %}
+        {{ label }}
     </a>
     {% if task.isClosed() %}</s>{% endif %}
 {% endmacro %}
@@ -21,7 +23,7 @@
         {% import _self as this %}
         {{ task.taskId }}
         {% if withName %}
-            - {{ this.caption(task, 100) }}
+            - {{ this.caption(task)|u.truncate(100, '...') }}
             {% if task.isClosed %}<span class="label label-default">{{ 'closed'|trans }}</span>{% endif %}
         {% endif %}
     </span>
@@ -42,7 +44,7 @@
         {%  for task in tasks %}
             <tr>
                 <td>{{ this.no(task) }}</td>
-                <td>{{ this.caption(task, 160) }}</td>
+                <td>{{ this.caption(task, 80) }}</td>
                 <td>{{ task.createdAt|ago }}</td>
                 <td>{{ task.updatedAt|ago }}</td>{# localizeddate('medium', 'medium') #}
             </tr>

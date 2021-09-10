@@ -37,7 +37,7 @@
                         <ul class="list-unstyled">
                             {%  for task in tasks %}
                                 <li>
-                                    <b>{{ mTask.badge(task, false, true) }}</b> - {{ mTask.caption(task, 70) }}
+                                    <b>{{ mTask.badge(task, false, true) }}</b> - {{ mTask.caption(task, 60) }}
                                 </li>
                             {% endfor %}
                         </ul>
@@ -54,7 +54,7 @@
                         <ul class="list-unstyled">
                             {% for doc in docs %}
                                 <li>
-                                    <b>{{ doc.docId }}</b> - {{ mDoc.caption(doc, 80) }}
+                                    <b>{{ doc.docId }}</b> - {{ mDoc.caption(doc, 60) }}
                                 </li>
                             {% endfor %}
                         </ul>
@@ -71,7 +71,7 @@
                         <ul class="list-unstyled">
                             {% for user in users %}
                                 <li>
-                                    <b>{{ mUser.badge(user) }}</b> - {{ role_label_list(user.roles)|u.truncate(80) }}
+                                    <b>{{ mUser.badge(user) }}</b> - {{ role_label_list(user.roles)|u.truncate(55, '...') }}
                                 </li>
                             {% endfor %}
                         </ul>

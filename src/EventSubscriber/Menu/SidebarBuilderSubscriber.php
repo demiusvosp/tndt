@@ -8,10 +8,9 @@ declare(strict_types=1);
 
 namespace App\EventSubscriber\Menu;
 
-use App\Entity\User;
 use App\Repository\DocRepository;
 use App\Repository\TaskRepository;
-use App\Security\UserRolesEnum;
+use App\Security\UserPermissionsEnum;
 use App\Service\ProjectManager;
 use KevinPapst\AdminLTEBundle\Event\SidebarMenuEvent;
 use KevinPapst\AdminLTEBundle\Model\MenuItemModel;
@@ -69,14 +68,7 @@ class SidebarBuilderSubscriber implements EventSubscriberInterface
                 $currentProject->getIcon()
             ));
 
-            $taskMenu = new MenuItemModel(
-                'project.tasks',
-                'menu.project.tasks_menu',
-                'task.list',
-                ['suffix' => $currentProject->getSuffix()],
-                'fa fa-tasks'
-            );
-            $taskMenu->addChild(new MenuItemModel(
+            $event->addItem(new MenuItemModel(
                 'project.tasks.menu',
                 'menu.project.tasks',
                 'task.list',
@@ -94,35 +86,30 @@ class SidebarBuilderSubscriber implements EventSubscriberInterface
                             ['taskId' => $taskId],
                             'fa fa-tasks'
                         );
-                        $currentTaskMenu->addChild(new MenuItemModel(
-                            'task.edit',
-                            'menu.task.edit',
-                            'task.edit',
-                            ['taskId' => $taskId],
-                            'fa fa-edit'
-                        ));
-                        $taskMenu
-                            ->addChild($currentTaskMenu);
+                        if($this->security->isGranted(UserPermissionsEnum::PERM_TASK_EDIT)) {
+                            $currentTaskMenu->addChild(new MenuItemModel(
+                                'task.edit',
+                                'menu.task.edit',
+                                'task.edit',
+                                ['taskId' => $taskId],
+                                'fa fa-edit'
+                            ));
+                        }
+                        $event->addItem($currentTaskMenu);
                     }
                 }
             }
-            $taskMenu->addChild(new MenuItemModel(
-                'task.create',
-                'menu.task.create',
-                'task.project_create',
-                ['suffix' => $currentProject->getSuffix()],
-                'fa fa-plus-square'
-            ));
-            $event->addItem($taskMenu);
+            if($this->security->isGranted(UserPermissionsEnum::PERM_TASK_CREATE)) {
+                $event->addItem(new MenuItemModel(
+                    'task.create',
+                    'menu.task.create',
+                    'task.project_create',
+                    ['suffix' => $currentProject->getSuffix()],
+                    'fa fa-plus-square'
+                ));
+            }
 
-            $docMenu = new MenuItemModel(
-                'project.docs.menu',
-                'menu.project.docs_menu',
-                'doc.list',
-                ['suffix' => $currentProject->getSuffix()],
-                'far fa-copy'
-            );
-            $docMenu->addChild(new MenuItemModel(
+            $event->addItem(new MenuItemModel(
                 'project.docs',
                 'menu.project.docs',
                 'doc.list',
@@ -140,37 +127,41 @@ class SidebarBuilderSubscriber implements EventSubscriberInterface
                             ['docId' => $docId],
                             'fa fa-file-alt'
                         );
-                        $currentDocMenu->addChild(new MenuItemModel(
-                            'doc.edit',
-                            'menu.doc.edit',
-                            'doc.edit',
-                            ['docId' => $docId],
-                            'fa fa-edit'
-                        ));
-                        $docMenu
-                            ->addChild($currentDocMenu);
+                        if($this->security->isGranted(UserPermissionsEnum::PERM_DOC_EDIT)) {
+                            $currentDocMenu->addChild(new MenuItemModel(
+                                'doc.edit',
+                                'menu.doc.edit',
+                                'doc.edit',
+                                ['docId' => $docId],
+                                'fa fa-edit'
+                            ));
+                        }
+                        $event->addItem($currentDocMenu);
                     }
                 }
             }
-            $docMenu->addChild(new MenuItemModel(
-                'doc.create',
-                'menu.doc.create',
-                'doc.project_create',
-                ['suffix' => $currentProject->getSuffix()],
-                'fa fa-plus-square'
-            ));
-            $event->addItem($docMenu);
+            if($this->security->isGranted(UserPermissionsEnum::PERM_DOC_CREATE)) {
+                $event->addItem(new MenuItemModel(
+                    'doc.create',
+                    'menu.doc.create',
+                    'doc.project_create',
+                    ['suffix' => $currentProject->getSuffix()],
+                    'fa fa-plus-square'
+                ));
+            }
 
-            $event->addItem( new MenuItemModel(
-                'project.edit',
-                'menu.project.edit',
-                'project.edit',
-                ['suffix' => $currentProject->getSuffix()],
-                'fa fa-cogs'
-            ));
+            if($this->security->isGranted(UserPermissionsEnum::PERM_PROJECT_SETTINGS)) {
+                $event->addItem(new MenuItemModel(
+                    'project.edit',
+                    'menu.project.edit',
+                    'project.edit',
+                    ['suffix' => $currentProject->getSuffix()],
+                    'fa fa-cogs'
+                ));
+            }
         }
 
-        if($this->security->isGranted(UserRolesEnum::ROLE_ROOT)) {
+        if($this->security->isGranted(UserPermissionsEnum::PERM_USER_LIST)) {
             $event->addItem(new MenuItemModel(
                 'users',
                 'menu.users',
