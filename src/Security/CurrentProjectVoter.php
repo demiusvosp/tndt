@@ -31,6 +31,9 @@ class CurrentProjectVoter implements VoterInterface
 
     public function vote(TokenInterface $token, $subject, array $attributes)
     {
+        /*
+         * @TODO разделить логику получения проекта и логику избирателя по проекту
+         */
         $request = $this->requestStack->getCurrentRequest();
         if (!$request) {
             return VoterInterface::ACCESS_ABSTAIN;
