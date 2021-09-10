@@ -13,7 +13,7 @@ use MyCLabs\Enum\Enum;
 /**
  * @method static ROLE_ROOT()
  * @method static ROLE_USER()
- * @method static ROLE_PM()
+ * @method static PROLE_PM()
  * @method static ROLE_STAFF()
  * @method static ROLE_VISITOR()
  */
@@ -24,24 +24,24 @@ class UserRolesEnum extends Enum
     public const ROLE_ROOT = 'ROLE_ROOT';
 
     // Project Roles
-    public const ROLE_PM = 'ROLE_PM'; // менеджер проекта управляет всем проектом
-    public const ROLE_STAFF = 'ROLE_STAFF'; // Работает с проектом (надо будет решить как его расзеплять на пользовательские подроли DEVEL,QA,LEAD,JUN и т.д.)
-    public const ROLE_VISITOR = 'ROLE_VISITOR';// Посетитель смотрит непубличный проект, в который его добавили, оставляет пожелания
+    public const PROLE_PM = 'PROLE_PM'; // менеджер проекта управляет всем проектом
+    public const PROLE_STAFF = 'PROLE_STAFF'; // Работает с проектом (надо будет решить как его расзеплять на пользовательские подроли DEVEL,QA,LEAD,JUN и т.д.)
+    public const PROLE_VISITOR = 'PROLE_VISITOR';// Посетитель смотрит непубличный проект, в который его добавили, оставляет пожелания
 
     public static function labels():array
     {
         return [
             self::ROLE_ROOT => 'role.root',
             self::ROLE_USER => 'role.user',
-            self::ROLE_PM => 'role.pm',
-            self::ROLE_STAFF => 'role.staff',
-            self::ROLE_VISITOR => 'role.visitor',
+            self::PROLE_PM => 'role.pm',
+            self::PROLE_STAFF => 'role.staff',
+            self::PROLE_VISITOR => 'role.visitor',
         ];
     }
 
     public static function getProjectRoles(): array
     {
-        return [self::ROLE_PM, self::ROLE_STAFF, self::ROLE_VISITOR];
+        return [self::PROLE_PM, self::PROLE_STAFF, self::PROLE_VISITOR];
     }
 
     public function label(): string
@@ -51,7 +51,7 @@ class UserRolesEnum extends Enum
 
     /**
      * Создает имя роли определяющее, что данная роль пользователя специфична только для конкретного проекта
-     * Например PM проекта ABC не будет ROLE_PM (любого проекта), а определяться как ROLE_PM_ABC
+     * Например PM проекта ABC не будет PROLE_PM (любого проекта), а определяться как PROLE_PM_ABC
      *
      * @param $projectSuffix
      * @return string
@@ -71,7 +71,7 @@ class UserRolesEnum extends Enum
     public static function explodeSyntheticRole(string $syntheticRole): array
     {
         $matches = [];
-        if (preg_match('/^ROLE_([\w]+)_([a-zA-Z0-9]+)$/', $syntheticRole, $matches) && count($matches) === 3) {
+        if (preg_match('/^(PROLE_[\w]+)_([a-zA-Z0-9]+)$/', $syntheticRole, $matches) && count($matches) === 3) {
             return [(string) $matches[1], (string) $matches[2]];
         }
 

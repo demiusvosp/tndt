@@ -107,7 +107,7 @@ class ProjectController extends AbstractController
     }
 
     /**
-     * @IsGranted("ROLE_PM")
+     * @IsGranted("PROLE_PM")
      * @param Request $request
      * @return Response
      */

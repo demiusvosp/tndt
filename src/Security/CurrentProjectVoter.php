@@ -55,9 +55,11 @@ class CurrentProjectVoter implements VoterInterface
                 // роль не этого проекта
                 continue;
             }
-dump($subject); dump($attributes);
-            if ($role === $subject) {
-                return VoterInterface::ACCESS_GRANTED;
+
+            foreach ($attributes as $attribute) {
+                if($role == $attribute) {
+                    return VoterInterface::ACCESS_GRANTED;
+                }
             }
         }
         return VoterInterface::ACCESS_ABSTAIN;

@@ -201,7 +201,7 @@ class Project
     public function getPm(): ?User
     {
         foreach ($this->projectUsers as $projectUser) {
-            if ($projectUser->getRole()->is(UserRolesEnum::ROLE_PM)) {
+            if ($projectUser->getRole()->is(UserRolesEnum::PROLE_PM)) {
                 return $projectUser->getUser();
             }
         }
@@ -216,7 +216,7 @@ class Project
     {
         $exist = false;
         foreach ($this->projectUsers as $projectUser) {
-            if($projectUser->getRole()->is(UserRolesEnum::ROLE_PM())) {
+            if($projectUser->getRole()->is(UserRolesEnum::PROLE_PM())) {
                 $projectUser->setUser($pm);
                 $exist = true;
             }
@@ -226,7 +226,7 @@ class Project
             $projectUser = new ProjectUser();
             $projectUser->setProject($this);
             $projectUser->setUser($pm);
-            $projectUser->setRole(UserRolesEnum::ROLE_PM());
+            $projectUser->setRole(UserRolesEnum::PROLE_PM());
 
             $this->projectUsers->add($projectUser);
             // вопрос надо ли для него вызывать persist и где?
