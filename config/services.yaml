@@ -40,3 +40,9 @@ services:
     project_manager:
         alias: App\Services\ProjectManager
 
+    App\Security\Hierarchy\HierarchyHelper:
+        class: 'App\Security\Hierarchy\HierarchyHelper'
+#        arguments:
+#            - '@cache.permissions.adapter'
+        configurator: ['@App\Security\Hierarchy\HierarchyConfigurator', 'configure']
+

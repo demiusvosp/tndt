@@ -14,6 +14,24 @@ framework:
         # APCu (not recommended with heavy random-write workloads as memory fragmentation can cause perf issues)
         #app: cache.adapter.apcu
 
+        # обычный кеш, в нем лежат данные полученные во время выполнения
+        app: cache.adapter.filesystem
+
         # Namespaced pools use the above "app" backend by default
-        #pools:
-            #my.dedicated.cache: null
+        pools:
+            # системный кеш, хранит предварительно вычисленные данные, например плоскую иерархию полномочий
+            cache.app.system:
+                adapter: cache.adapter.system
+
+services:
+
+    cache.permissions.adapter:
+        class: 'Symfony\Component\Cache\Adapter\PhpArrayAdapter'
+        public: false
+        arguments:
+            - '%kernel.cache_dir%/permissions_map.php'
+            - '@cache.app.system.recorder_inner'
+# тег перемещает адаптер в пул, и работа с его кешем становится видна в дебаг-панельке, но зато больше не использует PhpArrayAdapter
+# Когда лучше поймем устройство пулов и как в них попадают конкретные адаптеры, сделаем выделенный пул под это дело
+#        tags:
+#            - { name: 'cache.pool', namespace: 'permissions_map'}

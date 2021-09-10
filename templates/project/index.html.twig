@@ -17,18 +17,24 @@
                 {% endblock  %}
                 {% block box_body %}
                     <div class="btn-group-vertical" role="toolbar" aria-label="{{ 'ControlPanel'|trans }}">
-                        <div class="btn-group-vertical" role="group" aria-label="{{ 'Tasks'|trans }}">
-                            <a class="btn btn-default btn-secondary" href="{{ path('task.project_create', {'suffix':project.suffix}) }}">{{ 'Create_task'|trans }}</a>
-                        </div>
+                        {% if is_granted('PERM_TASK_CREATE') %}
+                            <div class="btn-group-vertical" role="group" aria-label="{{ 'Tasks'|trans }}">
+                                <a class="btn btn-default btn-secondary" href="{{ path('task.project_create', {'suffix':project.suffix}) }}">{{ 'Create_task'|trans }}</a>
+                            </div>
+                        {% endif %}
                         <div class="btn-group-vertical" role="group" aria-label="{{ 'Projects'|trans }}">
-                            <a class="btn btn-default btn-secondary" href="{{ path('project.edit', {'suffix':project.suffix}) }}">{{ 'Edit_project'|trans }}</a>
-                            <button
-                                    class="btn btn-secondary btn-danger need-confirm"
-                                    data-action="{{ path('project.archive', {'suffix':project.suffix}) }}"
-                                    data-text="{{ 'project.archive.confirm'|trans|nl2br }}"
-                            >
-                                {{ 'Archive'|trans }}
-                            </button>
+                            {% if is_granted('PERM_PROJECT_SETTINGS') %}
+                                <a class="btn btn-default btn-secondary" href="{{ path('project.edit', {'suffix':project.suffix}) }}">{{ 'Edit_project'|trans }}</a>
+                            {% endif %}
+                            {% if is_granted('PERM_PROJECT_ARCHIVE') %}
+                                <button
+                                        class="btn btn-secondary btn-danger need-confirm"
+                                        data-action="{{ path('project.archive', {'suffix':project.suffix}) }}"
+                                        data-text="{{ 'project.archive.confirm'|trans|nl2br }}"
+                                >
+                                    {{ 'Archive'|trans }}
+                                </button>
+                            {% endif %}
                         </div>
                     </div>
                 {% endblock %}

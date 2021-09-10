@@ -44,6 +44,20 @@ class UserRolesEnum extends Enum
         return [self::PROLE_PM, self::PROLE_STAFF, self::PROLE_VISITOR];
     }
 
+    public static function getHierarchy(): array
+    {
+        return [
+            self::PROLE_PM => [
+                self::PROLE_STAFF,
+            ],
+            self::PROLE_STAFF => [
+                self::PROLE_VISITOR,
+            ],
+            self::PROLE_VISITOR => [
+            ],
+        ];
+    }
+
     public function label(): string
     {
         return self::labels()[$this->value];
@@ -82,11 +96,4 @@ class UserRolesEnum extends Enum
         return [null, null];
     }
 
-    public function is($value): bool
-    {
-        if ($value instanceof self) {
-            return $this->equals($value);
-        }
-        return self::isValid($value);
-    }
 }

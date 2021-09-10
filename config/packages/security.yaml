@@ -40,3 +40,9 @@ security:
         - { path: ^/user/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/user/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
         # - { path: ^/profile, roles: ROLE_USER }
+
+#services:
+#
+# Хотелось бы здесь вписывать свои сервисы, и вообще их распределять по типам, а не сервисы фреймворка по типам, а
+#    свои вперемежку в одном файле. Но в случае с security.yaml это не работает
+#

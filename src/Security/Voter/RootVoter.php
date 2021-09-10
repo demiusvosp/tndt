@@ -6,10 +6,12 @@
  */
 declare(strict_types=1);
 
-namespace App\Security;
+namespace App\Security\Voter;
 
+use App\Security\UserRolesEnum;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
+
 
 /**
  * Избиратель root, дает ему любое существующее в системе право

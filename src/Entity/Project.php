@@ -201,7 +201,7 @@ class Project
     public function getPm(): ?User
     {
         foreach ($this->projectUsers as $projectUser) {
-            if ($projectUser->getRole()->is(UserRolesEnum::PROLE_PM)) {
+            if ($projectUser->getRole()->equals(UserRolesEnum::PROLE_PM())) {
                 return $projectUser->getUser();
             }
         }
@@ -216,7 +216,7 @@ class Project
     {
         $exist = false;
         foreach ($this->projectUsers as $projectUser) {
-            if($projectUser->getRole()->is(UserRolesEnum::PROLE_PM())) {
+            if($projectUser->getRole()->equals(UserRolesEnum::PROLE_PM())) {
                 $projectUser->setUser($pm);
                 $exist = true;
             }
