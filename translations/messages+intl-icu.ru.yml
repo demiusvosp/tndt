@@ -86,6 +86,13 @@ menu:
   users: Пользователи
 never: никогда
 Never_logined: Ни разу не входил
+nobody: >-
+  {case, select,
+    nominative {никто}
+    genitive {никого}
+    instrumental {никому}
+    other {никто}
+  }
 Project: Проект
 Projects: Проекты
 project:
@@ -119,20 +126,26 @@ project:
 Profile: Профиль
 role:
   at_project: проекта
-  pm: Project Manager
+  pm: PM
+  project_manager: Менеджер проекта
   root: root
-  staff: Работник проекта
+  staff: работник
   user: пользователь
-  visitor: Посетитель
+  visitor: посетитель
 search: Поиск
 Support: Поддержка
 Tasks: Задачи
 task:
+  assignedTo:
+    label: Назначена
+    help: Кто на данном этапе работает над задачей
   caption:
     label: Заголовок
     help: Название задачи. Краткое описание чтоименно нужно сделать по ней, умещающееся в одну строку
   create: Создать задачу
   created:
+    label: Дата создания
+  createdBy:
     label: Создана
   close.confirm: Ну вобще здесь не нужен такой модальный диалог. Нужен контекстный маленький и с формой описания причины закрытия (и возможной смной состояния)
   description:

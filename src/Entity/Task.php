@@ -1,4 +1,5 @@
-<?php
+<?php /** @noinspection PhpPropertyOnlyWrittenInspection */
+
 /**
  * User: demius
  * Date: 05.11.19
@@ -6,17 +7,25 @@
  */
 namespace App\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/*
+ *  пока есть сомнения, что эти индексы вобще нужны, мне кажется это будет быстро искаться по foreign
+ *          @ORM\Index(name="createdBy" columns={"createdBy"})
+ *          @ORM\Index(name="assignedBy" columns={"assignedBy"})
+ */
 /**
  * Class Task
  * @ORM\Entity(repositoryClass="App\Repository\TaskRepository")
  * @ORM\Table(
  *     name="task",
  *     uniqueConstraints={@ORM\UniqueConstraint(name="idx_full_no", columns={"suffix","no"})},
- *     indexes={@ORM\Index(name="isClosed", columns={"is_closed"})}
+ *     indexes={
+ *          @ORM\Index(name="isClosed", columns={"is_closed"})
+ *     }
  * )
  */
 class Task implements NoInterface
@@ -29,40 +38,54 @@ class Task implements NoInterface
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue
      */
-    private $id;
+    private int $id;
 
     /**
      * @var int
      * @ORM\Column(type="integer")
      */
-    private $no = 0;
+    private int $no = 0;
 
     /**
      * @var string
      * @ORM\Column(type="string", length=8)
      */
-    private $suffix = '';
+    private string $suffix = '';
 
     /**
      * @var Project
      * @ORM\ManyToOne(targetEntity="Project", fetch="EAGER")
      * @ORM\JoinColumn(name="suffix", referencedColumnName="suffix")
      */
-    private $project = null;
+    private ?Project $project = null;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      * @ORM\Column(type="datetime")
      * @Gedmo\Timestampable(on="create")
      */
-    private $createdAt;
+    private DateTime $createdAt;
 
     /**
-     * @var \DateTime
+     * @var User
+     * @ORM\ManyToOne (targetEntity="User")
+     * @Gedmo\Blameable (on="create")
+     */
+    private User $createdBy;
+
+    /**
+     * @var DateTime
      * @ORM\Column(type="datetime")
      * @Gedmo\Timestampable(on="update")
      */
-    private $updatedAt;
+    private DateTime $updatedAt;
+
+    /**
+     * @var User|null
+     * @ORM\ManyToOne (targetEntity="User")
+     * @Gedmo\Blameable (on="create")
+     */
+    private ?User $assignedTo;
 
     /**
      * @var boolean
@@ -216,20 +239,44 @@ class Task implements NoInterface
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
-    public function getCreatedAt(): \DateTime
+    public function getCreatedAt(): DateTime
     {
         return $this->createdAt;
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
-    public function getUpdatedAt(): \DateTime
+    public function getUpdatedAt(): DateTime
     {
         return $this->updatedAt;
     }
 
+    /**
+     * @return User
+     */
+    public function getCreatedBy(): User
+    {
+        return $this->createdBy;
+    }
 
+    /**
+     * @return User|null
+     */
+    public function getAssignedTo(): ?User
+    {
+        return $this->assignedTo;
+    }
+
+    /**
+     * @param User $assignedTo
+     * @return Task
+     */
+    public function setAssignedTo(User $assignedTo): Task
+    {
+        $this->assignedTo = $assignedTo;
+        return $this;
+    }
 }

@@ -1,9 +1,10 @@
 {% extends 'base.html.twig' %}
-{% import 'project/macro.html.twig' as mProject %}
+{% import 'project/_macro.html.twig' as mProject %}
 
 {% block title %}{{ 'project.list'|trans }}{% endblock %}
 {% block page_title%}
     {{ 'project.list'|trans }}
+    <!--suppress HtmlUnknownTag -->
     <span class="dropdown">
         <button class="btn btn-default dropdown-toggle" data-toggle="dropdown"><i class="fa fa-filter"></i> </button>
         <ul class="dropdown-menu" role="menu">

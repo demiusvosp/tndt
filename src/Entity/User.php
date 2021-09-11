@@ -59,9 +59,8 @@ class User implements UserInterface, Serializable
     protected array $roles = [];
 
     /**
-     * @TODO связь корректная, но всегда находит только 1 первую запись, даже если запрос по связи возвращает несколько результатов. (Может отсутствие сквозного id путает IM)
      * @var ProjectUser[]
-     * @ORM\OneToMany (targetEntity="App\Entity\ProjectUser", mappedBy="user")
+     * @ORM\OneToMany (targetEntity="App\Entity\ProjectUser", mappedBy="user", cascade={"all"})
      */
     protected $projectUsers;
 
@@ -234,6 +233,40 @@ class User implements UserInterface, Serializable
     {
         $this->roles = array_unique(array_merge($this->roles, [$role]));
         return $this;
+    }
+
+    /**
+     * @param string|Project|null $project
+     * @return bool
+     */
+    public function hasRole(string $role, $project = null): bool
+    {
+        // дефолтная роль всех зарегистрированных
+        if ($role === UserRolesEnum::ROLE_USER) {
+            return true;
+        }
+
+        if(!UserRolesEnum::isValid($role)) {
+            return false;
+        }
+        if($project === null) {
+            // ищем глобальную роль
+            return in_array($role, $this->roles, true);
+        }
+
+        if ($project instanceof Project) {
+            $project = $project->getSuffix();
+        }
+
+        foreach ($this->getProjectUsers() as $projectUser) {
+            $projectUser->getRole();
+
+            if ($projectUser->getProject()->getSuffix() === $project && $projectUser->getRole()->getValue() === $role) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**

@@ -1,0 +1,23 @@
+{% macro badge(user, link = true, short = true) %}
+    {% set current_project = project_manager.currentProject(app.request) %}
+    {% if user %}
+        {% if link %}
+            <a class="invisible_link" href="{{ path('user.index', {'username': user.username}) }}">
+        {% endif %}
+        <i class="fa fa-user"></i>
+        <span {{ user.isLocked ? 'class="style-deleted"' }}>{{ user.username }}</span>
+            {% if not short %}
+                {% if user.hasRole("PROLE_PM", current_project) %}
+                    <span class="label label-success" title="{{ 'role.project_manager'|trans }}">{{ 'role.pm'|trans }}</span>
+                {% endif %}
+                {% if user.isLocked %}
+                    <span class="label label-default"><i class="fa fa-ban" title="{{ 'locked'|trans }}"></i> </span>
+                {% endif %}
+            {% endif %}
+        {% if link %}
+            </a>
+        {% endif %}
+    {% else %}
+        {{ 'nobody'|trans({'case': 'instrumental'}) }}
+    {% endif %}
+{% endmacro %}

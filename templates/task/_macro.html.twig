@@ -21,9 +21,9 @@
     <span {{ task.isClosed ? 'class="task-closed"' }}>
         <i class="fa fa-tasks-alt"></i>
         {% import _self as this %}
-        {{ task.taskId }}
+        <b>{{ task.taskId }}</b>
         {% if withName %}
-            - {{ this.caption(task)|u.truncate(100, '...') }}
+            - {{ this.caption(task, 100) }}
             {% if task.isClosed %}<span class="label label-default">{{ 'closed'|trans }}</span>{% endif %}
         {% endif %}
     </span>
@@ -34,18 +34,19 @@
 
 {% macro table(tasks) %}
     {% import _self as this %}
+    {% import 'user/_macro.html.twig' as mUser %}
     <table class="table table-condensed">
         <tr>
             <th>#</th>
             <th>{{ 'task.caption.label'|trans }}</th>
-            <th>{{ 'task.created.label'|trans }}</th>
+            <th>{{ 'task.assignedTo.label'|trans }}</th>
             <th>{{ 'task.updated.label'|trans }}</th>
         </tr>
         {%  for task in tasks %}
             <tr>
                 <td>{{ this.no(task) }}</td>
                 <td>{{ this.caption(task, 80) }}</td>
-                <td>{{ task.createdAt|ago }}</td>
+                <td>{{ mUser.badge(task.assignedTo) }}</td>
                 <td>{{ task.updatedAt|ago }}</td>{# localizeddate('medium', 'medium') #}
             </tr>
         {% endfor %}

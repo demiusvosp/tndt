@@ -6,8 +6,8 @@
 
 {% block page_content %}
     {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
-        {% import 'project/macro.html.twig' as mProject %}
-        {% import 'doc/macro.html.twig' as mDoc %}
+        {% import 'project/_macro.html.twig' as mProject %}
+        {% import 'doc/_macro.html.twig' as mDoc %}
 
         {% block box_title %}
             {{ mProject.badge(project) }} - {{ 'Doc_list'|trans }}

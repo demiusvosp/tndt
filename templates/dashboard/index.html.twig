@@ -1,5 +1,5 @@
 {% extends 'base.html.twig' %}
-{% import 'project/macro.html.twig' as mProject %}
+{% import 'project/_macro.html.twig' as mProject %}
 
 {% block title %}{{ parent() }} - {% trans %}dashboard{% endtrans %}{% endblock %}
 {% block page_title%}{% trans %}dashboard{% endtrans %}{% endblock %}
@@ -14,6 +14,7 @@
                 {{ mProject.snippet(project) }}
             </div>
         {% endfor %}
+        {% if is_granted("PERM_PROJECT_CREATE") %}
             <div class="col-md-3">
                 {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
                     {% block box_title %}
@@ -24,6 +25,7 @@
                     {% endblock %}
                 {% endembed %}
             </div>
+        {% endif %}
         </div>
     </section>
 
@@ -31,7 +33,7 @@
         <div class="col-md-4">
             <section id="latest_task">
                 {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
-                    {% import 'task/macro.html.twig' as mTask %}
+                    {% import 'task/_macro.html.twig' as mTask %}
                     {% block box_title %}{% trans %}Tasks{% endtrans %}:{% endblock %}
                     {% block box_body %}
                         <ul class="list-unstyled">
@@ -48,7 +50,7 @@
         <div class="col-md-4">
             <section id="latest_docs">
                 {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
-                    {% import 'doc/macro.html.twig' as mDoc %}
+                    {% import 'doc/_macro.html.twig' as mDoc %}
                     {% block box_title %}{% trans %}Documents{% endtrans %}:{% endblock %}
                     {% block box_body %}
                         <ul class="list-unstyled">
@@ -65,7 +67,7 @@
         <div class="col-md-4">
             <section id="latest_users">
                 {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
-                    {% import 'user/macro.html.twig' as mUser %}
+                    {% import 'user/_macro.html.twig' as mUser %}
                     {% block box_title %}{% trans %}Users{% endtrans %}:{% endblock %}
                     {% block box_body %}
                         <ul class="list-unstyled">

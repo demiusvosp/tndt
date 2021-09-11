@@ -1,5 +1,5 @@
 {% extends 'base.html.twig' %}
-{% import 'project/macro.html.twig' as mProject %}
+{% import 'project/_macro.html.twig' as mProject %}
 
 {% block title %}{{ project.name}}{% endblock %}
 {% block page_title%}{% endblock %}
@@ -44,7 +44,7 @@
     <div class="row">
         <div class="col-md-6">
         {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
-            {% import 'task/macro.html.twig' as mTask %}
+            {% import 'task/_macro.html.twig' as mTask %}
             {% block box_title %}
                 <a href="{{ path('task.list', {'suffix': project.suffix}) }}">{{ 'Tasks'|trans }}</a>
             {% endblock %}
@@ -55,7 +55,7 @@
         </div>
         <div class="col-md-6">
             {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
-                {% import 'doc/macro.html.twig' as mDoc %}
+                {% import 'doc/_macro.html.twig' as mDoc %}
                 {% block box_title %}
                     <a href="{{ path('doc.list', {'suffix': project.suffix}) }}">{{ 'Docs'|trans }}</a>
                 {% endblock %}
