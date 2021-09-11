@@ -37,8 +37,13 @@ services:
             - { name: doctrine.event_listener, event: prePersist }
 
     # Various Services
+    App\Service\ProjectManager:
+        class: 'App\Service\ProjectManager'
+        calls:
+            - findCurrentProject: []
+
     project_manager:
-        alias: App\Services\ProjectManager
+        alias: App\Service\ProjectManager
 
     App\Security\Hierarchy\HierarchyHelper:
         class: 'App\Security\Hierarchy\HierarchyHelper'

@@ -19,36 +19,14 @@
 {% endblock %}
 
 {% block navbar_start %}
-    {% set current_project = project_manager.currentProject(app.request) %}
+    {% set current_project = project_manager.project %}
     <li>
         <a href="{{ (current_project) ? path('task.project_create', {'suffix':current_project.suffix}) : path('task.global_create') }}">{{ 'Create_task'|trans }}</a>
     </li>
     <li>
         <a href="{{ (current_project) ? path('doc.project_create', {'suffix':current_project.suffix}) : path('doc.global_create') }}">{{ 'Create_doc'|trans }}</a>
     </li>
-    <li class="dropdown">
-        {% set projects = project_manager.getPopularProjectsSnippets(5) %}
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ 'Projects'|trans }} <span class="caret"></span></a>
-        <ul class="dropdown-menu" role="menu">
-            {% for project in projects %}
-                <li>
-                    <a href="{{ path('project.index', {'suffix': project.suffix}) }}">
-                        {% if current_project and current_project.suffix == project.suffix %}
-                            <i class="fa fa-check"></i>
-                        {% else %}
-                            <i class="fa fa-fw"></i>
-                        {% endif %}
-                        {{ project.name }}
-                    </a>
-                </li>
-            {% endfor %}
-        </ul>
-    </li>
-    {% if app.user is null %}
-        <li>
-            <a href="{{ path('app.login') }}">{{ 'Login'|trans }}</a>
-        </li>
-    {% endif %}
+    {% include 'project/navbar_menu.html.twig' %}
 {% endblock %}
 {% block navbar_messages %}
 {% endblock %}

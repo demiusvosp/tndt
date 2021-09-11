@@ -25,15 +25,17 @@
                 {{ mProject.snippet(project, 500) }}
             </div>
         {% endfor %}
-        <div class="col-md-3">
-            {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
-                {% block box_title %}
-                    {{ 'project.new_project'|trans }}
-                {% endblock %}
-                {% block box_body %}
-                    <a class="btn btn-success btn-lg" href="{{ path('project.create') }}">{{ 'project.create'|trans }}</a>
-                {% endblock %}
-            {% endembed %}
-        </div>
+        {% if is_granted("PERM_PROJECT_CREATE") %}
+            <div class="col-md-3">
+                {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
+                    {% block box_title %}
+                        {{ 'project.new_project'|trans }}
+                    {% endblock %}
+                    {% block box_body %}
+                        <a class="btn btn-success btn-lg" href="{{ path('project.create') }}">{{ 'project.create'|trans }}</a>
+                    {% endblock %}
+                {% endembed %}
+            </div>
+        {% endif %}
     </div>
 {% endblock %}

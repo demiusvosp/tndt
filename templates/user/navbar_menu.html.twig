@@ -53,3 +53,10 @@
         </ul>
     </li>
 {% endif %}
+
+{% if app.user is null %}
+    <li>
+        <a href="{{ path('app.login') }}">{{ 'Login'|trans }}</a>
+    </li>
+{% endif %}
+

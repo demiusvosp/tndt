@@ -10,7 +10,9 @@ namespace App\Service;
 
 use App\Entity\Project;
 use App\Repository\ProjectRepository;
+use App\Security\UserPermissionsEnum;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class ProjectManager
 {
@@ -19,13 +21,7 @@ class ProjectManager
      */
     private ProjectRepository $projectRepository;
 
-    /**
-     * Кеш используемых проектов, чтобы не искать их заново если они уже есть.
-     * @TODO Честно говоря сомнительной надобности повторение IM UoW, запросы и так уникальны условиями (а потому не закешируешь), а по PK ищется быстро
-     *      Возможно стоит рассмотреть кеширование между запросами, или вобще отказаться от этого кеша
-     * @var array
-     */
-    private array $loadedProjects = [];
+    private RequestStack $requestStack;
 
     /**
      * @var array
@@ -34,60 +30,47 @@ class ProjectManager
      */
     private array $projectNames = [];
 
-    public function __construct(ProjectRepository $projectRepository)
+    /**
+     * Текущий проект, имеющий смысл в пределах одного запроса
+     * @var Project|null
+     */
+    private ?Project $currentProject = null;
+
+
+    public function __construct(ProjectRepository $projectRepository, RequestStack $requestStack)
     {
         $this->projectRepository = $projectRepository;
+        $this->requestStack = $requestStack;
     }
 
-    /**
-     * @param int $limit
-     * @return Project[]
-     */
-    public function getPopularProjectsSnippets(int $limit = 5): array
+    public function findCurrentProject(): void
     {
-        $projects = $this->projectRepository->findBy(['isArchived' => false], ['updatedAt' => 'desc'], $limit);
-        /** @var Project $project */
-        foreach ($projects as $project) {
-            $this->loadedProjects[$project->getSuffix()] = $project;
-            $this->projectNames[$project->getSuffix()] = $project->getName();
-        }
-
-        return $projects;
-    }
-
-
-    public function getCurrentProject(Request $request): ?Project
-    {
-        $suffix = $this->getSuffix($request);
-        if (!$suffix) {
-            return null;
-        }
-
-        if (isset($this->loadedProjects[$suffix])) {
-            return $this->loadedProjects[$suffix];
-        }
-
-        $this->loadedProjects[$suffix] = $this->projectRepository->findBySuffix($suffix);
-        $this->projectNames[$suffix] = $this->loadedProjects[$suffix]->getName();
-
-        return $this->loadedProjects[$suffix];
-    }
-
-
-    /**
-     * @param string|Project|null $project
-     */
-    public function reloadProject($project): void
-    {
-        if (is_string($project)) {
-            $project = $this->projectRepository->findBySuffix($project);
-            if (!$project instanceof Project) {
-                unset($this->loadedProjects[$project]);
+        $request = $this->requestStack->getCurrentRequest();
+        if ($request) {
+            $suffix = $this->getSuffix($request);
+            if ($suffix) {
+                $this->currentProject = $this->projectRepository->findBySuffix($suffix);
             }
         }
+    }
 
-        $this->loadedProjects[$project->getSuffix()] = $project;
-        $this->projectNames[$project->getSuffix()] = $project->getName();
+    /**
+     * Получить текущий проект, если в текущем контексте он возможен.
+     * (некоторый аналог Security->getUser())
+     * @return Project|null
+     */
+    public function getProject(): ?Project
+    {
+        return $this->currentProject;
+    }
+
+    /**
+     * Относится ли текущий запрос к зоне проектов
+     * @return bool
+     */
+    public function isProjectContext(): bool
+    {
+        return (bool) $this->currentProject;
     }
 
     private function getSuffix(Request $request): ?string
@@ -111,19 +94,43 @@ class ProjectManager
     }
 
     /**
-     * Если нам нужно только имя проекта, без целого объекта
+     * Если нам нужно только имя проекта, без целого объекта (вобще по логике это относится к репозиторию)
      * @param string $projectSuffix
      * @return string
      */
     public function getNameBySuffix(string $projectSuffix): string
     {
+        if ($this->currentProject && $this->currentProject->getSuffix() === $projectSuffix) {
+            $this->projectNames[$projectSuffix] = $this->currentProject->getSuffix();
+        }
+
         if (!isset($this->projectNames[$projectSuffix])) {
             $qb = $this->projectRepository->createQueryBuilder('p');
             $qb->select('p.name')
-                ->where($qb->expr()->eq('p.suffix', $projectSuffix))
+                ->where($qb->expr()->eq('p.suffix', ':suffix'))
+                ->setParameter('suffix', $projectSuffix)
                 ->setMaxResults(1);
-            $this->projectNames[$projectSuffix] = $qb->getQuery()->getScalarResult();
+
+            $this->projectNames[$projectSuffix] = $qb->getQuery()->getSingleScalarResult();
         }
         return $this->projectNames[$projectSuffix];
+    }
+
+    /**
+     * Проверяет доступ с учетом видимости в текущем проекте
+     * @param string|UserPermissionsEnum $permission
+     */
+    public function isGranted($permission): bool
+    {
+        if ($this->currentProject) {
+            return false;
+        }
+        if ($this->currentProject->isPublic()) {
+            $publicPermissions = UserPermissionsEnum::getPublicProjectGuestPermissions();
+            if (isset($publicPermissions[$permission])) {
+                return true;
+            }
+        }
+        return false;
     }
 }

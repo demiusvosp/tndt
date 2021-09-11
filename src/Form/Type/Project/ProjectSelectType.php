@@ -8,6 +8,7 @@ declare(strict_types=1);
 
 namespace App\Form\Type\Project;
 
+use App\Repository\ProjectRepository;
 use App\Service\ProjectManager;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -16,11 +17,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ProjectSelectType extends AbstractType
 {
-    private $projectManager;
+    private ProjectRepository $projectRepository;
 
-    public function __construct(ProjectManager $projectManager)
+    public function __construct(ProjectRepository $projectRepository)
     {
-        $this->projectManager = $projectManager;
+        $this->projectRepository = $projectRepository;
     }
 
     public function getParent(): string
@@ -40,7 +41,7 @@ class ProjectSelectType extends AbstractType
     private function getProjects(): array
     {
         $choices = [];
-        $projects = $this->projectManager->getPopularProjectsSnippets();
+        $projects = $this->projectRepository->getPopularProjectsSnippets();
         foreach ($projects as $project) {
             $choices[$project->getName()] = $project->getSuffix();
         }

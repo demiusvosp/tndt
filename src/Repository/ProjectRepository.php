@@ -23,4 +23,9 @@ class ProjectRepository extends ServiceEntityRepository
     {
         return $this->findOneBy(['suffix' => $suffix]);
     }
+
+    public function getPopularProjectsSnippets(int $limit = 5): array
+    {
+        return $this->findBy(['isArchived' => false], ['updatedAt' => 'desc'], $limit);
+    }
 }

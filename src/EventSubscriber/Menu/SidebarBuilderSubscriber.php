@@ -49,7 +49,7 @@ class SidebarBuilderSubscriber implements EventSubscriberInterface
     public function onSetupSidebar(SidebarMenuEvent $event): void
     {
         $route = $event->getRequest()->get('_route');
-        $currentProject = $this->projectManager->getCurrentProject($event->getRequest());
+        $currentProject = $this->projectManager->getProject();
 
         $event->addItem(new MenuItemModel(
             'projects',

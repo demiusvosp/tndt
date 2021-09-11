@@ -44,7 +44,7 @@ class TaskController extends AbstractController
 
     public function list(Request $request, PaginatorInterface $paginator): Response
     {
-        $project = $this->projectManager->getCurrentProject($request);
+        $project = $this->projectManager->getProject();
         if (!$project) {
             throw new CurrentProjectNotFoundException();
         }
@@ -88,7 +88,7 @@ class TaskController extends AbstractController
     public function create(Request $request, ProjectManager $projectManager): Response
     {
         $formData = new NewTaskDTO();
-        $currentProject = $projectManager->getCurrentProject($request);
+        $currentProject = $projectManager->getProject();
         if ($currentProject) {
             $formData->setProject($currentProject->getSuffix());
         }

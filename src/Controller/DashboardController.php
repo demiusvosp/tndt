@@ -9,6 +9,7 @@ namespace App\Controller;
 
 
 use App\Repository\DocRepository;
+use App\Repository\ProjectRepository;
 use App\Repository\TaskRepository;
 use App\Repository\UserRepository;
 use App\Service\ProjectManager;
@@ -26,13 +27,13 @@ class DashboardController extends AbstractController
 
     public function index(
         Request $request,
-        ProjectManager $projectManager,
+        ProjectRepository $projectRepository,
         TaskRepository $taskRepository,
         DocRepository $docRepository,
         UserRepository $userRepository
     ): Response
     {
-        $projects = $projectManager->getPopularProjectsSnippets(self::PROJECT_LENGTH);
+        $projects = $projectRepository->getPopularProjectsSnippets(self::PROJECT_LENGTH);
         $tasks = $taskRepository->getPopularTasks(self::TASK_LENGTH);
         $docs = $docRepository->getPopularDocs(self::DOC_LENGTH);
         $users = $userRepository->getPopularUsers(self::USER_LENGTH);

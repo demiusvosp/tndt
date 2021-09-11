@@ -61,7 +61,7 @@ class ProjectController extends AbstractController
 
     public function index(Request $request, TaskRepository $taskRepository, DocRepository $docRepository): Response
     {
-        $project = $this->projectManager->getCurrentProject($request);
+        $project = $this->projectManager->getProject();
         if (!$project) {
             throw $this->createNotFoundException($this->translator->trans('project.not_found'));
         }
@@ -113,7 +113,7 @@ class ProjectController extends AbstractController
      */
     public function edit(Request $request, UserRepository $userRepository): Response
     {
-        $project = $this->projectManager->getCurrentProject($request);
+        $project = $this->projectManager->getProject();
         if (!$project) {
             throw $this->createNotFoundException($this->translator->trans('project.not_found'));
         }
@@ -148,7 +148,7 @@ class ProjectController extends AbstractController
     public function archive(Request $request): Response
     {
         $em = $this->getDoctrine()->getManager();
-        $project = $this->projectManager->getCurrentProject($request);
+        $project = $this->projectManager->getProject();
         if (!$project) {
             throw $this->createNotFoundException($this->translator->trans('project.not_found'));
         }

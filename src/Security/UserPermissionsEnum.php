@@ -44,6 +44,10 @@ class UserPermissionsEnum extends UserRolesEnum
         );
     }
 
+    /**
+     * Возвращает иерархию ролей и полномочий
+     * @return array
+     */
     public static function getHierarchy(): array
     {
         return [
@@ -73,6 +77,20 @@ class UserPermissionsEnum extends UserRolesEnum
                 self::PERM_TASK_VIEW,
                 self::PERM_DOC_VIEW,
             ],
+        ];
+    }
+
+    /**
+     * Список полномочий доступных гостю публичного проекта, который в нем не участвует
+     *
+     * @return string[]
+     */
+    public static function getPublicProjectGuestPermissions(): array
+    {
+        return [
+            self::PERM_PROJECT_VIEW,
+            self::PERM_TASK_VIEW,
+            self::PERM_DOC_VIEW,
         ];
     }
 }

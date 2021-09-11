@@ -51,7 +51,7 @@ class BreadcrumbsBuilderSubscriber implements EventSubscriberInterface
         //@TODO вытащить состав меню в конфигурацию (возможно даже с признаками логики)
 
         $route = $event->getRequest()->get('_route');
-        $currentProject = $this->projectManager->getCurrentProject($event->getRequest());
+        $currentProject = $this->projectManager->getProject();
 
         if ($currentProject) {
             $currentProjectMenu = new MenuItemModel(
