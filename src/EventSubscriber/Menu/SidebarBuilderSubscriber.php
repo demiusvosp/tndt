@@ -65,7 +65,7 @@ class SidebarBuilderSubscriber implements EventSubscriberInterface
                 $currentProject->getName(),
                 'project.index',
                 ['suffix' => $currentProject->getSuffix()],
-                $currentProject->getIcon()
+                $currentProject->getIcon() . ' fa-fw'
             ));
 
             $event->addItem(new MenuItemModel(
@@ -73,7 +73,7 @@ class SidebarBuilderSubscriber implements EventSubscriberInterface
                 'menu.project.tasks',
                 'task.list',
                 ['suffix' => $currentProject->getSuffix()],
-                'fa fa-tasks'
+                'fa fa-tasks fa-fw'
             ));
             if (preg_match('/^task./', $route)) {
                 if ($taskId = $event->getRequest()->get('taskId')) {
@@ -84,7 +84,7 @@ class SidebarBuilderSubscriber implements EventSubscriberInterface
                             $currentTask->getCaption(self::SIDEBAR_ITEM_LENGTH),
                             'task.index',
                             ['taskId' => $taskId],
-                            'fa fa-tasks'
+                            'fa fa-tasks fa-fw'
                         );
                         if($this->security->isGranted(UserPermissionsEnum::PERM_TASK_EDIT)) {
                             $currentTaskMenu->addChild(new MenuItemModel(
@@ -92,7 +92,7 @@ class SidebarBuilderSubscriber implements EventSubscriberInterface
                                 'menu.task.edit',
                                 'task.edit',
                                 ['taskId' => $taskId],
-                                'fa fa-edit'
+                                'fa fa-edit fa-fw'
                             ));
                         }
                         $event->addItem($currentTaskMenu);
@@ -105,7 +105,7 @@ class SidebarBuilderSubscriber implements EventSubscriberInterface
                     'menu.task.create',
                     'task.project_create',
                     ['suffix' => $currentProject->getSuffix()],
-                    'fa fa-plus-square'
+                    'fa fa-plus-square fa-fw'
                 ));
             }
 
@@ -114,7 +114,7 @@ class SidebarBuilderSubscriber implements EventSubscriberInterface
                 'menu.project.docs',
                 'doc.list',
                 ['suffix' => $currentProject->getSuffix()],
-                'far fa-copy'
+                'far fa-copy fa-fw'
             ));
             if (preg_match('/^doc./', $route)) {
                 if ($docId = $event->getRequest()->get('docId')) {
@@ -125,7 +125,7 @@ class SidebarBuilderSubscriber implements EventSubscriberInterface
                             $currentDoc->getCaption(self::SIDEBAR_ITEM_LENGTH),
                             'doc.index',
                             ['docId' => $docId],
-                            'fa fa-file-alt'
+                            'fa fa-file-alt fa-fw'
                         );
                         if($this->security->isGranted(UserPermissionsEnum::PERM_DOC_EDIT)) {
                             $currentDocMenu->addChild(new MenuItemModel(
@@ -133,7 +133,7 @@ class SidebarBuilderSubscriber implements EventSubscriberInterface
                                 'menu.doc.edit',
                                 'doc.edit',
                                 ['docId' => $docId],
-                                'fa fa-edit'
+                                'fa fa-edit fa-fw'
                             ));
                         }
                         $event->addItem($currentDocMenu);
@@ -146,7 +146,7 @@ class SidebarBuilderSubscriber implements EventSubscriberInterface
                     'menu.doc.create',
                     'doc.project_create',
                     ['suffix' => $currentProject->getSuffix()],
-                    'fa fa-plus-square'
+                    'fa fa-plus-square fa-fw'
                 ));
             }
 
@@ -156,7 +156,7 @@ class SidebarBuilderSubscriber implements EventSubscriberInterface
                     'menu.project.edit',
                     'project.edit',
                     ['suffix' => $currentProject->getSuffix()],
-                    'fa fa-cogs'
+                    'fa fa-cogs fa-fw'
                 ));
             }
         }
@@ -167,7 +167,7 @@ class SidebarBuilderSubscriber implements EventSubscriberInterface
                 'menu.users',
                 'user.list',
                 [],
-                'fa fa-users'
+                'fa fa-users fa-fw'
             ));
         }
 
@@ -176,7 +176,7 @@ class SidebarBuilderSubscriber implements EventSubscriberInterface
             'menu.dashboard.about',
             'about',
             [],
-            'fa fa-info'
+            'fa fa-info fa-fw'
         ));
 
         $this->activateByRoute(
