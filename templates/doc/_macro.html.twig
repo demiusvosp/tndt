@@ -27,18 +27,19 @@
 
 {% macro table(docs) %}
     {% import _self as this %}
+    {% import 'user/_macro.html.twig' as mUser %}
     <table class="table table-condensed">
         <tr>
             <th>#</th>
             <th>{{ 'doc.caption.label'|trans }}</th>
-            <th>{{ 'doc.created.label'|trans }}</th>
+            <th>{{ 'doc.updatedBy.label'|trans }}</th>
             <th>{{ 'doc.updated.label'|trans }}</th>
         </tr>
         {%  for doc in docs %}
             <tr>
                 <td><a class="invisible_link" href="{{ path('doc.index', doc.getUrlParams) }}">{{ doc.no }}</a></td>
                 <td>{{ this.caption(doc, 80) }}</td>
-                <td>{{ doc.createdAt|ago }}</td>
+                <td>{{ mUser.badge(doc.updatedBy) }}</td>
                 <td>{{ doc.updatedAt|ago }}</td> {# localizeddate('medium', 'medium') #}
             </tr>
         {% endfor %}
