@@ -11,6 +11,7 @@ namespace App\Controller;
 use App\Entity\Doc;
 use App\Entity\Project;
 use App\Exception\CurrentProjectNotFoundException;
+use App\Form\DTO\Doc\EditDocDTO;
 use App\Form\DTO\Doc\ListFilterDTO;
 use App\Form\DTO\Doc\NewDocDTO;
 use App\Form\Type\Doc\EditDocType;
@@ -126,12 +127,13 @@ class DocController extends AbstractController
         if (!$doc || $doc->getSuffix() !== $project->getSuffix()) {
             throw $this->createNotFoundException($this->translator->trans('doc.not_found'));
         }
-        $form = $this->createForm(EditDocType::class, $doc);
+        $formData = new EditDocDTO($doc);
+        $form = $this->createForm(EditDocType::class, $formData);
 
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $em->persist($doc);
+            $formData->fillEntity($doc);
             $em->flush();
 
             $this->addFlash('success', 'doc.edit.success');

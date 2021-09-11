@@ -8,6 +8,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -33,46 +34,60 @@ class Doc implements NoInterface
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue
      */
-    private $id;
+    private int $id;
 
     /**
      * @var int
      * @ORM\Column(type="integer")
      */
-    private $no = 0;
+    private int $no = 0;
 
     /**
      * @var string
      * @ORM\Column(type="string", length=8)
      */
-    private $suffix = '';
+    private string $suffix = '';
 
     /**
      * @var Project
      * @ORM\ManyToOne(targetEntity="Project", fetch="EAGER")
      * @ORM\JoinColumn(name="suffix", referencedColumnName="suffix")
      */
-    private $project = null;
+    private ?Project $project = null;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      * @ORM\Column(type="datetime")
      * @Gedmo\Timestampable(on="create")
      */
-    private $createdAt;
+    private DateTime $createdAt;
 
     /**
-     * @var \DateTime
+     * @var User
+     * @ORM\ManyToOne (targetEntity="User")
+     * @Gedmo\Blameable (on="create")
+     */
+    private User $createdBy;
+
+    /**
+     * @var DateTime
      * @ORM\Column(type="datetime")
      * @Gedmo\Timestampable(on="update")
      */
-    private $updatedAt;
+    private DateTime $updatedAt;
+
+    /**
+     * @var User
+     * @ORM\ManyToOne (targetEntity="User")
+     * @Gedmo\Blameable (on="change", field={"caption", "abstract", "body", "isArchived"})
+     */
+    private User $updatedBy;
 
     /**
      * @var boolean
      * @ORM\Column (type="boolean")
      */
-    private $isArchived = false;
+    private bool $isArchived = false;
 
     /**
      * @var string
@@ -80,7 +95,7 @@ class Doc implements NoInterface
      * @Assert\NotBlank()
      * @Assert\Length(min=1, max=255)
      */
-    private $caption;
+    private string $caption;
 
     /**
      * @var string
@@ -89,21 +104,21 @@ class Doc implements NoInterface
      * @Assert\NotBlank()
      * @Assert\Length(min=1, max=255)
      */
-    private $slug;
+    private string $slug;
 
     /**
      * @var string
      * @ORM\Column(type="text", length=1000)
      * @Assert\Length(max=1000)
      */
-    private $abstract;
+    private string $abstract;
 
     /**
      * @var string
      * @ORM\Column(type="text")
      * @Assert\NotBlank()
      */
-    private $body;
+    private string $body;
 
 
     /**
@@ -182,19 +197,35 @@ class Doc implements NoInterface
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
-    public function getCreatedAt(): \DateTime
+    public function getCreatedAt(): DateTime
     {
         return $this->createdAt;
     }
 
     /**
-     * @return \DateTime
+     * @return User
      */
-    public function getUpdatedAt(): \DateTime
+    public function getCreatedBy(): User
+    {
+        return $this->createdBy;
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getUpdatedAt(): DateTime
     {
         return $this->updatedAt;
+    }
+
+    /**
+     * @return User
+     */
+    public function getUpdatedBy(): User
+    {
+        return $this->updatedBy;
     }
 
     /**
@@ -242,11 +273,12 @@ class Doc implements NoInterface
     }
 
     /**
+     * @param bool $strict - получить только абстракт без заполнения из body
      * @return string
      */
-    public function getAbstract(): string
+    public function getAbstract(bool $strict = false): string
     {
-        if (empty($this->abstract)) {
+        if (!$strict && empty($this->abstract)) {
             return mb_substr($this->body, 0, self::ABSTRACT_FROM_BODY_LIMIT) . '...';
         }
         return $this->abstract;

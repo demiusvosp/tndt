@@ -23,18 +23,27 @@
 {#                    <button type="submit">OK</button>#}
 {#                {{ form_end(filterForm) }}#}
 {#            </nav>#}
-            <table class="table table-condensed">
+            <table class="table table-condensed task-table">
+                <colgroup>
+                    <col class="task-col-no">
+                    <col class="task-col-name">
+                    <col>
+                    <col>
+                    <col>
+                    <col>
+                </colgroup>
                 <tr>
-                    <th>{{ knp_pagination_sortable(tasks, 'task.No'|trans, 't.no') }}</th>
-                    <th>{{ knp_pagination_sortable(tasks, 'task.caption.label'|trans, 't.caption') }}</th>
-                    <th>{{ knp_pagination_sortable(tasks, 'task.createdBy.label'|trans, 't.createdBy') }}</th>
-                    <th>{{ knp_pagination_sortable(tasks, 'task.created.label'|trans, 't.createdAt') }}</th>
-                    <th>{{ knp_pagination_sortable(tasks, 'task.assignedTo.label'|trans, 't.assignedTo') }}</th>
-                    <th>{{ knp_pagination_sortable(tasks, 'task.updated.label'|trans, 't.updatedAt') }}</th>
+                    <th scope="col">{{ knp_pagination_sortable(tasks, 'task.No'|trans, 't.no') }}</th>
+                    <th scope="col">{{ knp_pagination_sortable(tasks, 'task.caption.label'|trans, 't.caption') }}</th>
+                    <th scope="col">{{ knp_pagination_sortable(tasks, 'task.createdBy.label'|trans, 't.createdBy') }}</th>
+                    <th scope="col">{{ knp_pagination_sortable(tasks, 'task.created.label'|trans, 't.createdAt') }}</th>
+                    <th scope="col">{{ knp_pagination_sortable(tasks, 'task.assignedTo.label'|trans, 't.assignedTo') }}</th>
+                    <th scope="col">{{ knp_pagination_sortable(tasks, 'task.updated.label'|trans, 't.updatedAt') }}</th>
                 </tr>
                 {%  for task in tasks %}
                     <tr>
-                        <td>{{ mTask.no(task) }}</td>
+                        {# здесь проставляем класс напрямую ячейке, потому что из col он не достается  #}
+                        <td class="task-col-no">{{ mTask.no(task) }}</td>
                         <td>{{ mTask.caption(task, 160) }}</td>
                         <td>{{ mUser.badge(task.createdBy, true, false) }}</td>
                         <td>{{ task.createdAt|ago }}</td>

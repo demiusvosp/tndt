@@ -48,7 +48,7 @@ class NewDocType extends AbstractType
                 [
                     'label' => 'doc.body.label',
                     'help' => 'doc.body.help',
-                    'attr' => ['rows' => 80],
+                    'attr' => ['rows' => 40],
                     'required' => false,
                     'empty_data' => '',
                 ]

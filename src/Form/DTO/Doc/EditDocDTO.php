@@ -1,27 +1,18 @@
 <?php
 /**
  * User: demius
- * Date: 29.08.2021
- * Time: 11:34
+ * Date: 11.09.2021
+ * Time: 17:47
  */
 declare(strict_types=1);
 
 namespace App\Form\DTO\Doc;
 
 use App\Entity\Doc;
-use App\Entity\Project;
-use Happyr\Validator\Constraint\EntityExist;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class NewDocDTO
+class EditDocDTO
 {
-    /**
-     * @var string
-     * @Assert\NotBlank()
-     * @EntityExist(entity="App\Entity\Project", property="suffix")
-     */
-    private string $project;
-
     /**
      * @var string
      * @Assert\NotBlank()
@@ -41,25 +32,6 @@ class NewDocDTO
      */
     private string $body = '';
 
-
-    /**
-     * @return string
-     */
-    public function getProject(): string
-    {
-        return $this->project;
-    }
-
-    /**
-     * @param string $project
-     * @return NewDocDTO
-     */
-    public function setProject(string $project): NewDocDTO
-    {
-        $this->project = $project;
-        return $this;
-    }
-
     /**
      * @return string
      */
@@ -68,11 +40,26 @@ class NewDocDTO
         return $this->caption;
     }
 
+
+    public function __construct(Doc $doc)
+    {
+        $this->caption = $doc->getCaption();
+        $this->abstract = $doc->getAbstract(true);
+        $this->body = $doc->getBody();
+    }
+
+    public function fillEntity(Doc $doc): void
+    {
+        $doc->setCaption($this->caption);
+        $doc->setAbstract($this->abstract);
+        $doc->setBody($this->body);
+    }
+
     /**
      * @param string $caption
-     * @return NewDocDTO
+     * @return EditDocDTO
      */
-    public function setCaption(string $caption): NewDocDTO
+    public function setCaption(string $caption): EditDocDTO
     {
         $this->caption = $caption;
         return $this;
@@ -88,9 +75,9 @@ class NewDocDTO
 
     /**
      * @param string $abstract
-     * @return NewDocDTO
+     * @return EditDocDTO
      */
-    public function setAbstract(string $abstract): NewDocDTO
+    public function setAbstract(string $abstract): EditDocDTO
     {
         $this->abstract = $abstract;
         return $this;
@@ -106,9 +93,9 @@ class NewDocDTO
 
     /**
      * @param string $body
-     * @return NewDocDTO
+     * @return EditDocDTO
      */
-    public function setBody(string $body): NewDocDTO
+    public function setBody(string $body): EditDocDTO
     {
         $this->body = $body;
         return $this;

@@ -9,6 +9,7 @@ declare(strict_types=1);
 namespace App\Form\Type\Doc;
 
 use App\Entity\Doc;
+use App\Form\DTO\Doc\EditDocDTO;
 use App\Form\Type\Project\ProjectSelectType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -43,7 +44,7 @@ class EditDocType extends AbstractType
                 [
                     'label' => 'doc.body.label',
                     'help' => 'doc.body.help',
-                    'attr' => ['rows' => 80],
+                    'attr' => ['rows' => 40],
                     'required' => false,
                     'empty_data' => '',
                 ]
@@ -52,6 +53,6 @@ class EditDocType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefault('data_class', Doc::class);
+        $resolver->setDefault('data_class', EditDocDTO::class);
     }
 }
