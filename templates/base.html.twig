@@ -19,13 +19,6 @@
 {% endblock %}
 
 {% block navbar_start %}
-    {% set current_project = project_manager.project %}
-    <li>
-        <a href="{{ (current_project) ? path('task.project_create', {'suffix':current_project.suffix}) : path('task.global_create') }}">{{ 'Create_task'|trans }}</a>
-    </li>
-    <li>
-        <a href="{{ (current_project) ? path('doc.project_create', {'suffix':current_project.suffix}) : path('doc.global_create') }}">{{ 'Create_doc'|trans }}</a>
-    </li>
     {% include 'project/navbar_menu.html.twig' %}
 {% endblock %}
 {% block navbar_messages %}

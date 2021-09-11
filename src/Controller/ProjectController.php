@@ -58,7 +58,13 @@ class ProjectController extends AbstractController
         return $this->render('project/list.html.twig', ['projects' => $projects, 'filterForm' => $filterForm->createView()]);
     }
 
-
+    /**
+     * @IsGranted ("PERM_PROJECT_VIEW")
+     * @param Request $request
+     * @param TaskRepository $taskRepository
+     * @param DocRepository $docRepository
+     * @return Response
+     */
     public function index(Request $request, TaskRepository $taskRepository, DocRepository $docRepository): Response
     {
         $project = $this->projectManager->getProject();

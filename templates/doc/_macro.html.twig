@@ -3,7 +3,6 @@
         {% set label = doc.caption %}
         {% if limit %}{% set label = label|u.truncate(limit, '...') %}{% endif %}
         {{ label }}
-
     </a>
 {% endmacro %}
 

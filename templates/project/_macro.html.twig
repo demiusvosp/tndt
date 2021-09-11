@@ -1,3 +1,4 @@
+
 {% macro badge(project, withName = false, link = false) %}
     {% if link %}
         <a class="invisible_link" href="{{ path('project.index', {'suffix': project.suffix}) }}">
@@ -7,6 +8,13 @@
         {% if withName %}
             - {{ project.name }}
             {% if project.isArchived %}<span class="label label-default">{{ 'archived'|trans }}</span>{% endif %}
+            {% if not project.public %}
+                {% if is_granted("PERM_PROJECT_VIEW") %}
+                    <i class="fas fa-lock-open"></i>
+                {% else %}
+                    <i class="fas fa-lock"></i>
+                {% endif %}
+            {% endif %}
         {% endif %}
     {% if link %}
         </a>
@@ -18,22 +26,10 @@
       шаблоном сильно все меняется, может сделать шаблон, который сунуть в макрос или использовать отдельно (а это вобще законно)
     #}
     {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
+        {# все, что внутри embed теряет свой контекст, и _self здесь больше нет #}
+        {% import 'project/_macro.html.twig' as this %}
         {% block box_title %}
-            {#  почему-то не работает
-            {% import _self as macros %}
-            {{ macros.badge(project, true, link) }}
-                Поэтому пока ниже копипаста макроса badge
-            #}
-            {% if link %}
-                <a class="invisible_link" href="{{ path('project.index', {'suffix': project.suffix}) }}">
-            {% endif %}
-                <i class="fa fa-tasks-alt"></i>
-                <b {{ project.isArchived ? 'class="style-deleted"' }}>{{ project.suffix }}</b>
-                - {{ project.name }}
-                {% if project.isArchived %}<span class="label label-default label-sm">{{ 'archived'|trans }}</span>{% endif %}
-            {% if link %}
-                </a>
-            {% endif %}
+            {{ this.badge(project, true, true) }}
         {% endblock %}
         {% block box_body %}
             <small  {{ project.isArchived ? 'class="style-disabled"' }}>

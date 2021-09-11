@@ -116,21 +116,4 @@ class ProjectManager
         return $this->projectNames[$projectSuffix];
     }
 
-    /**
-     * Проверяет доступ с учетом видимости в текущем проекте
-     * @param string|UserPermissionsEnum $permission
-     */
-    public function isGranted($permission): bool
-    {
-        if ($this->currentProject) {
-            return false;
-        }
-        if ($this->currentProject->isPublic()) {
-            $publicPermissions = UserPermissionsEnum::getPublicProjectGuestPermissions();
-            if (isset($publicPermissions[$permission])) {
-                return true;
-            }
-        }
-        return false;
-    }
 }
