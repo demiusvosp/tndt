@@ -51,3 +51,12 @@ services:
 #            - '@cache.permissions.adapter'
         configurator: ['@App\Security\Hierarchy\HierarchyConfigurator', 'configure']
 
+    App\Security\Voter\PublicProjectVoter:
+        class: 'App\Security\Voter\PublicProjectVoter'
+        tags:
+            - { name: monolog.logger, channel: security }
+
+    App\Security\Voter\CurrentProjectVoter:
+        class: 'App\Security\Voter\CurrentProjectVoter'
+        tags:
+            - { name: monolog.logger, channel: security }

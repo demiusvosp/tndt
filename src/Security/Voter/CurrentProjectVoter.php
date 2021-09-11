@@ -44,34 +44,34 @@ class CurrentProjectVoter implements VoterInterface, LoggerAwareInterface
     public function vote(TokenInterface $token, $subject, array $attributes): int
     {
         if(!$this->projectManager->isProjectContext()) {
-            $this->logger->debug('Not in current project constext - abstain');
+            $this->logger->debug('Not in current project context - abstain');
             // способны обработать только web-страницы с переданным project
             return VoterInterface::ACCESS_ABSTAIN;
         }
 
         foreach ($token->getRoleNames() as $fullRoleName) {
             if (UserRolesEnum::isValid($fullRoleName)) {
-                $this->logger->debug('Its global role - skip', ['role' => $fullRoleName]);
+                $this->logger->debug('{role} is global role - skip', ['role' => $fullRoleName]);
                 // это глобальная роль, пусть с ней RoleVoter разбирается
                 continue;
             }
             [$role, $project] = UserRolesEnum::explodeSyntheticRole($fullRoleName);
             if (empty($role) || empty($project)) {
-                $this->logger->debug('Its incorrect role - skip', ['role' => $fullRoleName]);
+                $this->logger->debug('{role} is incorrect role - skip', ['role' => $fullRoleName]);
                 // это не роль в проекте
                 continue;
             }
             /** @noinspection NullPointerExceptionInspection мы уже проверили наличие currentProject */
             if ($project !== $this->projectManager->getProject()->getSuffix()) {
                 $this->logger->debug(
-                    'Its another project role - skip',
-                    ['currentProject' => $this->projectManager->getProject()->getSuffix(), 'requestedProject' => $project]
+                    'It [{role} - {roleProject}] is not current {currentProject} project - skip',
+                    ['role' => $role, 'roleProject' => $project, 'currentProject' => $this->projectManager->getProject()->getSuffix()]
                 );
                 // роль не этого проекта
                 continue;
             }
             if (!UserRolesEnum::isValid($role)) {
-                $this->logger->debug('Its invalid self project role - critical error', ['role' => $role]);
+                $this->logger->debug('{role} is invalid self project role - critical error', ['role' => $role]);
                 // неизвестная роль
                 throw new \DomainException('Unknown '.$role.' role');
             }
@@ -83,9 +83,8 @@ class CurrentProjectVoter implements VoterInterface, LoggerAwareInterface
                     return VoterInterface::ACCESS_ABSTAIN;
                 }
                 if (UserPermissionsEnum::isValid($attribute)) {
-                    $this->logger->debug('Start check attribute '.$attribute);
                     if ($this->hierarchyHelper->has($attribute, $role)) {
-                        $this->logger->debug('Its project '.$project.' - grant', ['attribute' => $attribute, 'role' => $role]);
+                        $this->logger->debug('Project {project} use {role} by granted {attribute} - grant', ['project' => $project, 'attribute' => $attribute, 'role' => $role]);
                         return VoterInterface::ACCESS_GRANTED;
                     }
                 }

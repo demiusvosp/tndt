@@ -38,14 +38,16 @@ class PublicProjectVoter implements VoterInterface, LoggerAwareInterface
             return VoterInterface::ACCESS_ABSTAIN;
         }
         if (!$project->isPublic()) {
-            $this->logger->debug('Its not public project - abstain');
+            $this->logger->debug('Its not public project - abstain', ['project' => $project->getSuffix()]);
             return VoterInterface::ACCESS_ABSTAIN;
         }
 
         $publicPermissions = UserPermissionsEnum::getPublicProjectGuestPermissions();
         foreach ($attributes as $attribute) {
             if (in_array($attribute, $publicPermissions, true)) {
-                $this->logger->debug('Public project grant this permission', ['permission' => $attribute]);
+                $this->logger->debug(
+                    'Public project {project} grant permission {attribute}',
+                    ['project' => $project->getSuffix(), 'attribute' => $attribute]);
                 return VoterInterface::ACCESS_GRANTED;
             }
         }
