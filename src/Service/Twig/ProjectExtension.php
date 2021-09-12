@@ -10,6 +10,7 @@ namespace App\Service\Twig;
 
 use App\Repository\ProjectRepository;
 use App\Service\ProjectManager;
+use Symfony\Component\Security\Core\Security;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
@@ -17,11 +18,13 @@ class ProjectExtension extends AbstractExtension
 {
     private ProjectManager $projectManager;
     private ProjectRepository $projectRepository;
+    private Security $security;
 
-    public function __construct(ProjectManager $projectManager, ProjectRepository $projectRepository)
+    public function __construct(ProjectManager $projectManager, ProjectRepository $projectRepository, Security $security)
     {
         $this->projectManager = $projectManager;
         $this->projectRepository = $projectRepository;
+        $this->security = $security;
     }
 
     public function getFunctions(): array
@@ -37,7 +40,7 @@ class ProjectExtension extends AbstractExtension
 
     public function buildProjectMenu(): ?array
     {
-        $projects = $this->projectRepository->getPopularProjectsSnippets(5);
+        $projects = $this->projectRepository->getPopularProjectsSnippets(5, $this->security->getUser());
 
         return ['projects' => $projects, 'current' => $this->projectManager->getProject()];
     }

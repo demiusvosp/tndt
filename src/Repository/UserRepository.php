@@ -84,8 +84,9 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->setMaxResults($limit);
 
         if($projectSuffix) {
-            $qb->join('u.projectUser', 'pu', 'WITH', 'pu.project_suffix = :suffix')
-                ->andWhere($qb->expr()->isNotNull('pu.role'));
+            $qb->join('u.projectUsers', 'pu', 'WITH', 'pu.suffix = :suffix')
+                ->andWhere($qb->expr()->isNotNull('pu.role'))
+                ->setParameter('suffix', $projectSuffix);
         }
 
         $qb->orderBy('u.lastLogin', 'DESC');

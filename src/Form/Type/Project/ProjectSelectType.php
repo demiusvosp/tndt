@@ -9,19 +9,21 @@ declare(strict_types=1);
 namespace App\Form\Type\Project;
 
 use App\Repository\ProjectRepository;
-use App\Service\ProjectManager;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Security\Core\Security;
 //use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
 
 class ProjectSelectType extends AbstractType
 {
     private ProjectRepository $projectRepository;
+    private Security $security;
 
-    public function __construct(ProjectRepository $projectRepository)
+    public function __construct(ProjectRepository $projectRepository, Security $security)
     {
         $this->projectRepository = $projectRepository;
+        $this->security = $security;
     }
 
     public function getParent(): string
@@ -41,7 +43,7 @@ class ProjectSelectType extends AbstractType
     private function getProjects(): array
     {
         $choices = [];
-        $projects = $this->projectRepository->getPopularProjectsSnippets();
+        $projects = $this->projectRepository->getPopularProjectsSnippets(10, $this->security->getUser());
         foreach ($projects as $project) {
             $choices[$project->getName()] = $project->getSuffix();
         }

@@ -1,43 +1,57 @@
 <?php
 /**
  * User: demius
- * Date: 13.08.2021
- * Time: 21:42
+ * Date: 12.09.2021
+ * Time: 2:02
  */
 declare(strict_types=1);
 
 namespace App\Form\DTO\Task;
 
+use App\Entity\Task;
 use Happyr\Validator\Constraint\EntityExist;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class NewTaskDTO
+class EditTaskDTO
 {
     /**
      * @var string
      * @Assert\NotBlank()
-     * @EntityExist(entity="App\Entity\Project", property="suffix")
      */
-    private $project;
+    private string $project;
 
     /**
      * @var int
      * @EntityExist(entity="App\Entity\User", property="id")
      */
-    private int $assignTo;
+    private int $assignedTo;
 
     /**
      * @var string
      * @Assert\NotBlank()
      * @Assert\Length(min=1, max=255)
      */
-    private $caption = '';
+    private string $caption = '';
 
     /**
      * @var string
      * @Assert\Length(max=1000)
      */
-    private $description = '';
+    private string $description = '';
+
+    public function __construct(Task $task)
+    {
+        $this->project = $task->getSuffix();
+        $this->caption = $task->getCaption();
+        $this->description = $task->getDescription();
+        $this->assignedTo = $task->getAssignedTo() ? $task->getAssignedTo()->getId() : 0;
+    }
+
+    public function fillEntity(Task $task): void
+    {
+        $task->setCaption($this->caption);
+        $task->setDescription($this->description);
+    }
 
     /**
      * @return string
@@ -49,9 +63,9 @@ class NewTaskDTO
 
     /**
      * @param string $project
-     * @return NewTaskDTO
+     * @return EditTaskDTO
      */
-    public function setProject(string $project): NewTaskDTO
+    public function setProject(string $project): EditTaskDTO
     {
         $this->project = $project;
         return $this;
@@ -60,18 +74,18 @@ class NewTaskDTO
     /**
      * @return int
      */
-    public function getAssignTo(): int
+    public function getAssignedTo(): int
     {
-        return $this->assignTo;
+        return $this->assignedTo;
     }
 
     /**
-     * @param int $assignTo
-     * @return NewTaskDTO
+     * @param int $assignedTo
+     * @return EditTaskDTO
      */
-    public function setAssignTo(int $assignTo): NewTaskDTO
+    public function setAssignedTo(int $assignedTo): EditTaskDTO
     {
-        $this->assignTo = $assignTo;
+        $this->assignedTo = $assignedTo;
         return $this;
     }
 
@@ -85,9 +99,9 @@ class NewTaskDTO
 
     /**
      * @param string $caption
-     * @return NewTaskDTO
+     * @return EditTaskDTO
      */
-    public function setCaption(string $caption): NewTaskDTO
+    public function setCaption(string $caption): EditTaskDTO
     {
         $this->caption = $caption;
         return $this;
@@ -103,12 +117,11 @@ class NewTaskDTO
 
     /**
      * @param string $description
-     * @return NewTaskDTO
+     * @return EditTaskDTO
      */
-    public function setDescription(string $description): NewTaskDTO
+    public function setDescription(string $description): EditTaskDTO
     {
         $this->description = $description;
         return $this;
     }
-
 }

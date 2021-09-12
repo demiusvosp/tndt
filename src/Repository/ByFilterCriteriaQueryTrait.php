@@ -9,21 +9,22 @@ namespace App\Repository;
 
 use App\Form\ToFindCriteriaInterface;
 use Doctrine\ORM\Query;
+use Doctrine\ORM\QueryBuilder;
 
 trait ByFilterCriteriaQueryTrait
 {
     /**
      * @param ToFindCriteriaInterface $filter
-     * @return Query
+     * @return QueryBuilder
      */
-    public function getQueryByFilter(ToFindCriteriaInterface $filter): Query
+    public function getQueryByFilter(ToFindCriteriaInterface $filter, $alias = 't'): QueryBuilder
     {
-        $qb = $this->createQueryBuilder('t');
+        $qb = $this->createQueryBuilder($alias);
         foreach ($filter->getFilterCriteria() as $field => $value) {
-            $qb->andWhere($qb->expr()->eq('t.' . $field, ':' . $field))
+            $qb->andWhere($qb->expr()->eq($alias.'.' . $field, ':' . $field))
                 ->setParameter($field, $value);
         }
 
-        return $qb->getQuery();
+        return $qb;
     }
 }

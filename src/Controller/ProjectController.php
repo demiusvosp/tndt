@@ -29,6 +29,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ProjectController extends AbstractController
 {
+    private const PROJECT_BLOCKS_LIMIT = 16;// понадобится больше - добавить в project.list пагинацию
     private const TASK_BLOCK_LIMIT = 10;
     private const DOC_BLOCK_LIMIT = 10;
 
@@ -42,19 +43,25 @@ class ProjectController extends AbstractController
         $this->projectManager = $projectManager;
     }
 
-
     public function list(Request $request): Response
     {
         $filterData = new ProjectListFilterDTO();
         $filterForm = $this->createForm(ListFilterType::class, $filterData);
+        $projectRepository = $this->getDoctrine()->getRepository(Project::class);
 
         $filterForm->handleRequest($request);
         if ($filterForm->isSubmitted() && !$filterForm->isValid()) {
             $this->addFlash('warning', 'filterForm.error');
+            $query = $projectRepository->getQueryByFilter(new ProjectListFilterDTO(), 'p');
+        } else {
+            $query = $projectRepository->getQueryByFilter($filterData, 'p');
         }
 
-        $projectRepository = $this->getDoctrine()->getRepository(Project::class);
-        $projects = $projectRepository->findBy($filterData->getFilterCriteria(), ['updatedAt' => 'desc'], 50);
+        $projectRepository->addVisibilityCondition($query, $this->getUser());
+        $query->setMaxResults(self::PROJECT_BLOCKS_LIMIT)
+            ->orderBy('p.updatedAt', 'DESC');
+        $projects = $query->getQuery()->getResult();
+
         return $this->render('project/list.html.twig', ['projects' => $projects, 'filterForm' => $filterForm->createView()]);
     }
 

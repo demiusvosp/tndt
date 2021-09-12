@@ -12,6 +12,7 @@
         {% endblock %}
         {% block box_body %}
             {{ form_row(form.caption) }}
+            {{ form_row(form.assignedTo) }}
             {{ form_row(form.description) }}
             <hr>
             <button type="submit" class="btn btn-success">{{ 'Edit'|trans }}</button>

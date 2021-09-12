@@ -94,7 +94,8 @@ nobody: >-
   {case, select,
     nominative {никто}
     genitive {никого}
-    instrumental {никому}
+    dative {никому}
+    instrumental {никем}
     other {никто}
   }
 Project: Проект

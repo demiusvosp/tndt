@@ -20,7 +20,7 @@
                         <div class="col-md-6 doc-property-string">
                             {{ 'doc.createdBy.label'|trans }} {{ mUser.badge(doc.createdBy, true, false) }}
                             {{ doc.createdAt|ago }};
-                            {{ 'doc.updatedBy.label'|trans }} {{ mUser.badge(doc.updatedBy, true, false) }}
+                            {{ 'doc.updatedBy.label'|trans }} {{ doc.updatedBy ? mUser.badge(doc.updatedBy, true, false) : mUser.nobody('instrumental') }}
                             {{ doc.updatedAt|ago }}
                         </div>
                     </div>

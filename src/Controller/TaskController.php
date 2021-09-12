@@ -8,7 +8,10 @@ namespace App\Controller;
 
 use App\Entity\Project;
 use App\Entity\Task;
+use App\Entity\User;
+use App\Exception\BadRequestException;
 use App\Exception\CurrentProjectNotFoundException;
+use App\Form\DTO\Task\EditTaskDTO;
 use App\Form\DTO\Task\ListFilterDTO;
 use App\Form\DTO\Task\NewTaskDTO;
 use App\Form\Type\Task\EditTaskType;
@@ -42,6 +45,12 @@ class TaskController extends AbstractController
         $this->projectManager = $projectManager;
     }
 
+    /**
+     * @IsGranted ("PERM_TASK_VIEW")
+     * @param Request $request
+     * @param PaginatorInterface $paginator
+     * @return Response
+     */
     public function list(Request $request, PaginatorInterface $paginator): Response
     {
         $project = $this->projectManager->getProject();
@@ -69,6 +78,11 @@ class TaskController extends AbstractController
         );
     }
 
+    /**
+     * @IsGranted ("PERM_TASK_VIEW")
+     * @param Request $request
+     * @return Response
+     */
     public function index(Request $request): Response
     {
         $task = $this->taskRepository->getByTaskId($request->get('taskId'));
@@ -99,9 +113,18 @@ class TaskController extends AbstractController
         if($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $project = $em->getRepository(Project::class)->find($formData->getProject());
+
             $task = new Task($project);
             $task->setCaption($formData->getCaption());
             $task->setDescription($formData->getDescription());
+            $newAssignedUser = $em->getRepository(User::class)->find($formData->getAssignTo());
+            if (!$newAssignedUser) {
+                throw new BadRequestException('Выбранный пользователь не найден');
+            }
+            if (!$newAssignedUser->hasProject($task->getProject())) {
+                throw new BadRequestException('Нельзя назначить пользователя на задачу проекта к которому у него нет доступа');
+            }
+            $task->setAssignedTo($newAssignedUser);
             $em->persist($task);
             $em->flush();
 
@@ -123,12 +146,25 @@ class TaskController extends AbstractController
         if (!$task) {
             throw $this->createNotFoundException($this->translator->trans('task.not_found'));
         }
-        $form = $this->createForm(EditTaskType::class, $task);
+        $formData = new EditTaskDTO($task);
+        $form = $this->createForm(EditTaskType::class, $formData);
 
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $em->persist($task);
+            if($formData->getProject() !== $task->getProject()->getSuffix()) {
+                throw new BadRequestException();
+            }
+
+            $formData->fillEntity($task);
+            $newAssignedUser = $em->getRepository(User::class)->find($formData->getAssignedTo());
+            if (!$newAssignedUser) {
+                throw new BadRequestException('Выбранный пользователь не найден');
+            }
+            if (!$newAssignedUser->hasProject($task->getProject())) {
+                throw new BadRequestException('Нельзя назначить пользователя на задачу проекта к которому у него нет доступа');
+            }
+            $task->setAssignedTo($newAssignedUser);
             $em->flush();
 
             $this->addFlash('success', 'task.edit.success');

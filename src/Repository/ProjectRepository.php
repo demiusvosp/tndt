@@ -9,11 +9,17 @@ declare(strict_types=1);
 namespace App\Repository;
 
 use App\Entity\Project;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\Expr\Join;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class ProjectRepository extends ServiceEntityRepository
 {
+    use ByFilterCriteriaQueryTrait;
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Project::class);
@@ -24,8 +30,44 @@ class ProjectRepository extends ServiceEntityRepository
         return $this->findOneBy(['suffix' => $suffix]);
     }
 
-    public function getPopularProjectsSnippets(int $limit = 5): array
+    /**
+     * Дополнить условием видимости проекта
+     * @param QueryBuilder $qb
+     * @param User|UserInterface|null $user
+     */
+    public function addVisibilityCondition(QueryBuilder $qb, ?UserInterface $user = null): void
     {
-        return $this->findBy(['isArchived' => false], ['updatedAt' => 'desc'], $limit);
+        if($user) {
+            $qb->leftJoin(
+                'p.projectUsers',
+                'pu',
+                Join::WITH,
+                $qb->expr()->eq('pu.user', ':user')
+            );
+            $qb->setParameter('user', $user);
+            $qb->andWhere($qb->expr()->orX(
+                'p.isPublic = true',
+                $qb->expr()->isNotNull('pu.role')
+            ));
+        } else {
+            $qb->andWhere('p.isPublic = true');
+        }
+    }
+
+    /**
+     * Несколько популярных проектов для дашборда и меню проектов
+     * @param int $limit
+     * @param User|UserInterface|null $user - если передать юзера, включает видимые ему приватные проекты
+     * @return array
+     */
+    public function getPopularProjectsSnippets(int $limit = 5, ?UserInterface $user = null): array
+    {
+        $qb = $this->createQueryBuilder('p');
+        $qb->where('p.isArchived = false')
+            ->orderBy('p.updatedAt', 'DESC')
+            ->setMaxResults($limit);
+        $this->addVisibilityCondition($qb, $user);
+
+        return $qb->getQuery()->getResult();
     }
 }

@@ -77,11 +77,11 @@ class Doc implements NoInterface
     private DateTime $updatedAt;
 
     /**
-     * @var User
+     * @var User|null
      * @ORM\ManyToOne (targetEntity="User")
      * @Gedmo\Blameable (on="change", field={"caption", "abstract", "body", "isArchived"})
      */
-    private User $updatedBy;
+    private ?User $updatedBy;
 
     /**
      * @var boolean
@@ -213,17 +213,17 @@ class Doc implements NoInterface
     }
 
     /**
-     * @return DateTime
+     * @return DateTime|null
      */
-    public function getUpdatedAt(): DateTime
+    public function getUpdatedAt(): ?DateTime
     {
         return $this->updatedAt;
     }
 
     /**
-     * @return User
+     * @return ?User
      */
-    public function getUpdatedBy(): User
+    public function getUpdatedBy(): ?User
     {
         return $this->updatedBy;
     }

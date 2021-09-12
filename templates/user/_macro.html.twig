@@ -16,7 +16,9 @@
         {% if link %}
             </a>
         {% endif %}
-    {% else %}
-        {{ 'nobody'|trans({'case': 'instrumental'}) }}
     {% endif %}
+{% endmacro %}
+
+{% macro nobody(case = 'nominative') %}
+    {{ 'nobody'|trans({'case': case}) }}
 {% endmacro %}

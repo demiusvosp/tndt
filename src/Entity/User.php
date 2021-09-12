@@ -279,6 +279,21 @@ class User implements UserInterface, Serializable
         return $this;
     }
 
+    public function hasProject($project): bool
+    {
+        /*
+         * @TODO Подумать и пока не поздно разобраться и вернуть в ProjectUser в качестве первичного ключа ключи таблиц.
+         * Тогда можно будет изучить построение такого ключа и не перебирать в этих функциях коллекцию, а сделать
+         * return $projectUser->containKey($this->user_id, $project->getSuffix());
+         */
+        foreach ($this->getProjectUsers() as $projectUser) {
+            if($projectUser->getProject() === $project) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     /**
      * @return ProjectUser[]|Collection
      */

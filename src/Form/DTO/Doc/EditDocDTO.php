@@ -16,6 +16,12 @@ class EditDocDTO
     /**
      * @var string
      * @Assert\NotBlank()
+     */
+    private string $project;
+
+    /**
+     * @var string
+     * @Assert\NotBlank()
      * @Assert\Length(min=1, max=255)
      */
     private string $caption = '';
@@ -43,6 +49,7 @@ class EditDocDTO
 
     public function __construct(Doc $doc)
     {
+        $this->project = $doc->getSuffix();
         $this->caption = $doc->getCaption();
         $this->abstract = $doc->getAbstract(true);
         $this->body = $doc->getBody();

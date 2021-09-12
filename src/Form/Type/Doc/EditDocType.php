@@ -12,6 +12,7 @@ use App\Entity\Doc;
 use App\Form\DTO\Doc\EditDocDTO;
 use App\Form\Type\Project\ProjectSelectType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -48,7 +49,8 @@ class EditDocType extends AbstractType
                     'required' => false,
                     'empty_data' => '',
                 ]
-            );
+            )
+            ->add('project', HiddenType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver)

@@ -38,7 +38,7 @@ class PublicProjectVoter implements VoterInterface, LoggerAwareInterface
             return VoterInterface::ACCESS_ABSTAIN;
         }
         if (!$project->isPublic()) {
-            $this->logger->debug('Its not public project - abstain', ['project' => $project->getSuffix()]);
+            $this->logger->debug('{project} is not public project - abstain', ['project' => $project->getSuffix()]);
             return VoterInterface::ACCESS_ABSTAIN;
         }
 

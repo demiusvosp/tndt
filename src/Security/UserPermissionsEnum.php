@@ -65,6 +65,7 @@ class UserPermissionsEnum extends UserRolesEnum
                 self::PERM_PROJECT_ARCHIVE
             ],
             self::PROLE_STAFF => [
+                self::PROLE_VISITOR,
                 self::PERM_TASK_CREATE,
                 self::PERM_TASK_EDIT,
                 self::PERM_TASK_CLOSE,
