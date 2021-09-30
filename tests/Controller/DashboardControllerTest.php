@@ -21,6 +21,14 @@ class DashboardControllerTest extends WebTestCase
         self::assertSelectorTextNotContains('h3', 'alice');
     }
 
+//    public function testUserDashboard(): void
+//    {
+//        $client = static::createClient();
+//
+//        $crawler = $client->request('GET', '/');
+//
+//    }
+
     public function testAbout(): void
     {
         $client = static::createClient();
