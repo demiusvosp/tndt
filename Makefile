@@ -1,5 +1,5 @@
 #!make
-.PHONY: help up down ps exec init
+.PHONY: help up down ps exec init tests
 
 env = dev
 ifeq ($(env), dev)
@@ -34,5 +34,9 @@ exec:
 init:
 	docker exec -it tndt_php_1 composer install # пока мы используем dev контейнер все ок, но в будущем для этого надо готовить отдельный контейнер с композером, git и yarn
 #	docker exec -it tndt_php_1 php bin/console doctrine:schema:create -vv
-	docker exec -it tndt_php_1 php bin/console doctrine:migrations:migrate --allow-no-migration --no-interaction -vv
-	docker exec -it tndt_php_1 php bin/console doctrine:fixtures:load --group=install --no-interaction -vv
+	docker exec -it tndt_php_1 php bin/console doctrine:migrations:migrate --allow-no-migration -n -vv
+	docker exec -it tndt_php_1 php bin/console doctrine:fixtures:load --group=install -n -vv
+
+tests:
+	docker exec -it tndt_php_1 php bin/console doctrine:fixtures:load -n -vv
+	docker exec -it tndt_php_1 php ./vendor/bin/phpunit

@@ -46,7 +46,7 @@ class DashboardController extends AbstractController
 
     public function about(Request $request): Response
     {
-        $about = file_get_contents('../README.md');
+        $about = file_get_contents($this->getParameter('kernel.project_dir') . '/README.md');
 
         return $this->render('dashboard/about.html.twig', ['about_text' => $about]);
     }
