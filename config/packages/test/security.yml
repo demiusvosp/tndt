@@ -3,3 +3,6 @@ security:
     App\Entity\User:
       algorithm: auto
       cost: 4
+  firewalls:
+    main:
+      http_basic: ~
