@@ -11,5 +11,5 @@ namespace App\DataFixtures;
 class FixtureGroups
 {
     public const GROUP_INSTALL = 'install';
-    public const GROUP_DEV = 'dev';
+    public const GROUP_PERMISSION_TESTS = 'permission_tests';
 }

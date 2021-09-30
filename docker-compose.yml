@@ -14,11 +14,7 @@ services:
   php:
     build:
       context: ./
-      dockerfile: './docker/${APP_ENV}.php.dockerfile'
-    volumes:
-      - './:/var/www'
-    ports:
-      - 4004:9000
+      dockerfile: './docker/php.dockerfile'
     links:
       - mysql
     environment:
@@ -32,18 +28,3 @@ services:
       MYSQL_USER: '${DB_USER}'
       MYSQL_PASSWORD: '${DB_PASSWORD}'
       MYSQL_DATABASE: '${DB_NAME}'
-    volumes:
-      - './var/mysql:/var/lib/mysql:rw'
-    ports:
-      - 4003:3306
-
-  pma:
-    image: phpmyadmin/phpmyadmin
-    links:
-      - mysql
-    ports:
-      - 4002:80
-    environment:
-      - "PMA_ARBITRARY=1"
-      - "PMA_HOST=mysql"
-      - "PMA_PORTS=3306"
