@@ -5,4 +5,8 @@ security:
       cost: 4
   firewalls:
     main:
-      http_basic: ~
+      guard:
+        entry_point: App\Security\LoginFormAuthenticator
+        authenticators:
+          - App\Security\TestAgentAuthenticator
+

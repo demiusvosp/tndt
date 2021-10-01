@@ -17,18 +17,20 @@ security:
         main:
             anonymous: lazy
 
+            guard:
+                authenticators:
+                    - App\Security\LoginFormAuthenticator
+
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication
             form_login:
                 login_path: app.login
                 check_path: app.login
+                use_forward: true
 
             logout:
                 path: app.logout
                 target: home
-            guard:
-                authenticators:
-                    - App\Security\LoginFormAuthenticator
 
             # https://symfony.com/doc/current/security/impersonating_user.html
             # switch_user: true
@@ -36,13 +38,11 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        - { path: ^/user/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/user/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/user/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        # - { path: ^/profile, roles: ROLE_USER }
+        - { path: ^/auth/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+#        - { path: ^/auth/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
+#        - { path: ^/auth/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
 
 #services:
 #
-# Хотелось бы здесь вписывать свои сервисы, и вообще их распределять по типам, а не сервисы фреймворка по типам, а
-#    свои вперемежку в одном файле. Но в случае с security.yaml это не работает
+# Хотелось бы здесь вписывать свои сервисы, но в случае с security.yaml это не работает
 #

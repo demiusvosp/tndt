@@ -21,6 +21,12 @@ use Symfony\Component\Security\Guard\Authenticator\AbstractFormLoginAuthenticato
 use Symfony\Component\Security\Guard\PasswordAuthenticatedInterface;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
 
+
+/**
+ * LoginFormAuthenticator - Аутенфикатор пользователей, заходящих через форму входа используя username и password
+ * В данный момент не работает, так как GuardAuthenticator в какой-то момент начал сбрасывать сессию и создавать новую
+ * теряя при этом csrf-токен формы входа
+ */
 class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements PasswordAuthenticatedInterface
 {
     use TargetPathTrait;

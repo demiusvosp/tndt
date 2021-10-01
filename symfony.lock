@@ -1,4 +1,22 @@
 {
+    "behat/behat": {
+        "version": "v3.8.1"
+    },
+    "behat/gherkin": {
+        "version": "v4.8.0"
+    },
+    "behat/mink": {
+        "version": "v1.8.1"
+    },
+    "behat/mink-browserkit-driver": {
+        "version": "v1.3.4"
+    },
+    "behat/mink-extension": {
+        "version": "2.3.1"
+    },
+    "behat/mink-goutte-driver": {
+        "version": "v1.2.1"
+    },
     "behat/transliterator": {
         "version": "v1.3.0"
     },
@@ -117,11 +135,38 @@
     "erusev/parsedown": {
         "version": "1.7.4"
     },
+    "fabpot/goutte": {
+        "version": "v3.3.1"
+    },
+    "friends-of-behat/symfony-extension": {
+        "version": "2.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "2.0",
+            "ref": "1e012e04f573524ca83795cd19df9ea690adb604"
+        },
+        "files": [
+            "behat.yml.dist",
+            "config/services_test.yaml",
+            "features/demo.feature",
+            "tests/Behat/DemoContext.php"
+        ]
+    },
     "friendsofphp/proxy-manager-lts": {
         "version": "v1.0.5"
     },
     "gedmo/doctrine-extensions": {
         "version": "v3.1.0"
+    },
+    "guzzlehttp/guzzle": {
+        "version": "6.5.5"
+    },
+    "guzzlehttp/promises": {
+        "version": "1.4.1"
+    },
+    "guzzlehttp/psr7": {
+        "version": "1.8.2"
     },
     "happyr/entity-exists-validation-constraint": {
         "version": "1.0.0"
@@ -218,8 +263,14 @@
     "psr/container": {
         "version": "1.0.0"
     },
+    "psr/http-message": {
+        "version": "1.0.1"
+    },
     "psr/log": {
         "version": "1.1.1"
+    },
+    "ralouphie/getallheaders": {
+        "version": "3.0.3"
     },
     "roave/security-advisories": {
         "version": "dev-latest"
@@ -497,6 +548,9 @@
     },
     "symfony/property-access": {
         "version": "v4.3.11"
+    },
+    "symfony/proxy-manager-bridge": {
+        "version": "v4.4.27"
     },
     "symfony/routing": {
         "version": "4.2",

@@ -1,7 +1,7 @@
 
 {% macro badge(project, withName = false, link = false) %}
     {% if link %}
-        <a class="invisible_link" href="{{ path('project.index', {'suffix': project.suffix}) }}">
+        <a href="{{ path('project.index', {'suffix': project.suffix}) }}">
     {% endif %}
         <i class="fa fa-tasks-alt"></i>
         <b {{ project.isArchived ? 'class="style-deleted"' }}>{{ project.suffix }}</b>
@@ -29,7 +29,7 @@
         {# все, что внутри embed теряет свой контекст, и _self здесь больше нет #}
         {% import 'project/_macro.html.twig' as this %}
         {% block box_title %}
-            {{ this.badge(project, true, true) }}
+            <span class="project-title">{{ this.badge(project, true, true) }}</span>
         {% endblock %}
         {% block box_body %}
             <small  {{ project.isArchived ? 'class="style-disabled"' }}>

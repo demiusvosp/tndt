@@ -1,0 +1,17 @@
+default:
+    autoload:
+        '': '%paths.base%/tests/Behat/'
+    suites:
+        default:
+            paths:
+                - '%paths.base%/tests/features'
+            contexts:
+                - 'App\Tests\Behat\AppContext'
+
+    extensions:
+        FriendsOfBehat\SymfonyExtension: ~
+        Behat\MinkExtension:
+            base_url: 'http://nginx'
+            sessions:
+                default:
+                    goutte: ~

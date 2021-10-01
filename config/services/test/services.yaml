@@ -1,0 +1,19 @@
+parameters:
+    app.test.agent_token: 'XKXZSFGiwaJM'
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    App\Tests\Behat\:
+        resource: '%kernel.project_dir%/tests/Behat/*'
+
+    App\Security\TestAgentAuthenticator:
+        class: 'App\Security\TestAgentAuthenticator'
+        arguments:
+            - '%app.test.agent_token%'
+            - '@security.helper'
+            - '@monolog.logger'
+        tags:
+            - { name: monolog.logger, channel: security }

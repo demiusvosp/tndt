@@ -6,6 +6,15 @@ $fa-font-path: "~@fortawesome/fontawesome-free/webfonts/";
 
 @import "~bootstrap-sass/assets/stylesheets/bootstrap";
 
+/* Projects */
+.project-title {
+    a, a:hover {
+        color: black;
+        text-decoration: none;
+        outline: none;
+    }
+}
+
 /* Tasks */
 .task-table {
     th {

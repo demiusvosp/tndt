@@ -67,6 +67,10 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         return $qb->getQuery()->getOneOrNullResult();
     }
 
+    /**
+     * @param $username
+     * @return User|null
+     */
     public function findByUsername($username): ?User
     {
         return $this->findOneBy(['username' => $username]);

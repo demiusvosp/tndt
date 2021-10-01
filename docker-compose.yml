@@ -2,6 +2,7 @@ version: '2'
 services:
   nginx:
     image: 'nginx:alpine'
+#    container_name: tndt_${APP_ENV}_nginx_
     volumes:
       - './docker/nginx.conf:/etc/nginx/conf.d/default.conf'
       - './public:/var/www/public'

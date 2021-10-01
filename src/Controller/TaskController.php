@@ -106,6 +106,7 @@ class TaskController extends AbstractController
         if ($currentProject) {
             $formData->setProject($currentProject->getSuffix());
         }
+        $formData->setAssignTo($this->getUser()->getId());
 
         $form = $this->createForm(NewTaskType::class, $formData);
 

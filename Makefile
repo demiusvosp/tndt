@@ -1,7 +1,10 @@
 #!make
 .PHONY: help up down ps exec init tests
 
+# default arguments
 env = dev
+type = unit
+
 ifeq ($(env), dev)
 	compose_file =
 else
@@ -16,6 +19,7 @@ help:
 	$(info   ps ENV=test - compose ps current environment (default dev))
 	$(info   exec - login to current php container shell)
 	$(info   init - initialize stage. (create db, migrates, create root user))
+	$(info   tests type=behat (default unit) - run test suites)
 	$(info )
 
 up:
@@ -38,5 +42,9 @@ init:
 	docker exec -it tndt_php_1 php bin/console doctrine:fixtures:load --group=install -n -vv
 
 tests:
+ifeq ($(type), behat)
+	docker exec -it tndt_php_1 php ./vendor/bin/behat
+else
 	docker exec -it tndt_php_1 php bin/console doctrine:fixtures:load -n -vv
 	docker exec -it tndt_php_1 php ./vendor/bin/phpunit
+endif
