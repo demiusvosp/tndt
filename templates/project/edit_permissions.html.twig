@@ -1,0 +1,13 @@
+{% extends 'project/edit.base.html.twig' %}
+
+{% block edit_page_title%}{{ 'project.edit.common'|trans }}{% endblock %}
+
+{% block edit_page %}
+    Здесь будет страшный сложный динамический виджет, позволяющий добавлять в проект пользователей и их роли
+{% endblock %}
+
+{% block box_footer %}
+    <div class="pull-right">
+        <button type="submit" class="btn btn-success">{{ 'Edit'|trans }}</button>
+    </div>
+{% endblock %}

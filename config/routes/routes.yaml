@@ -40,7 +40,10 @@ project.create:
     controller: App\Controller\ProjectController::create
 project.edit:
     path: /project/{suffix<\w+>}/edit
-    controller: App\Controller\ProjectController::edit
+    controller: App\Controller\ProjectController::editCommon
+project.edit.permissions:
+    path: /project/{suffix<\w+>}/edit/permissions
+    controller: App\Controller\ProjectController::editPermissions
 project.archive:
     path: /project/{suffix<\w+>}/archive
     controller: App\Controller\ProjectController::archive

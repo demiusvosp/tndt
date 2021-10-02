@@ -13,7 +13,9 @@ breadcrumb:
   projects: Проекты
   project:
     create: Новый...
-    edit: Настройки
+    edit:
+      common: Настройки
+      permissions: Полномочия
     docs: Документы
     tasks: Задачи
   task:

@@ -8,6 +8,15 @@
     {{ project.name }} - {{ 'project.edit.title'|trans }}
 {% endblock %}
 {% block box_body %}
+    <ul class="nav nav-tabs">
+        {% set currentPage = app.request.attributes.get('_route') %}
+        <li {% if currentPage == 'project.edit' %}class="active"{% endif %}>
+            <a href="{{ path('project.edit', {'suffix':project.suffix}) }}">{{ 'project.edit.common'|trans }}</a>
+        </li>
+        <li {% if currentPage == 'project.edit.permissions' %}class="active"{% endif %}>
+            <a href="{{ path('project.edit.permissions', {'suffix':project.suffix}) }}">{{ 'project.edit.permsions'|trans }}</a>
+        </li>
+    </ul>
     {% block edit_page %}
     {% endblock %}
 {% endblock %}

@@ -60,13 +60,20 @@ class BreadcrumbsBuilderSubscriber implements EventSubscriberInterface
                 'project.index',
                 ['suffix' => $currentProject->getSuffix()]
             );
-            $currentProjectMenu
-                ->addChild( new MenuItemModel(
+            $currentProjectMenu->addChild(
+                (new MenuItemModel(
                     'project.edit',
-                    'breadcrumb.project.edit',
+                    'breadcrumb.project.edit.common',
                     'project.edit',
                     ['suffix' => $currentProject->getSuffix()]
-                ));
+                ))
+                ->addChild( new MenuItemModel(
+                    'project.edit.permissions',
+                    'breadcrumb.project.edit.permissions',
+                    'project.edit.permissions',
+                    ['suffix' => $currentProject->getSuffix()]
+                ))
+            );
 
             if (preg_match('/^task./', $route)) {
                 $taskMenu = new MenuItemModel(

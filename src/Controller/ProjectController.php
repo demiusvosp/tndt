@@ -122,9 +122,10 @@ class ProjectController extends AbstractController
     /**
      * @IsGranted("PERM_PROJECT_SETTINGS")
      * @param Request $request
+     * @param UserRepository $userRepository
      * @return Response
      */
-    public function edit(Request $request, UserRepository $userRepository): Response
+    public function editCommon(Request $request, UserRepository $userRepository): Response
     {
         $project = $this->projectManager->getProject();
         if (!$project) {
@@ -150,7 +151,22 @@ class ProjectController extends AbstractController
             $this->addFlash('success', 'project.edit.success');
         }
 
-        return $this->render('project/edit.html.twig', ['project' => $project, 'form' => $form->createView()]);
+        return $this->render('project/edit_common.html.twig', ['project' => $project, 'form' => $form->createView()]);
+    }
+
+    /**
+     * @IsGranted("PERM_PROJECT_SETTINGS")
+     * @param Request $request
+     * @return Response
+     */
+    public function editPermissions(Request $request): Response
+    {
+        $project = $this->projectManager->getProject();
+        if (!$project) {
+            throw $this->createNotFoundException($this->translator->trans('project.not_found'));
+        }
+
+        return $this->render('project/edit_permissions.html.twig', ['project' => $project]);
     }
 
     /**
