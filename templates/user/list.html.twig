@@ -16,7 +16,6 @@
                 {% block box_body %}
                     <table class="table table-condensed">
                         <tr>
-                            <th>{{ knp_pagination_sortable(users, 'Id', 't.id') }}</th>
                             <th>{{ knp_pagination_sortable(users, 'user.username.label'|trans, 't.username') }}</th>
                             <th>{{ knp_pagination_sortable(users, 'user.name.label'|trans, 't.name') }}</th>
                             <th>{{ knp_pagination_sortable(users, 'user.email.label'|trans, 't.email') }}</th>
@@ -28,9 +27,8 @@
                         {%  for user in users %}
                             <tr>
                                 <td><a href="{{ path('user.index', {'username': user.username}) }}" class="invisible_link">
-                                        {{ user.id }}
+                                    {{ mUser.badge(user) }}
                                 </a></td>
-                                <td>{{ mUser.badge(user) }}</td>
                                 <td>{{ user.name }}</td>
                                 <td>{{ user.email }}</td>
                                 <td>{{ role_label_list(user.roles) }}</td>

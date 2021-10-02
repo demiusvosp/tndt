@@ -17,7 +17,7 @@ use App\Form\DTO\Doc\NewDocDTO;
 use App\Form\Type\Doc\EditDocType;
 use App\Form\Type\Doc\NewDocType;
 use App\Repository\DocRepository;
-use App\Service\ProjectManager;
+use App\Service\ProjectContext;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -31,21 +31,21 @@ class DocController extends AbstractController
 
     private TranslatorInterface $translator;
     private DocRepository $docRepository;
-    private ProjectManager $projectManager;
+    private ProjectContext $projectContext;
 
     public function __construct(
         TranslatorInterface $translator,
         DocRepository       $docRepository,
-        ProjectManager      $projectManager)
+        ProjectContext      $projectContext)
     {
         $this->translator = $translator;
         $this->docRepository = $docRepository;
-        $this->projectManager = $projectManager;
+        $this->projectContext = $projectContext;
     }
 
     public function list(Request $request, PaginatorInterface $paginator): Response
     {
-        $project = $this->projectManager->getProject();
+        $project = $this->projectContext->getProject();
         if (!$project) {
             throw new CurrentProjectNotFoundException();
         }
@@ -65,7 +65,7 @@ class DocController extends AbstractController
 
     public function index(Request $request): Response
     {
-        $project = $this->projectManager->getProject();
+        $project = $this->projectContext->getProject();
         if (!$project) {
             throw new CurrentProjectNotFoundException();
         }
@@ -80,13 +80,13 @@ class DocController extends AbstractController
     /**
      * @IsGranted ("PERM_DOC_CREATE")
      * @param Request $request
-     * @param ProjectManager $projectManager
+     * @param ProjectContext $projectContext
      * @return Response
      */
-    public function create(Request $request, ProjectManager $projectManager): Response
+    public function create(Request $request, ProjectContext $projectContext): Response
     {
         $formData = new NewDocDTO();
-        $currentProject = $projectManager->getProject();
+        $currentProject = $projectContext->getProject();
         if ($currentProject) {
             $formData->setProject($currentProject->getSuffix());
         }
@@ -119,7 +119,7 @@ class DocController extends AbstractController
      */
     public function edit(Request $request): Response
     {
-        $project = $this->projectManager->getProject();
+        $project = $this->projectContext->getProject();
         if (!$project) {
             throw new CurrentProjectNotFoundException();
         }
@@ -150,7 +150,7 @@ class DocController extends AbstractController
      */
     public function archive(Request $request): Response
     {
-        $project = $this->projectManager->getProject();
+        $project = $this->projectContext->getProject();
         if (!$project) {
             throw new CurrentProjectNotFoundException();
         }

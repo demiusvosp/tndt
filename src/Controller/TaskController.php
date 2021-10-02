@@ -19,7 +19,7 @@ use App\Form\Type\Task\ListFilterType;
 use App\Form\Type\Task\NewTaskType;
 use App\Repository\TaskRepository;
 use App\Repository\UserRepository;
-use App\Service\ProjectManager;
+use App\Service\ProjectContext;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -34,16 +34,16 @@ class TaskController extends AbstractController
 
     private TranslatorInterface $translator;
     private TaskRepository $taskRepository;
-    private ProjectManager $projectManager;
+    private ProjectContext $projectContext;
 
     public function __construct(
         TranslatorInterface $translator,
-        TaskRepository $taskRepository,
-        ProjectManager $projectManager)
+        TaskRepository      $taskRepository,
+        ProjectContext      $projectContext)
     {
         $this->translator = $translator;
         $this->taskRepository = $taskRepository;
-        $this->projectManager = $projectManager;
+        $this->projectContext = $projectContext;
     }
 
     /**
@@ -54,7 +54,7 @@ class TaskController extends AbstractController
      */
     public function list(Request $request, PaginatorInterface $paginator): Response
     {
-        $project = $this->projectManager->getProject();
+        $project = $this->projectContext->getProject();
         if (!$project) {
             throw new CurrentProjectNotFoundException();
         }
@@ -97,13 +97,13 @@ class TaskController extends AbstractController
     /**
      * @IsGranted("PERM_TASK_CREATE")
      * @param Request $request
-     * @param ProjectManager $projectManager
+     * @param UserRepository $userRepository
      * @return Response
      */
     public function create(Request $request, UserRepository $userRepository): Response
     {
         $formData = new NewTaskDTO();
-        $currentProject = $this->projectManager->getProject();
+        $currentProject = $this->projectContext->getProject();
         if ($currentProject) {
             $formData->setProject($currentProject->getSuffix());
         }
@@ -114,7 +114,7 @@ class TaskController extends AbstractController
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            // @TODO не хочется на это отвлекаться, но не видится зесь так себе дизайн, одни зависимости у нас явны, другие вытаскиваются походу. Здесь уже был продублирован ProjectManager в конструкторе и методе
+            // @TODO не хочется на это отвлекаться, но не видится зесь так себе дизайн, одни зависимости у нас явны, другие вытаскиваются походу. Здесь уже был продублирован ProjectContext в конструкторе и методе
             $project = $em->getRepository(Project::class)->find($formData->getProject());
 
             $task = new Task($project);

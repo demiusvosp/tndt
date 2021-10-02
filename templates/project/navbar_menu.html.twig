@@ -1,4 +1,4 @@
-{% set current_project = project_manager.project %}
+{% set current_project = project_context.project %}
 {% if is_granted("PERM_TASK_CREATE") %}
     <li>
         <a href="{{ (current_project) ? path('task.project_create', {'suffix':current_project.suffix}) : path('task.global_create') }}">{{ 'Create_task'|trans }}</a>

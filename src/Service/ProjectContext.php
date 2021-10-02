@@ -14,7 +14,7 @@ use App\Security\UserPermissionsEnum;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
-class ProjectManager
+class ProjectContext
 {
     /**
      * @var ProjectRepository

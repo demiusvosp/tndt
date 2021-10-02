@@ -21,7 +21,7 @@ use App\Form\Type\Project\ListFilterType;
 use App\Repository\DocRepository;
 use App\Repository\TaskRepository;
 use App\Repository\UserRepository;
-use App\Service\ProjectManager;
+use App\Service\ProjectContext;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormError;
@@ -36,13 +36,13 @@ class ProjectController extends AbstractController
     private const DOC_BLOCK_LIMIT = 10;
 
     private TranslatorInterface $translator;
-    private ProjectManager $projectManager;
+    private ProjectContext $projectContext;
 
 
-    public function __construct(TranslatorInterface $translator, ProjectManager $projectManager)
+    public function __construct(TranslatorInterface $translator, ProjectContext $projectContext)
     {
         $this->translator = $translator;
-        $this->projectManager = $projectManager;
+        $this->projectContext = $projectContext;
     }
 
     public function list(Request $request): Response
@@ -76,7 +76,7 @@ class ProjectController extends AbstractController
      */
     public function index(Request $request, TaskRepository $taskRepository, DocRepository $docRepository): Response
     {
-        $project = $this->projectManager->getProject();
+        $project = $this->projectContext->getProject();
         if (!$project) {
             throw $this->createNotFoundException($this->translator->trans('project.not_found'));
         }
@@ -128,7 +128,7 @@ class ProjectController extends AbstractController
      */
     public function editCommon(Request $request): Response
     {
-        $project = $this->projectManager->getProject();
+        $project = $this->projectContext->getProject();
         if (!$project) {
             throw $this->createNotFoundException($this->translator->trans('project.not_found'));
         }
@@ -155,7 +155,7 @@ class ProjectController extends AbstractController
      */
     public function editPermissions(Request $request, UserRepository $userRepository): Response
     {
-        $project = $this->projectManager->getProject();
+        $project = $this->projectContext->getProject();
         if (!$project) {
             throw $this->createNotFoundException($this->translator->trans('project.not_found'));
         }
@@ -187,7 +187,7 @@ class ProjectController extends AbstractController
     public function archive(Request $request): Response
     {
         $em = $this->getDoctrine()->getManager();
-        $project = $this->projectManager->getProject();
+        $project = $this->projectContext->getProject();
         if (!$project) {
             throw $this->createNotFoundException($this->translator->trans('project.not_found'));
         }

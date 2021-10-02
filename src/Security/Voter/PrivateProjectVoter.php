@@ -12,10 +12,9 @@ use App\Entity\Project;
 use App\Security\Hierarchy\HierarchyHelper;
 use App\Security\UserPermissionsEnum;
 use App\Security\UserRolesEnum;
-use App\Service\ProjectManager;
+use App\Service\ProjectContext;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
@@ -26,15 +25,15 @@ use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 class PrivateProjectVoter implements VoterInterface, LoggerAwareInterface
 {
     private HierarchyHelper $hierarchyHelper;
-    private ProjectManager $projectManager;
+    private ProjectContext $projectContext;
     private LoggerInterface $logger;
 
     public function __construct(
         HierarchyHelper $hierarchyHelper,
-        ProjectManager $projectManager
+        ProjectContext $projectContext
     ) {
         $this->hierarchyHelper = $hierarchyHelper;
-        $this->projectManager = $projectManager;
+        $this->projectContext = $projectContext;
     }
 
     public function setLogger(LoggerInterface $logger): void
@@ -49,7 +48,7 @@ class PrivateProjectVoter implements VoterInterface, LoggerAwareInterface
             $subjectProject = $subject;
         } else {
             // В противном случае проверяем роль для текущего в данном контексте проекта
-            $subjectProject = $this->projectManager->getProject();
+            $subjectProject = $this->projectContext->getProject();
         }
 
         if(!$subjectProject) {

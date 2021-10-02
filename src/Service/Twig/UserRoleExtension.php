@@ -9,7 +9,7 @@ declare(strict_types=1);
 namespace App\Service\Twig;
 
 use App\Security\UserRolesEnum;
-use App\Service\ProjectManager;
+use App\Service\ProjectContext;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
@@ -19,12 +19,12 @@ use Twig\TwigFunction;
 class UserRoleExtension extends AbstractExtension
 {
     private TranslatorInterface $translator;
-    private ProjectManager $projectManager;
+    private ProjectContext $projectContext;
 
-    public function __construct(TranslatorInterface $translator, ProjectManager $projectManager)
+    public function __construct(TranslatorInterface $translator, ProjectContext $projectContext)
     {
         $this->translator = $translator;
-        $this->projectManager = $projectManager;
+        $this->projectContext = $projectContext;
     }
 
     public function getFilters(): array
@@ -76,7 +76,7 @@ class UserRoleExtension extends AbstractExtension
 
         return $this->translator->trans($projectRole)
             . ' ' . $this->translator->trans('role.at_project')
-            . ' ' . $this->projectManager->getNameBySuffix($projectSuffix);
+            . ' ' . $this->projectContext->getNameBySuffix($projectSuffix);
     }
 
     public function roleLabelList(array $roles): string

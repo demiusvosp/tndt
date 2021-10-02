@@ -6,7 +6,7 @@
         <i class="fa fa-user"></i>
         <span {{ user.isLocked ? 'class="style-deleted"' }}>{{ user.username }}</span>
             {% if not short %}
-                {% if user.hasRole("PROLE_PM", project_manager.project) %}
+                {% if user.hasRole("PROLE_PM", project_context.project) %}
                     <span class="label label-success" title="{{ 'role.project_manager'|trans }}">{{ 'role.pm'|trans }}</span>
                 {% endif %}
                 {% if user.isLocked %}

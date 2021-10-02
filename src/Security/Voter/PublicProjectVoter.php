@@ -9,7 +9,7 @@ declare(strict_types=1);
 namespace App\Security\Voter;
 
 use App\Security\UserPermissionsEnum;
-use App\Service\ProjectManager;
+use App\Service\ProjectContext;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -17,12 +17,12 @@ use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
 class PublicProjectVoter implements VoterInterface, LoggerAwareInterface
 {
-    private ProjectManager $projectManager;
+    private ProjectContext $projectContext;
     private LoggerInterface $logger;
 
-    public function __construct(ProjectManager $projectManager)
+    public function __construct(ProjectContext $projectContext)
     {
-        $this->projectManager = $projectManager;
+        $this->projectContext = $projectContext;
     }
 
     public function setLogger(LoggerInterface $logger): void
@@ -32,7 +32,7 @@ class PublicProjectVoter implements VoterInterface, LoggerAwareInterface
 
     public function vote(TokenInterface $token, $subject, array $attributes)
     {
-        $project = $this->projectManager->getProject();
+        $project = $this->projectContext->getProject();
         if (!$project) {
             // Voter работает только в контексте проекта
             return VoterInterface::ACCESS_ABSTAIN;

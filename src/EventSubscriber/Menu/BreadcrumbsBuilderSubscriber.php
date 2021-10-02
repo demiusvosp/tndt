@@ -11,7 +11,7 @@ namespace App\EventSubscriber\Menu;
 use App\Repository\DocRepository;
 use App\Repository\TaskRepository;
 use App\Repository\UserRepository;
-use App\Service\ProjectManager;
+use App\Service\ProjectContext;
 use KevinPapst\AdminLTEBundle\Event\BreadcrumbMenuEvent;
 use KevinPapst\AdminLTEBundle\Event\SidebarMenuEvent;
 use KevinPapst\AdminLTEBundle\Model\MenuItemModel;
@@ -21,19 +21,19 @@ class BreadcrumbsBuilderSubscriber implements EventSubscriberInterface
 {
     private const BREADCRUMB_ITEM_LENGTH = 40;
 
-    private ProjectManager $projectManager;
+    private ProjectContext $projectContext;
     private TaskRepository $taskRepository;
     private DocRepository $docRepository;
     private UserRepository $userRepository;
 
     public function __construct(
-        ProjectManager $projectManager,
+        ProjectContext $projectContext,
         TaskRepository $taskRepository,
-        DocRepository $docRepository,
+        DocRepository  $docRepository,
         UserRepository $userRepository
     )
     {
-        $this->projectManager = $projectManager;
+        $this->projectContext = $projectContext;
         $this->taskRepository = $taskRepository;
         $this->docRepository = $docRepository;
         $this->userRepository = $userRepository;
@@ -51,7 +51,7 @@ class BreadcrumbsBuilderSubscriber implements EventSubscriberInterface
         //@TODO вытащить состав меню в конфигурацию (возможно даже с признаками логики)
 
         $route = $event->getRequest()->get('_route');
-        $currentProject = $this->projectManager->getProject();
+        $currentProject = $this->projectContext->getProject();
 
         if ($currentProject) {
             $currentProjectMenu = new MenuItemModel(

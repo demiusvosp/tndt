@@ -11,7 +11,7 @@ namespace App\EventSubscriber\Menu;
 use App\Repository\DocRepository;
 use App\Repository\TaskRepository;
 use App\Security\UserPermissionsEnum;
-use App\Service\ProjectManager;
+use App\Service\ProjectContext;
 use KevinPapst\AdminLTEBundle\Event\SidebarMenuEvent;
 use KevinPapst\AdminLTEBundle\Model\MenuItemModel;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -21,19 +21,19 @@ class SidebarBuilderSubscriber implements EventSubscriberInterface
 {
     private const SIDEBAR_ITEM_LENGTH = 40;
 
-    private ProjectManager $projectManager;
+    private ProjectContext $projectContext;
     private TaskRepository $taskRepository;
     private DocRepository $docRepository;
     private Security $security;
 
     public function __construct(
-        ProjectManager $projectManager,
+        ProjectContext $projectContext,
         TaskRepository $taskRepository,
-        DocRepository $docRepository,
-        Security $security
+        DocRepository  $docRepository,
+        Security       $security
     )
     {
-        $this->projectManager = $projectManager;
+        $this->projectContext = $projectContext;
         $this->taskRepository = $taskRepository;
         $this->docRepository = $docRepository;
         $this->security = $security;
@@ -49,7 +49,7 @@ class SidebarBuilderSubscriber implements EventSubscriberInterface
     public function onSetupSidebar(SidebarMenuEvent $event): void
     {
         $route = $event->getRequest()->get('_route');
-        $currentProject = $this->projectManager->getProject();
+        $currentProject = $this->projectContext->getProject();
 
         $event->addItem(new MenuItemModel(
             'projects',

@@ -9,20 +9,20 @@ declare(strict_types=1);
 namespace App\Service\Twig;
 
 use App\Repository\ProjectRepository;
-use App\Service\ProjectManager;
+use App\Service\ProjectContext;
 use Symfony\Component\Security\Core\Security;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
 class ProjectExtension extends AbstractExtension
 {
-    private ProjectManager $projectManager;
+    private ProjectContext $projectContext;
     private ProjectRepository $projectRepository;
     private Security $security;
 
-    public function __construct(ProjectManager $projectManager, ProjectRepository $projectRepository, Security $security)
+    public function __construct(ProjectContext $projectContext, ProjectRepository $projectRepository, Security $security)
     {
-        $this->projectManager = $projectManager;
+        $this->projectContext = $projectContext;
         $this->projectRepository = $projectRepository;
         $this->security = $security;
     }
@@ -42,6 +42,6 @@ class ProjectExtension extends AbstractExtension
     {
         $projects = $this->projectRepository->getPopularProjectsSnippets(5, $this->security->getUser());
 
-        return ['projects' => $projects, 'current' => $this->projectManager->getProject()];
+        return ['projects' => $projects, 'current' => $this->projectContext->getProject()];
     }
 }
