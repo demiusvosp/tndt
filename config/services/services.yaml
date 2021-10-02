@@ -56,7 +56,7 @@ services:
         tags:
             - { name: monolog.logger, channel: security }
 
-    App\Security\Voter\CurrentProjectVoter:
-        class: 'App\Security\Voter\CurrentProjectVoter'
+    App\Security\Voter\PrivateProjectVoter:
+        class: 'App\Security\Voter\PrivateProjectVoter'
         tags:
             - { name: monolog.logger, channel: security }

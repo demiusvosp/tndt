@@ -8,6 +8,7 @@ declare(strict_types=1);
 
 namespace App\Security\Voter;
 
+use App\Entity\Project;
 use App\Security\Hierarchy\HierarchyHelper;
 use App\Security\UserPermissionsEnum;
 use App\Security\UserRolesEnum;
@@ -22,7 +23,7 @@ use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
  * Избиратель для текущего проекта. Работает только для запросов имеющих currentProject (т.е. тех, в которые был
  * передан проект, например страниц внутри проекта)
  */
-class CurrentProjectVoter implements VoterInterface, LoggerAwareInterface
+class PrivateProjectVoter implements VoterInterface, LoggerAwareInterface
 {
     private HierarchyHelper $hierarchyHelper;
     private ProjectManager $projectManager;
@@ -43,8 +44,16 @@ class CurrentProjectVoter implements VoterInterface, LoggerAwareInterface
 
     public function vote(TokenInterface $token, $subject, array $attributes): int
     {
-        if(!$this->projectManager->isProjectContext()) {
-            $this->logger->debug('Not in current project context - abstain');
+        if ($subject && $subject instanceof Project) {
+            // если нам передали проект, проверяем роль для него
+            $subjectProject = $subject;
+        } else {
+            // В противном случае проверяем роль для текущего в данном контексте проекта
+            $subjectProject = $this->projectManager->getProject();
+        }
+
+        if(!$subjectProject) {
+            $this->logger->debug('Not given or current project - abstain');
             // способны обработать только web-страницы с переданным project
             return VoterInterface::ACCESS_ABSTAIN;
         }
@@ -55,17 +64,17 @@ class CurrentProjectVoter implements VoterInterface, LoggerAwareInterface
                 // это глобальная роль, пусть с ней RoleVoter разбирается
                 continue;
             }
-            [$role, $project] = UserRolesEnum::explodeSyntheticRole($fullRoleName);
-            if (empty($role) || empty($project)) {
-                $this->logger->debug('{role} is incorrect role - skip', ['role' => $fullRoleName]);
+            [$role, $roleProject] = UserRolesEnum::explodeSyntheticRole($fullRoleName);
+            if (empty($role) || empty($roleProject)) {
+                $this->logger->debug('{role} is incorrect project role - skip', ['role' => $fullRoleName]);
                 // это не роль в проекте
                 continue;
             }
-            /** @noinspection NullPointerExceptionInspection мы уже проверили наличие currentProject */
-            if ($project !== $this->projectManager->getProject()->getSuffix()) {
+
+            if ($roleProject !== $subjectProject->getSuffix()) {
                 $this->logger->debug(
-                    'It [{role} - {roleProject}] is not current {currentProject} project - skip',
-                    ['role' => $role, 'roleProject' => $project, 'currentProject' => $this->projectManager->getProject()->getSuffix()]
+                    'It [{role} - {roleProject}] is not subject {subjectProject} project - skip',
+                    ['role' => $role, 'roleProject' => $roleProject, 'subjectProject' => $subjectProject->getSuffix()]
                 );
                 // роль не этого проекта
                 continue;
@@ -77,14 +86,14 @@ class CurrentProjectVoter implements VoterInterface, LoggerAwareInterface
             }
 
             foreach ($attributes as $attribute) {
-                if ($attribute === UserRolesEnum::ROLE_ROOT) {
-                    $this->logger->debug('Its check root attribute - skip');
+                if (UserRolesEnum::isProjectRole($attribute)) {
+                    $this->logger->debug('Its check not project attribute - skip');
                     // действия требующие root пусть RootVoter разбирает
                     return VoterInterface::ACCESS_ABSTAIN;
                 }
                 if (UserPermissionsEnum::isValid($attribute)) {
                     if ($this->hierarchyHelper->has($attribute, $role)) {
-                        $this->logger->debug('Project {project} use {role} by granted {attribute} - grant', ['project' => $project, 'attribute' => $attribute, 'role' => $role]);
+                        $this->logger->debug('Project {project} use {role} by granted {attribute} - grant', ['project' => $roleProject, 'attribute' => $attribute, 'role' => $role]);
                         return VoterInterface::ACCESS_GRANTED;
                     }
                 }

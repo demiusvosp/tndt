@@ -9,10 +9,8 @@
             - {{ project.name }}
             {% if project.isArchived %}<span class="label label-default">{{ 'archived'|trans }}</span>{% endif %}
             {% if not project.public %}
-                {% if is_granted("PERM_PROJECT_VIEW") %}
-                    <i class="fas fa-lock-open"></i>
-                {% else %}
-                    <i class="fas fa-lock"></i>
+                {% if is_granted("PERM_PROJECT_VIEW", project) %}
+                    <i class="fas fa-lock-open" title="{{ 'Access_granted'|trans }}"></i>
                 {% endif %}
             {% endif %}
         {% endif %}
@@ -28,11 +26,25 @@
     {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
         {# все, что внутри embed теряет свой контекст, и _self здесь больше нет #}
         {% import 'project/_macro.html.twig' as this %}
+        {% import 'user/_macro.html.twig' as mUser %}
         {% block box_title %}
             <span class="project-title">{{ this.badge(project, true, true) }}</span>
         {% endblock %}
         {% block box_body %}
-            <small  {{ project.isArchived ? 'class="style-disabled"' }}>
+            <div class="row project-property-string">
+                <div class="col-md-6">
+                    {{ 'project.pm.short'|trans }}: {{ project.pm ? mUser.badge(project.pm) : mUser.nobody() }}
+                </div>
+                <div class="col-md-6">
+                    {% if project.isArchived %}<span class="label label-default">{{ 'archived'|trans }}</span>{% endif %}
+                    {% if not project.public %}
+                        {% if is_granted("PERM_PROJECT_VIEW", project) %}
+                            <i class="fas fa-lock-open">{{ 'Access_granted'|trans }}</i>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+            <small>
                 {{ (descriptionLength == 0) ? project.description : project.description|u.truncate(descriptionLength, true) }}
             </small>
             <hr>

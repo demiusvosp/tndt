@@ -44,6 +44,11 @@ class UserRolesEnum extends Enum
         return [self::PROLE_PM, self::PROLE_STAFF, self::PROLE_VISITOR];
     }
 
+    public static function isProjectRole(string $role): bool
+    {
+        return in_array($role, self::getProjectRoles(), true);
+    }
+
     public static function getHierarchy(): array
     {
         return [
