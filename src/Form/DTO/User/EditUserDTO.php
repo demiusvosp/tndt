@@ -15,12 +15,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 class EditUserDTO
 {
     /**
-     * @var int
-     * @EntityExist(entity="App\Entity\User", property="id")
-     */
-    private int $id;
-
-    /**
      * @var string
      */
     private string $name = '';
@@ -43,7 +37,6 @@ class EditUserDTO
 
     public function __construct(User $user)
     {
-        $this->id = $user->getId();
         $this->name = $user->getName();
         $this->email = $user->getEmail();
         $this->password = '';
@@ -53,14 +46,6 @@ class EditUserDTO
     {
         $user->setName($this->name);
         $user->setEmail($this->email);
-    }
-
-    /**
-     * @return int
-     */
-    public function getId(): int
-    {
-        return $this->id;
     }
 
     /**

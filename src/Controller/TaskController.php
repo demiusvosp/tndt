@@ -18,6 +18,7 @@ use App\Form\Type\Task\EditTaskType;
 use App\Form\Type\Task\ListFilterType;
 use App\Form\Type\Task\NewTaskType;
 use App\Repository\TaskRepository;
+use App\Repository\UserRepository;
 use App\Service\ProjectManager;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -99,26 +100,27 @@ class TaskController extends AbstractController
      * @param ProjectManager $projectManager
      * @return Response
      */
-    public function create(Request $request, ProjectManager $projectManager): Response
+    public function create(Request $request, UserRepository $userRepository): Response
     {
         $formData = new NewTaskDTO();
-        $currentProject = $projectManager->getProject();
+        $currentProject = $this->projectManager->getProject();
         if ($currentProject) {
             $formData->setProject($currentProject->getSuffix());
         }
-        $formData->setAssignTo($this->getUser()->getId());
+        $formData->setAssignTo($this->getUser()->getUsername());
 
         $form = $this->createForm(NewTaskType::class, $formData);
 
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+            // @TODO не хочется на это отвлекаться, но не видится зесь так себе дизайн, одни зависимости у нас явны, другие вытаскиваются походу. Здесь уже был продублирован ProjectManager в конструкторе и методе
             $project = $em->getRepository(Project::class)->find($formData->getProject());
 
             $task = new Task($project);
             $task->setCaption($formData->getCaption());
             $task->setDescription($formData->getDescription());
-            $newAssignedUser = $em->getRepository(User::class)->find($formData->getAssignTo());
+            $newAssignedUser = $userRepository->findByUsername($formData->getAssignTo());
             if (!$newAssignedUser) {
                 throw new BadRequestException('Выбранный пользователь не найден');
             }

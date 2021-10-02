@@ -34,11 +34,11 @@ class EditProjectDTO
     private ?string $icon = '';
 
     /**
-     * @var int
+     * @var string
      * @Assert\NotBlank
-     * @EntityExist(entity="App\Entity\User", property="id")
+     * @EntityExist(entity="App\Entity\User", property="username")
      */
-    private int $pm;
+    private string $pm;
 
     /**
      * @var bool
@@ -56,7 +56,7 @@ class EditProjectDTO
         $this->suffix = $project->getSuffix();
         $this->name = $project->getName();
         $this->icon = $project->getIcon();
-        $this->pm = $project->getPm() ? $project->getPm()->getId() : 0;
+        $this->pm = $project->getPm() ? $project->getPm()->getUsername() : '';
         $this->isPublic = $project->isPublic();
     }
 
@@ -116,18 +116,18 @@ class EditProjectDTO
     }
 
     /**
-     * @return int
+     * @return string
      */
-    public function getPm(): int
+    public function getPm(): string
     {
         return $this->pm;
     }
 
     /**
-     * @param int $pm
+     * @param string $pm
      * @return EditProjectDTO
      */
-    public function setPm(int $pm): EditProjectDTO
+    public function setPm(string $pm): EditProjectDTO
     {
         $this->pm = $pm;
         return $this;

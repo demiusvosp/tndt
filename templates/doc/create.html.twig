@@ -1,4 +1,4 @@
-{% extends 'base_layout.html.twig' %}
+{% extends 'one_block_layout.html.twig' %}
 {% import 'project/_macro.html.twig' as mProject %}
 
 {% block title %}{{ 'Create_doc'|trans }}{% endblock %}
@@ -8,20 +8,20 @@
 {% endblock %}
 {% block page_subtitle %}{% endblock %}
 
-{% block page_content %}
+{% block box_title %}
+    {# пока это повторяет заголовок, но может это будет многостраницчный мастер, и десь будет описание шага #}
+{% endblock %}
+{% block box_body %}
     {{ form_start(form) }}
-    {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
-        {% block box_title %}
-            {# пока это повторяет заголовок, но может это будет многостраницчный мастер, и десь будет описание шага #}
-        {% endblock %}
-        {% block box_body %}
-            {{ form_row(form.caption) }}
-            {{ form_row(form.project) }}
-            {{ form_row(form.abstract) }}
-            {{ form_row(form.body) }}
-            <hr>
-            <button type="submit" class="btn btn-success">{{ 'Create'|trans }}</button>
-        {% endblock %}
-    {% endembed %}
+    {{ form_row(form.caption) }}
+    {{ form_row(form.project) }}
+    {{ form_row(form.abstract) }}
+    {{ form_row(form.body) }}
+{% endblock %}
+
+{% block box_footer %}
+    <div class="pull-right">
+        <button type="submit" class="btn btn-success">{{ 'Edit'|trans }}</button>
+    </div>
     {{ form_end(form) }}
 {% endblock %}

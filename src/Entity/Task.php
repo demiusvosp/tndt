@@ -111,9 +111,16 @@ class Task implements NoInterface
     private string $description = '';
 
 
-    public function __construct(Project $project)
+    /**
+     * @param string|Project $project - Project or project suffix
+     */
+    public function __construct($project)
     {
-        $this->setProject($project);
+        if($project instanceof Project) {
+            $this->setProject($project);
+        } else {
+            $this->suffix = $project;
+        }
     }
 
     /**

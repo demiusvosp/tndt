@@ -88,7 +88,7 @@ class UserController extends AbstractController
 
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()) {
-            $user = new User();
+            $user = new User($formData->getUsername());
             $formData->fillProfile($user);
             $user->setPassword($passwordEncoder->encodePassword($user, $formData->getPassword()));
 
@@ -140,7 +140,7 @@ class UserController extends AbstractController
         }
 
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid() && $formData->getId() === $user->getId()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $formData->fillProfile($user);
             if($authorizationChecker->isGranted(UserPermissionsEnum::PERM_USER_LOCK)
                 && $formData->getLocked() !== null

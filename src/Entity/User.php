@@ -61,7 +61,7 @@ class User implements UserInterface, Serializable
 
     /**
      * @var ProjectUser[]
-     * @ORM\OneToMany (targetEntity="App\Entity\ProjectUser", mappedBy="user", cascade={"all"})
+     * @ORM\OneToMany (targetEntity="App\Entity\ProjectUser", mappedBy="user", cascade={"all"}, fetch="EAGER")
      * @ORM\JoinColumn (name="username", referencedColumnName="username")
      */
     protected $projectUsers;
@@ -350,7 +350,6 @@ class User implements UserInterface, Serializable
     public function serialize()
     {
         return serialize(array(
-            $this->id,
             $this->username,
             $this->password,
             $this->locked
@@ -360,7 +359,6 @@ class User implements UserInterface, Serializable
     public function unserialize($data)
     {
         [
-            $this->id,
             $this->username,
             $this->password,
             $this->locked,

@@ -38,7 +38,6 @@ class NewUserDTO
 
     public function fillProfile(User $user): void
     {
-        $user->setUsername($this->username);
         $user->setName($this->name);
         $user->setEmail($this->email);
         $user->setLocked(false);

@@ -21,10 +21,10 @@ class NewTaskDTO
     private $project;
 
     /**
-     * @var int
-     * @EntityExist(entity="App\Entity\User", property="id")
+     * @var string
+     * @EntityExist(entity="App\Entity\User", property="username")
      */
-    private int $assignTo;
+    private string $assignTo;
 
     /**
      * @var string
@@ -58,18 +58,18 @@ class NewTaskDTO
     }
 
     /**
-     * @return int
+     * @return string
      */
-    public function getAssignTo(): int
+    public function getAssignTo(): string
     {
         return $this->assignTo;
     }
 
     /**
-     * @param int $assignTo
+     * @param string $assignTo
      * @return NewTaskDTO
      */
-    public function setAssignTo(int $assignTo): NewTaskDTO
+    public function setAssignTo(string $assignTo): NewTaskDTO
     {
         $this->assignTo = $assignTo;
         return $this;

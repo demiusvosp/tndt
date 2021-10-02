@@ -22,9 +22,9 @@ class EditTaskDTO
 
     /**
      * @var int
-     * @EntityExist(entity="App\Entity\User", property="id")
+     * @EntityExist(entity="App\Entity\User", property="username")
      */
-    private int $assignedTo;
+    private string $assignedTo;
 
     /**
      * @var string
@@ -44,7 +44,7 @@ class EditTaskDTO
         $this->project = $task->getSuffix();
         $this->caption = $task->getCaption();
         $this->description = $task->getDescription();
-        $this->assignedTo = $task->getAssignedTo() ? $task->getAssignedTo()->getId() : 0;
+        $this->assignedTo = $task->getAssignedTo() ? $task->getAssignedTo()->getUsername() : '';
     }
 
     public function fillEntity(Task $task): void
@@ -72,18 +72,18 @@ class EditTaskDTO
     }
 
     /**
-     * @return int
+     * @return string
      */
-    public function getAssignedTo(): int
+    public function getAssignedTo(): string
     {
         return $this->assignedTo;
     }
 
     /**
-     * @param int $assignedTo
+     * @param string $assignedTo
      * @return EditTaskDTO
      */
-    public function setAssignedTo(int $assignedTo): EditTaskDTO
+    public function setAssignedTo(string $assignedTo): EditTaskDTO
     {
         $this->assignedTo = $assignedTo;
         return $this;

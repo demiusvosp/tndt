@@ -44,7 +44,7 @@ class UserSelectType extends AbstractType
         $project = $this->projectManager->getProject();
         $users = $this->userRepository->getPopularUsers(10, $project ? $project->getSuffix() : null);
         foreach ($users as $user) {
-            $choices[$user->getUsername()] = $user->getId();
+            $choices[$user->getUsername()] = $user->getUsername();
         }
 
         return $choices;
