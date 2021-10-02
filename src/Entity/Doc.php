@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection PhpPropertyOnlyWrittenInspection */
 /**
  * User: demius
  * Date: 28.08.2021
@@ -65,6 +65,7 @@ class Doc implements NoInterface
     /**
      * @var User
      * @ORM\ManyToOne (targetEntity="User")
+     * @ORM\JoinColumn (name="created_by", referencedColumnName="username", nullable=true)
      * @Gedmo\Blameable (on="create")
      */
     private User $createdBy;
@@ -79,6 +80,7 @@ class Doc implements NoInterface
     /**
      * @var User|null
      * @ORM\ManyToOne (targetEntity="User")
+     * @ORM\JoinColumn (name="updated_by", referencedColumnName="username", nullable=true)
      * @Gedmo\Blameable (on="change", field={"caption", "abstract", "body", "isArchived"})
      */
     private ?User $updatedBy;

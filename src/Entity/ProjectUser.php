@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity
  * @ORM\Table (
  *     name="project_user",
- *     uniqueConstraints={@ORM\UniqueConstraint(name="idx_project_user", columns={"suffix","user_id"})},
+ *     uniqueConstraints={@ORM\UniqueConstraint(name="idx_project_user", columns={"suffix","username"})},
  * )
  */
 class ProjectUser
@@ -38,16 +38,22 @@ class ProjectUser
     private string $suffix;
 
     /**
+     * @var string
+     * @ORM\Column(type="string", length=80)
+     */
+    private string $username;
+
+    /**
      * @var Project
-     * @ORM\ManyToOne (targetEntity="App\Entity\Project", inversedBy="projectUsers")
+     * @ORM\ManyToOne (targetEntity="Project", inversedBy="projectUsers")
      * @ORM\JoinColumn (name="suffix", referencedColumnName="suffix", nullable=false)
      */
     private Project $project;
 
     /**
      * @var User
-     * @ORM\ManyToOne (targetEntity="App\Entity\User", inversedBy="projectUsers")
-     * @ORM\JoinColumn (name="user_id", referencedColumnName="id", nullable=false)
+     * @ORM\ManyToOne (targetEntity="User", inversedBy="projectUsers")
+     * @ORM\JoinColumn (name="username", referencedColumnName="username", nullable=false)
      */
     private User $user;
 
@@ -57,6 +63,24 @@ class ProjectUser
      * @Assert\Choice(callback={"App\Security\UserRolesEnum", "getProjectRoles"})
      */
     private string $role;
+
+    /**
+     * @return string
+     */
+    public function getSuffix(): string
+    {
+        return $this->suffix;
+    }
+
+    /**
+     * @param string $suffix
+     * @return ProjectUser
+     */
+    public function setSuffix(string $suffix): ProjectUser
+    {
+        $this->suffix = $suffix;
+        return $this;
+    }
 
     /**
      * @return Project
@@ -73,6 +97,24 @@ class ProjectUser
     public function setProject(Project $project): ProjectUser
     {
         $this->project = $project;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUsername(): string
+    {
+        return $this->username;
+    }
+
+    /**
+     * @param string $username
+     * @return ProjectUser
+     */
+    public function setUsername(string $username): ProjectUser
+    {
+        $this->username = $username;
         return $this;
     }
 

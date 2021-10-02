@@ -20,13 +20,14 @@ use Symfony\Component\Validator\Constraints as Assert;
 class User implements UserInterface, Serializable
 {
     /**
-     * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
     protected int $id;
 
     /**
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
      * @ORM\Column(type="string", length=80, unique=true)
      */
     protected string $username;
@@ -61,6 +62,7 @@ class User implements UserInterface, Serializable
     /**
      * @var ProjectUser[]
      * @ORM\OneToMany (targetEntity="App\Entity\ProjectUser", mappedBy="user", cascade={"all"})
+     * @ORM\JoinColumn (name="username", referencedColumnName="username")
      */
     protected $projectUsers;
 
@@ -69,24 +71,17 @@ class User implements UserInterface, Serializable
      * @ORM\Column(type="datetime")
      * @Gedmo\Timestampable(on="create")
      */
-    private $createdAt;
+    private DateTime $createdAt;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
     protected ?DateTime $lastLogin = null;
 
-    public function __construct()
+    public function __construct(string $username)
     {
+        $this->username = $username;
         $this->projectUsers = new ArrayCollection();
-    }
-
-    /**
-     * @return int
-     */
-    public function getId(): int
-    {
-        return $this->id;
     }
 
     /**
@@ -95,16 +90,6 @@ class User implements UserInterface, Serializable
     public function getUsername(): string
     {
         return $this->username;
-    }
-
-    /**
-     * @param string $username
-     * @return User
-     */
-    public function setUsername(string $username): User
-    {
-        $this->username = $username;
-        return $this;
     }
 
     /**

@@ -9,13 +9,14 @@ namespace App\Entity;
 
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
+use DomainException;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /*
- *  пока есть сомнения, что эти индексы вобще нужны, мне кажется это будет быстро искаться по foreign
- *          @ORM\Index(name="createdBy" columns={"createdBy"})
- *          @ORM\Index(name="assignedBy" columns={"assignedBy"})
+ * пока есть сомнения, что эти индексы вообще нужны, мне кажется это будет быстро искаться по foreign
+ * @ORM\Index(name="createdBy" columns={"createdBy"})
+ * @ORM\Index(name="assignedBy" columns={"assignedBy"})
  */
 /**
  * Class Task
@@ -53,7 +54,7 @@ class Task implements NoInterface
     private string $suffix = '';
 
     /**
-     * @var Project
+     * @var Project|null
      * @ORM\ManyToOne(targetEntity="Project", fetch="EAGER")
      * @ORM\JoinColumn(name="suffix", referencedColumnName="suffix")
      */
@@ -69,6 +70,7 @@ class Task implements NoInterface
     /**
      * @var User
      * @ORM\ManyToOne (targetEntity="User")
+     * @ORM\JoinColumn (name="created_by", referencedColumnName="username", nullable=true)
      * @Gedmo\Blameable (on="create")
      */
     private User $createdBy;
@@ -83,6 +85,7 @@ class Task implements NoInterface
     /**
      * @var User|null
      * @ORM\ManyToOne (targetEntity="User")
+     * @ORM\JoinColumn (name="assigned_to", referencedColumnName="username", nullable=true)
      * @Gedmo\Blameable (on="create")
      */
     private ?User $assignedTo;
@@ -91,7 +94,7 @@ class Task implements NoInterface
      * @var boolean
      * @ORM\Column (type="boolean")
      */
-    private $isClosed = false;
+    private bool $isClosed = false;
 
     /**
      * @var string
@@ -99,13 +102,13 @@ class Task implements NoInterface
      * @Assert\NotBlank()
      * @Assert\Length(min=1, max=255)
      */
-    private $caption = '';
+    private string $caption = '';
 
     /**
      * @var string
      * @ORM\Column(type="text")
      */
-    private $description = '';
+    private string $description = '';
 
 
     public function __construct(Project $project)
@@ -136,7 +139,7 @@ class Task implements NoInterface
         if (empty($this->no)) {
             $this->no = $no;
         } else {
-            throw new \DomainException('Нельзя менять номер задачи');
+            throw new DomainException('Нельзя менять номер задачи');
         }
 
         return $this;
@@ -191,7 +194,6 @@ class Task implements NoInterface
     }
 
     /**
-     * @param bool $isClosed
      * @return Task
      */
     public function close(): Task
@@ -212,7 +214,7 @@ class Task implements NoInterface
      * @param string $caption
      * @return Task
      */
-    public function setCaption(string $caption)
+    public function setCaption(string $caption): Task
     {
         $this->caption = $caption;
 
@@ -231,7 +233,7 @@ class Task implements NoInterface
      * @param string $description
      * @return Task
      */
-    public function setDescription(string $description)
+    public function setDescription(string $description): Task
     {
         $this->description = $description;
 

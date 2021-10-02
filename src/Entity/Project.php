@@ -1,4 +1,5 @@
-<?php
+<?php /** @noinspection PhpPropertyOnlyWrittenInspection */
+
 /**
  * User: demius
  * Date: 05.11.19
@@ -80,7 +81,6 @@ class Project
      * @var ProjectUser[]
      * @ORM\OneToMany (targetEntity="App\Entity\ProjectUser", mappedBy="project", cascade={"all"})
      * @ORM\JoinColumn (name="suffix", referencedColumnName="suffix")
-     * // , fetch="EAGER" пока не нужно, но напрашивается
      */
     private $projectUsers;
 
