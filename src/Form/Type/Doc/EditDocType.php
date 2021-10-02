@@ -49,8 +49,7 @@ class EditDocType extends AbstractType
                     'required' => false,
                     'empty_data' => '',
                 ]
-            )
-            ->add('project', HiddenType::class);
+            );
     }
 
     public function configureOptions(OptionsResolver $resolver)

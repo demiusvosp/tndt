@@ -1,26 +1,19 @@
-{% extends 'base.html.twig' %}
+{% extends 'project/edit.base.html.twig' %}
 
-{% block title %}{{ parent() }} - {% trans %}project.edit{% endtrans %}{% endblock %}
-{% block page_title%}{{ project.name }} - {{ 'Edit'|trans }}{% endblock %}
-{% block page_subtitle %}{% endblock %}
+{% block edit_page_title%}{{ 'project.edit.common'|trans }}{% endblock %}
 
-{% block page_content %}
-    {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
-        {% block box_title %}
-            {# пока это повторяет заголовок, но может это будет многостраницчный мастер, и десь будет описание шага #}
-        {% endblock %}
-        {% block box_body %}
-            {{ form_start(form) }}
-                {{ form_row(form.name) }}
-                {{ form_row(form.icon) }}
-                {{ form_row(form.pm) }}
-                {{ form_row(form.isPublic) }}
-                {{ form_row(form.description) }}
-                <hr>
-                <div class="pull-right">
-                 <button type="submit" class="btn btn-success">{{ 'Edit'|trans }}</button>
-                </div>
-            {{ form_end(form) }}
-        {% endblock %}
-    {% endembed %}
+{% block edit_page %}
+    {{ form_start(form) }}
+        {{ form_row(form.name) }}
+        {{ form_row(form.icon) }}
+        {{ form_row(form.pm) }}
+        {{ form_row(form.isPublic) }}
+        {{ form_row(form.description) }}
+{% endblock %}
+
+{% block box_footer %}
+    <div class="pull-right">
+        <button type="submit" class="btn btn-success">{{ 'Edit'|trans }}</button>
+    </div>
+    {{ form_end(form) }}
 {% endblock %}

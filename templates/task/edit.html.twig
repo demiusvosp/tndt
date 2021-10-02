@@ -1,22 +1,22 @@
-{% extends 'base.html.twig' %}
+{% extends 'one_block_layout.html.twig' %}
 
 {% block title %} {{ task.taskId }} - {{ 'task.edit'|trans }} {% endblock %}
 {% block page_title%}{% endblock %}
 {% block page_subtitle %}{% endblock %}
 
-{% block page_content %}
+{% block box_title %}
+    {{ task.taskId }} - {{ 'task.edit'|trans }}
+{% endblock %}
+{% block box_body %}
     {{ form_start(form) }}
-    {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
-        {% block box_title %}
-            {{ task.taskId }} - {{ 'task.edit'|trans }}
-        {% endblock %}
-        {% block box_body %}
-            {{ form_row(form.caption) }}
-            {{ form_row(form.assignedTo) }}
-            {{ form_row(form.description) }}
-            <hr>
-            <button type="submit" class="btn btn-success">{{ 'Edit'|trans }}</button>
-        {% endblock %}
-    {% endembed %}
+    {{ form_row(form.caption) }}
+    {{ form_row(form.assignedTo) }}
+    {{ form_row(form.description) }}
+{% endblock %}
+
+{% block box_footer %}
+    <div class="pull-right">
+        <button type="submit" class="btn btn-success">{{ 'Edit'|trans }}</button>
+    </div>
     {{ form_end(form) }}
 {% endblock %}

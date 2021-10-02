@@ -1,0 +1,13 @@
+{% extends 'one_block_layout.html.twig' %}
+
+{% block title %}{{ project.name}} - {{ 'project.edit.title'|trans }}/{% block edit_page_title %}{% endblock %}{% endblock %}
+{% block page_title%}{% endblock %}
+{% block page_subtitle %}{% endblock %}
+
+{% block box_title %}
+    {{ project.name }} - {{ 'project.edit.title'|trans }}
+{% endblock %}
+{% block box_body %}
+    {% block edit_page %}
+    {% endblock %}
+{% endblock %}
