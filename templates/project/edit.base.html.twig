@@ -17,6 +17,8 @@
             <a href="{{ path('project.edit.permissions', {'suffix':project.suffix}) }}">{{ 'project.edit.permsions'|trans }}</a>
         </li>
     </ul>
+    <div class="one-block-content">
     {% block edit_page %}
     {% endblock %}
+    </div>
 {% endblock %}

@@ -12,7 +12,7 @@ use App\Entity\Project;
 use Happyr\Validator\Constraint\EntityExist;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class EditProjectDTO
+class EditProjectCommonDTO
 {
     /**
      * @var string
@@ -34,18 +34,6 @@ class EditProjectDTO
     private ?string $icon = '';
 
     /**
-     * @var string
-     * @Assert\NotBlank
-     * @EntityExist(entity="App\Entity\User", property="username")
-     */
-    private string $pm;
-
-    /**
-     * @var bool
-     */
-    private ?bool $isPublic = true;
-
-    /**
      * @var string|null
      * @Assert\Length(max=1000)
      */
@@ -56,19 +44,12 @@ class EditProjectDTO
         $this->suffix = $project->getSuffix();
         $this->name = $project->getName();
         $this->icon = $project->getIcon();
-        $this->pm = $project->getPm() ? $project->getPm()->getUsername() : '';
-        $this->isPublic = $project->isPublic();
     }
 
     public function fillEntity(Project $project)
     {
         $project->setName($this->name);
         $project->setIcon((string) $this->icon);
-        $project->setIsPublic($this->isPublic);
-        /*
-         * здесь на все поля, так как это DTO, и инъектировать сервисы для работы со связными сущностями оно не умеет.
-         * Эта функция вместе с куском логики, лежащим в контроллере должна быть вынесена в сервис на слой моделей
-         */
     }
 
     /**
@@ -89,9 +70,9 @@ class EditProjectDTO
 
     /**
      * @param string|null $name
-     * @return EditProjectDTO
+     * @return EditProjectCommonDTO
      */
-    public function setName(?string $name): EditProjectDTO
+    public function setName(?string $name): EditProjectCommonDTO
     {
         $this->name = $name;
         return $this;
@@ -107,47 +88,11 @@ class EditProjectDTO
 
     /**
      * @param string|null $icon
-     * @return EditProjectDTO
+     * @return EditProjectCommonDTO
      */
-    public function setIcon(?string $icon): EditProjectDTO
+    public function setIcon(?string $icon): EditProjectCommonDTO
     {
         $this->icon = $icon;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getPm(): string
-    {
-        return $this->pm;
-    }
-
-    /**
-     * @param string $pm
-     * @return EditProjectDTO
-     */
-    public function setPm(string $pm): EditProjectDTO
-    {
-        $this->pm = $pm;
-        return $this;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isPublic(): ?bool
-    {
-        return $this->isPublic;
-    }
-
-    /**
-     * @param bool $isPublic
-     * @return EditProjectDTO
-     */
-    public function setIsPublic(?bool $isPublic): EditProjectDTO
-    {
-        $this->isPublic = $isPublic;
         return $this;
     }
 
@@ -161,9 +106,9 @@ class EditProjectDTO
 
     /**
      * @param string|null $description
-     * @return EditProjectDTO
+     * @return EditProjectCommonDTO
      */
-    public function setDescription(?string $description): EditProjectDTO
+    public function setDescription(?string $description): EditProjectCommonDTO
     {
         $this->description = $description;
         return $this;

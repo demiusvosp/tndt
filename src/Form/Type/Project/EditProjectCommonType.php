@@ -8,7 +8,7 @@ declare(strict_types=1);
 
 namespace App\Form\Type\Project;
 
-use App\Form\DTO\Project\EditProjectDTO;
+use App\Form\DTO\Project\EditProjectCommonDTO;
 use App\Form\Type\User\UserSelectType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -17,9 +17,9 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class EditProjectType extends AbstractType
+class EditProjectCommonType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add(
@@ -33,16 +33,6 @@ class EditProjectType extends AbstractType
                 ['label' => 'project.icon.label', 'help' => 'project.icon.help']
             )
             ->add(
-                'pm',
-                UserSelectType::class,
-                ['label' => 'project.pm.label', 'help' => 'project.pm.help']
-            )
-            ->add(
-                'isPublic',
-                CheckboxType::class,
-                ['required' => false, 'label' => 'project.isPublic.label', 'help' => 'project.isPublic.help']
-            )
-            ->add(
                 'description',
                 TextareaType::class,
                 [
@@ -54,8 +44,8 @@ class EditProjectType extends AbstractType
             );
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefault('data_class', EditProjectDTO::class);
+        $resolver->setDefault('data_class', EditProjectCommonDTO::class);
     }
 }

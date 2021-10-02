@@ -12,6 +12,7 @@ use App\Repository\UserRepository;
 use App\Service\ProjectManager;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class UserSelectType extends AbstractType
@@ -33,15 +34,24 @@ class UserSelectType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'choices' => $this->getUsers(),
             'choice_translation_domain' => false,
+            'current_project_users' => true,
         ]);
+        $resolver->setDefault(
+            'choices',
+            function(Options $options) {
+                if ($options['current_project_users']) {
+                    $project = $this->projectManager->getProject();
+                    return $this->getUsers($project);
+                }
+                return $this->getUsers(null);
+            }
+        );
     }
 
-    private function getUsers(): array
+    private function getUsers($project): array
     {
         $choices = [];
-        $project = $this->projectManager->getProject();
         $users = $this->userRepository->getPopularUsers(10, $project ? $project->getSuffix() : null);
         foreach ($users as $user) {
             $choices[$user->getUsername()] = $user->getUsername();

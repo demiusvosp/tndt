@@ -1,5 +1,5 @@
 #!make
-.PHONY: help up down ps exec init tests
+.PHONY: help up down ps exec init tests build_front
 
 # default arguments
 env = dev
@@ -18,6 +18,7 @@ help:
 	$(info   down ENV=test - down current environment (default dev))
 	$(info   ps ENV=test - compose ps current environment (default dev))
 	$(info   exec - login to current php container shell)
+	$(info   build_front [watch] - exec yarn insatall (one or watches changes) )
 	$(info   init - initialize stage. (create db, migrates, create root user))
 	$(info   tests type=behat (default unit) - run test suites)
 	$(info )
@@ -34,6 +35,10 @@ ps:
 
 exec:
 	docker exec -it tndt_php_1 /bin/bash
+
+build_front:
+	yarn encore dev $(filter-out $@,$(MAKECMDGOALS))
+%:
 
 init:
 	docker exec -it tndt_php_1 composer install # пока мы используем dev контейнер все ок, но в будущем для этого надо готовить отдельный контейнер с композером, git и yarn

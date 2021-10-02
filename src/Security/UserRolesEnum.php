@@ -14,8 +14,8 @@ use MyCLabs\Enum\Enum;
  * @method static ROLE_ROOT()
  * @method static ROLE_USER()
  * @method static PROLE_PM()
- * @method static ROLE_STAFF()
- * @method static ROLE_VISITOR()
+ * @method static PROLE_STAFF()
+ * @method static PROLE_VISITOR()
  */
 class UserRolesEnum extends Enum
 {

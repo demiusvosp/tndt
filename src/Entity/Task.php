@@ -123,6 +123,11 @@ class Task implements NoInterface
         }
     }
 
+    public function __toString(): string
+    {
+        return $this->getTaskId();
+    }
+
     /**
      * @return int
      */

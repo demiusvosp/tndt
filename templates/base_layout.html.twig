@@ -14,10 +14,6 @@
     {{ encore_entry_script_tags('app') }}
 {% endblock %}
 
-{% block page_content_before %}
-    {% include 'modals.html.twig' %}
-{% endblock %}
-
 {% block navbar_start %}
     {% include 'project/navbar_menu.html.twig' %}
 {% endblock %}
@@ -48,6 +44,9 @@
     {% include 'bundles/AdminLTEBundle/Sidebar/menu.html.twig' with {'adminlte_direct_include': true} %}
 {% endblock %}
 
+{% block page_content_after %}
+    {% include 'modals.html.twig' %}
+{% endblock %}
 {% block footer %}
     {% include 'footer.html.twig' %}
 {% endblock %}

@@ -131,6 +131,11 @@ class Doc implements NoInterface
         $this->setProject($project);
     }
 
+    public function __toString(): string
+    {
+        return $this->getDocId();
+    }
+
     /**
      * @return int
      */

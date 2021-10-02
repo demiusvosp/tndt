@@ -6,6 +6,11 @@ $fa-font-path: "~@fortawesome/fontawesome-free/webfonts/";
 
 @import "~bootstrap-sass/assets/stylesheets/bootstrap";
 
+/* Common blocks */
+.one-block-content {
+    margin-top: 1em;
+}
+
 /* Projects */
 .project-title {
     a, a:hover {

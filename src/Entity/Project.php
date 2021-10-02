@@ -10,6 +10,7 @@ namespace App\Entity;
 use App\Security\UserRolesEnum;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -78,11 +79,12 @@ class Project
     private bool $isPublic = true;
 
     /**
-     * @var ProjectUser[]
+     * @var Collection|ProjectUser[]
      * @ORM\OneToMany (targetEntity="App\Entity\ProjectUser", mappedBy="project", cascade={"all"})
+     * @ORM\OrderBy({"role" = "ASC"})
      * @ORM\JoinColumn (name="suffix", referencedColumnName="suffix")
      */
-    private $projectUsers;
+    private Collection $projectUsers;
 
     /**
      * @var string
@@ -96,6 +98,11 @@ class Project
     {
         $this->suffix = $suffix;
         $this->projectUsers = new ArrayCollection();
+    }
+
+    public function __toString(): string
+    {
+        return $this->getSuffix();
     }
 
     /**
@@ -235,9 +242,9 @@ class Project
     }
 
     /**
-     * @return ProjectUser[]
+     * @return Collection|ProjectUser[]
      */
-    public function getProjectUsers(): array
+    public function getProjectUsers(): Collection
     {
         return $this->projectUsers;
     }
@@ -248,7 +255,11 @@ class Project
      */
     public function setProjectUsers(array $projectUsers): Project
     {
-        $this->projectUsers = $projectUsers;
+        /*
+         * Здесь нам нужно вручную смержить два списка доступов, удалив более не нужные, и обновив/добавив новые
+         * Сделаем fillers они нам предоставят projectUsers уже в виде entity (кстати, если нам выбирать какие включать, кто персист будет делать?
+         */
+        //$this->projectUsers = $projectUsers;
         return $this;
     }
 

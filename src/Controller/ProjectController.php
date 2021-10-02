@@ -10,10 +10,12 @@ namespace App\Controller;
 
 use App\Entity\Project;
 use App\Entity\Task;
-use App\Form\DTO\Project\EditProjectDTO;
+use App\Form\DTO\Project\EditProjectCommonDTO;
+use App\Form\DTO\Project\EditProjectPermissionsDTO;
 use App\Form\DTO\Project\NewProjectDTO;
 use App\Form\DTO\Project\ProjectListFilterDTO;
-use App\Form\Type\Project\EditProjectType;
+use App\Form\Type\Project\EditProjectCommonType;
+use App\Form\Type\Project\EditProjectPermissionsType;
 use App\Form\Type\Project\NewProjectType;
 use App\Form\Type\Project\ListFilterType;
 use App\Repository\DocRepository;
@@ -122,30 +124,21 @@ class ProjectController extends AbstractController
     /**
      * @IsGranted("PERM_PROJECT_SETTINGS")
      * @param Request $request
-     * @param UserRepository $userRepository
      * @return Response
      */
-    public function editCommon(Request $request, UserRepository $userRepository): Response
+    public function editCommon(Request $request): Response
     {
         $project = $this->projectManager->getProject();
         if (!$project) {
             throw $this->createNotFoundException($this->translator->trans('project.not_found'));
         }
 
-        $formData = new EditProjectDTO($project);
-        $form = $this->createForm(EditProjectType::class, $formData);
+        $formData = new EditProjectCommonDTO($project);
+        $form = $this->createForm(EditProjectCommonType::class, $formData);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            if ($project->getPm() === null || $project->getPm()->getUsername() !== $formData->getPm()) {
-                $newPm = $userRepository->find($formData->getPm());
-                if (!$newPm) {
-                    $form->addError(new FormError('project.pm.error.not_found'));
-                } else {
-                    $project->setPm($newPm);
-                }
-            }
             $formData->fillEntity($project);
             $em->flush();
             $this->addFlash('success', 'project.edit.success');
@@ -157,16 +150,33 @@ class ProjectController extends AbstractController
     /**
      * @IsGranted("PERM_PROJECT_SETTINGS")
      * @param Request $request
+     * @param UserRepository $userRepository
      * @return Response
      */
-    public function editPermissions(Request $request): Response
+    public function editPermissions(Request $request, UserRepository $userRepository): Response
     {
         $project = $this->projectManager->getProject();
         if (!$project) {
             throw $this->createNotFoundException($this->translator->trans('project.not_found'));
         }
 
-        return $this->render('project/edit_permissions.html.twig', ['project' => $project]);
+        $formData = new EditProjectPermissionsDTO($project);
+        $form = $this->createForm(EditProjectPermissionsType::class, $formData);
+
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()) {
+            $formData->fillEntity($project);
+            if ($project->getPm() === null || $project->getPm()->getUsername() !== $formData->getPm()) {
+                $newPm = $userRepository->find($formData->getPm());
+                if (!$newPm) {
+                    $form->addError(new FormError('project.pm.error.not_found'));
+                } else {
+                    $project->setPm($newPm);
+                }
+            }
+        }
+
+        return $this->render('project/edit_permissions.html.twig', ['project' => $project, 'form' => $form->createView()]);
     }
 
     /**
