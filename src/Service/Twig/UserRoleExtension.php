@@ -11,6 +11,7 @@ namespace App\Service\Twig;
 use App\Security\UserRolesEnum;
 use App\Service\ProjectContext;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Twig\Environment;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
@@ -20,11 +21,13 @@ class UserRoleExtension extends AbstractExtension
 {
     private TranslatorInterface $translator;
     private ProjectContext $projectContext;
+    private Environment $twig;
 
-    public function __construct(TranslatorInterface $translator, ProjectContext $projectContext)
+    public function __construct(TranslatorInterface $translator, ProjectContext $projectContext, Environment $twig)
     {
         $this->translator = $translator;
         $this->projectContext = $projectContext;
+        $this->twig = $twig;
     }
 
     public function getFilters(): array
@@ -56,16 +59,13 @@ class UserRoleExtension extends AbstractExtension
 
     /**
      * @param UserRolesEnum|string $role
+     * @param bool $html - разрешить html
      * @return string
      */
-    public function roleLabel($role): string
+    public function roleLabel($role, $html = true): string
     {
-        if (is_string($role) && UserRolesEnum::isValid($role)) {
-            $role = new UserRolesEnum($role);
-        }
-
-        if($role instanceof UserRolesEnum) {
-            return $this->translator->trans($role->label());
+        if(!UserRolesEnum::isProjectRole($role)) {
+            return $this->translator->trans(UserRolesEnum::label($role));
         }
 
         [$projectRole, $projectSuffix] = UserRolesEnum::explodeSyntheticRole($role);
@@ -74,19 +74,29 @@ class UserRoleExtension extends AbstractExtension
                 быть списке UserRolesEnum, или быть правильно составленной синтетической ролью PROLE_<NAME>_<PROJECT>");
         }
 
-        return $this->translator->trans($projectRole)
+
+        return $this->translator->trans(UserRolesEnum::label($projectRole))
             . ' ' . $this->translator->trans('role.at_project')
-            . ' ' . $this->projectContext->getNameBySuffix($projectSuffix);
+            . ' ' . ($html ? $this->getProjectLink($projectSuffix) : $projectSuffix);
     }
 
-    public function roleLabelList(array $roles): string
+    /**
+     * @param array $roles
+     * @param int|null $limit
+     * @return string
+     */
+    public function roleLabelList(array $roles, ?int $limit = null): string
     {
         /*
          * @TODO возможно стоить группировать этот список по профессиям или проектам, это стоит делать здесь
          */
         $labelList = [];
         foreach ($roles as $role) {
-            $labelList[] = $this->roleLabel($role);
+            //@TODO
+            $labelList[] = $this->roleLabel($role, true);
+            if ($limit && count($roles) >= $limit) {
+                break;
+            }
         }
         return implode(', ', $labelList);
     }
@@ -97,5 +107,14 @@ class UserRoleExtension extends AbstractExtension
     public function getName(): string
     {
         return 'app_user_role';
+    }
+
+    /*
+     * вобще такая функция намек, что что-то мы делаем не правильно, может весь этот функционал вынести в макросы шаблона, сюда положив поддержку этого макроса, без которой никак
+     */
+    private function getProjectLink(string $projectSuffix): string
+    {
+        $link = '<a href="{{ path(\'project.index\', {\'suffix\': '.$projectSuffix.'}) }}" class="invisible_link">';
+        return $link . '<b>' . $projectSuffix . '</b></a>';
     }
 }

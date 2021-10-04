@@ -3,7 +3,7 @@
     {% if link %}
         <a href="{{ path('project.index', {'suffix': project.suffix}) }}">
     {% endif %}
-        <i class="fa fa-tasks-alt"></i>
+        {% if not withName %}<i class="glyphicon glyphicon-tasks"></i>{% endif %}
         <b {{ project.isArchived ? 'class="style-deleted"' }}>{{ project.suffix }}</b>
         {% if withName %}
             - {{ project.name }}

@@ -14,25 +14,37 @@
                 {% endblock %}
                 {% block box_body %}
                     <div class="row">
-                        <div class="col-md-4">
-                            {{ 'user.username.label'|trans }}: {{ user.username }}
+                        <div class="col-md-8">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    {{ 'user.username.label'|trans }}: {{ user.username }}
+                                </div>
+                                <div class="col-md-6">
+                                    {{ 'user.createdAt.label'|trans }}: {{ user.createdAt|ago }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    {{ 'user.name.label'|trans }}: {{ user.name(true) }}
+                                </div>
+                                <div class="col-md-6">
+                                    {{ 'user.lastLogin.label'|trans }}:
+                                    {% if user.lastLogin %}{{ user.lastLogin|ago }}{% else %}{{ 'Never_logined'|trans }}{% endif %}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    {{ 'user.email.label'|trans }}: {{ user.email }}
+                                </div>
+                            </div>
                         </div>
                         <div class="col-md-4">
-                            {{ 'user.createdAt.label'|trans }}: {{ user.createdAt|ago }}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-4">
-                            {{ 'user.name.label'|trans }}: {{ user.name(true) }}
-                        </div>
-                        <div class="col-md-4">
-                            {{ 'user.lastLogin.label'|trans }}:
-                                {% if user.lastLogin %}{{ user.lastLogin|ago }}{% else %}{{ 'Never_logined'|trans }}{% endif %}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-4">
-                            {{ 'user.email.label'|trans }}: {{ user.email }}
+                            {{ 'user.roles.label'|trans }}:
+                            <ul>
+                                {% for role in user.roles %}
+                                    <li>{{ role_label(role) }}</li>
+                                {% endfor %}
+                            </ul>
                         </div>
                     </div>
                 {% endblock %}

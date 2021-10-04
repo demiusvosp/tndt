@@ -73,7 +73,7 @@
                         <ul class="list-unstyled">
                             {% for user in users %}
                                 <li>
-                                    <b>{{ mUser.badge(user) }}</b> - {{ role_label_list(user.roles)|u.truncate(55, '...') }}
+                                    <b>{{ mUser.badge(user) }}</b> - {{ role_label_list(user.roles) }}
                                 </li>
                             {% endfor %}
                         </ul>

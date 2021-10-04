@@ -191,10 +191,12 @@ class User implements UserInterface, Serializable
         // глобальные роли
         $roles = $this->roles;
 
-        // общая роль любого зарегистрированного пользователя, если у него нет более специфичной роли
-        if(count($roles) === 0) {
-            $roles[] = UserRolesEnum::ROLE_USER;
-        }
+// @TODO Удалить. Я так и не нашел этому внятного применения, а местами оно мешает
+//
+//        // общая роль любого зарегистрированного пользователя, если у него нет более специфичной роли
+//        if(count($roles) === 0) {
+//            $roles[] = UserRolesEnum::ROLE_USER;
+//        }
 
         // роли в проектах
         foreach ($this->getProjectUsers() as $projectUser) {

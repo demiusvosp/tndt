@@ -9,6 +9,7 @@ declare(strict_types=1);
 namespace App\Security;
 
 use MyCLabs\Enum\Enum;
+use phpDocumentor\Reflection\Types\This;
 
 /**
  * @method static ROLE_ROOT()
@@ -28,6 +29,9 @@ class UserRolesEnum extends Enum
     public const PROLE_STAFF = 'PROLE_STAFF'; // Работает с проектом (надо будет решить как его расзеплять на пользовательские подроли DEVEL,QA,LEAD,JUN и т.д.)
     public const PROLE_VISITOR = 'PROLE_VISITOR';// Посетитель смотрит непубличный проект, в который его добавили, оставляет пожелания
 
+    private const SINTETIC_ROLE_REGEXP = '/^(PROLE_[\w]+)_([a-zA-Z0-9]+)$/';
+
+
     public static function labels():array
     {
         return [
@@ -46,7 +50,8 @@ class UserRolesEnum extends Enum
 
     public static function isProjectRole(string $role): bool
     {
-        return in_array($role, self::getProjectRoles(), true);
+        return in_array($role, self::getProjectRoles(), true) ||
+            preg_match(self::SINTETIC_ROLE_REGEXP, $role);
     }
 
     public static function getHierarchy(): array
@@ -63,9 +68,16 @@ class UserRolesEnum extends Enum
         ];
     }
 
-    public function label(): string
+    /**
+     * @param string|UserRolesEnum $role
+     * @return string
+     */
+    public static function label($role): string
     {
-        return self::labels()[$this->value];
+        if ($role instanceof UserRolesEnum) {
+            $role = $role->getValue();
+        }
+        return isset(self::labels()[$role]) ? self::labels()[$role] : '';
     }
 
     /**
@@ -94,7 +106,7 @@ class UserRolesEnum extends Enum
     public static function explodeSyntheticRole(string $syntheticRole): array
     {
         $matches = [];
-        if (preg_match('/^(PROLE_[\w]+)_([a-zA-Z0-9]+)$/', $syntheticRole, $matches) && count($matches) === 3) {
+        if (preg_match(self::SINTETIC_ROLE_REGEXP, $syntheticRole, $matches) && count($matches) === 3) {
             return [(string) $matches[1], (string) $matches[2]];
         }
 
