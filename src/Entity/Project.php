@@ -207,12 +207,8 @@ class Project
      */
     public function getPm(): ?User
     {
-        foreach ($this->projectUsers as $projectUser) {
-            if ($projectUser->getRole()->equals(UserRolesEnum::PROLE_PM())) {
-                return $projectUser->getUser();
-            }
-        }
-        return null;
+        $projectPms = $this->getProjectUsers(UserRolesEnum::PROLE_PM());
+        return !$projectPms->isEmpty() ? $projectPms->first()->getUser() : null;
     }
 
     /**
@@ -223,9 +219,17 @@ class Project
     {
         $exist = false;
         foreach ($this->projectUsers as $projectUser) {
-            if($projectUser->getRole()->equals(UserRolesEnum::PROLE_PM())) {
-                $projectUser->setUser($pm);
+            if ($projectUser->getUsername() === $pm->getUsername()) {
+                // нашли запись этого работника и меняем ему роль
+                $projectUser->setRole(UserRolesEnum::PROLE_PM());
                 $exist = true;
+            }
+
+            if($projectUser->getUsername() !== $pm->getUsername()
+                && $projectUser->getRole()->equals(UserRolesEnum::PROLE_PM())
+            ) {
+                // удаляем прошлого PM
+                $this->projectUsers->removeElement($projectUser);
             }
         }
 
@@ -244,22 +248,46 @@ class Project
     /**
      * @return Collection|ProjectUser[]
      */
-    public function getProjectUsers(): Collection
+    public function getProjectUsers(?UserRolesEnum $role = null): Collection
     {
-        return $this->projectUsers;
+        return $this->projectUsers->filter(
+            function (ProjectUser $item) use ($role) {
+                return !$role || $item->getRole()->equals($role);
+            }
+        );
     }
 
     /**
-     * @param ProjectUser[] $projectUsers
+     * @param ProjectUser[] $newProjectUsers - новый набор работников проекта
+     * @param UserRolesEnum|null $onlyRole - применить новый набор только для указанной роли
      * @return Project
      */
-    public function setProjectUsers(array $projectUsers): Project
+    public function setProjectUsers(array $newProjectUsers, ?UserRolesEnum $onlyRole = null): Project
     {
-        /*
-         * Здесь нам нужно вручную смержить два списка доступов, удалив более не нужные, и обновив/добавив новые
-         * Сделаем fillers они нам предоставят projectUsers уже в виде entity (кстати, если нам выбирать какие включать, кто персист будет делать?
-         */
-        //$this->projectUsers = $projectUsers;
+        $newProjectUsersKeys = array_map(
+            static function (ProjectUser $item) { return $item->getUsername(); }, $newProjectUsers
+        );
+        $newProjectUsers = array_combine($newProjectUsersKeys, $newProjectUsers);
+
+        // убираем не прошедшие
+        foreach ($this->projectUsers as $projectUser) {
+            if (isset($newProjectUsers[$projectUser->getUsername()])) {
+                // пользователь поменял роль на ту, которую сеттим, добавлять вв иде новой связи не надо
+                $projectUser->setRole($newProjectUsers[$projectUser->getUsername()]->getRole());
+                unset($newProjectUsers[$projectUser->getUsername()]);
+            } elseif (!$onlyRole || $projectUser->getRole()->equals($onlyRole)) {
+                // пользователь не относится к набору новых и мы не сохраняем его по ограничению сета по роли
+                $this->projectUsers->removeElement($projectUser);
+            }
+        }
+
+        // добавляем новые элементы
+        foreach ($newProjectUsers as $projectUser) {
+            if (!$onlyRole || $projectUser->getRole()->equals($onlyRole)) {
+                $this->projectUsers->add($projectUser);
+            }
+        }
+
         return $this;
     }
 

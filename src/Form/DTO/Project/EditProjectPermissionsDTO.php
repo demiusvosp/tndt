@@ -10,6 +10,7 @@ namespace App\Form\DTO\Project;
 
 use App\Entity\Project;
 use App\Security\UserRolesEnum;
+use App\Service\Constraints\UniqueInFields;
 use Doctrine\Common\Collections\ArrayCollection;
 use Happyr\Validator\Constraint\EntityExist;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -17,19 +18,29 @@ use Symfony\Component\Validator\Constraints as Assert;
 class EditProjectPermissionsDTO
 {
     /**
+     * @var bool
+     */
+    private ?bool $isPublic;
+
+    /**
      * @var string
      * @Assert\NotBlank
      * @EntityExist(entity="App\Entity\User", property="username")
+     * @UniqueInFields(propertyPath={"staff", "visitors"}, message="not_unique_usernames {{ not_unique_values }}")
      */
     private string $pm;
 
     /**
-     * @var bool
+     * @var array - массив username работиков
+     *
      */
-    private ?bool $isPublic = true;
-
     private array $staff;
+
+    /**
+     * @var array - массив username визитеров
+     */
     private array $visitors;
+
 
     public function __construct(Project $project)
     {
@@ -38,23 +49,13 @@ class EditProjectPermissionsDTO
         $this->staff = [];
         $this->visitors = [];
         foreach ($project->getProjectUsers() as $projectUser) {
-            if ($projectUser->getRole() == UserRolesEnum::PROLE_STAFF()) {
+            if ($projectUser->getRole()->equals(UserRolesEnum::PROLE_STAFF())) {
                 $this->staff[] = $projectUser->getUsername();
             }
-            if ($projectUser->getRole() === UserRolesEnum::PROLE_VISITOR()) {
+            if ($projectUser->getRole()->equals(UserRolesEnum::PROLE_VISITOR())) {
                 $this->visitors[] = $projectUser->getUsername();
             }
         }
-    }
-
-    public function fillEntity(Project $project): void
-    {
-        $project->setIsPublic($this->isPublic);
-        /*
-         * здесь на все поля, так как это DTO, и инъектировать сервисы для работы со связными сущностями оно не умеет.
-         * Эта функция вместе с куском логики, лежащим в контроллере должна быть вынесена в сервис на слой моделей
-         */
-
     }
 
     /**

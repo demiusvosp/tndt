@@ -65,21 +65,36 @@ class ProjectUser
     private string $role;
 
     /**
+     * Тот же ли это элемент связи проекта и юзера (возможно с другим полномочием)
+     * (полезно при обновлении списка, так как возможна только одна связь проекта с пользователем и имеет смысл только
+     * сменить полномочие, а не дублировать запись)
+     * @param ProjectUser $another
+     * @return bool
+     */
+    public function same(ProjectUser $another): bool
+    {
+        return $this->suffix === $another->suffix
+            && $this->username === $another->username;
+    }
+
+    /**
+     * Тот же ли это элемент связи проекта и пользователя с тем же полномочием
+     * (Так как первичный ключ для доктрины не имеет ничего общего с реальной уникальностью энтити, проверяем по полям)
+     * @param ProjectUser $another
+     * @return bool
+     */
+    public function equal(ProjectUser $another): bool
+    {
+        return $this->same($another)
+            && $this->role === $another->role;
+    }
+
+    /**
      * @return string
      */
     public function getSuffix(): string
     {
         return $this->suffix;
-    }
-
-    /**
-     * @param string $suffix
-     * @return ProjectUser
-     */
-    public function setSuffix(string $suffix): ProjectUser
-    {
-        $this->suffix = $suffix;
-        return $this;
     }
 
     /**
@@ -97,6 +112,7 @@ class ProjectUser
     public function setProject(Project $project): ProjectUser
     {
         $this->project = $project;
+        $this->suffix = $project->getSuffix();
         return $this;
     }
 
@@ -106,16 +122,6 @@ class ProjectUser
     public function getUsername(): string
     {
         return $this->username;
-    }
-
-    /**
-     * @param string $username
-     * @return ProjectUser
-     */
-    public function setUsername(string $username): ProjectUser
-    {
-        $this->username = $username;
-        return $this;
     }
 
     /**
@@ -133,6 +139,7 @@ class ProjectUser
     public function setUser(User $user): ProjectUser
     {
         $this->user = $user;
+        $this->username = $user->getUsername();
         return $this;
     }
 

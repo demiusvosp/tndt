@@ -1,7 +1,7 @@
 {% extends 'auth/base.html.twig' %}
 
 {% block login_box_msg %}
-    {{ 'Login'|trans }}
+    {{ 'Login'|trans([], 'security') }}
 {% endblock %}
 
 {% block login_box_error %}
@@ -11,22 +11,22 @@
 {% endblock %}
 
 {% block login_form %}
-<form method="post">
+<form action="{{ path('app.login'|route_alias) }}" method="post">
     {% if app.user %}
         <div class="mb-3">
-            You are logged in as {{ app.user.username }}, <a href="{{ path('app.login') }}">Logout</a>
+            {{ 'You are logged in as'|trans([], 'security') }}{{ app.user.username }}, <a href="{{ path('app.login') }}">{{ 'Logout'|trans([], 'security') }}</a>
         </div>
     {% endif %}
 
     <div class="form-group has-feedback">
-        <input type="text" name="username" id="inputUsername" class="form-control" placeholder="{{ 'Username'|trans({}, 'AdminLTEBundle') }}" value="{{ last_username|default('') }}">
+        <input type="text" name="username" id="inputUsername" class="form-control" placeholder="{{ 'user.username.label'|trans }}" value="{{ last_username|default('') }}">
         <label for="inputUsername">
             <span class="fa fa-user form-control-feedback"></span>
         </label>
     </div>
 
     <div class="form-group has-feedback">
-        <input name="password" type="password" id="inputPassword" class="form-control" placeholder="{{ 'Password'|trans({}, 'AdminLTEBundle') }}">
+        <input name="password" type="password" id="inputPassword" class="form-control" placeholder="{{ 'user.password.label'|trans }}">
         <label for="inputPassword">
             <span class="glyphicon glyphicon-lock form-control-feedback"></span>
         </label>
@@ -46,7 +46,7 @@
     #}
 
     <div class="form-group">
-        <button type="submit" class="btn btn-primary btn-block">{{ 'Sign In'|trans({}, 'AdminLTEBundle') }}</button>
+        <button type="submit" class="btn btn-primary btn-block">{{ 'Login'|trans({}, 'security') }}</button>
     </div>
 </form>
 {% endblock %}

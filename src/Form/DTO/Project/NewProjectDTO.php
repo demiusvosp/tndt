@@ -53,17 +53,6 @@ class NewProjectDTO
     private ?string $description;
 
 
-    public function createEntity(): Project
-    {
-        $project = new Project($this->suffix);
-        $project->setName($this->name);
-        $project->setIcon($this->icon);
-        $project->setIsPublic($this->isPublic);
-        $project->setDescription($this->description);
-
-        return $project;
-    }
-
     /**
      * @return string
      */

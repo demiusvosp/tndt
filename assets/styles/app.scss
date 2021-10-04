@@ -6,6 +6,8 @@ $fa-font-path: "~@fortawesome/fontawesome-free/webfonts/";
 
 @import "~bootstrap-sass/assets/stylesheets/bootstrap";
 
+$color-disabled: #333;
+
 /* Common blocks */
 .one-block-content {
     margin-top: 1em;
@@ -75,7 +77,7 @@ $fa-font-path: "~@fortawesome/fontawesome-free/webfonts/";
     font-weight: normal;
 }
 .style-disabled {
-    color: #333;
+    color: $color-disabled;
     opacity: 1;
 }
 
@@ -101,4 +103,9 @@ a.invisible_link, a.invisible_link:hover {
 .btn-group-vertical .btn:not(:first-child) {
     border-top-left-radius: 0;
     border-top-right-radius: 0;
+}
+
+select option.service-item {
+    color: $input-color-placeholder;
+    font-style: italic;
 }

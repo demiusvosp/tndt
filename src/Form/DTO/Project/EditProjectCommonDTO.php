@@ -46,12 +46,6 @@ class EditProjectCommonDTO
         $this->icon = $project->getIcon();
     }
 
-    public function fillEntity(Project $project)
-    {
-        $project->setName($this->name);
-        $project->setIcon((string) $this->icon);
-    }
-
     /**
      * @return string
      */

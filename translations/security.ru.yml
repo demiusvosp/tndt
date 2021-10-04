@@ -13,3 +13,6 @@
 'Credentials have expired.': 'Время действия аутентификационных данных истекло.'
 'Account is disabled.': 'Учетная запись отключена.'
 'Account is locked.': 'Учетная запись заблокирована.'
+'You are logged in as': 'Вы вошли как '
+Login: Войти
+Logout: Выйти

@@ -21,7 +21,9 @@ use App\Form\Type\Project\ListFilterType;
 use App\Repository\DocRepository;
 use App\Repository\TaskRepository;
 use App\Repository\UserRepository;
+use App\Service\Filler\ProjectFiller;
 use App\Service\ProjectContext;
+use InvalidArgumentException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormError;
@@ -37,12 +39,14 @@ class ProjectController extends AbstractController
 
     private TranslatorInterface $translator;
     private ProjectContext $projectContext;
+    private ProjectFiller $projectFiller;
 
 
-    public function __construct(TranslatorInterface $translator, ProjectContext $projectContext)
+    public function __construct(TranslatorInterface $translator, ProjectContext $projectContext, ProjectFiller $projectFiller)
     {
         $this->translator = $translator;
         $this->projectContext = $projectContext;
+        $this->projectFiller = $projectFiller;
     }
 
     public function list(Request $request): Response
@@ -102,15 +106,8 @@ class ProjectController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            /* из-за того, что formData DTO и он глупый, что-то более сложное, чем прямой setинг полей в него
-             * не вынесешь. Надо или отказываться от функций типа DTO::fillEntity(), или выносить их в логику работы с сущностями
-             * Либо Filllers/UserFiller->create() либо UserManager->createFromData(), но так себе, что они знают про DTO,
-             * получаются функции вырываемые из одного места. Тогда уж Fillers/UserFiller->create(UserDataInterface)
-             */
+            $project = $this->projectFiller->createProjectByForm($formData);
 
-            $user = $userRepository->find($formData->getPm());
-            $project = $formData->createEntity();
-            $project->setPm($user);
             $em = $this->getDoctrine()->getManager();
             $em->persist($project);
             $em->flush();
@@ -139,7 +136,7 @@ class ProjectController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $formData->fillEntity($project);
+            $this->projectFiller->fillCommonSetting($formData, $project);
             $em->flush();
             $this->addFlash('success', 'project.edit.success');
         }
@@ -162,18 +159,16 @@ class ProjectController extends AbstractController
 
         $formData = new EditProjectPermissionsDTO($project);
         $form = $this->createForm(EditProjectPermissionsType::class, $formData);
-
         $form->handleRequest($request);
+
         if($form->isSubmitted() && $form->isValid()) {
-            $formData->fillEntity($project);
-            if ($project->getPm() === null || $project->getPm()->getUsername() !== $formData->getPm()) {
-                $newPm = $userRepository->find($formData->getPm());
-                if (!$newPm) {
-                    $form->addError(new FormError('project.pm.error.not_found'));
-                } else {
-                    $project->setPm($newPm);
-                }
+            try {
+                $this->projectFiller->fillPermissionsSetting($formData, $project);
+            } catch (InvalidArgumentException $e) {
+                $form->addError(new FormError($e->getMessage()));
             }
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
         }
 
         return $this->render('project/edit_permissions.html.twig', ['project' => $project, 'form' => $form->createView()]);

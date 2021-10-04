@@ -14,16 +14,22 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class UserSelectType extends AbstractType
 {
     private UserRepository $userRepository;
     private ProjectContext $projectContext;
+    private TranslatorInterface $translator;
 
-    public function __construct(UserRepository $userRepository, ProjectContext $projectContext)
-    {
+    public function __construct(
+        UserRepository $userRepository,
+        ProjectContext $projectContext,
+        TranslatorInterface $translator
+    ) {
         $this->userRepository = $userRepository;
         $this->projectContext = $projectContext;
+        $this->translator = $translator;
     }
 
     public function getParent()
@@ -40,11 +46,30 @@ class UserSelectType extends AbstractType
         $resolver->setDefault(
             'choices',
             function(Options $options) {
+                $project = null;
                 if ($options['current_project_users']) {
                     $project = $this->projectContext->getProject();
-                    return $this->getUsers($project);
                 }
-                return $this->getUsers(null);
+                $users = $this->getUsers($project);
+
+                if($options['multiple'] === true || $options['required'] === false) {
+                    $users = array_merge(
+                        [$this->translator->trans('nobody', ['case' => 'nominative']) => null],
+                        $users
+                    );
+                }
+
+                return $users;
+            }
+        );
+
+        $resolver->setDefault(
+            'choice_attr',
+            function ($choice, $key, $value) {
+                if ($choice === null) {
+                    return ['class' => 'service-item'];
+                }
+                return [];
             }
         );
     }

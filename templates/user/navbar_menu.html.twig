@@ -45,7 +45,7 @@
                     {% if showLogoutLink %}
                         <div class="pull-right">
                             <a href="{{ logout_path() }}"
-                               class="btn btn-default btn-flat">{{ 'Sign out'|trans({}, 'AdminLTEBundle') }}</a>
+                               class="btn btn-default btn-flat">{{ 'Logout'|trans({}, 'security') }}</a>
                         </div>
                     {% endif %}
                 </li>
@@ -56,7 +56,7 @@
 
 {% if app.user is null %}
     <li>
-        <a href="{{ path('app.login') }}">{{ 'Login'|trans }}</a>
+        <a href="{{ path('app.login') }}">{{ 'Login'|trans([], 'security') }}</a>
     </li>
 {% endif %}
 

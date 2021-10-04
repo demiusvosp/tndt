@@ -221,6 +221,7 @@ class User implements UserInterface, Serializable
      */
     public function addRole(string $role): User
     {
+        // @TODO вычленить роли projectUsers и не класть их в this->roles
         $this->roles = array_unique(array_merge($this->roles, [$role]));
         return $this;
     }
