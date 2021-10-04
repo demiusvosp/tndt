@@ -37,16 +37,21 @@ REQUIREMENTS
 
 INSTALLATION
 ------------
+`<ENVIRONMENT>` - prod, dev or test.
 
 1. Unpack archive, or git clone
-2. `docker-compose up -d`
-3. `docker exec -it tndt_php_1 composer install`
-4. `./bin/db_schema update`
+2. `make up env=<ENVIRONMENT>`
+3. `make init`
+4. `make build_front`
 5. check write permission for ./var directory
 
 
 TESTING
 -------
 
-Планируется...
+1. `make up env=test`
+
+Unit tests: `make tests type=unit`
+
+Functional application tests: `make tests type=behat`
 
