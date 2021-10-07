@@ -1,0 +1,11 @@
+kind: pipeline
+type: docker
+name: dev
+
+steps:
+  - name: build_php_container
+    image: plugins/docker
+    settings:
+      repo: tndt/dev.php
+      registry: registry.hsrv.home
+      dockerfile: ./docker/dev.php.dockerfile
