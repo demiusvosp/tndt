@@ -6,6 +6,11 @@ steps:
   - name: build_php_container
     image: plugins/docker
     settings:
-      repo: tndt/dev.php
+      repo: registry.hsrv.home/tndt/dev.php
       registry: registry.hsrv.home
       dockerfile: ./docker/dev.php.dockerfile
+
+  - name: build_php_dependends
+    image: registry.hsrv.home/tndt/dev.php
+    commands:
+      - composer install
