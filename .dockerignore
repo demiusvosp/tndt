@@ -10,7 +10,6 @@
 /.env.*.local
 /public/bundles/
 /var/
-/vendor/
 
 ###> symfony/webpack-encore-bundle ###
 /node_modules/

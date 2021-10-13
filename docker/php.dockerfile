@@ -1,4 +1,4 @@
-FROM php:7.4-fpm
+FROM php:7.4-fpm AS base
 
 WORKDIR /var/www
 
@@ -30,3 +30,24 @@ RUN apt-get install libonig-dev -y \
 
 RUN docker-php-ext-install opcache
 
+### DEV Stage
+FROM base AS dev
+
+# Install developer tools
+RUN apt-get install git -y
+
+# Install composer
+RUN curl -sS https://getcomposer.org/installer | php -- \
+        --filename=composer \
+        --install-dir=/usr/local/bin && \
+        echo "alias composer='composer'" >> /root/.bashrc && \
+        composer
+
+### PROD Stage
+FROM base AS prod
+
+COPY ./config /var/www/
+COPY ./src /var/www/
+COPY ./template /var/www/
+COPY ./translations /var/www/
+COPY ./vendor /var/www/
