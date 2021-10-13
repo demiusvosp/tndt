@@ -3,7 +3,8 @@ services:
 
   php:
     build:
-      dockerfile: './docker/dev.php.dockerfile'
+      context: './docker/'
+      dockerfile: './dev.php.dockerfile'
     volumes:
       - './:/var/www'
     ports:
@@ -28,6 +29,7 @@ services:
 
   front_builder:
     build:
-      dockerfile: './docker/dev.npm.dockerfile'
+      context: './docker/'
+      dockerfile: './dev.npm.dockerfile'
     volumes:
       - './:/var/www'

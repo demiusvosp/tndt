@@ -30,7 +30,7 @@ RUN apt-get install libonig-dev -y \
 
 RUN docker-php-ext-install opcache
 
-COPY ./docker/dev.opcache.ini /usr/local/etc/php/conf.d/opcache.ini
+COPY ./dev.opcache.ini /usr/local/etc/php/conf.d/opcache.ini
 
 # Install developer tools
 RUN apt-get install git -y
