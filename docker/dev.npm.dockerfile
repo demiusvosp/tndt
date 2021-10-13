@@ -1,6 +1,9 @@
-FROM node:16-alpine
+FROM node:16
 
 WORKDIR /var/www
 
-# yarn install требует наличия python2
-RUN apk add --no-cache python2 make g++
+RUN apt-get update -qq && apt-get install -y build-essential
+
+RUN npm install -g sass node-sass sass-loader
+RUN yarn add node-sass
+
