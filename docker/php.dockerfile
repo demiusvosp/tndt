@@ -30,6 +30,8 @@ RUN apt-get install libonig-dev -y \
 
 RUN docker-php-ext-install opcache
 
+
+
 ### DEV Stage
 FROM base AS dev
 
@@ -43,8 +45,24 @@ RUN curl -sS https://getcomposer.org/installer | php -- \
         echo "alias composer='composer'" >> /root/.bashrc && \
         composer
 
+COPY ./docker/dev.opcache.ini /usr/local/etc/php/conf.d/opcache.ini
+
+
+### PreProd Stage
+FROM dev AS dev_stage
+
+COPY ./config /var/www/
+COPY ./src /var/www/
+COPY ./template /var/www/
+COPY ./translations /var/www/
+COPY ./vendor /var/www/
+
+
+
 ### PROD Stage
-FROM base AS prod
+FROM base AS prod_stage
+
+COPY ./docker/prod.opcache.ini /usr/local/etc/php/conf.d/opcache.ini
 
 COPY ./config /var/www/
 COPY ./src /var/www/
