@@ -4,6 +4,7 @@
 # default arguments
 env = dev
 type = unit
+pwd = $(shell pwd)
 
 ifeq ($(env), dev)
 	compose_file =
@@ -37,7 +38,8 @@ exec:
 	docker exec -it tndt_php_1 /bin/bash
 
 build_front:
-	yarn encore dev $(filter-out $@,$(MAKECMDGOALS))
+	docker-compose run front_builder yarn install
+	docker-compose run front_builder yarn encore dev $(filter-out $@,$(MAKECMDGOALS))
 %:
 
 init:
