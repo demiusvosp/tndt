@@ -47,6 +47,8 @@ RUN curl -sS https://getcomposer.org/installer | php -- \
 
 VOLUME ["/var/www", "/composer/home/cache"]
 
+VOLUME ["/var/www", "/composer/home/cache"]
+
 COPY ./docker/dev.opcache.ini /usr/local/etc/php/conf.d/opcache.ini
 
 
