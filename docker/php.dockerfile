@@ -43,9 +43,7 @@ RUN curl -sS https://getcomposer.org/installer | php -- \
         --filename=composer \
         --install-dir=/usr/local/bin && \
         echo "alias composer='composer'" >> /root/.bashrc && \
-        composer \
-
-VOLUME ["/var/www", "/composer/home/cache"]
+        composer
 
 VOLUME ["/var/www", "/composer/home/cache"]
 
