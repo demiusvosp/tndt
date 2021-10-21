@@ -43,7 +43,9 @@ RUN curl -sS https://getcomposer.org/installer | php -- \
         --filename=composer \
         --install-dir=/usr/local/bin && \
         echo "alias composer='composer'" >> /root/.bashrc && \
-        composer
+        composer \
+
+VOLUME ["/var/www", "/composer/home/cache"]
 
 COPY ./docker/dev.opcache.ini /usr/local/etc/php/conf.d/opcache.ini
 
@@ -51,9 +53,10 @@ COPY ./docker/dev.opcache.ini /usr/local/etc/php/conf.d/opcache.ini
 ### PreProd Stage
 FROM dev AS dev_stage
 
+COPY ./bin /var/www/
 COPY ./config /var/www/
 COPY ./src /var/www/
-COPY ./template /var/www/
+COPY ./templates /var/www/
 COPY ./translations /var/www/
 COPY ./vendor /var/www/
 
@@ -66,6 +69,6 @@ COPY ./docker/prod.opcache.ini /usr/local/etc/php/conf.d/opcache.ini
 
 COPY ./config /var/www/
 COPY ./src /var/www/
-COPY ./template /var/www/
+COPY ./templates /var/www/
 COPY ./translations /var/www/
 COPY ./vendor /var/www/
