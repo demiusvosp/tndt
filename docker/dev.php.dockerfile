@@ -1,6 +1,6 @@
 FROM php:7.4-fpm
 
-WORKDIR /var/www
+WORKDIR /app
 
 # install GD
 RUN apt-get update && apt-get install -y \

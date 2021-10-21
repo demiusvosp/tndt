@@ -1,6 +1,6 @@
 FROM php:7.4-fpm AS base
 
-WORKDIR /var/www
+WORKDIR /app
 
 # install GD
 RUN apt-get update && apt-get install -y \
@@ -45,7 +45,7 @@ RUN curl -sS https://getcomposer.org/installer | php -- \
         echo "alias composer='composer'" >> /root/.bashrc && \
         composer
 
-VOLUME ["/var/www", "/composer/home/cache"]
+VOLUME ["/app", "/composer/home/cache"]
 
 COPY ./docker/dev.opcache.ini /usr/local/etc/php/conf.d/opcache.ini
 
@@ -53,13 +53,14 @@ COPY ./docker/dev.opcache.ini /usr/local/etc/php/conf.d/opcache.ini
 ### PreProd Stage
 FROM dev AS dev_stage
 
-COPY ./bin /var/www/
-COPY ./config /var/www/
-COPY ./src /var/www/
-COPY ./templates /var/www/
-COPY ./translations /var/www/
-COPY ./vendor /var/www/
+COPY ./bin /app/
+COPY ./config /app/
+COPY ./src /app/
+COPY ./templates /app/
+COPY ./translations /app/
+COPY ./vendor /app/
 
+VOLUME ["/app/var/log", "/app/var/cache"]
 
 
 ### PROD Stage
@@ -67,8 +68,11 @@ FROM base AS prod_stage
 
 COPY ./docker/prod.opcache.ini /usr/local/etc/php/conf.d/opcache.ini
 
-COPY ./config /var/www/
-COPY ./src /var/www/
-COPY ./templates /var/www/
-COPY ./translations /var/www/
-COPY ./vendor /var/www/
+COPY ./config /app/
+COPY ./src /app/
+COPY ./templates /app/
+COPY ./translations /app/
+COPY ./vendor /app/
+
+RUN ln -s /dev/stdout /app/var/log/prod.log
+VOLUME ["/app/var/cache"]
