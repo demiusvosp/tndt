@@ -60,6 +60,8 @@ COPY ./src /app/src
 COPY ./templates /app/templates
 COPY ./translations /app/translations
 COPY ./vendor /app/vendor
+COPY ./.env /app/.env
+# для работы страницы about
 COPY ./README.md /app/README.md
 
 RUN mkdir -p /app/var/log && mkdir -p /app/var/cache
@@ -77,6 +79,8 @@ COPY ./src /app/src
 COPY ./templates /app/templates
 COPY ./translations /app/translations
 COPY ./vendor /app/vendor
+COPY ./.env /app/.env
+# для работы страницы about
 COPY ./README.md /app/README.md
 
 RUN mkdir -p /app/var/log && mkdir -p /app/var/cache
