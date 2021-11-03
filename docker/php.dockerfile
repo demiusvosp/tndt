@@ -69,10 +69,12 @@ FROM base AS prod_stage
 COPY ./docker/prod.opcache.ini /usr/local/etc/php/conf.d/opcache.ini
 
 COPY ./config /app/
+COPY ./public/index.php /app/public/
 COPY ./src /app/
 COPY ./templates /app/
 COPY ./translations /app/
 COPY ./vendor /app/
+COPY ./README.md /app/
 
 RUN ln -s /dev/stdout /app/var/log/prod.log
 VOLUME ["/app/var/cache"]
