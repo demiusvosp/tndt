@@ -55,10 +55,12 @@ FROM dev AS dev_stage
 
 COPY ./bin /app/
 COPY ./config /app/
+COPY ./public/index.php /app/public/
 COPY ./src /app/
 COPY ./templates /app/
 COPY ./translations /app/
 COPY ./vendor /app/
+COPY ./README.md /app/
 
 VOLUME ["/app/var/log", "/app/var/cache"]
 
