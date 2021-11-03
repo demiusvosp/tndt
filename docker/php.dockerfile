@@ -53,15 +53,16 @@ COPY ./docker/dev.opcache.ini /usr/local/etc/php/conf.d/opcache.ini
 ### PreProd Stage
 FROM dev AS dev_stage
 
-COPY ./bin /app/
-COPY ./config /app/
-COPY ./public/index.php /app/public/
-COPY ./src /app/
-COPY ./templates /app/
-COPY ./translations /app/
-COPY ./vendor /app/
-COPY ./README.md /app/
+COPY ./bin /app/bin
+COPY ./config /app/config
+COPY ./public/index.php /app/public/index.php
+COPY ./src /app/src
+COPY ./templates /app/templates
+COPY ./translations /app/translations
+COPY ./vendor /app/vendor
+COPY ./README.md /app/README.md
 
+RUN mkdir -p /app/var/log && mkdir -p /app/var/cache
 VOLUME ["/app/var/log", "/app/var/cache"]
 
 
@@ -70,13 +71,14 @@ FROM base AS prod_stage
 
 COPY ./docker/prod.opcache.ini /usr/local/etc/php/conf.d/opcache.ini
 
-COPY ./config /app/
-COPY ./public/index.php /app/public/
-COPY ./src /app/
-COPY ./templates /app/
-COPY ./translations /app/
-COPY ./vendor /app/
-COPY ./README.md /app/
+COPY ./config /app/config
+COPY ./public/index.php /app/public/index.php
+COPY ./src /app/src
+COPY ./templates /app/templates
+COPY ./translations /app/translations
+COPY ./vendor /app/vendor
+COPY ./README.md /app/README.md
 
+RUN mkdir -p /app/var/log && mkdir -p /app/var/cache
 RUN ln -s /dev/stdout /app/var/log/prod.log
 VOLUME ["/app/var/cache"]
