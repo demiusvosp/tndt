@@ -14,11 +14,11 @@ services:
 
   php:
     build:
-      context: './docker/'
-      dockerfile: './php.dockerfile'
+      context: '.'
+      dockerfile: './docker/php.dockerfile'
       target: 'dev'
     volumes:
-      - './:/var/www'
+      - './:/app'
 #    ports:
 #      - 4004:9000
 
