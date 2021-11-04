@@ -56,6 +56,7 @@ FROM dev AS dev_stage
 COPY ./bin /app/bin
 COPY ./config /app/config
 COPY ./public/index.php /app/public/index.php
+COPY ./public/build /app/public/build
 COPY ./src /app/src
 COPY ./templates /app/templates
 COPY ./translations /app/translations
@@ -75,6 +76,7 @@ COPY ./docker/prod.opcache.ini /usr/local/etc/php/conf.d/opcache.ini
 
 COPY ./config /app/config
 COPY ./public/index.php /app/public/index.php
+COPY ./public/build /app/public/build
 COPY ./src /app/src
 COPY ./templates /app/templates
 COPY ./translations /app/translations
