@@ -5,7 +5,7 @@ services:
     #    container_name: tndt_${APP_ENV}_nginx_
     volumes:
       - './docker/nginx.conf:/etc/nginx/conf.d/default.conf'
-      - './public:/var/www/public'
+      - './public:/app/public'
       - './var/log/nginx:/var/log/nginx'
     ports:
       - 4001:80

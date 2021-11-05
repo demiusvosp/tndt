@@ -23,6 +23,11 @@ framework:
             cache.app.system:
                 adapter: cache.adapter.system
 
+            doctrine.result_cache_pool:
+                adapter: cache.app
+            doctrine.system_cache_pool:
+                adapter: cache.system
+
 services:
 
     cache.permissions.adapter:

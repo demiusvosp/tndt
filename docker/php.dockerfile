@@ -23,6 +23,7 @@ RUN apt-get install -y libicu-dev \
 RUN apt-get update && apt-get install -y \
     zlib1g-dev \
     libzip-dev \
+    unzip \
   && docker-php-ext-install zip
 
 RUN apt-get install libonig-dev -y \
