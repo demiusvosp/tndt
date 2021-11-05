@@ -33,12 +33,12 @@ final class Version20211104170351_CreateRootUser extends AbstractMigration imple
         $checkRoot = $this->connection->executeQuery('SELECT id FROM tndt.app_user WHERE app_user.username = "root";');
 
         if (($existRoot = $checkRoot->fetchOne()) === false) {
-            $passwordEncoder = $this->container->get(UserPasswordEncoderInterface::class);
+            $passwordEncoder = $this->container->get('security.password_encoder');
             $root = new User('root');
 
             $this->addSql('INSERT INTO tndt.app_user (id, username, name,  email, roles, password, locked, created_at) 
                 VALUES (1, "root", "root", "", :roles, :password, false, NOW())',
-                ['roles' => [UserRolesEnum::ROLE_ROOT], 'password' => $passwordEncoder->encodePassword($root, 'root')]
+                ['roles' => json_encode([UserRolesEnum::ROLE_ROOT]), 'password' => $passwordEncoder->encodePassword($root, 'root')]
             );
 
         } else {

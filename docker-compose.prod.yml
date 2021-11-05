@@ -1,5 +1,16 @@
 version: '3.4'
 services:
+  nginx:
+    image: 'nginx:alpine'
+    volumes:
+      - './docker/nginx.conf:/etc/nginx/conf.d/default.conf'
+      - './public:/app/public'
+      - './var/log/nginx:/var/log/nginx'
+    ports:
+      - 4001:80
+    links:
+      - php
+
   php:
     build:
       dockerfile: './php.dockerfile'
@@ -7,11 +18,11 @@ services:
     volumes:
       - './:/app'
     environment:
-      - 'APP_ENV=test'
+      - 'APP_ENV=prod'
 
   mysql:
     volumes:
-      - './var/storage/test/mysql:/var/lib/mysql:rw'
+      - './var/storage/prod/mysql:/var/lib/mysql:rw'
     ports:
       - 4003:3306
 

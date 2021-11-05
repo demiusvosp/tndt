@@ -24,14 +24,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 class ProjectUser
 {
     /**
-     * Мне не нужен этот первичный ключ, я определяю сущность по проекту и пользователю. А вот доктрине он необходим
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="UUID")
-     * @ORM\Column(type="string")
-     */
-    protected string $id;
-
-    /**
      * @var string
      * @ORM\Column (type="string", length=8, nullable="false")
      */
@@ -39,12 +31,13 @@ class ProjectUser
 
     /**
      * @var string
-     * @ORM\Column(type="string", length=80)
+     * @ORM\Column (type="string", length=80)
      */
     private string $username;
 
     /**
      * @var Project
+     * @ORM\Id
      * @ORM\ManyToOne (targetEntity="Project", inversedBy="projectUsers")
      * @ORM\JoinColumn (name="suffix", referencedColumnName="suffix", nullable=false)
      */
@@ -52,6 +45,7 @@ class ProjectUser
 
     /**
      * @var User
+     * @ORM\Id
      * @ORM\ManyToOne (targetEntity="User", inversedBy="projectUsers")
      * @ORM\JoinColumn (name="username", referencedColumnName="username", nullable=false)
      */
