@@ -36,8 +36,8 @@ final class Version20211104170351_CreateRootUser extends AbstractMigration imple
             $passwordEncoder = $this->container->get(UserPasswordEncoderInterface::class);
             $root = new User('root');
 
-            $this->addSql('INSERT INTO tndt.app_user (username, name,  email, roles, password, locked, created_at) 
-                VALUES ("root", "root", "", :roles, :password, false, NOW())',
+            $this->addSql('INSERT INTO tndt.app_user (id, username, name,  email, roles, password, locked, created_at) 
+                VALUES (1, "root", "root", "", :roles, :password, false, NOW())',
                 ['roles' => [UserRolesEnum::ROLE_ROOT], 'password' => $passwordEncoder->encodePassword($root, 'root')]
             );
 
@@ -49,7 +49,6 @@ final class Version20211104170351_CreateRootUser extends AbstractMigration imple
 
     public function down(Schema $schema) : void
     {
-        // this down() migration is auto-generated, please modify it to your needs
-
+        $this->addSql('DELETE tndt.app_user WHERE username="root"');
     }
 }
