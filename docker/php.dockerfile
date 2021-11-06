@@ -87,5 +87,5 @@ COPY ./.env /app/.env
 COPY ./README.md /app/README.md
 
 RUN mkdir -p /app/var/log && mkdir -p /app/var/cache
-RUN ln -s /dev/stdout /app/var/log/prod.log
+RUN  ln -sf /dev/stdout /app/var/log/prod.log
 VOLUME ["/app/var/cache"]
