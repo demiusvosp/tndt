@@ -264,6 +264,9 @@ class Project
      */
     public function setProjectUsers(array $newProjectUsers, ?UserRolesEnum $onlyRole = null): Project
     {
+        /*
+         * @TODO Вынести сложную логику изменения списка пользователей в service layer. Определиться с доступом отуда к списку в entity
+         */
         $newProjectUsersKeys = array_map(
             static function (ProjectUser $item) { return $item->getUsername(); }, $newProjectUsers
         );
@@ -272,7 +275,7 @@ class Project
         // убираем не прошедшие
         foreach ($this->projectUsers as $projectUser) {
             if (isset($newProjectUsers[$projectUser->getUsername()])) {
-                // пользователь поменял роль на ту, которую сеттим, добавлять вв иде новой связи не надо
+                // пользователь поменял роль на ту, которую сеттим, добавлять в виде новой связи не надо
                 $projectUser->setRole($newProjectUsers[$projectUser->getUsername()]->getRole());
                 unset($newProjectUsers[$projectUser->getUsername()]);
             } elseif (!$onlyRole || $projectUser->getRole()->equals($onlyRole)) {

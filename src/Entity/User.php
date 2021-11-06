@@ -20,12 +20,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 class User implements UserInterface, Serializable
 {
     /**
-     * @ORM\GeneratedValue(strategy="AUTO")
-     * @ORM\Column(type="integer")
-     */
-    protected int $id;
-
-    /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      * @ORM\Column(type="string", length=80, unique=true)
