@@ -13,6 +13,7 @@ admin_lte:
         boxed_layout: false
         collapsed_sidebar: true
         mini_sidebar: true
+        default_avatar: build/images/default_avatar.png
 
     knp_menu:
         enable: false
