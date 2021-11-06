@@ -76,17 +76,17 @@ FROM base AS prod_stage
 COPY ./docker/prod.opcache.ini /usr/local/etc/php/conf.d/opcache.ini
 
 COPY ./bin /app/bin
-COPY ./config /app/config
-COPY ./public/index.php /app/public/index.php
-COPY ./public/build /app/public/build
-COPY ./src /app/src
-COPY ./templates /app/templates
-COPY ./translations /app/translations
-COPY ./vendor /app/vendor
-COPY ./.env /app/.env
 # для работы страницы about
 COPY ./README.md /app/README.md
+COPY ./vendor /app/vendor
+COPY ./.env /app/.env
+COPY ./config /app/config
+COPY ./translations /app/translations
+COPY ./public/index.php /app/public/index.php
+COPY ./templates /app/templates
+COPY ./public/build /app/public/build
+COPY ./src /app/src
 
-RUN mkdir -p /app/var/log && mkdir -p /app/var/cache
-RUN  ln -sf /dev/stdout /app/var/log/prod.log
+RUN mkdir -p /app/var/cache && chmod 775 /app/var/cache
+
 VOLUME ["/app/var/cache"]
