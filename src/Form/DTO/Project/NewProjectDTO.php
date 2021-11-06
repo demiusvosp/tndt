@@ -37,9 +37,9 @@ class NewProjectDTO
     /**
      * @var int
      * @Assert\NotBlank
-     * @EntityExist(entity="App\Entity\User", property="id")
+     * @EntityExist(entity="App\Entity\User", property="username")
      */
-    private int $pm;
+    private string $pm;
 
     /**
      * @var bool
@@ -108,18 +108,18 @@ class NewProjectDTO
     }
 
     /**
-     * @return int
+     * @return string
      */
-    public function getPm(): int
+    public function getPm(): string
     {
         return $this->pm;
     }
 
     /**
-     * @param int $pm
+     * @param string $pm
      * @return NewProjectDTO
      */
-    public function setPm(int $pm): NewProjectDTO
+    public function setPm(string $pm): NewProjectDTO
     {
         $this->pm = $pm;
         return $this;

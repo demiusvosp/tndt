@@ -35,13 +35,14 @@ class ProjectFiller
         $project = new Project($dto->getSuffix());
         $project->setName($dto->getName());
         $project->setIcon((string) $dto->getIcon());
-        $project->setIsPublic(false);
+        $project->setIsPublic($dto->isPublic());
         $project->setDescription($dto->getDescription());
 
-        $user = $this->security->getUser();
-        if ($user instanceof User) {
-           $project->setPm($user);
+        $pm = $this->userRepository->findByUsername($dto->getPm());
+        if (!$pm) {
+            throw new InvalidArgumentException('project.pm.error.not_found');
         }
+        $project->setPm($pm);
 
         return $project;
     }

@@ -25,6 +25,6 @@ services:
 
     App\Service\Twig\UserRoleExtension:
         class: App\Service\Twig\UserRoleExtension
-        arguments: ['@translator', '@App\Service\ProjectManager']
+        arguments: ['@translator', '@App\Service\ProjectManager', '@twig']
         tags:
             - { name: twig.extension }
