@@ -42,6 +42,6 @@ services:
   front_builder:
     build:
       context: './docker/'
-      dockerfile: './dev.npm.dockerfile'
+      dockerfile: './npm.dockerfile'
     volumes:
       - './:/var/www'

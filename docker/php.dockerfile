@@ -75,6 +75,7 @@ FROM base AS prod_stage
 
 COPY ./docker/prod.opcache.ini /usr/local/etc/php/conf.d/opcache.ini
 
+COPY ./bin /app/bin
 COPY ./config /app/config
 COPY ./public/index.php /app/public/index.php
 COPY ./public/build /app/public/build
