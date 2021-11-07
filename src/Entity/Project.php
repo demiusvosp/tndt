@@ -80,7 +80,7 @@ class Project
 
     /**
      * @var Collection|ProjectUser[]
-     * @ORM\OneToMany (targetEntity="App\Entity\ProjectUser", mappedBy="project", cascade={"all"})
+     * @ORM\OneToMany (targetEntity="App\Entity\ProjectUser", mappedBy="project", cascade={"all"}, indexBy="username")
      * @ORM\OrderBy({"role" = "ASC"})
      * @ORM\JoinColumn (name="suffix", referencedColumnName="suffix")
      */
@@ -250,6 +250,7 @@ class Project
      */
     public function getProjectUsers(?UserRolesEnum $role = null): Collection
     {
+        $this->projectUsers->isEmpty();
         return $this->projectUsers->filter(
             function (ProjectUser $item) use ($role) {
                 return !$role || $item->getRole()->equals($role);

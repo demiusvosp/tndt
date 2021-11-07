@@ -24,6 +24,15 @@ use Symfony\Component\Validator\Constraints as Assert;
 class ProjectUser
 {
     /**
+     * Мне не нужен этот первичный ключ, я определяю сущность по проекту и пользователю.
+     * А doctrine без него не заполняет коллекции project->projectUsers, user->projectUsers
+     * Пробуем использовать это поле, как синтетический составной ключ, хоть это и ненужная денормализация
+     * @ORM\Id
+     * @ORM\Column(type="string")
+     */
+    protected string $id;
+
+    /**
      * @var string
      * @ORM\Column (type="string", length=8, nullable="false")
      */
@@ -31,13 +40,12 @@ class ProjectUser
 
     /**
      * @var string
-     * @ORM\Column (type="string", length=80)
+     * @ORM\Column (type="string", length=80, nullable="false")
      */
     private string $username;
 
     /**
      * @var Project
-     * @ORM\Id
      * @ORM\ManyToOne (targetEntity="Project", inversedBy="projectUsers")
      * @ORM\JoinColumn (name="suffix", referencedColumnName="suffix", nullable=false)
      */
@@ -45,7 +53,6 @@ class ProjectUser
 
     /**
      * @var User
-     * @ORM\Id
      * @ORM\ManyToOne (targetEntity="User", inversedBy="projectUsers")
      * @ORM\JoinColumn (name="username", referencedColumnName="username", nullable=false)
      */
@@ -107,6 +114,7 @@ class ProjectUser
     {
         $this->project = $project;
         $this->suffix = $project->getSuffix();
+        $this->id = implode('-', [$this->suffix, $this->username]);
         return $this;
     }
 
@@ -134,6 +142,8 @@ class ProjectUser
     {
         $this->user = $user;
         $this->username = $user->getUsername();
+        $this->id = implode('-', [$this->suffix, $this->username]);
+
         return $this;
     }
 

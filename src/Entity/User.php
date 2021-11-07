@@ -55,7 +55,7 @@ class User implements UserInterface, Serializable
 
     /**
      * @var ProjectUser[]
-     * @ORM\OneToMany (targetEntity="App\Entity\ProjectUser", mappedBy="user", cascade={"all"}, fetch="EAGER")
+     * @ORM\OneToMany (targetEntity="App\Entity\ProjectUser", mappedBy="user", cascade={"all"}, fetch="EAGER", indexBy="suffix")
      * @ORM\JoinColumn (name="username", referencedColumnName="username")
      */
     protected $projectUsers;

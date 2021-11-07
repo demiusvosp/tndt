@@ -35,7 +35,7 @@ services:
         public: false
         arguments:
             - '%kernel.cache_dir%/permissions_map.php'
-            - '@cache.app.system.recorder_inner'
+            - '@cache.system'
 # тег перемещает адаптер в пул, и работа с его кешем становится видна в дебаг-панельке, но зато больше не использует PhpArrayAdapter
 # Когда лучше поймем устройство пулов и как в них попадают конкретные адаптеры, сделаем выделенный пул под это дело
 #        tags:
