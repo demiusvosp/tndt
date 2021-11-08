@@ -22,20 +22,20 @@ class NewTaskDTO
 
     /**
      * @var string
-     * @EntityExist(entity="App\Entity\User", property="username")
+     * @EntityExist(entity="App\Entity\User", property="username", message="task.assignTo.not_found")
      */
     private string $assignTo;
 
     /**
      * @var string
      * @Assert\NotBlank()
-     * @Assert\Length(min=1, max=255)
+     * @Assert\Length(min=1, max=255, maxMessage="task.caption.to_long")
      */
     private $caption = '';
 
     /**
      * @var string
-     * @Assert\Length(max=1000)
+     * @Assert\Length(max=10000, maxMessage="task.description.to_long")
      */
     private $description = '';
 

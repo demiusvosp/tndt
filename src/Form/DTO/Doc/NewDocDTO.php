@@ -25,19 +25,19 @@ class NewDocDTO
     /**
      * @var string
      * @Assert\NotBlank()
-     * @Assert\Length(min=1, max=255)
+     * @Assert\Length(min=1, max=255, maxMessage="doc.caption.to_long")
      */
     private string $caption = '';
 
     /**
      * @var string
-     * @Assert\Length(max=1000)
+     * @Assert\Length(max=1000, maxMessage="doc.abstract.to_long")
      */
     private string $abstract = '';
 
     /**
      * @var string
-     * @Assert\Length(max=5000)
+     * @Assert\Length(max=50000, maxMessage="doc.body.to_long")
      */
     private string $body = '';
 

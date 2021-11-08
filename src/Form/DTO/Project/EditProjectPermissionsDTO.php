@@ -25,7 +25,7 @@ class EditProjectPermissionsDTO
     /**
      * @var string
      * @Assert\NotBlank
-     * @EntityExist(entity="App\Entity\User", property="username")
+     * @EntityExist(entity="App\Entity\User", property="username", message="project.pm.not_found")
      * @UniqueInFields(propertyPath={"staff", "visitors"}, message="not_unique_usernames {{ not_unique_values }}")
      */
     private string $pm;
