@@ -76,7 +76,7 @@
             {% endblock %}
             {% block box_body %}
                 <ul class="nav nav-tabs">
-                    {% set currentTab = app.request.query.get('works_tab') %}
+                    {% set currentTab = 'comments' %}{# app.request.query.get('works_tab') пока только одна вкладка #}
                     <li {% if currentTab == 'comments' %}class="active"{% endif %}>
                         <a href="{{ path('task.index', {'taskId': task.taskId, 'works_tab': 'comments'}) }}">{{ 'Works.comments'|trans }}</a>
                     </li>

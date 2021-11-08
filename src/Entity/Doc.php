@@ -198,11 +198,12 @@ class Doc implements NoInterface, CommentableInterface
 
     /**
      * Получить элементы необходимые для построения урла к документу
+     * @param array $addParams
      * @return array ['slug', 'sufffix]
      */
-    public function getUrlParams(): array
+    public function getUrlParams(array $addParams = []): array
     {
-        return ['slug' => $this->slug, 'suffix' => $this->suffix];
+        return array_merge(['slug' => $this->slug, 'suffix' => $this->suffix], $addParams);
     }
 
     /**
