@@ -65,6 +65,15 @@ class ProjectUser
      */
     private string $role;
 
+    public function __construct(Project $project, User $user)
+    {
+        $this->project = $project;
+        $this->suffix = $project->getSuffix();
+        $this->user = $user;
+        $this->username = $user->getUsername();
+        $this->id = implode('-', [$this->suffix, $this->username]);
+    }
+
     /**
      * Тот же ли это элемент связи проекта и юзера (возможно с другим полномочием)
      * (полезно при обновлении списка, так как возможна только одна связь проекта с пользователем и имеет смысл только

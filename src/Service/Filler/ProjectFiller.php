@@ -77,10 +77,8 @@ class ProjectFiller
             if (empty($newUsers[$user])) {
                 throw new InvalidArgumentException('project.staff.error.not_found');
             }
-            $projectUser = new ProjectUser();
-            $projectUser->setProject($project);
+            $projectUser = new ProjectUser($project, $newUsers[$user]);
             $projectUser->setRole(UserRolesEnum::PROLE_STAFF());
-            $projectUser->setUser($newUsers[$user]);
             $projectStaff[] = $projectUser;
         }
         $project->setProjectUsers($projectStaff, UserRolesEnum::PROLE_STAFF());
@@ -90,10 +88,8 @@ class ProjectFiller
             if (empty($newUsers[$user])) {
                 throw new InvalidArgumentException('project.visitors.error.not_found');
             }
-            $projectUser = new ProjectUser();
-            $projectUser->setProject($project);
+            $projectUser = new ProjectUser($project, $newUsers[$user]);
             $projectUser->setRole(UserRolesEnum::PROLE_VISITOR());
-            $projectUser->setUser($newUsers[$user]);
             $projectVisitors[] = $projectUser;
         }
         $project->setProjectUsers($projectVisitors, UserRolesEnum::PROLE_VISITOR());

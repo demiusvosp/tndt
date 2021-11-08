@@ -234,9 +234,7 @@ class Project
         }
 
         if(!$exist) {
-            $projectUser = new ProjectUser();
-            $projectUser->setProject($this);
-            $projectUser->setUser($pm);
+            $projectUser = new ProjectUser($this, $pm);
             $projectUser->setRole(UserRolesEnum::PROLE_PM());
 
             $this->projectUsers->add($projectUser);
