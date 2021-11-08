@@ -71,6 +71,12 @@ doc:
 Edit: Редактировать
 Edit_project: Настроить проект
 Edit_user: Редактировать профиль
+Error_page:
+  common:
+    body: ''
+    title: Что-то пошло не так
+  reason: Код ошибки
+  message: Описание
 locked: заблокирован
 menu:
   dashboard.about: О системе

@@ -161,7 +161,7 @@ class BreadcrumbsBuilderSubscriber implements EventSubscriberInterface
             $event->addItem($projectsMenu);
         }
 
-        if (preg_match('/^user./', $route)) {
+        if ($route && preg_match('/^user./', $route)) {
             $userMenu = new MenuItemModel(
                 'user.home',
                 'breadcrumb.user.home',
