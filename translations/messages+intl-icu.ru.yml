@@ -27,6 +27,14 @@ breadcrumb:
     home: Пользователи
 Close: Закрыть
 closed: закрыта
+comment:
+  author:
+    label: Автор
+  message:
+    label: Комментарий
+  createdAt:
+    in_widget: ''
+    label: Дата созданиия
 confirm:
   title: Вы уверены?
   yes: Да
@@ -100,6 +108,7 @@ nobody: >-
     instrumental {никем}
     other {никто}
   }
+Post: Написать
 Project: Проект
 Projects: Проекты
 project:
@@ -214,3 +223,6 @@ user:
 Users: Пользователи
 User_list: Список польователей
 Unarchive: Вернуть из архива
+Works:
+  title: Работа над задачей
+  comments: Комментарии

@@ -109,4 +109,8 @@ class Comment
         $this->message = $message;
         return $this;
     }
+
+    public function setTest($author, $date) {
+        $this->author = $author; $this->createdAt = new DateTime($date);
+    }
 }

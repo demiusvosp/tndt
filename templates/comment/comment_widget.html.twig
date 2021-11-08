@@ -1,0 +1,24 @@
+<ul class="list-unstyled comment-list">
+    {% import 'user/_macro.html.twig' as mUser %}
+    {% for comment in comments %}
+        <li>
+            <span class="comment-head">
+                {{ 'comment.author.label'|trans }}: {{ mUser.badge(comment.author) }};
+                {{ 'comment.createdAt.in_widget'|trans }} {{ comment.createdAt|ago }};
+            </span>
+            <div class="comment-message">{{ comment.message }}</div>
+        </li>
+    {% endfor %}
+    <li>
+        <div class="comment-form">
+            {{ form_start(new_comment) }}
+            <div class="form-group">
+                {{ form_widget(new_comment.message) }}
+            </div>
+            <div class="pull-right">
+                <button type="submit" class="btn btn-success">{{ 'Post'|trans }}</button>
+            </div>
+            {{ form_end(new_comment) }}
+        </div>
+    </li>
+</ul>
