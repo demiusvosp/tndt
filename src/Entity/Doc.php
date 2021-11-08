@@ -23,8 +23,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Entity(repositoryClass="App\Repository\DocRepository")
  */
-class Doc implements NoInterface
+class Doc implements NoInterface, CommentableInterface
 {
+    use CommentableTrait;
+
     public const DOCID_SEPARATOR = '#';
     private const ABSTRACT_FROM_BODY_LIMIT = 1000;
 
