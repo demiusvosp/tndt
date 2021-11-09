@@ -58,6 +58,7 @@ class Comment
     /**
      * @var string
      * @ORM\Column (type="text")
+     * @Assert\Length(min=1, max=1000)
      * @Assert\NotBlank
      */
     private string $message;

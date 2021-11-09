@@ -11,14 +11,14 @@
     {% endfor %}
     <li>
         <div class="comment-form">
-            {{ form_start(new_comment) }}
+            {{ form_start(form) }}
             <div class="form-group">
-                {{ form_widget(new_comment.message) }}
+                {{ form_widget(form.message) }}
             </div>
             <div class="pull-right">
                 <button type="submit" class="btn btn-success">{{ 'Post'|trans }}</button>
             </div>
-            {{ form_end(new_comment) }}
+            {{ form_end(form) }}
         </div>
     </li>
 </ul>

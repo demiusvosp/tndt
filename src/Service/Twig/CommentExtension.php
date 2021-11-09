@@ -13,8 +13,11 @@ use App\Entity\CommentableInterface;
 use App\Entity\User;
 use App\Form\Type\Comment\NewCommentType;
 use App\Repository\CommentRepository;
+use App\Service\CommentService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Twig\Environment;
 use Twig\Error\LoaderError;
@@ -25,15 +28,11 @@ use Twig\TwigFunction;
 
 class CommentExtension extends AbstractExtension
 {
-    private FormFactoryInterface $formFactory;
-    private RequestStack $requestStack;
-    private EntityManagerInterface $entityManager;
+    private CommentService $commentService;
 
-    public function __construct(FormFactoryInterface $formFactory, RequestStack $requestStack, EntityManagerInterface $entityManager)
+    public function __construct(CommentService $commentService)
     {
-        $this->formFactory = $formFactory;
-        $this->requestStack = $requestStack;
-        $this->entityManager = $entityManager;
+        $this->commentService = $commentService;
     }
 
     public function getFunctions(): array
@@ -43,6 +42,11 @@ class CommentExtension extends AbstractExtension
                 'comment_widget',
                 [$this, 'commentWidget'],
                 ['needs_environment' => true, 'is_safe' => ['html']]
+            ),
+            new TwigFunction(
+                'comment_add_form',
+                [$this, 'commentAddForm'],
+                ['is_safe' => ['html']]
             ),
         ];
     }
@@ -54,20 +58,21 @@ class CommentExtension extends AbstractExtension
      */
     public function commentWidget(Environment $environment, CommentableInterface $commentableObject): string
     {
-        $newCommentForm = $this->formFactory->create(NewCommentType::class, []);
+        $form = $this->commentService->getCommentAddForm();
 
-        $request = $this->requestStack->getMasterRequest();
-        $newCommentForm->handleRequest($request);
-        if ($newCommentForm->isSubmitted() && $newCommentForm->isValid()) {
-            $comment = new Comment($commentableObject);
-            $comment->setMessage($newCommentForm->getData()['message']);
-            $this->entityManager->persist($comment);
-            $this->entityManager->flush();
+        if ($this->commentService->applyCommentFromForm($form, $commentableObject)) {
+            // Пересоздаем форму, т.к. она будет использоваться для нового комментария
+            $form = $this->commentService->getCommentAddForm();
         }
 
         return $environment->render(
             'comment/comment_widget.html.twig',
-            [ 'comments' => $commentableObject->getComments(), 'new_comment' => $newCommentForm->createView()]
+            [ 'comments' => $commentableObject->getComments(), 'form' => $form->createView()]
         );
+    }
+
+    public function commentAddForm(): FormView
+    {
+        return $this->commentService->getCommentAddForm()->createView();
     }
 }

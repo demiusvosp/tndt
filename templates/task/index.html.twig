@@ -46,6 +46,7 @@
         </div>
         <div class="col-md-2">
             {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
+                {% import 'task/_macro.html.twig' as mTask %}
                 {% block box_title %}
                     {{ 'ControlPanel'|trans }}
                 {% endblock  %}
@@ -56,12 +57,12 @@
                         {% endif %}
                         {% if is_granted("PERM_TASK_CLOSE") %}
                             <button
-                                    class="btn btn-secondary btn-warning need-confirm"
+                                    class="btn btn-secondary btn-warning confirm-close"
                                     data-action="{{ path('task.close', {'taskId':task.taskId}) }}"
-                                    data-text="{{ 'task.close.confirm'|trans|nl2br }}"
                             >
                                 {{ 'Close'|trans }}
                             </button>
+                            {{ mTask.close_task_modal(task) }}
                         {% endif %}
                     </div>
                 {% endblock %}

@@ -13,6 +13,8 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class NewCommentType extends AbstractType
 {
@@ -23,9 +25,10 @@ class NewCommentType extends AbstractType
                 'message',
                 TextareaType::class,
                 [
-                    'required' => false,
                     'label' => false,
                     'attr' => ['rows' => 5],
+                    'required' => true,
+                    'constraints' => [new NotBlank(), new Length(['max' => 1000])],
                 ]
             );
     }
