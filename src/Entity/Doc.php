@@ -231,11 +231,31 @@ class Doc implements NoInterface, CommentableInterface
     }
 
     /**
+     * @param DateTime $updatedAt
+     * @return Doc
+     */
+    public function setUpdatedAt(DateTime $updatedAt): Doc
+    {
+        $this->updatedAt = $updatedAt;
+        return $this;
+    }
+
+    /**
      * @return ?User
      */
     public function getUpdatedBy(): ?User
     {
         return $this->updatedBy;
+    }
+
+    /**
+     * @param User|null $updatedBy
+     * @return Doc
+     */
+    public function setUpdatedBy(?User $updatedBy): Doc
+    {
+        $this->updatedBy = $updatedBy;
+        return $this;
     }
 
     /**

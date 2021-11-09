@@ -271,6 +271,16 @@ class Task implements NoInterface, CommentableInterface
     }
 
     /**
+     * @param DateTime $updatedAt
+     * @return Task
+     */
+    public function setUpdatedAt(DateTime $updatedAt): Task
+    {
+        $this->updatedAt = $updatedAt;
+        return $this;
+    }
+
+    /**
      * @return User
      */
     public function getCreatedBy(): User

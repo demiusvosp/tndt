@@ -41,6 +41,12 @@ class Comment
     private int $entity_id;
 
     /**
+     * @var CommentableInterface|null
+     * Для того чтобы не грузить лишний раз храним здесь инстанцированный объект родительской сущности
+     */
+    private ?CommentableInterface $ownerEntity = null;
+
+    /**
      * @var DateTime
      * @ORM\Column(type="datetime")
      * @Gedmo\Timestampable(on="create")
@@ -67,6 +73,7 @@ class Comment
     {
         $this->entity_type = get_class($commentableEntity);
         $this->entity_id = $commentableEntity->getId();
+        $this->ownerEntity = $commentableEntity;
     }
 
     /**
@@ -113,5 +120,13 @@ class Comment
 
     public function setTest($author, $date) {
         $this->author = $author; $this->createdAt = new DateTime($date);
+    }
+
+    /**
+     * @return CommentableInterface
+     */
+    public function getOwnerEntity(): ?CommentableInterface
+    {
+        return $this->ownerEntity ?? null;
     }
 }
