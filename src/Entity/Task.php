@@ -31,8 +31,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Task implements NoInterface, CommentableInterface
 {
-    use CommentableTrait;
-
     public const TASKID_SEPARATOR = '-';
 
     /**

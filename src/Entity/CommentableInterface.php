@@ -11,10 +11,6 @@ use Doctrine\Common\Collections\Collection;
 
 interface CommentableInterface
 {
-    public function getId();
+    public function getId(): int;
 
-    /**
-     * @return Comment[]|Collection
-     */
-    public function getComments(): Collection;
 }

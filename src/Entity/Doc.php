@@ -25,8 +25,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Doc implements NoInterface, CommentableInterface
 {
-    use CommentableTrait;
-
     public const DOCID_SEPARATOR = '#';
     private const ABSTRACT_FROM_BODY_LIMIT = 1000;
 

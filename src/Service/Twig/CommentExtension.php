@@ -29,10 +29,12 @@ use Twig\TwigFunction;
 class CommentExtension extends AbstractExtension
 {
     private CommentService $commentService;
+    private CommentRepository $commentRepository;
 
-    public function __construct(CommentService $commentService)
+    public function __construct(CommentService $commentService, CommentRepository $commentRepository)
     {
         $this->commentService = $commentService;
+        $this->commentRepository = $commentRepository;
     }
 
     public function getFunctions(): array
@@ -67,7 +69,7 @@ class CommentExtension extends AbstractExtension
 
         return $environment->render(
             'comment/comment_widget.html.twig',
-            [ 'comments' => $commentableObject->getComments(), 'form' => $form->createView()]
+            [ 'comments' => $this->commentRepository->getAllByOwner($commentableObject), 'form' => $form->createView()]
         );
     }
 
