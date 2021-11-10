@@ -39,6 +39,17 @@ $('.need-confirm').on('click', function (event) {
     })
 });
 
+
+$('.confirm-close').on('click', function (event) {
+    event.preventDefault();
+    let $dialog = $('#modalConfirmClose');
+    $('.closeTaskForm', $dialog).attr('action', event.target.dataset.action);
+    $dialog.modal('show');
+    $('.btn-success', $dialog).on('click', function () {
+        $('.closeTaskForm', $dialog).submit();
+    })
+});
+
 /**
  *  AdminLTE sidebar state saved in cookie
  */

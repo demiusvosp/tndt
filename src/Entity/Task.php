@@ -29,7 +29,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     }
  * )
  */
-class Task implements NoInterface
+class Task implements NoInterface, CommentableInterface
 {
     public const TASKID_SEPARATOR = '-';
 
@@ -266,6 +266,16 @@ class Task implements NoInterface
     public function getUpdatedAt(): DateTime
     {
         return $this->updatedAt;
+    }
+
+    /**
+     * @param DateTime $updatedAt
+     * @return Task
+     */
+    public function setUpdatedAt(DateTime $updatedAt): Task
+    {
+        $this->updatedAt = $updatedAt;
+        return $this;
     }
 
     /**

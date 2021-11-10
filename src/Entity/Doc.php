@@ -23,7 +23,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Entity(repositoryClass="App\Repository\DocRepository")
  */
-class Doc implements NoInterface
+class Doc implements NoInterface, CommentableInterface
 {
     public const DOCID_SEPARATOR = '#';
     private const ABSTRACT_FROM_BODY_LIMIT = 1000;
@@ -196,11 +196,12 @@ class Doc implements NoInterface
 
     /**
      * Получить элементы необходимые для построения урла к документу
+     * @param array $addParams
      * @return array ['slug', 'sufffix]
      */
-    public function getUrlParams(): array
+    public function getUrlParams(array $addParams = []): array
     {
-        return ['slug' => $this->slug, 'suffix' => $this->suffix];
+        return array_merge(['slug' => $this->slug, 'suffix' => $this->suffix], $addParams);
     }
 
     /**
@@ -228,11 +229,31 @@ class Doc implements NoInterface
     }
 
     /**
+     * @param DateTime $updatedAt
+     * @return Doc
+     */
+    public function setUpdatedAt(DateTime $updatedAt): Doc
+    {
+        $this->updatedAt = $updatedAt;
+        return $this;
+    }
+
+    /**
      * @return ?User
      */
     public function getUpdatedBy(): ?User
     {
         return $this->updatedBy;
+    }
+
+    /**
+     * @param User|null $updatedBy
+     * @return Doc
+     */
+    public function setUpdatedBy(?User $updatedBy): Doc
+    {
+        $this->updatedBy = $updatedBy;
+        return $this;
     }
 
     /**
