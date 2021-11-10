@@ -8,10 +8,8 @@ declare(strict_types=1);
 
 namespace App\EventSubscriber;
 
-use App\Entity\NoInterface;
-use App\Entity\Task;
+use App\Entity\Contract\NoInterface;
 use Doctrine\ORM\Event\LifecycleEventArgs;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class NoGeneratorListener
 {

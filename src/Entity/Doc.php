@@ -8,6 +8,8 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Entity\Contract\CommentableInterface;
+use App\Entity\Contract\NoInterface;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -15,11 +17,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class Project entity
- *
- * @TODO рассмотреть возможность перехода к PHPCR
- *   https://phpcr.github.io/ https://habr.com/ru/post/197524/ или другой объектной- иерархической БД с поиском
- *   для документов и, возможно, контента задач. Кажется, что на нем содержание, иерархию, версионность, перекрестные
- *   ссылки и полнотекстовый поиск организовать будет проще и приятнее.
  *
  * @ORM\Entity(repositoryClass="App\Repository\DocRepository")
  */

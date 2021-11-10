@@ -7,6 +7,8 @@
  */
 namespace App\Entity;
 
+use App\Entity\Contract\CommentableInterface;
+use App\Entity\Contract\NoInterface;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use DomainException;

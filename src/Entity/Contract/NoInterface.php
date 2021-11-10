@@ -5,7 +5,7 @@
  * Time: 13:05
  */
 
-namespace App\Entity;
+namespace App\Entity\Contract;
 
 interface NoInterface
 {

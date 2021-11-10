@@ -34,12 +34,14 @@ class ProjectUser
 
     /**
      * @var string
+     * @Assert\NotNull()
      * @ORM\Column (type="string", length=8, nullable="false")
      */
     private string $suffix;
 
     /**
      * @var string
+     * @Assert\NotNull()
      * @ORM\Column (type="string", length=80, nullable="false")
      */
     private string $username;
