@@ -8,17 +8,10 @@ declare(strict_types=1);
 
 namespace App\Service\Twig;
 
-use App\Entity\Comment;
 use App\Entity\CommentableInterface;
-use App\Entity\User;
-use App\Form\Type\Comment\NewCommentType;
 use App\Repository\CommentRepository;
 use App\Service\CommentService;
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Twig\Environment;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
