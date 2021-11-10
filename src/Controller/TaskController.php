@@ -19,6 +19,7 @@ use App\Form\Type\Task\ListFilterType;
 use App\Form\Type\Task\NewTaskType;
 use App\Repository\TaskRepository;
 use App\Repository\UserRepository;
+use App\Service\CommentService;
 use App\Service\ProjectContext;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -182,7 +183,7 @@ class TaskController extends AbstractController
      * @param Request $request
      * @return Response
      */
-    public function close(Request $request): Response
+    public function close(Request $request, CommentService $commentService): Response
     {
         $task = $this->taskRepository->getByTaskId($request->get('taskId'));
         if (!$task) {
@@ -190,9 +191,13 @@ class TaskController extends AbstractController
         }
 
         $task->close();
+
+        $closeForm = $commentService->getCommentAddForm();
+        $commentService->applyCommentFromForm($closeForm, $task);
+
         $this->getDoctrine()->getManager()->flush();
         $this->addFlash('warning', 'task.close.success');
 
-        return $this->redirectToRoute('project.index', ['suffix' => $task->getSuffix()]);
+        return $this->redirectToRoute('task.list', ['suffix' => $task->getSuffix()]);
     }
 }

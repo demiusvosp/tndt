@@ -68,4 +68,26 @@
             {% endembed %}
         </div>
     </div>
+    <div class="row">
+        <div class="col-md-10">
+            {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
+                {% block box_title %}
+                    {{ 'Works.title'|trans }}
+                {% endblock %}
+                {% block box_body %}
+                    <ul class="nav nav-tabs">
+                        {% set currentTab = 'comments' %}{# app.request.query.get('works_tab') пока только одна вкладка #}
+                        <li {% if currentTab == 'comments' %}class="active"{% endif %}>
+                            <a href="{{ path('doc.index', doc.getUrlParams({'works_tab': 'comments'})) }}">{{ 'Works.comments'|trans }}</a>
+                        </li>
+                    </ul>
+                    <div class="one-block-content">
+                        {% if currentTab == 'comments' %}
+                            {{ comment_widget(doc) }}
+                        {% endif %}
+                    </div>
+                {% endblock %}
+            {% endembed %}
+        </div>
+    </div>
 {% endblock %}

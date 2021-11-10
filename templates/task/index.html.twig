@@ -46,6 +46,7 @@
         </div>
         <div class="col-md-2">
             {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
+                {% import 'task/_macro.html.twig' as mTask %}
                 {% block box_title %}
                     {{ 'ControlPanel'|trans }}
                 {% endblock  %}
@@ -56,15 +57,37 @@
                         {% endif %}
                         {% if is_granted("PERM_TASK_CLOSE") %}
                             <button
-                                    class="btn btn-secondary btn-warning need-confirm"
+                                    class="btn btn-secondary btn-warning confirm-close"
                                     data-action="{{ path('task.close', {'taskId':task.taskId}) }}"
-                                    data-text="{{ 'task.close.confirm'|trans|nl2br }}"
                             >
                                 {{ 'Close'|trans }}
                             </button>
+                            {{ mTask.close_task_modal(task) }}
                         {% endif %}
                     </div>
                 {% endblock %}
+            {% endembed %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-10">
+            {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
+            {% block box_title %}
+                {{ 'Works.title'|trans }}
+            {% endblock %}
+            {% block box_body %}
+                <ul class="nav nav-tabs">
+                    {% set currentTab = 'comments' %}{# app.request.query.get('works_tab') пока только одна вкладка #}
+                    <li {% if currentTab == 'comments' %}class="active"{% endif %}>
+                        <a href="{{ path('task.index', {'taskId': task.taskId, 'works_tab': 'comments'}) }}">{{ 'Works.comments'|trans }}</a>
+                    </li>
+                </ul>
+                <div class="one-block-content">
+                    {% if currentTab == 'comments' %}
+                        {{ comment_widget(task) }}
+                    {% endif %}
+                </div>
+            {% endblock %}
             {% endembed %}
         </div>
     </div>

@@ -64,6 +64,28 @@ $color-disabled: #333;
     }
 }
 
+/* Comments */
+.comment-list {
+    .comment-head {
+        padding: 0 5em 2px 1em;
+        border-bottom: $gray-lighter 1px solid;
+    }
+    .comment-message {
+        text-align: left;
+        margin-bottom: 1em;
+    }
+    .comment-form {
+        margin: 1em;
+        width: 50%;
+        .comment-message-field {
+
+        }
+    }
+}
+#modalConfirmClose .comment-form {
+    margin: 1em;
+}
+
 /* Other small widgets */
 
 .label-sm {
