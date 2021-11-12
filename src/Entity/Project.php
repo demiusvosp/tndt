@@ -93,6 +93,11 @@ class Project
      */
     private string $description = '';
 
+    /**
+     * @var TaskSettings|array
+     * @ORM\Column (type="json")
+     */
+    private $taskSettings = [];
 
     public function __construct(string $suffix)
     {
@@ -309,6 +314,27 @@ class Project
     {
         $this->description = $description;
 
+        return $this;
+    }
+
+    /**
+     * @return TaskSettings|array
+     */
+    public function getTaskSettings()
+    {
+        if (!$this->taskSettings instanceof TaskSettings) {
+            $this->taskSettings = new TaskSettings($this->taskSettings);
+        }
+        return $this->taskSettings;
+    }
+
+    /**
+     * @param TaskSettings $taskSettings
+     * @return Project
+     */
+    public function setTaskSettings(TaskSettings $taskSettings)
+    {
+        $this->taskSettings = $taskSettings;
         return $this;
     }
 
