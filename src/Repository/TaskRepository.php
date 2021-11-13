@@ -46,24 +46,45 @@ class TaskRepository extends ServiceEntityRepository implements NoEntityReposito
     }
 
     /**
-     * @param int $limit
-     * @param array $projects
+     * @param string $project
+     * @param int|null $limit
      * @return Task[]
      */
-    public function getPopularTasks(int $limit, array $projects = []): array
+    public function getProjectsTasks(string $project, int $limit = null): array
+    {
+        $qb = $this->createQueryBuilder('t');
+        $qb->where('t.isClosed = false');
+        $qb->andWhere($qb->expr()->eq('t.project', ':project'))
+            ->setParameter('project', $project);
+
+        $qb->addOrderBy('t.updatedAt', 'desc');
+        $qb->setMaxResults($limit);
+
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * @param int $limit
+     * @param array|null $availableProjects - доступные проекты (null - доступны все)
+     * @return Task[]
+     */
+    public function getPopularTasks(int $limit, ?array $availableProjects = []): array
     {
         $qb = $this->createQueryBuilder('t');
         $qb->where('t.isClosed = false');
 
         $qb->leftJoin('t.project', 'p');
-        if(count($projects) > 0) {
-            $qb->andWhere($qb->expr()->orX(
-                'p.isPublic = true',
-                $qb->expr()->in('t.suffix', $projects)
-            ));
-        } else {
-            $qb->andWhere('p.isPublic = true');
+        if ($availableProjects !== null) {
+            if (count($availableProjects) > 0) {
+                $qb->andWhere($qb->expr()->orX(
+                    'p.isPublic = true',
+                    $qb->expr()->in('t.suffix', $availableProjects)
+                ));
+            } else {
+                $qb->andWhere('p.isPublic = true');
+            }
         }
+        $qb->addOrderBy('t.updatedAt', 'desc');
         $qb->setMaxResults($limit);
 
         return $qb->getQuery()->getResult();

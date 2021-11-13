@@ -84,7 +84,7 @@ class ProjectController extends AbstractController
         if (!$project) {
             throw $this->createNotFoundException($this->translator->trans('project.not_found'));
         }
-        $tasks = $taskRepository->getPopularTasks(self::TASK_BLOCK_LIMIT, [$project->getSuffix()]);
+        $tasks = $taskRepository->getProjectsTasks($project->getSuffix(), self::TASK_BLOCK_LIMIT);
         $docs = $docRepository->getPopularDocs(self::DOC_BLOCK_LIMIT, $project->getSuffix());
 
         return $this->render(
