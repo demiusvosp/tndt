@@ -39,7 +39,6 @@ class UserController extends AbstractController
     }
 
     /**
-     * @IsGranted("ROLE_USER")
      * @param Request $request
      * @return Response
      */
@@ -103,7 +102,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @IsGranted("ROLE_USER")
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
      * @param Request $request
      * @param AuthorizationCheckerInterface $authorizationChecker
      * @param UserPasswordEncoderInterface $passwordEncoder

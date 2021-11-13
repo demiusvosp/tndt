@@ -24,10 +24,6 @@ class EditProfileType extends AbstractType
     {
         $builder
             ->add(
-                'id',
-                HiddenType::class
-            )
-            ->add(
                 'name',
                 TextType::class,
                 ['required' => false, 'label' => 'user.name.label', 'help' => 'user.name.help']
