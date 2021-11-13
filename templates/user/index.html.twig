@@ -42,7 +42,10 @@
                             {{ 'user.roles.label'|trans }}:
                             <ul>
                                 {% for role in user.roles %}
-                                    <li>{{ role_label(role) }}</li>
+                                    {% set role_label = role_label(role) %}
+                                    {% if role_label %}
+                                        <li>{{ role_label|raw }}</li>
+                                    {% endif %}
                                 {% endfor %}
                             </ul>
                         </div>
