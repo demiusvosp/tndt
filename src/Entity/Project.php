@@ -323,7 +323,7 @@ class Project
     public function getTaskSettings()
     {
         if (!$this->taskSettings instanceof TaskSettings) {
-            $this->taskSettings = new TaskSettings($this->taskSettings);
+            $this->taskSettings = TaskSettings::fromJson($this->taskSettings);
         }
         return $this->taskSettings;
     }

@@ -18,19 +18,10 @@ class Dictionary extends BaseJsonEntity
      */
     private array $items;
 
-    public function __construct($arg, $dictionaryItemClass = DictionaryItem::class)
+    public function __construct(array $input = [], $dictionaryItemClass = DictionaryItem::class)
     {
-        parent::__construct($arg);
-        if (is_array($arg)) {
-            foreach ($arg as $item) {
-                $this->items[] = new $dictionaryItemClass($item);
-            }
-        } elseif ($arg instanceof Dictionary) {
-            $items = [];
-            foreach ($arg->getItems() as $item) {
-                $items[] = $dictionaryItemClass($item);
-            }
-            $this->setItems($items);
+        foreach ($input as $item) {
+            $this->items[] = new $dictionaryItemClass($item);
         }
     }
 

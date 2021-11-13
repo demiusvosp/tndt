@@ -17,21 +17,17 @@ use Stringable;
 
 abstract class BaseJsonEntity implements JsonSerializable, Stringable, ArrayAccess
 {
-    /**
-     * @param string|array|BaseJsonEntity $arg
-     */
-    public function __construct($arg = [])
+
+    public static function fromJson(?string $input): BaseJsonEntity
     {
-        if (is_string($arg)) {
-            $arg = json_decode($arg, true);
-            if (json_last_error() !== JSON_ERROR_NONE) {
-                throw new ConversionException($arg, 'JsonEntity array');
-            }
+        if ($input === null) {
+            $input = '[]';
         }
-        if (!is_array($arg) && !$arg instanceof BaseJsonEntity) {
-            throw new \InvalidArgumentException('Cannot create JsonEntity from ' . gettype($arg));
+        $input = json_decode($input, true);
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            throw new ConversionException($input, 'JsonEntity array');
         }
-        // Более конкретные реализации заполнят свои атрибуты
+        return new static($input);
     }
 
     /**

@@ -14,18 +14,11 @@ class DictionaryItem extends BaseJsonEntity
     private string $name;
     private string $description;
 
-    public function __construct($arg)
+    public function __construct(array $input = [])
     {
-        parent::__construct($arg);
-        if (is_array($arg)) {
-            $this->id = $arg['id'] ?? 0;
-            $this->name = $arg['name'] ?? '';
-            $this->description = $arg['decription'] ?? '';
-        } elseif ($arg instanceof DictionaryItem) {
-            $this->id = $arg->getId();
-            $this->name = $arg->getName();
-            $this->description = $arg->getDescription();
-        }
+        $this->id = $input['id'] ?? 0;
+        $this->name = $input['name'] ?? '';
+        $this->description = $input['decription'] ?? '';
     }
 
     public function jsonSerialize(): array

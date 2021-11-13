@@ -19,16 +19,9 @@ class TaskSettings extends BaseJsonEntity
      */
     private Dictionary $types;
 
-    public function __construct($arg = [])
+    public function __construct(array $input = [])
     {
-        parent::__construct($arg);
-        if (is_array($arg)) {
-            $this->types = new Dictionary($arg['types'] ?? []);
-        } elseif( $arg instanceof TaskSettings) {
-            $this->types = new Dictionary($arg->getTypes());
-        } else {
-            throw new InvalidArgumentException('Invalid argument to create TaskSettings');
-        }
+        $this->types = new Dictionary($arg['types'] ?? []);
     }
 
     public function jsonSerialize(): array
