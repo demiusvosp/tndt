@@ -8,9 +8,7 @@ declare(strict_types=1);
 
 namespace App\Service\Filler;
 
-use App\Entity\Project;
 use App\Entity\Task;
-use App\Entity\User;
 use App\Exception\BadRequestException;
 use App\Form\DTO\Task\EditTaskDTO;
 use App\Form\DTO\Task\NewTaskDTO;
@@ -31,6 +29,9 @@ class TaskFiller
     public function createFromForm(NewTaskDTO $dto): Task
     {
         $project = $this->projectRepository->findBySuffix($dto->getProject());
+        if (!$project) {
+            throw new BadRequestException('Не найден проект к которому относится задача');
+        }
 
         $task = new Task($project);
         $task->setCaption($dto->getCaption());
@@ -50,7 +51,7 @@ class TaskFiller
     public function fillFromEditForm(EditTaskDTO $dto, Task $task): void
     {
         if($dto->getProject() !== $task->getProject()->getSuffix()) {
-            throw new BadRequestException('');
+            throw new BadRequestException('Нельзя поменять проект задачи. Для этого её надо конвертировать в другой проект.');
         }
         $task->setCaption($dto->getCaption());
         $task->setDescription($dto->getDescription());

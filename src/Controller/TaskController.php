@@ -6,10 +6,6 @@
  */
 namespace App\Controller;
 
-use App\Entity\Project;
-use App\Entity\Task;
-use App\Entity\User;
-use App\Exception\BadRequestException;
 use App\Exception\CurrentProjectNotFoundException;
 use App\Form\DTO\Task\EditTaskDTO;
 use App\Form\DTO\Task\ListFilterDTO;
@@ -18,7 +14,6 @@ use App\Form\Type\Task\EditTaskType;
 use App\Form\Type\Task\ListFilterType;
 use App\Form\Type\Task\NewTaskType;
 use App\Repository\TaskRepository;
-use App\Repository\UserRepository;
 use App\Service\CommentService;
 use App\Service\Filler\TaskFiller;
 use App\Service\ProjectContext;
@@ -99,7 +94,7 @@ class TaskController extends AbstractController
     /**
      * @IsGranted("PERM_TASK_CREATE")
      * @param Request $request
-     * @param UserRepository $userRepository
+     * @param TaskFiller $taskFiller
      * @return Response
      */
     public function create(Request $request, TaskFiller $taskFiller): Response
