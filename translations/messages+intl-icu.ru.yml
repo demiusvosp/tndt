@@ -35,6 +35,7 @@ comment:
   createdAt:
     in_widget: ''
     label: Дата созданиия
+Common: Общие
 confirm:
   title: Вы уверены?
   yes: Да
@@ -80,6 +81,7 @@ Edit: Редактировать
 Edit_project: Настроить проект
 Edit_user: Редактировать профиль
 locked: заблокирован
+Maintenance: Обслуживание
 menu:
   dashboard.about: О системе
   doc:
