@@ -22,6 +22,32 @@ $color-disabled: #333;
     }
 }
 
+.project-settings-blocks {
+    .settings-block {
+        border: $gray-lighter 1px solid;
+        border-radius: 0.5em;
+        margin: 1em;
+        padding: 1em;
+
+        label {
+            position: relative;
+            top: -2em;
+            left: 0;
+            padding: 0.2em 1em;
+            background-color: $body-bg;
+        }
+        .help-text {
+            color: lighten($text-color, 25%);
+            margin-bottom: 0;
+        }
+        .dictionary-add-item {
+            color: $brand-success;
+            font-size: large;
+            padding: 0.1em 0.3em;
+        }
+    }
+}
+
 /* Tasks */
 .task-table {
     th {

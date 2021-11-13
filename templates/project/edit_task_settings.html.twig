@@ -3,8 +3,28 @@
 {% block edit_page_title%}{{ 'project.edit.task_settings'|trans }}{% endblock %}
 
 {% block edit_page %}
+    {% form_theme form 'form_div_layout.html.twig' %}
     {{ form_start(form) }}
-
+    <div class="project-settings-blocks">
+        <div class="row">
+            <div class="col-md-6 settings-block">
+                {% set dictionaryForm = form.types %}
+                {{ form_label(dictionaryForm) }}
+                <ul id="dictionary-types" class="list-unstyled"
+                    data-prototype="{{ form_widget(dictionaryForm.items.vars.prototype)|e }}"
+                >
+                {% for typesField in dictionaryForm %}
+                    <li>
+                        {{ form_widget(typesField) }}
+                        {{ form_errors(typesField) }}
+                    </li>
+                {% endfor %}
+                </ul>
+                <button type="button" class="btn btn-default btn-sm dictionary-add-item" data-dictionary-selector="#dictionary-types"><i class="fas fa-plus"></i></button>
+                {{ form_help(dictionaryForm, {'attr': {'class': 'help-block'}}) }}
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
 {% block box_footer %}

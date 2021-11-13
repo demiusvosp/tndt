@@ -176,15 +176,26 @@ class ProjectController extends AbstractController
         return $this->render('project/edit_permissions.html.twig', ['project' => $project, 'form' => $form->createView()]);
     }
 
-    public function editTaskSettings(Request $request)
+    /**
+     * @IsGranted("PERM_PROJECT_SETTINGS")
+     * @param Request $request
+     * @param UserRepository $userRepository
+     * @return Response
+     */
+    public function editTaskSettings(Request $request): Response
     {
         $project = $this->projectContext->getProject();
         if (!$project) {
             throw $this->createNotFoundException($this->translator->trans('project.not_found'));
         }
-
+dump($project->getTaskSettings());
         $formData = new TaskSettings();
         $form = $this->createForm(EditProjectTaskSettingsType::class, $formData);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+dump($form->getData());
+        }
 
         return $this->render('project/edit_task_settings.html.twig', ['project' => $project, 'form' => $form->createView()]);
     }

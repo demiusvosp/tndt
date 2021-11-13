@@ -93,3 +93,11 @@ if($.AdminLTESidebarTweak.options.EnableRemember){
     }
 }
 
+/* Dictionary Edit */
+$('.dictionary-add-item').on('click', function () {
+    let list = $($(this).attr('data-dictionary-selector'));
+    let counter = list.children().length;
+    console.log('add item to dictionary ' + list.id);
+
+    let newWidget = list.attr('data-prototype');
+});

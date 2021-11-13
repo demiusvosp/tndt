@@ -2,35 +2,37 @@
 /**
  * User: demius
  * Date: 13.11.2021
- * Time: 2:57
+ * Time: 17:12
  */
 declare(strict_types=1);
 
-namespace App\Form\Type\Project;
+namespace App\Form\Type\JsonEntity;
 
-use App\Entity\TaskSettings;
-use App\Form\Type\JsonEntity\DictionaryType;
+use App\Service\JsonEntity\DictionaryItem;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class EditProjectTaskSettingsType extends AbstractType
+class DictionaryItemType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add(
-            'types',
-            DictionaryType::class,
+            'id',
+            TextType::class,
             [
-                'label' => 'dictionaries.task_types.label',
-                'help' => 'dictionaries.task_types.help',
-                'required' => false,
+//                'label' => $options[''].'.label',
+                'help' => 'project.task_settings.help',
             ]
         );
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefault('data_class', TaskSettings::class);
+        $resolver->setDefaults([
+            'data_class' => DictionaryItem::class,
+
+        ]);
     }
 }
