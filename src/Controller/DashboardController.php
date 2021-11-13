@@ -8,6 +8,7 @@
 namespace App\Controller;
 
 
+use App\Entity\User;
 use App\Repository\DocRepository;
 use App\Repository\ProjectRepository;
 use App\Repository\TaskRepository;
@@ -32,8 +33,15 @@ class DashboardController extends AbstractController
         UserRepository $userRepository
     ): Response
     {
-        $projects = $projectRepository->getPopularProjectsSnippets(self::PROJECT_LENGTH);
-        $tasks = $taskRepository->getPopularTasks(self::TASK_LENGTH);
+        $involvedProjects = [];
+        /** @var User $user */
+        $user = $this->getUser();
+        if($user) {
+            $involvedProjects = $user->getProjectsIInvolve();
+        }
+
+        $projects = $projectRepository->getPopularProjectsSnippets(self::PROJECT_LENGTH, $this->getUser());
+        $tasks = $taskRepository->getPopularTasks(self::TASK_LENGTH, $involvedProjects);
         $docs = $docRepository->getPopularDocs(self::DOC_LENGTH);
         $users = $userRepository->getPopularUsers(self::USER_LENGTH);
 

@@ -47,17 +47,26 @@ class TaskRepository extends ServiceEntityRepository implements NoEntityReposito
 
     /**
      * @param int $limit
-     * @param string|null $projectSuffix
+     * @param array $projects
      * @return Task[]
      */
-    public function getPopularTasks(int $limit, ?string $projectSuffix = null): array
+    public function getPopularTasks(int $limit, array $projects = []): array
     {
-        $criteria = ['isClosed' => false];
-        if($projectSuffix) {
-            $criteria['suffix'] = $projectSuffix;
-        }
+        $qb = $this->createQueryBuilder('t');
+        $qb->where('t.isClosed = false');
 
-        return $this->findBy($criteria, ['updatedAt' => 'desc'], $limit);
+        $qb->leftJoin('t.project', 'p');
+        if(count($projects) > 0) {
+            $qb->andWhere($qb->expr()->orX(
+                'p.isPublic = true',
+                $qb->expr()->in('t.suffix', $projects)
+            ));
+        } else {
+            $qb->andWhere('p.isPublic = true');
+        }
+        $qb->setMaxResults($limit);
+
+        return $qb->getQuery()->getResult();
     }
 
 }
