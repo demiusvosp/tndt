@@ -8,6 +8,9 @@ declare(strict_types=1);
 
 namespace App\Security\Voter;
 
+use App\Entity\Project;
+use App\Repository\ProjectRepository;
+use App\Security\ProjectSecurityRegistry;
 use App\Security\UserPermissionsEnum;
 use App\Service\ProjectContext;
 use Psr\Log\LoggerAwareInterface;
@@ -18,11 +21,13 @@ use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 class PublicProjectVoter implements VoterInterface, LoggerAwareInterface
 {
     private ProjectContext $projectContext;
+    private ProjectSecurityRegistry $projectSecurityRegistry;
     private LoggerInterface $logger;
 
-    public function __construct(ProjectContext $projectContext)
+    public function __construct(ProjectContext $projectContext, ProjectSecurityRegistry $projectSecurityRegistry)
     {
         $this->projectContext = $projectContext;
+        $this->projectSecurityRegistry = $projectSecurityRegistry;
     }
 
     public function setLogger(LoggerInterface $logger): void
@@ -32,13 +37,24 @@ class PublicProjectVoter implements VoterInterface, LoggerAwareInterface
 
     public function vote(TokenInterface $token, $subject, array $attributes)
     {
-        $project = $this->projectContext->getProject();
-        if (!$project) {
-            // Voter работает только в контексте проекта
-            return VoterInterface::ACCESS_ABSTAIN;
+        $isPublic = false;
+        if (empty($subject)) {
+            // если запрос в рамках текущего проекта, он считается subject и его можно не указывать
+            $project = $this->projectContext->getProject();
+            if ($project) {
+                $isPublic = $project->isPublic();
+                $subject = $project->getSuffix();
+            }
+        } else {
+            if ($subject instanceof Project) {
+                $isPublic = $subject->isPublic();
+            } else {
+                $isPublic = $this->projectSecurityRegistry->isPublic($subject);
+            }
         }
-        if (!$project->isPublic()) {
-            $this->logger->debug('{project} is not public project - abstain', ['project' => $project->getSuffix()]);
+
+        if (!$isPublic) {
+            // Voter работает только для публичных проектов
             return VoterInterface::ACCESS_ABSTAIN;
         }
 
@@ -47,7 +63,7 @@ class PublicProjectVoter implements VoterInterface, LoggerAwareInterface
             if (in_array($attribute, $publicPermissions, true)) {
                 $this->logger->debug(
                     'Public project {project} grant permission {attribute}',
-                    ['project' => $project->getSuffix(), 'attribute' => $attribute]);
+                    ['project' => $subject, 'attribute' => $attribute]);
                 return VoterInterface::ACCESS_GRANTED;
             }
         }
