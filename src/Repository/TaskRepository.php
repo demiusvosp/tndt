@@ -58,7 +58,9 @@ class TaskRepository extends ServiceEntityRepository implements NoEntityReposito
             ->setParameter('project', $project);
 
         $qb->addOrderBy('t.updatedAt', 'desc');
-        $qb->setMaxResults($limit);
+        if ($limit) {
+            $qb->setMaxResults($limit);
+        }
 
         return $qb->getQuery()->getResult();
     }

@@ -52,18 +52,50 @@ class DocRepository extends ServiceEntityRepository implements NoEntityRepositor
     }
 
     /**
-     * @param int $limit
-     * @param string|null $projectSuffix
+     * @param string $project
+     * @param int|null $limit
      * @return Doc[]
      */
-    public function getPopularDocs(int $limit, ?string $projectSuffix = null): array
+    public function getProjectsDocs(string $project, int $limit = null): array
     {
-        $criteria = ['isArchived' => false];
-        if($projectSuffix) {
-            $criteria['suffix'] = $projectSuffix;
+        $qb = $this->createQueryBuilder('d');
+        $qb->where('d.isArchived = false');
+        $qb->andWhere($qb->expr()->eq('d.project', ':project'))
+            ->setParameter('project', $project);
+
+        $qb->addOrderBy('d.updatedAt', 'desc');
+        if ($limit) {
+            $qb->setMaxResults($limit);
         }
 
-        return $this->findBy($criteria, ['updatedAt' => 'desc'], $limit);
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * @param int $limit
+     * @param array|null $availableProjects - доступные проекты (null - доступны все)
+     * @return Doc[]
+     */
+    public function getPopularDocs(int $limit, ?array $availableProjects = []): array
+    {
+        $qb = $this->createQueryBuilder('d');
+        $qb->where('d.isArchived = false');
+
+        $qb->leftJoin('d.project', 'p');
+        if ($availableProjects !== null) {
+            if (count($availableProjects) > 0) {
+                $qb->andWhere($qb->expr()->orX(
+                    'p.isPublic = true',
+                    $qb->expr()->in('d.suffix', $availableProjects)
+                ));
+            } else {
+                $qb->andWhere('p.isPublic = true');
+            }
+        }
+        $qb->addOrderBy('d.updatedAt', 'desc');
+        $qb->setMaxResults($limit);
+
+        return $qb->getQuery()->getResult();
     }
 
 }

@@ -47,7 +47,7 @@ class DashboardController extends AbstractController
 
         $projects = $projectRepository->getPopularProjectsSnippets(self::PROJECT_LENGTH, $this->getUser());
         $tasks = $taskRepository->getPopularTasks(self::TASK_LENGTH, $involvedProjects);
-        $docs = $docRepository->getPopularDocs(self::DOC_LENGTH);
+        $docs = $docRepository->getPopularDocs(self::DOC_LENGTH, $involvedProjects);
         $users = $userRepository->getPopularUsers(self::USER_LENGTH);
 
         return $this->render(

@@ -34,8 +34,8 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class ProjectController extends AbstractController
 {
     private const PROJECT_BLOCKS_LIMIT = 16;// понадобится больше - добавить в project.list пагинацию
-    private const TASK_BLOCK_LIMIT = 10;
-    private const DOC_BLOCK_LIMIT = 10;
+    private const TASK_BLOCK_LIMIT = 15;
+    private const DOC_BLOCK_LIMIT = 15;
 
     private TranslatorInterface $translator;
     private ProjectContext $projectContext;
@@ -85,7 +85,7 @@ class ProjectController extends AbstractController
             throw $this->createNotFoundException($this->translator->trans('project.not_found'));
         }
         $tasks = $taskRepository->getProjectsTasks($project->getSuffix(), self::TASK_BLOCK_LIMIT);
-        $docs = $docRepository->getPopularDocs(self::DOC_BLOCK_LIMIT, $project->getSuffix());
+        $docs = $docRepository->getProjectsDocs($project->getSuffix(), self::DOC_BLOCK_LIMIT);
 
         return $this->render(
             'project/index.html.twig',
