@@ -43,15 +43,15 @@ class PrivateProjectVoter implements VoterInterface, LoggerAwareInterface
 
     public function vote(TokenInterface $token, $subject, array $attributes): int
     {
-        if ($subject && $subject instanceof Project) {
-            // если нам передали проект, проверяем роль для него
-            $subjectProject = $subject;
-        } else {
+        if (empty($subject)) {
             // В противном случае проверяем роль для текущего в данном контексте проекта
-            $subjectProject = $this->projectContext->getProject();
+            $subject = $this->projectContext->getProject();
+        }
+        if ($subject instanceof Project) {
+            $subject = $subject->getSuffix();
         }
 
-        if(!$subjectProject) {
+        if(!$subject) {
             $this->logger->debug('Not given or current project - abstain');
             // способны обработать только web-страницы с переданным project
             return VoterInterface::ACCESS_ABSTAIN;
@@ -70,10 +70,10 @@ class PrivateProjectVoter implements VoterInterface, LoggerAwareInterface
                 continue;
             }
 
-            if ($roleProject !== $subjectProject->getSuffix()) {
+            if ($roleProject !== $subject) {
                 $this->logger->debug(
                     'It [{role} - {roleProject}] is not subject {subjectProject} project - skip',
-                    ['role' => $role, 'roleProject' => $roleProject, 'subjectProject' => $subjectProject->getSuffix()]
+                    ['role' => $role, 'roleProject' => $roleProject, 'subjectProject' => $subject]
                 );
                 // роль не этого проекта
                 continue;
@@ -92,7 +92,10 @@ class PrivateProjectVoter implements VoterInterface, LoggerAwareInterface
                 }
                 if (UserPermissionsEnum::isValid($attribute)) {
                     if ($this->hierarchyHelper->has($attribute, $role)) {
-                        $this->logger->debug('Project {project} use {role} by granted {attribute} - grant', ['project' => $roleProject, 'attribute' => $attribute, 'role' => $role]);
+                        $this->logger->debug(
+                            'Project {project} use {role} by granted {attribute} - grant',
+                            ['project' => $roleProject, 'attribute' => $attribute, 'role' => $role]
+                        );
                         return VoterInterface::ACCESS_GRANTED;
                     }
                 }
