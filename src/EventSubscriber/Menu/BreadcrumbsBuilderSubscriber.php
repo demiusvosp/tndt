@@ -68,6 +68,12 @@ class BreadcrumbsBuilderSubscriber implements EventSubscriberInterface
                     ['suffix' => $currentProject->getSuffix()]
                 ))
                 ->addChild( new MenuItemModel(
+                    'project.edit.task_settings',
+                    'breadcrumb.project.edit.task_settings',
+                    'project.edit.task_settings',
+                    ['suffix' => $currentProject->getSuffix()]
+                ))
+                ->addChild( new MenuItemModel(
                     'project.edit.permissions',
                     'breadcrumb.project.edit.permissions',
                     'project.edit.permissions',

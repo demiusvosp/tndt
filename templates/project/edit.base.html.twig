@@ -13,6 +13,9 @@
         <li {% if currentPage == 'project.edit' %}class="active"{% endif %}>
             <a href="{{ path('project.edit', {'suffix':project.suffix}) }}">{{ 'project.edit.common'|trans }}</a>
         </li>
+        <li {% if currentPage == 'project.edit.task_settings' %}class="active"{% endif %}>
+            <a href="{{ path('project.edit.task_settings', {'suffix':project.suffix}) }}">{{ 'project.edit.task_settings'|trans }}</a>
+        </li>
         <li {% if currentPage == 'project.edit.permissions' %}class="active"{% endif %}>
             <a href="{{ path('project.edit.permissions', {'suffix':project.suffix}) }}">{{ 'project.edit.permsions'|trans }}</a>
         </li>

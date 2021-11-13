@@ -10,12 +10,14 @@ namespace App\Controller;
 
 use App\Entity\Project;
 use App\Entity\Task;
+use App\Entity\TaskSettings;
 use App\Form\DTO\Project\EditProjectCommonDTO;
 use App\Form\DTO\Project\EditProjectPermissionsDTO;
 use App\Form\DTO\Project\NewProjectDTO;
 use App\Form\DTO\Project\ProjectListFilterDTO;
 use App\Form\Type\Project\EditProjectCommonType;
 use App\Form\Type\Project\EditProjectPermissionsType;
+use App\Form\Type\Project\EditProjectTaskSettingsType;
 use App\Form\Type\Project\NewProjectType;
 use App\Form\Type\Project\ListFilterType;
 use App\Repository\DocRepository;
@@ -172,6 +174,19 @@ class ProjectController extends AbstractController
         }
 
         return $this->render('project/edit_permissions.html.twig', ['project' => $project, 'form' => $form->createView()]);
+    }
+
+    public function editTaskSettings(Request $request)
+    {
+        $project = $this->projectContext->getProject();
+        if (!$project) {
+            throw $this->createNotFoundException($this->translator->trans('project.not_found'));
+        }
+
+        $formData = new TaskSettings();
+        $form = $this->createForm(EditProjectTaskSettingsType::class, $formData);
+
+        return $this->render('project/edit_task_settings.html.twig', ['project' => $project, 'form' => $form->createView()]);
     }
 
     /**

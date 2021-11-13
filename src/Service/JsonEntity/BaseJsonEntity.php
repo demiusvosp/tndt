@@ -20,7 +20,7 @@ abstract class BaseJsonEntity implements JsonSerializable, Stringable, ArrayAcce
     /**
      * @param string|array|BaseJsonEntity $arg
      */
-    public function __construct($arg)
+    public function __construct($arg = [])
     {
         if (is_string($arg)) {
             $arg = json_decode($arg, true);

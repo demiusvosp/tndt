@@ -44,6 +44,9 @@ project.edit:
 project.edit.permissions:
     path: /project/{suffix<\w+>}/edit/permissions
     controller: App\Controller\ProjectController::editPermissions
+project.edit.task_settings:
+    path: /project/{suffix<\w+>}/edit/task_settings
+    controller: App\Controller\ProjectController::editTaskSettings
 project.archive:
     path: /project/{suffix<\w+>}/archive
     controller: App\Controller\ProjectController::archive

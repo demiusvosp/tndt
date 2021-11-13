@@ -16,6 +16,7 @@ breadcrumb:
     edit:
       common: Настройки
       permissions: Полномочия
+      task_settings: Задачи
     docs: Документы
     tasks: Задачи
   task:
@@ -117,9 +118,11 @@ project:
   description:
     label: Описание проекта
     help: Разрешен markdown, целиком readme копировать не стоит, но общие соображения можно
-  edit.title: Редактирование
-  edit.common: Общие
-  edit.permsions: Полномочия
+  edit:
+    title: Редактирование
+    common: Общие
+    permsions: Полномочия
+    task_settings: Задачи
   icon:
     label: Иконка проекта
     help: Необязательна, но с её помощью легко найти проект. На даный момент выбор из коллекции font-awesome (https://fontawesome.com/v5.15/icons?d=gallery&p=2&m=free)
