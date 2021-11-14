@@ -10,32 +10,39 @@ namespace App\Service;
 
 use App\Entity\Comment;
 use App\Entity\Contract\CommentableInterface;
+use App\Entity\User;
 use App\Event\AppEvents;
 use App\Event\Comment\AddCommentEvent;
+use App\Exception\BadRequestException;
 use App\Form\Type\Comment\NewCommentType;
 use Doctrine\ORM\EntityManagerInterface;
+use KevinPapst\AdminLTEBundle\Model\UserInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Security\Core\Security;
 
 class CommentService
 {
-    private FormFactoryInterface $formFactory;
-    private RequestStack $requestStack;
     private EntityManagerInterface $entityManager;
     private EventDispatcherInterface $eventDispatcher;
+    private FormFactoryInterface $formFactory;
+    private RequestStack $requestStack;
+    private Security $security;
 
     public function __construct(
+        EntityManagerInterface $entityManager,
+        EventDispatcherInterface $eventDispatcher,
         FormFactoryInterface $formFactory,
         RequestStack $requestStack,
-        EntityManagerInterface $entityManager,
-        EventDispatcherInterface $eventDispatcher
+        Security $security
     ) {
-        $this->formFactory = $formFactory;
-        $this->requestStack = $requestStack;
         $this->entityManager = $entityManager;
         $this->eventDispatcher = $eventDispatcher;
+        $this->formFactory = $formFactory;
+        $this->requestStack = $requestStack;
+        $this->security = $security;
     }
 
     public function getCommentAddForm(): FormInterface
@@ -43,21 +50,36 @@ class CommentService
         return $this->formFactory->create(NewCommentType::class, []);
     }
 
-    public function applyCommentFromForm(FormInterface $form, CommentableInterface $commentableObject): bool
+    /**
+     * @param CommentableInterface $commentableObject
+     * @param FormInterface $form
+     * @param UserInterface|null $author
+     * @return bool
+     * @noinspection CallableParameterUseCaseInTypeContextInspection
+     * @noinspection PhpParamsInspection
+     */
+    public function applyCommentFromForm(CommentableInterface $commentableObject, FormInterface $form, UserInterface $author = null): bool
     {
+        if (!$author) {
+            $author = $this->security->getUser();
+            if (!$author) {
+                throw new BadRequestException('Комментарий могут оставлять только зарегистрированные пользователи');
+            }
+        }
+
         $request = $this->requestStack->getMasterRequest();
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->applyCommentFromString($form->getData()['message'], $commentableObject);
+            $this->applyCommentFromString($commentableObject, $form->getData()['message'], $author);
             return true;
         }
         return false;
     }
 
-    public function applyCommentFromString(string $message, CommentableInterface $commentableObject): void
+    public function applyCommentFromString(CommentableInterface $commentableObject, string $message, User $author): void
     {
         $comment = new Comment($commentableObject);
+        $comment->setAuthor($author);
         $comment->setMessage($message);
         $this->entityManager->persist($comment);
 

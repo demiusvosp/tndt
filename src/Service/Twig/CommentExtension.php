@@ -12,6 +12,7 @@ use App\Entity\Contract\CommentableInterface;
 use App\Repository\CommentRepository;
 use App\Service\CommentService;
 use Symfony\Component\Form\FormView;
+use Symfony\Component\Security\Core\Security;
 use Twig\Environment;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
@@ -23,11 +24,13 @@ class CommentExtension extends AbstractExtension
 {
     private CommentService $commentService;
     private CommentRepository $commentRepository;
+    private Security $security;
 
-    public function __construct(CommentService $commentService, CommentRepository $commentRepository)
+    public function __construct(CommentService $commentService, CommentRepository $commentRepository, Security $security)
     {
         $this->commentService = $commentService;
         $this->commentRepository = $commentRepository;
+        $this->security = $security;
     }
 
     public function getFunctions(): array
@@ -53,16 +56,22 @@ class CommentExtension extends AbstractExtension
      */
     public function commentWidget(Environment $environment, CommentableInterface $commentableObject): string
     {
-        $form = $this->commentService->getCommentAddForm();
-
-        if ($this->commentService->applyCommentFromForm($form, $commentableObject)) {
-            // Пересоздаем форму, т.к. она будет использоваться для нового комментария
+        $form = null;
+        if ($this->security->getUser() !== null) {
             $form = $this->commentService->getCommentAddForm();
+
+            if ($this->commentService->applyCommentFromForm($commentableObject, $form)) {
+                // Пересоздаем форму, т.к. она будет использоваться для нового комментария
+                $form = $this->commentService->getCommentAddForm();
+            }
         }
 
         return $environment->render(
             'comment/comment_widget.html.twig',
-            [ 'comments' => $this->commentRepository->getAllByOwner($commentableObject), 'form' => $form->createView()]
+            [
+                'comments' => $this->commentRepository->getAllByOwner($commentableObject),
+                'form' => $form ? $form->createView() : null
+            ]
         );
     }
 

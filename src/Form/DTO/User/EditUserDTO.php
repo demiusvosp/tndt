@@ -49,16 +49,6 @@ class EditUserDTO
     }
 
     /**
-     * @param int $id
-     * @return EditUserDTO
-     */
-    public function setId(int $id): EditUserDTO
-    {
-        $this->id = $id;
-        return $this;
-    }
-
-    /**
      * @return string
      */
     public function getName(): string

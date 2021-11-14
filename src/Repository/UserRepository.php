@@ -92,6 +92,8 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
                 ->andWhere($qb->expr()->isNotNull('pu.role'))
                 ->setParameter('suffix', $projectSuffix);
         }
+        $qb->andWhere($qb->expr()->neq('u.username', ':root'))
+            ->setParameter('root', User::ROOT_USER);
 
         $qb->orderBy('u.lastLogin', 'DESC');
 

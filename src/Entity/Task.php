@@ -56,11 +56,11 @@ class Task implements NoInterface, CommentableInterface
     private string $suffix = '';
 
     /**
-     * @var Project|null
+     * @var Project
      * @ORM\ManyToOne(targetEntity="Project", fetch="EAGER")
      * @ORM\JoinColumn(name="suffix", referencedColumnName="suffix")
      */
-    private ?Project $project = null;
+    private Project $project;
 
     /**
      * @var DateTime
@@ -182,7 +182,7 @@ class Task implements NoInterface, CommentableInterface
     /**
      * @return Project
      */
-    public function getProject(): ?Project
+    public function getProject(): Project
     {
         return $this->project;
     }

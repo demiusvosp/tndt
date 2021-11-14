@@ -55,13 +55,6 @@ class EditDocDTO
         $this->body = $doc->getBody();
     }
 
-    public function fillEntity(Doc $doc): void
-    {
-        $doc->setCaption($this->caption);
-        $doc->setAbstract($this->abstract);
-        $doc->setBody($this->body);
-    }
-
     /**
      * @param string $caption
      * @return EditDocDTO

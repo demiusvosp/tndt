@@ -50,7 +50,7 @@ class Doc implements NoInterface, CommentableInterface
      * @ORM\ManyToOne(targetEntity="Project", fetch="EAGER")
      * @ORM\JoinColumn(name="suffix", referencedColumnName="suffix")
      */
-    private ?Project $project = null;
+    private Project $project;
 
     /**
      * @var DateTime
@@ -175,7 +175,7 @@ class Doc implements NoInterface, CommentableInterface
     /**
      * @return Project
      */
-    public function getProject(): ?Project
+    public function getProject(): Project
     {
         return $this->project;
     }
@@ -262,7 +262,7 @@ class Doc implements NoInterface, CommentableInterface
     }
 
     /**
-     * @param bool $isArchive
+     * @param bool $isArchived
      * @return Doc
      */
     public function setIsArchived(bool $isArchived): Doc
