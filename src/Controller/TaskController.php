@@ -165,7 +165,7 @@ class TaskController extends AbstractController
         $task->close();
 
         $closeForm = $commentService->getCommentAddForm();
-        $commentService->applyCommentFromForm($closeForm, $task);
+        $commentService->applyCommentFromForm($task, $closeForm, $this->getUser());
 
         $this->getDoctrine()->getManager()->flush();
         $this->addFlash('warning', 'task.close.success');
