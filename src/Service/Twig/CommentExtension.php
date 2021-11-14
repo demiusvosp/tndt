@@ -55,7 +55,7 @@ class CommentExtension extends AbstractExtension
     {
         $form = $this->commentService->getCommentAddForm();
 
-        if ($this->commentService->applyCommentFromForm($form, $commentableObject)) {
+        if ($this->commentService->applyCommentFromForm($commentableObject, $form)) {
             // Пересоздаем форму, т.к. она будет использоваться для нового комментария
             $form = $this->commentService->getCommentAddForm();
         }
