@@ -6,7 +6,7 @@
                 {{ 'comment.author.label'|trans }}: {{ mUser.badge(comment.author) }};
                 {{ 'comment.createdAt.in_widget'|trans }} {{ comment.createdAt|ago }};
             </span>
-            <div class="comment-message">{{ comment.message }}</div>
+            <div class="comment-message">{{ comment.message|markdown_to_html }}</div>
         </li>
     {% endfor %}
     <li>
