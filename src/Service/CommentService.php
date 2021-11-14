@@ -60,16 +60,16 @@ class CommentService
      */
     public function applyCommentFromForm(CommentableInterface $commentableObject, FormInterface $form, UserInterface $author = null): bool
     {
+        if (!$author) {
+            $author = $this->security->getUser();
+            if (!$author) {
+                throw new BadRequestException('Комментарий могут оставлять только зарегистрированные пользователи');
+            }
+        }
+
         $request = $this->requestStack->getMasterRequest();
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
-            if (!$author) {
-                $author = $this->security->getUser();
-                if (!$author) {
-                    throw new BadRequestException('Комментарий могут оставлять только зарегистрированные пользователи');
-                }
-            }
             $this->applyCommentFromString($commentableObject, $form->getData()['message'], $author);
             return true;
         }

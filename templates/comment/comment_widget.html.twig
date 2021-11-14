@@ -10,15 +10,19 @@
         </li>
     {% endfor %}
     <li>
-        <div class="comment-form">
-            {{ form_start(form) }}
-            <div class="form-group">
-                {{ form_widget(form.message) }}
+        {% if form is not null %}
+            <div class="comment-form">
+                {{ form_start(form) }}
+                <div class="form-group">
+                    {{ form_widget(form.message) }}
+                </div>
+                <div class="pull-right">
+                    <button type="submit" class="btn btn-success">{{ 'Post'|trans }}</button>
+                </div>
+                {{ form_end(form) }}
             </div>
-            <div class="pull-right">
-                <button type="submit" class="btn btn-success">{{ 'Post'|trans }}</button>
-            </div>
-            {{ form_end(form) }}
-        </div>
+        {% else %}
+            <div class="text-warning center-block">{{ 'Only_for_authorized.comment'|trans }}</div>
+        {% endif %}
     </li>
 </ul>

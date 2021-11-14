@@ -110,6 +110,8 @@ nobody: >-
     instrumental {никем}
     other {никто}
   }
+Only_for_authorized:
+  comment: Комментарии могут оставлять только авторизованные пользователи
 Post: Написать
 Project: Проект
 Projects: Проекты
