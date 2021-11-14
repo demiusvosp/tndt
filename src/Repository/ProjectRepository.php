@@ -38,17 +38,19 @@ class ProjectRepository extends ServiceEntityRepository
     public function addVisibilityCondition(QueryBuilder $qb, ?UserInterface $user = null): void
     {
         if($user) {
-            $qb->leftJoin(
-                'p.projectUsers',
-                'pu',
-                Join::WITH,
-                $qb->expr()->eq('pu.user', ':user')
-            );
-            $qb->setParameter('user', $user);
-            $qb->andWhere($qb->expr()->orX(
-                'p.isPublic = true',
-                $qb->expr()->isNotNull('pu.role')
-            ));
+            if ($user->getUsername() !== User::ROOT_USER) {
+                $qb->leftJoin(
+                    'p.projectUsers',
+                    'pu',
+                    Join::WITH,
+                    $qb->expr()->eq('pu.user', ':user')
+                );
+                $qb->setParameter('user', $user);
+                $qb->andWhere($qb->expr()->orX(
+                    'p.isPublic = true',
+                    $qb->expr()->isNotNull('pu.role')
+                ));
+            }
         } else {
             $qb->andWhere('p.isPublic = true');
         }

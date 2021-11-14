@@ -10,6 +10,7 @@ namespace App\Form\Type\Task;
 
 use App\Form\DTO\Task\NewTaskDTO;
 use App\Form\Type\Project\ProjectSelectType;
+use App\Form\Type\User\UserSelectType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -30,6 +31,11 @@ class NewTaskType extends AbstractType
                 'caption',
                 TextType::class,
                 ['label' => 'task.caption.label', 'help' => 'task.caption.help']
+            )
+            ->add(
+                'assignedTo',
+                UserSelectType::class,
+                ['label' => 'task.assignedTo.label', 'help' => 'task.assignedTo.help']
             )
             ->add(
                 'description',

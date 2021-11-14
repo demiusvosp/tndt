@@ -41,10 +41,10 @@ class Comment
     private int $entity_id;
 
     /**
-     * @var CommentableInterface|null
+     * @var CommentableInterface
      * Для того чтобы не грузить лишний раз храним здесь инстанцированный объект родительской сущности
      */
-    private ?CommentableInterface $ownerEntity = null;
+    private CommentableInterface $ownerEntity;
 
     /**
      * @var DateTime
@@ -98,6 +98,16 @@ class Comment
     public function getAuthor(): User
     {
         return $this->author;
+    }
+
+    /**
+     * @param User $author
+     * @return Comment
+     */
+    public function setAuthor(User $author): Comment
+    {
+        $this->author = $author;
+        return $this;
     }
 
     /**

@@ -8,10 +8,11 @@ declare(strict_types=1);
 
 namespace App\Service\Twig;
 
+use App\Security\UserPermissionsEnum;
 use App\Security\UserRolesEnum;
-use App\Service\ProjectContext;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Twig\Environment;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
@@ -19,15 +20,18 @@ use Twig\TwigFunction;
 
 class UserRoleExtension extends AbstractExtension
 {
+    private Security $security;
     private TranslatorInterface $translator;
-    private ProjectContext $projectContext;
-    private Environment $twig;
+    private UrlGeneratorInterface $router;
 
-    public function __construct(TranslatorInterface $translator, ProjectContext $projectContext, Environment $twig)
-    {
+    public function __construct(
+        Security $security,
+        TranslatorInterface $translator,
+        UrlGeneratorInterface $router
+    ) {
+        $this->security = $security;
+        $this->router = $router;
         $this->translator = $translator;
-        $this->projectContext = $projectContext;
-        $this->twig = $twig;
     }
 
     public function getFilters(): array
@@ -62,7 +66,7 @@ class UserRoleExtension extends AbstractExtension
      * @param bool $html - разрешить html
      * @return string
      */
-    public function roleLabel($role, $html = true): string
+    public function roleLabel($role, bool $html = true): string
     {
         if(!UserRolesEnum::isProjectRole($role)) {
             return $this->translator->trans(UserRolesEnum::label($role));
@@ -73,7 +77,9 @@ class UserRoleExtension extends AbstractExtension
             throw new \InvalidArgumentException("Невозможно интерпретировать роль $role. Роль должна или 
                 быть списке UserRolesEnum, или быть правильно составленной синтетической ролью PROLE_<NAME>_<PROJECT>");
         }
-
+        if (! $this->security->isGranted(UserPermissionsEnum::PERM_PROJECT_VIEW, $projectSuffix)) {
+            return '';
+        }
 
         return $this->translator->trans(UserRolesEnum::label($projectRole))
             . ' ' . $this->translator->trans('role.at_project')
@@ -82,19 +88,24 @@ class UserRoleExtension extends AbstractExtension
 
     /**
      * @param array $roles
-     * @param int|null $limit
+     * @param int|null $length
      * @return string
      */
-    public function roleLabelList(array $roles, ?int $limit = null): string
+    public function roleLabelList(array $roles, int $length = null): string
     {
         /*
          * @TODO возможно стоить группировать этот список по профессиям или проектам, это стоит делать здесь
          */
+        $labelListLength = 0;
         $labelList = [];
         foreach ($roles as $role) {
-            //@TODO
-            $labelList[] = $this->roleLabel($role, true);
-            if ($limit && count($roles) >= $limit) {
+            $labelItem = $this->roleLabel($role, true);
+            if (!empty($labelItem)) {
+                $labelList[] = $labelItem;
+                $labelListLength += mb_strlen($this->roleLabel($role, false)) + 2;// текст роли, плюс запятая с пробелом
+            }
+            if ($labelListLength > $length) {
+                array_pop($labelList);
                 break;
             }
         }
@@ -114,7 +125,7 @@ class UserRoleExtension extends AbstractExtension
      */
     private function getProjectLink(string $projectSuffix): string
     {
-        $link = '<a href="{{ path(\'project.index\', {\'suffix\': '.$projectSuffix.'}) }}" class="invisible_link">';
+        $link = '<a href="' . $this->router->generate('project.index', ['suffix' => $projectSuffix]) .'" class="invisible_link">';
         return $link . '<b>' . $projectSuffix . '</b></a>';
     }
 }

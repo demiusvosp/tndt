@@ -19,6 +19,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class User implements UserInterface, Serializable
 {
+    public const ROOT_USER = 'root';
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
@@ -297,6 +299,18 @@ class User implements UserInterface, Serializable
     {
         $this->projectUsers = $projectUsers;
         return $this;
+    }
+
+    /**
+     * Получить проекты, где юзер участвует
+     * @return array
+     */
+    public function getProjectsIInvolve(): array
+    {
+        return array_map(
+            static function (ProjectUser $projectUser) { return $projectUser->getSuffix(); },
+            $this->getProjectUsers()->toArray()
+        );
     }
 
     /**

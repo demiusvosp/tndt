@@ -41,7 +41,7 @@
                         <td>
                             <a class="invisible_link" href="{{ path('doc.index', doc.getUrlParams) }}">
                                 <span class="{{ doc.isArchived ? 'text-muted' }}">
-                                    {{ doc.caption|u.truncate(160) }}
+                                    {{ doc.caption }}
                                 </span>
                                 {% if doc.isArchived %}<span class="label label-default">{{ 'archived'|trans }}</span>{% endif %}
                             </a>
