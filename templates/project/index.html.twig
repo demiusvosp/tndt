@@ -17,12 +17,16 @@
                 {% endblock  %}
                 {% block box_body %}
                     <div class="btn-group-vertical" role="toolbar" aria-label="{{ 'ControlPanel'|trans }}">
-                        {% if is_granted('PERM_TASK_CREATE') %}
-                            <div class="btn-group-vertical" role="group" aria-label="{{ 'Tasks'|trans }}">
+                        <div class="btn-group-vertical" role="group" aria-label="{{ 'Common'|trans }}">
+                            {% if is_granted('PERM_TASK_CREATE') %}
                                 <a class="btn btn-default btn-secondary" href="{{ path('task.project_create', {'suffix':project.suffix}) }}">{{ 'Create_task'|trans }}</a>
-                            </div>
-                        {% endif %}
-                        <div class="btn-group-vertical" role="group" aria-label="{{ 'Projects'|trans }}">
+                            {% endif %}
+                            {% if is_granted('PERM_DOC_CREATE') %}
+                                <a class="btn btn-default btn-secondary" href="{{ path('doc.project_create', {'suffix':project.suffix}) }}">{{ 'Create_doc'|trans }}</a>
+                            {% endif %}
+                        </div>
+
+                        <div class="btn-group-vertical" role="group" aria-label="{{ 'Maintenance'|trans }}">
                             {% if is_granted('PERM_PROJECT_SETTINGS') %}
                                 <a class="btn btn-default btn-secondary" href="{{ path('project.edit', {'suffix':project.suffix}) }}">{{ 'Edit_project'|trans }}</a>
                             {% endif %}

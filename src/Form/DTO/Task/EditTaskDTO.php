@@ -47,13 +47,7 @@ class EditTaskDTO
         $this->assignedTo = $task->getAssignedTo() ? $task->getAssignedTo()->getUsername() : '';
     }
 
-    public function fillEntity(Task $task): void
-    {
-        $task->setCaption($this->caption);
-        $task->setDescription($this->description);
-    }
-
-    /**
+   /**
      * @return string
      */
     public function getProject(): string

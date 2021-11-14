@@ -6,10 +6,6 @@
  */
 namespace App\Controller;
 
-use App\Entity\Project;
-use App\Entity\Task;
-use App\Entity\User;
-use App\Exception\BadRequestException;
 use App\Exception\CurrentProjectNotFoundException;
 use App\Form\DTO\Task\EditTaskDTO;
 use App\Form\DTO\Task\ListFilterDTO;
@@ -18,8 +14,8 @@ use App\Form\Type\Task\EditTaskType;
 use App\Form\Type\Task\ListFilterType;
 use App\Form\Type\Task\NewTaskType;
 use App\Repository\TaskRepository;
-use App\Repository\UserRepository;
 use App\Service\CommentService;
+use App\Service\Filler\TaskFiller;
 use App\Service\ProjectContext;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -98,37 +94,24 @@ class TaskController extends AbstractController
     /**
      * @IsGranted("PERM_TASK_CREATE")
      * @param Request $request
-     * @param UserRepository $userRepository
+     * @param TaskFiller $taskFiller
      * @return Response
      */
-    public function create(Request $request, UserRepository $userRepository): Response
+    public function create(Request $request, TaskFiller $taskFiller): Response
     {
         $formData = new NewTaskDTO();
         $currentProject = $this->projectContext->getProject();
         if ($currentProject) {
             $formData->setProject($currentProject->getSuffix());
         }
-        $formData->setAssignTo($this->getUser()->getUsername());
 
         $form = $this->createForm(NewTaskType::class, $formData);
 
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            // @TODO не хочется на это отвлекаться, но не видится зесь так себе дизайн, одни зависимости у нас явны, другие вытаскиваются походу. Здесь уже был продублирован ProjectContext в конструкторе и методе
-            $project = $em->getRepository(Project::class)->find($formData->getProject());
 
-            $task = new Task($project);
-            $task->setCaption($formData->getCaption());
-            $task->setDescription($formData->getDescription());
-            $newAssignedUser = $userRepository->findByUsername($formData->getAssignTo());
-            if (!$newAssignedUser) {
-                throw new BadRequestException('Выбранный пользователь не найден');
-            }
-            if (!$newAssignedUser->hasProject($task->getProject())) {
-                throw new BadRequestException('Нельзя назначить пользователя на задачу проекта к которому у него нет доступа');
-            }
-            $task->setAssignedTo($newAssignedUser);
+            $task = $taskFiller->createFromForm($formData);
             $em->persist($task);
             $em->flush();
 
@@ -144,7 +127,7 @@ class TaskController extends AbstractController
      * @param Request $request
      * @return Response
      */
-    public function edit(Request $request): Response
+    public function edit(Request $request, TaskFiller $taskFiller): Response
     {
         $task = $this->taskRepository->getByTaskId($request->get('taskId'));
         if (!$task) {
@@ -155,20 +138,9 @@ class TaskController extends AbstractController
 
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            if($formData->getProject() !== $task->getProject()->getSuffix()) {
-                throw new BadRequestException();
-            }
+            $taskFiller->fillFromEditForm($formData, $task);
 
-            $formData->fillEntity($task);
-            $newAssignedUser = $em->getRepository(User::class)->find($formData->getAssignedTo());
-            if (!$newAssignedUser) {
-                throw new BadRequestException('Выбранный пользователь не найден');
-            }
-            if (!$newAssignedUser->hasProject($task->getProject())) {
-                throw new BadRequestException('Нельзя назначить пользователя на задачу проекта к которому у него нет доступа');
-            }
-            $task->setAssignedTo($newAssignedUser);
+            $em = $this->getDoctrine()->getManager();
             $em->flush();
 
             $this->addFlash('success', 'task.edit.success');

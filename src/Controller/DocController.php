@@ -17,6 +17,7 @@ use App\Form\DTO\Doc\NewDocDTO;
 use App\Form\Type\Doc\EditDocType;
 use App\Form\Type\Doc\NewDocType;
 use App\Repository\DocRepository;
+use App\Service\Filler\DocFiller;
 use App\Service\ProjectContext;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -43,6 +44,12 @@ class DocController extends AbstractController
         $this->projectContext = $projectContext;
     }
 
+    /**
+     * @IsGranted ("PERM_DOC_VIEW")
+     * @param Request $request
+     * @param PaginatorInterface $paginator
+     * @return Response
+     */
     public function list(Request $request, PaginatorInterface $paginator): Response
     {
         $project = $this->projectContext->getProject();
@@ -63,6 +70,11 @@ class DocController extends AbstractController
         );
     }
 
+    /**
+     * @IsGranted ("PERM_DOC_VIEW")
+     * @param Request $request
+     * @return Response
+     */
     public function index(Request $request): Response
     {
         $project = $this->projectContext->getProject();
@@ -80,13 +92,13 @@ class DocController extends AbstractController
     /**
      * @IsGranted ("PERM_DOC_CREATE")
      * @param Request $request
-     * @param ProjectContext $projectContext
+     * @param DocFiller $docFiller
      * @return Response
      */
-    public function create(Request $request, ProjectContext $projectContext): Response
+    public function create(Request $request, DocFiller $docFiller): Response
     {
         $formData = new NewDocDTO();
-        $currentProject = $projectContext->getProject();
+        $currentProject = $this->projectContext->getProject();
         if ($currentProject) {
             $formData->setProject($currentProject->getSuffix());
         }
@@ -95,13 +107,9 @@ class DocController extends AbstractController
 
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $project = $em->getRepository(Project::class)->find($formData->getProject());
+            $doc = $docFiller->createFromForm($formData);
 
-            $doc = new Doc($project);
-            $doc->setCaption($formData->getCaption());
-            $doc->setAbstract($formData->getAbstract());
-            $doc->setBody($formData->getBody());
+            $em = $this->getDoctrine()->getManager();
             $em->persist($doc);
             $em->flush();
 
@@ -117,7 +125,7 @@ class DocController extends AbstractController
      * @param Request $request
      * @return Response
      */
-    public function edit(Request $request): Response
+    public function edit(Request $request, DocFiller $docFiller): Response
     {
         $project = $this->projectContext->getProject();
         if (!$project) {
@@ -132,8 +140,9 @@ class DocController extends AbstractController
 
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()) {
+            $docFiller->fillFromEditForm($formData, $doc);
+
             $em = $this->getDoctrine()->getManager();
-            $formData->fillEntity($doc);
             $em->flush();
 
             $this->addFlash('success', 'doc.edit.success');

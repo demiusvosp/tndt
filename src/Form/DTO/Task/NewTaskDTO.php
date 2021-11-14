@@ -24,7 +24,7 @@ class NewTaskDTO
      * @var string
      * @EntityExist(entity="App\Entity\User", property="username", message="task.assignTo.not_found")
      */
-    private string $assignTo;
+    private string $assignedTo;
 
     /**
      * @var string
@@ -60,18 +60,18 @@ class NewTaskDTO
     /**
      * @return string
      */
-    public function getAssignTo(): string
+    public function getAssignedTo(): string
     {
-        return $this->assignTo;
+        return $this->assignedTo;
     }
 
     /**
-     * @param string $assignTo
+     * @param string $assignedTo
      * @return NewTaskDTO
      */
-    public function setAssignTo(string $assignTo): NewTaskDTO
+    public function setAssignedTo(string $assignedTo): NewTaskDTO
     {
-        $this->assignTo = $assignTo;
+        $this->assignedTo = $assignedTo;
         return $this;
     }
 
