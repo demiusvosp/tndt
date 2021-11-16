@@ -31,6 +31,7 @@ REQUIREMENTS
 
 * PHP >=7.4
 * MySQL like db
+предпочтительный способ деплоя через docker-контейнеры. 
 
 
 INSTALLATION
