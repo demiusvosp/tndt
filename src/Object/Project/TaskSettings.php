@@ -17,6 +17,11 @@ class TaskSettings
      */
     private Dictionary $types;
 
+    public function __construct()
+    {
+        $this->types = new Dictionary();
+    }
+
     /**
      * @return Dictionary
      */

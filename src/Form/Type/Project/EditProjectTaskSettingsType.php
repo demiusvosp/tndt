@@ -8,8 +8,8 @@ declare(strict_types=1);
 
 namespace App\Form\Type\Project;
 
-use App\Entity\TaskSettings;
-use App\Form\Type\JsonEntity\DictionaryType;
+use App\Form\Type\Base\DictionaryType;
+use App\Object\Project\TaskSettings;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;

@@ -9,8 +9,6 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\Project;
-use App\Entity\Task;
-use App\Entity\TaskSettings;
 use App\Form\DTO\Project\EditProjectCommonDTO;
 use App\Form\DTO\Project\EditProjectPermissionsDTO;
 use App\Form\DTO\Project\NewProjectDTO;
@@ -20,6 +18,7 @@ use App\Form\Type\Project\EditProjectPermissionsType;
 use App\Form\Type\Project\EditProjectTaskSettingsType;
 use App\Form\Type\Project\NewProjectType;
 use App\Form\Type\Project\ListFilterType;
+use App\Object\Project\TaskSettings;
 use App\Repository\DocRepository;
 use App\Repository\TaskRepository;
 use App\Repository\UserRepository;

@@ -130,7 +130,7 @@ project:
     title: Редактирование
     common: Общие
     permsions: Полномочия
-    task_settings: Задачи
+    task_settings: Настройки задач
   icon:
     label: Иконка проекта
     help: Необязательна, но с её помощью легко найти проект. На даный момент выбор из коллекции font-awesome (https://fontawesome.com/v5.15/icons?d=gallery&p=2&m=free)

@@ -18,14 +18,8 @@ class Dictionary implements JsonSerializable
     /**
      * @var DictionaryItem[]
      */
-    private array $items;
+    private array $items = [];
 
-    public function __construct(array $input = [], $dictionaryItemClass = DictionaryItem::class)
-    {
-        foreach ($input as $item) {
-            $this->items[] = new $dictionaryItemClass($item);
-        }
-    }
 
     public function jsonSerialize(): array
     {

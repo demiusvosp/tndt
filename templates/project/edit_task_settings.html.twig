@@ -8,20 +8,21 @@
     <div class="project-settings-blocks">
         <div class="row">
             <div class="col-md-6 settings-block">
-                {% set dictionaryForm = form.types %}
-                {{ form_label(dictionaryForm) }}
-                <ul id="dictionary-types" class="list-unstyled"
-                    data-prototype="{{ form_widget(dictionaryForm.items.vars.prototype)|e }}"
-                >
-                {% for typesField in dictionaryForm %}
-                    <li>
-                        {{ form_widget(typesField) }}
-                        {{ form_errors(typesField) }}
-                    </li>
-                {% endfor %}
-                </ul>
-                <button type="button" class="btn btn-default btn-sm dictionary-add-item" data-dictionary-selector="#dictionary-types"><i class="fas fa-plus"></i></button>
-                {{ form_help(dictionaryForm, {'attr': {'class': 'help-block'}}) }}
+                {{ form_label(form.types) }}
+                <div>{{ form_widget(form.types) }}</div>
+{#                {% set dictionaryForm = form.types %} Еще пострадать и удалить это заменив сильно позже на точку входа в vue-компонент#}
+{#                <ul id="dictionary-types" class="list-unstyled"#}
+{#                    data-prototype="{{ form_widget(dictionaryForm.items.vars.prototype)|e }}"#}
+{#                >#}
+{#                {% for typesField in dictionaryForm %}#}
+{#                    <li>#}
+{#                        {{ form_widget(typesField) }}#}
+{#                        {{ form_errors(typesField) }}#}
+{#                    </li>#}
+{#                {% endfor %}#}
+{#                </ul>#}
+{#                <button type="button" class="btn btn-default btn-sm dictionary-add-item" data-dictionary-selector="#dictionary-types"><i class="fas fa-plus"></i></button>#}
+                {{ form_help(form.types, {'attr': {'class': 'help-block'}}) }}
             </div>
         </div>
     </div>

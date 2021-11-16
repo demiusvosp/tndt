@@ -30,32 +30,12 @@ services:
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
-    get_set_method_normalizer:
-        class: Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer
-        tags: [serializer.normalizer]
-
-    # JsonLOB services
-    app.jlob_serializer:
-        class: Symfony\Component\Serializer\Serializer
-        arguments:
-            $normalizers:
-                - '@get_set_method_normalizer'
-            $encoders:
-                - '@serializer.encoder.json'
-
     # Event Subscribers and Listeners
     App\EventSubscriber\NoGeneratorListener:
         class: App\EventSubscriber\NoGeneratorListener
         tags:
             - { name: doctrine.event_listener, event: prePersist }
 
-    App\EventSubscriber\JSONBDeserializerListener:
-        class: App\EventSubscriber\JSONBDeserializerListener
-        arguments:
-            - '@property_accessor'
-            - '@app.jlob_serializer'
-        tags:
-            - { name: doctrine.event_listener, event: postLoad }
 
     # Various Services
     App\Service\ProjectContext:
