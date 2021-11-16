@@ -6,20 +6,15 @@
  */
 declare(strict_types=1);
 
-namespace App\Service\JsonEntity;
+namespace App\Object\Base;
 
-class DictionaryItem extends BaseJsonEntity
+use JsonSerializable;
+
+class DictionaryItem implements JsonSerializable
 {
     private int $id;
     private string $name;
     private string $description;
-
-    public function __construct(array $input = [])
-    {
-        $this->id = $input['id'] ?? 0;
-        $this->name = $input['name'] ?? '';
-        $this->description = $input['decription'] ?? '';
-    }
 
     public function jsonSerialize(): array
     {

@@ -6,12 +6,14 @@
  */
 declare(strict_types=1);
 
-namespace App\Service\JsonEntity;
+namespace App\Object\Base;
+
+use JsonSerializable;
 
 /**
  * здесь будет всякая логика не тянущая на контракт. Но и в сервисы это класть странно не факт, что тут будут зависимости
  */
-class Dictionary extends BaseJsonEntity
+class Dictionary implements JsonSerializable
 {
     /**
      * @var DictionaryItem[]

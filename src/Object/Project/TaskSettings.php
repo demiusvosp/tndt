@@ -6,30 +6,16 @@
  */
 declare(strict_types=1);
 
-namespace App\Entity;
+namespace App\Object\Project;
 
-use App\Service\JsonEntity\BaseJsonEntity;
-use App\Service\JsonEntity\Dictionary;
-use InvalidArgumentException;
+use App\Object\Base\Dictionary;
 
-class TaskSettings extends BaseJsonEntity
+class TaskSettings
 {
     /**
      * @var Dictionary
      */
     private Dictionary $types;
-
-    public function __construct(array $input = [])
-    {
-        $this->types = new Dictionary($arg['types'] ?? []);
-    }
-
-    public function jsonSerialize(): array
-    {
-        return [
-            'types' => $this->getTypes()->jsonSerialize()
-        ];
-    }
 
     /**
      * @return Dictionary

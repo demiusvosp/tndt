@@ -11,6 +11,8 @@ namespace App\Repository;
 use App\Entity\Project;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\AbstractQuery;
+use Doctrine\ORM\Query;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
@@ -28,6 +30,21 @@ class ProjectRepository extends ServiceEntityRepository
     public function findBySuffix(string $suffix): ?Project
     {
         return $this->findOneBy(['suffix' => $suffix]);
+    }
+
+    /**
+     * Получить аттрибуты проекта связанные с его доступностью
+     * @param string $suffix
+     * @return array - ['isPublic' => isPublic]
+     */
+    public function findSecurityAttributesBySuffix(string $suffix): array
+    {
+        $qb = $this->createQueryBuilder('p');
+        $qb->select('p.isPublic')
+            ->where($qb->expr()->eq('p.suffix', ':suffix'))
+            ->setParameter('suffix', $suffix);
+
+        return $qb->getQuery()->getSingleResult(AbstractQuery::HYDRATE_ARRAY);
     }
 
     /**

@@ -7,6 +7,8 @@
  */
 namespace App\Entity;
 
+use App\Entity\Contract\WithJLOBFieldsInterface;
+use App\Object\Project\TaskSettings;
 use App\Security\UserRolesEnum;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -27,7 +29,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     }
  * )
  */
-class Project
+class Project implements WithJLOBFieldsInterface
 {
     /**
      * @var string
@@ -108,6 +110,11 @@ class Project
     public function __toString(): string
     {
         return $this->getSuffix();
+    }
+
+    public function getJSLOBFields(): array
+    {
+        return ['taskSettings' => TaskSettings::class];
     }
 
     /**
@@ -318,13 +325,10 @@ class Project
     }
 
     /**
-     * @return TaskSettings|array
+     * @return TaskSettings
      */
     public function getTaskSettings()
     {
-        if (!$this->taskSettings instanceof TaskSettings) {
-            $this->taskSettings = TaskSettings::fromJson($this->taskSettings);
-        }
         return $this->taskSettings;
     }
 
