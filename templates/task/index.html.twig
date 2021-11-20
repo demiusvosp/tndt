@@ -45,6 +45,7 @@
             {% endembed %}
         </div>
         <div class="col-md-2">
+            {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
             {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
                 {% import 'task/_macro.html.twig' as mTask %}
                 {% block box_title %}
@@ -67,6 +68,7 @@
                     </div>
                 {% endblock %}
             {% endembed %}
+            {% endif %}
         </div>
     </div>
     <div class="row">
