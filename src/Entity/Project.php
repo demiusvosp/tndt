@@ -327,8 +327,11 @@ class Project implements WithJLOBFieldsInterface
     /**
      * @return TaskSettings
      */
-    public function getTaskSettings()
+    public function getTaskSettings(): TaskSettings
     {
+        if (!$this->taskSettings instanceof TaskSettings) {
+            $this->taskSettings = new TaskSettings($this->taskSettings);
+        }
         return $this->taskSettings;
     }
 
@@ -336,7 +339,7 @@ class Project implements WithJLOBFieldsInterface
      * @param TaskSettings $taskSettings
      * @return Project
      */
-    public function setTaskSettings(TaskSettings $taskSettings)
+    public function setTaskSettings(TaskSettings $taskSettings): self
     {
         $this->taskSettings = $taskSettings;
         return $this;

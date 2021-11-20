@@ -9,17 +9,23 @@ declare(strict_types=1);
 namespace App\Object\Project;
 
 use App\Object\Base\Dictionary;
+use App\Object\JlobObjectInterface;
 
-class TaskSettings
+class TaskSettings implements JlobObjectInterface
 {
     /**
      * @var Dictionary
      */
     private Dictionary $types;
 
-    public function __construct()
+    public function __construct(array $arg = [])
     {
-        $this->types = new Dictionary();
+        $this->types = new Dictionary($arg['types'] ?? []);
+    }
+
+    public function jsonSerialize(): array
+    {
+        return ['types' => $this->types->jsonSerialize()];
     }
 
     /**

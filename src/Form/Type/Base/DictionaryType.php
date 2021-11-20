@@ -37,7 +37,7 @@ class DictionaryType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'rows' => 8,
+            'attr' => ['class' => 'form-control manual-edit', 'rows' => 8],
         ]);
     }
 }

@@ -8,13 +8,32 @@ declare(strict_types=1);
 
 namespace App\Object\Base;
 
-use JsonSerializable;
+use App\Object\JlobObjectInterface;
 
-class DictionaryItem implements JsonSerializable
+class DictionaryItem implements JlobObjectInterface
 {
+    /**
+     * @var int - уникальный в пределах справочника id.
+     * Неизменяемый, и удалять по хорошему должно быть нельзя
+     */
     private int $id;
+
+    /**
+     * @var string
+     */
     private string $name;
+
+    /**
+     * @var string
+     */
     private string $description;
+
+    public function __construct(array $arg = [])
+    {
+        $this->id = $arg['id'] ?? 0;
+        $this->name = $arg['name'] ?? '';
+        $this->description = $arg['description'] ?? '';
+    }
 
     public function jsonSerialize(): array
     {

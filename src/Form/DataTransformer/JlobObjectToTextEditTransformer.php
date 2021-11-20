@@ -9,32 +9,43 @@ declare(strict_types=1);
 namespace App\Form\DataTransformer;
 
 use App\Object\Base\Dictionary;
+use App\Object\JlobObjectInterface;
 use Symfony\Component\Form\DataTransformerInterface;
-use Symfony\Component\Form\Exception\TransformationFailedException;
-use Symfony\Component\Serializer\SerializerInterface;
 
 class JlobObjectToTextEditTransformer implements DataTransformerInterface
 {
-    private SerializerInterface $serializer;
-
-    public function __construct(SerializerInterface $serializer)
+    public function __construct()
     {
-        $this->serializer = $serializer;
+        //$this->jsonEncoder = $jsonEncoder;JsonEncoder $jsonEncoder
     }
 
     /**
-     * @TODO это что, на каждый такой тип jlob-объекта свой трансформер, отличающийся типом? Ну или свое описание сервиса, сетящего тип.
      * @param Dictionary $value
      * @return string
+     * @throws \JsonException
      */
     public function transform($value): string
     {
-        return $this->serializer->serialize($value, 'json');
+        if (!$value instanceof JlobObjectInterface) {
+            throw new \InvalidArgumentException('"' . get_class($value) . '" must be implement JlobObjectInterface');
+        }
+
+        return $this->beautifyJson($value->jsonSerialize());
     }
 
-    /** @noinspection PhpIncompatibleReturnTypeInspection */
-    public function reverseTransform($value): Dictionary
+    public function reverseTransform($value): JlobObjectInterface
     {
-        return $this->serializer->deserialize($value, Dictionary::class, 'json');
+        return new Dictionary(json_decode($value, true, 512, JSON_THROW_ON_ERROR));
+    }
+
+    /**
+     * Отформатировать JSON красиво и удобно для редактирования.
+     * @param string $text
+     * @return string
+     * @throws \JsonException
+     */
+    private function beautifyJson(array $array): string
+    {
+        return json_encode($array, JSON_PRETTY_PRINT | JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE);
     }
 }

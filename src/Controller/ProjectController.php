@@ -148,10 +148,9 @@ class ProjectController extends AbstractController
     /**
      * @IsGranted("PERM_PROJECT_SETTINGS")
      * @param Request $request
-     * @param UserRepository $userRepository
      * @return Response
      */
-    public function editPermissions(Request $request, UserRepository $userRepository): Response
+    public function editPermissions(Request $request): Response
     {
         $project = $this->projectContext->getProject();
         if (!$project) {
@@ -178,7 +177,6 @@ class ProjectController extends AbstractController
     /**
      * @IsGranted("PERM_PROJECT_SETTINGS")
      * @param Request $request
-     * @param UserRepository $userRepository
      * @return Response
      */
     public function editTaskSettings(Request $request): Response
@@ -187,13 +185,21 @@ class ProjectController extends AbstractController
         if (!$project) {
             throw $this->createNotFoundException($this->translator->trans('project.not_found'));
         }
-dump($project->getTaskSettings());
-        $formData = new TaskSettings();
+
+        // В формах нельзя использовать реальные объекты, чтобы неправильная форма не испортила их состояние.
+        // В данном месте мне не нужна дто хоть как-то отличающаяся от исходного объекта, но инстанс-объекта должен быть отдельный
+        $formData = clone $project->getTaskSettings();
         $form = $this->createForm(EditProjectTaskSettingsType::class, $formData);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-dump($form->getData());
+            try {
+                $this->projectFiller->fillTaskSettings($formData, $project);
+            } catch (InvalidArgumentException $e) {
+                $form->addError(new FormError($e->getMessage()));
+            }
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
         }
 
         return $this->render('project/edit_task_settings.html.twig', ['project' => $project, 'form' => $form->createView()]);
