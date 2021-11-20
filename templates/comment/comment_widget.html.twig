@@ -1,14 +1,5 @@
 <ul class="list-unstyled comment-list">
     {% import 'user/_macro.html.twig' as mUser %}
-    {% for comment in comments %}
-        <li>
-            <span class="comment-head">
-                {{ 'comment.author.label'|trans }}: {{ mUser.badge(comment.author) }};
-                {{ 'comment.createdAt.in_widget'|trans }} {{ comment.createdAt|ago }};
-            </span>
-            <div class="comment-message">{{ comment.message|markdown_to_html }}</div>
-        </li>
-    {% endfor %}
     <li>
         {% if form is not null %}
             <div class="comment-form">
@@ -25,4 +16,13 @@
             <div class="text-warning center-block">{{ 'Only_for_authorized.comment'|trans }}</div>
         {% endif %}
     </li>
+    {% for comment in comments %}
+        <li>
+            <span class="comment-head">
+                {{ 'comment.author.label'|trans }}: {{ mUser.badge(comment.author) }};
+                {{ 'comment.createdAt.in_widget'|trans }} {{ comment.createdAt|ago }};
+            </span>
+            <div class="comment-message">{{ comment.message|markdown_to_html }}</div>
+        </li>
+    {% endfor %}
 </ul>
