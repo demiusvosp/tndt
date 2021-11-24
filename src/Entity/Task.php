@@ -99,6 +99,12 @@ class Task implements NoInterface, CommentableInterface
     private bool $isClosed = false;
 
     /**
+     * @var int - тип задачи, справочник TaskType
+     * @ORM\Column (type="integer")
+     */
+    private int $type = 0;
+
+    /**
      * @var string
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank()
@@ -213,6 +219,24 @@ class Task implements NoInterface, CommentableInterface
     public function close(): Task
     {
         $this->isClosed = true;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getType(): int
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param int $type
+     * @return Task
+     */
+    public function setType(int $type): Task
+    {
+        $this->type = $type;
         return $this;
     }
 

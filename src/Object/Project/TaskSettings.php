@@ -8,19 +8,19 @@ declare(strict_types=1);
 
 namespace App\Object\Project;
 
-use App\Object\Base\Dictionary;
 use App\Object\JlobObjectInterface;
+use App\Object\Task\TaskType;
 
 class TaskSettings implements JlobObjectInterface
 {
     /**
-     * @var Dictionary
+     * @var TaskType
      */
-    private Dictionary $types;
+    private TaskType $types;
 
     public function __construct(array $arg = [])
     {
-        $this->types = new Dictionary($arg['types'] ?? []);
+        $this->types = new TaskType($arg['types'] ?? []);
     }
 
     public function jsonSerialize(): array
@@ -29,18 +29,18 @@ class TaskSettings implements JlobObjectInterface
     }
 
     /**
-     * @return Dictionary
+     * @return TaskType
      */
-    public function getTypes(): Dictionary
+    public function getTypes(): TaskType
     {
         return $this->types;
     }
 
     /**
-     * @param Dictionary $types
+     * @param TaskType $types
      * @return TaskSettings
      */
-    public function setTypes(Dictionary $types): TaskSettings
+    public function setTypes(TaskType $types): TaskSettings
     {
         $this->types = $types;
         return $this;

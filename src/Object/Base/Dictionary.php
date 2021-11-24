@@ -66,8 +66,7 @@ class Dictionary implements JlobObjectInterface
                 $existItem->setDescription($newItem->getDescription());
             } else {
                 $newId = $newItem->getId() ?? $this->getLastId() + 1;
-                $newItem->setId($newId);
-                $this->items[$newId] = $newItem;
+                $this->items[$newId] = new DictionaryItem([$newId, $newItem->getName(), $newItem->getDescription()]);
             }
         }
         /*
@@ -83,6 +82,32 @@ class Dictionary implements JlobObjectInterface
             $name,
             $description
         ]);
+    }
+
+    public function getItem($value): DictionaryItem
+    {
+        if (empty($value)) {
+            return $this->getNoSetItem();
+        }
+        if (!isset($this->items[$value])) {
+            throw new \InvalidArgumentException('Не существует справочника с id:' . $value);
+        }
+
+        return $this->items[$value];
+    }
+
+    protected function getNoSetItem(): DictionaryItem
+    {
+        static $item = null;
+        if (!$item) {
+            $item = new DictionaryItem([
+                'id' => 0,
+                'name' => 'dictionaries.not_set.name',
+                'description' => 'dictionaries.not_set.description'
+            ]);
+        }
+
+        return $item;
     }
 
     protected function getLastId(): int

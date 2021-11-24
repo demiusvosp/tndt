@@ -49,6 +49,9 @@ Create_user: Создать пользователя
 CreatedAt: Создана
 dashboard: Обзор
 dictionaries:
+  not_set:
+    name: не назначен
+    description:
   task_types:
     label: Тип задачи
     help: 'Разделение задач по типам, например: Ошибка, Задача, Рефакторинг'
@@ -199,6 +202,9 @@ task:
   project:
     label: Проект
     help: Проект, к которому будет прикреплена задача.
+  type:
+    label: Тип
+    help: Категория к которой относится задача (задача, ошибка, рефакторинг и т.д.)
   show_closed: Показывать закрытые
   updated:
     label: Обновлена
