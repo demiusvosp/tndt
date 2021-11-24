@@ -39,6 +39,7 @@
         <tr>
             <th>#</th>
             <th>{{ 'task.caption.label'|trans }}</th>
+            <th>{{ 'task.type.label'|trans }}</th>
             <th>{{ 'task.assignedTo.label'|trans }}</th>
             <th>{{ 'task.updated.label'|trans }}</th>
         </tr>
@@ -46,6 +47,7 @@
             <tr>
                 <td>{{ this.no(task) }}</td>
                 <td>{{ this.caption(task, 80) }}</td>
+                <td>{{ dictionary(task, 'type') }}</td>
                 <td>{{ mUser.badge(task.assignedTo) }}</td>
                 <td>{{ task.updatedAt|ago }}</td>{# localizeddate('medium', 'medium') #}
             </tr>
