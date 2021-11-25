@@ -7,6 +7,7 @@
  */
 namespace App\Entity;
 
+use App\Entity\Contract\InProjectInterface;
 use App\Entity\Contract\WithJLOBFieldsInterface;
 use App\Object\Project\TaskSettings;
 use App\Security\UserRolesEnum;
@@ -29,7 +30,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     }
  * )
  */
-class Project implements WithJLOBFieldsInterface
+class Project implements WithJLOBFieldsInterface, InProjectInterface
 {
     /**
      * @var string
@@ -118,6 +119,7 @@ class Project implements WithJLOBFieldsInterface
     }
 
     /**
+     * @inheritDoc
      * @return string
      */
     public function getSuffix(): string

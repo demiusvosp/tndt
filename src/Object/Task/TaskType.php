@@ -12,6 +12,4 @@ use App\Object\Base\Dictionary;
 
 class TaskType extends Dictionary
 {
-    public const TYPE = 'type';
-    public const FROM = 'task.getTaskSettings.types'; // и как мы будем перебирать все такие словари? А если какие-то из них не в энтитях
 }

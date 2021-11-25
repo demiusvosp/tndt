@@ -1,0 +1,14 @@
+{% extends '@AdminLTE/layout/form-theme-horizontal.html.twig' %}
+
+{% block form_start -%}
+    {% set attr = attr|merge({class: (attr.class|default('') ~ ' form-entity')|trim}) %}
+    {{- parent() -}}
+{%- endblock form_start %}
+
+{% block form_label_class -%}
+    form-label
+{%- endblock form_label_class %}
+
+{% block form_group_class -%}
+    form-widget
+{%- endblock form_group_class %}

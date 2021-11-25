@@ -34,7 +34,8 @@ class DictionaryService
     }
 
     /**
-     * Получить указанный справочник по сущности
+     * Получить указанный элемент справочника по указанному типу и сущности, хранящей значение справочника
+     * По типу справочника определяет, где найти справочник и где найти его значение.
      * (Сущность должна имплементировать InProjectInterface, чтобы по ней получить проект, в котором хранится объект
      *    справочника. Строго говоря справочник необязательно хранится в проекте, но сейчас все справочники относятся
      *    к проектам, а когда будет не так, нужно будет создать систему хендлеров умеющий брать справочники из разных
@@ -44,6 +45,22 @@ class DictionaryService
      * @return DictionaryItem
      */
     public function getDictionaryItem(DictionariesEnum $dictionaryType, InProjectInterface $entity): DictionaryItem
+    {
+        $dictionaryObject = $this->getDictionary($dictionaryType, $entity);
+
+        $valueGetter = $dictionaryType->getEntityGetter();
+        $dictionaryValue = $entity->{$valueGetter}();
+
+        return $dictionaryObject->getItem($dictionaryValue);
+    }
+
+    /**
+     * Получить указанный справочник из указанного проекта (или любой сущности, связанной с проектом)
+     * @param DictionariesEnum $dictionaryType
+     * @param InProjectInterface|null $entity - null - текущий проект из сервиса ProjectContext
+     * @return Dictionary
+     */
+    public function getDictionary(DictionariesEnum $dictionaryType, InProjectInterface $entity): Dictionary
     {
         if (!isset($this->projects[$entity->getSuffix()])) {
             $this->loadProject($entity->getSuffix());
@@ -59,12 +76,7 @@ class DictionaryService
                 . implode('->', $dictionaryType->getSource())
             );
         }
-        $dictionaryObject = $object;
-
-        $valueGetter = $dictionaryType->getEntityGetter();
-        $dictionaryValue = $entity->{$valueGetter}();
-
-        return $dictionaryObject->getItem($dictionaryValue);
+        return $object;
     }
 
     private function loadProject(string $suffix): void

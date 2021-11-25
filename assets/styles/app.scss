@@ -112,6 +112,32 @@ $color-disabled: #333;
     margin: 1em;
 }
 
+/* Forms */
+/* Create/Edit Entity */
+.form-entity {
+    .form-group {
+        margin: 0 1em;
+        .form-label {
+            float: left;
+            padding: 0 2em;
+        }
+        .form-widget {
+            float: left;
+        }
+    }
+    .form-right-column {
+        .form-group {
+            margin-top: 1em;
+            .form-label {
+                float: none;
+            }
+            .form-widget {
+                float: none;
+            }
+        }
+    }
+}
+
 .modal-header h5 {
     float: left;
 }

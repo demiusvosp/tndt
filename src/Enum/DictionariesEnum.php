@@ -11,9 +11,10 @@ namespace App\Enum;
 use App\Entity\Task;
 use DomainException;
 use MyCLabs\Enum\Enum;
-use phpDocumentor\Reflection\Types\Static_;
 
-
+/**
+ * @method static TASK_TYPE()
+ */
 class DictionariesEnum extends Enum
 {
     public const TASK_TYPE = 'task.type';
