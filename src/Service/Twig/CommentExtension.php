@@ -69,7 +69,7 @@ class CommentExtension extends AbstractExtension
         return $environment->render(
             'comment/comment_widget.html.twig',
             [
-                'comments' => $this->commentRepository->getAllByOwner($commentableObject),
+                'comments' => $this->commentRepository->getAllByOwner($commentableObject, ['createdAt' => 'DESC']),
                 'form' => $form ? $form->createView() : null
             ]
         );

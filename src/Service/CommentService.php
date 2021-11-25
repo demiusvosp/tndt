@@ -16,12 +16,12 @@ use App\Event\Comment\AddCommentEvent;
 use App\Exception\BadRequestException;
 use App\Form\Type\Comment\NewCommentType;
 use Doctrine\ORM\EntityManagerInterface;
-use KevinPapst\AdminLTEBundle\Model\UserInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class CommentService
 {
@@ -55,7 +55,6 @@ class CommentService
      * @param FormInterface $form
      * @param UserInterface|null $author
      * @return bool
-     * @noinspection CallableParameterUseCaseInTypeContextInspection
      * @noinspection PhpParamsInspection
      */
     public function applyCommentFromForm(CommentableInterface $commentableObject, FormInterface $form, UserInterface $author = null): bool
