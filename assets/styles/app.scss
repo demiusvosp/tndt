@@ -62,6 +62,12 @@ $color-disabled: #333;
     }
 }
 
+.task-properties {
+    .task-property-item {
+        padding: 0.2em 1em;
+    }
+}
+
 /* Docs */
 .doc-property-string {
 

@@ -43,7 +43,7 @@ class DictionariesTypeEnum extends Enum
     {
         return [
             self::TASK_TYPE => ['getTaskSettings', 'getTypes'],
-            self::TASK_COMPLEXITY => ['getTaskSettings', 'getDifficulties'],
+            self::TASK_COMPLEXITY => ['getTaskSettings', 'getComplexity'],
         ];
     }
 
