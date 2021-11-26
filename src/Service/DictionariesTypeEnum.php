@@ -10,16 +10,19 @@ namespace App\Service;
 
 use App\Entity\Task;
 use App\Object\Dictionary\Dictionary;
+use App\Object\Task\TaskComplexity;
 use App\Object\Task\TaskType;
 use DomainException;
 use MyCLabs\Enum\Enum;
 
 /**
  * @method static TASK_TYPE()
+ * @method static TASK_COMPLEXITY()
  */
 class DictionariesTypeEnum extends Enum
 {
     public const TASK_TYPE = 'task.type';
+    public const TASK_COMPLEXITY = 'task.complexity';
 
     /**
      * Получить класс справочника по его типу. Довольно странно, но пока не используется
@@ -29,6 +32,7 @@ class DictionariesTypeEnum extends Enum
     {
         return [
             self::TASK_TYPE => TaskType::class,
+            self::TASK_COMPLEXITY => TaskComplexity::class,
         ];
     }
 
@@ -39,6 +43,7 @@ class DictionariesTypeEnum extends Enum
     {
         return [
             self::TASK_TYPE => ['getTaskSettings', 'getTypes'],
+            self::TASK_COMPLEXITY => ['getTaskSettings', 'getDifficulties'],
         ];
     }
 
@@ -59,6 +64,7 @@ class DictionariesTypeEnum extends Enum
     {
         return [
             self::TASK_TYPE => ['class' => Task::class, 'getter' => 'getType', 'subType' => 'type'],
+            self::TASK_COMPLEXITY => ['class' => Task::class, 'getter' => 'getComplexity', 'subType' => 'complexity'],
         ];
     }
 

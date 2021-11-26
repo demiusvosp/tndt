@@ -118,6 +118,12 @@ class Task implements NoInterface, CommentableInterface
      */
     private string $description = '';
 
+    /**
+     * @var int - сложность, трудоемкость задачи
+     * @ORM\Column (type="integer")
+     */
+    private int $complexity = 0;
+
 
     /**
      * @param string|Project $project - Project or project suffix
@@ -327,6 +333,24 @@ class Task implements NoInterface, CommentableInterface
     public function setAssignedTo(User $assignedTo): Task
     {
         $this->assignedTo = $assignedTo;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getComplexity(): int
+    {
+        return $this->complexity;
+    }
+
+    /**
+     * @param int $complexity
+     * @return Task
+     */
+    public function setComplexity(int $complexity): Task
+    {
+        $this->complexity = $complexity;
         return $this;
     }
 }
