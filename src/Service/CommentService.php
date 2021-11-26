@@ -9,7 +9,7 @@ declare(strict_types=1);
 namespace App\Service;
 
 use App\Entity\Comment;
-use App\Entity\CommentableInterface;
+use App\Entity\Contract\CommentableInterface;
 use App\Entity\User;
 use App\Event\AppEvents;
 use App\Event\Comment\AddCommentEvent;

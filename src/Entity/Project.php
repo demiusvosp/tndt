@@ -7,6 +7,8 @@
  */
 namespace App\Entity;
 
+use App\Entity\Contract\InProjectInterface;
+use App\Object\Project\TaskSettings;
 use App\Security\UserRolesEnum;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -27,7 +29,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     }
  * )
  */
-class Project
+class Project implements InProjectInterface
 {
     /**
      * @var string
@@ -93,6 +95,11 @@ class Project
      */
     private string $description = '';
 
+    /**
+     * @var TaskSettings|array
+     * @ORM\Column (type="json")
+     */
+    private $taskSettings = [];
 
     public function __construct(string $suffix)
     {
@@ -106,6 +113,7 @@ class Project
     }
 
     /**
+     * @inheritDoc
      * @return string
      */
     public function getSuffix(): string
@@ -309,6 +317,27 @@ class Project
     {
         $this->description = $description;
 
+        return $this;
+    }
+
+    /**
+     * @return TaskSettings
+     */
+    public function getTaskSettings(): TaskSettings
+    {
+        if (!$this->taskSettings instanceof TaskSettings) {
+            $this->taskSettings = new TaskSettings($this->taskSettings ?? []);
+        }
+        return $this->taskSettings;
+    }
+
+    /**
+     * @param TaskSettings $taskSettings
+     * @return Project
+     */
+    public function setTaskSettings(TaskSettings $taskSettings): self
+    {
+        $this->taskSettings = $taskSettings;
         return $this;
     }
 

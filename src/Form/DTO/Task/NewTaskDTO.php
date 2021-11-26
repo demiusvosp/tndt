@@ -40,6 +40,11 @@ class NewTaskDTO
     private $description = '';
 
     /**
+     * @var int
+     */
+    private int $type = 0;
+
+    /**
      * @return string
      */
     public function getProject(): string
@@ -111,4 +116,21 @@ class NewTaskDTO
         return $this;
     }
 
+    /**
+     * @return int
+     */
+    public function getType(): int
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param int|null $type
+     * @return NewTaskDTO
+     */
+    public function setType(?int $type): NewTaskDTO
+    {
+        $this->type = (int) $type;
+        return $this;
+    }
 }

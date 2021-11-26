@@ -19,8 +19,11 @@
                 {% endblock %}
                 {% block box_body %}
                     <div class="row">
-                        <div class="col-md-8">
+                        <div class="col-md-4">
                             {{ 'task.project.label'|trans }}: {{ mProject.badge(task.project, true, true) }}
+                        </div>
+                        <div class="col-md-4">
+                            {{ 'task.type.label'|trans }}: {{ dictionary(task, 'type') }}
                         </div>
                     </div>
                     <div class="row">

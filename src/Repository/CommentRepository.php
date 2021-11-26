@@ -9,7 +9,7 @@ declare(strict_types=1);
 namespace App\Repository;
 
 use App\Entity\Comment;
-use App\Entity\CommentableInterface;
+use App\Entity\Contract\CommentableInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 

@@ -9,8 +9,9 @@ declare(strict_types=1);
 namespace App\Form\Type\Task;
 
 use App\Form\DTO\Task\NewTaskDTO;
-use App\Form\Type\Project\ProjectSelectType;
+use App\Form\Type\Base\DictionarySelectType;
 use App\Form\Type\User\UserSelectType;
+use App\Service\DictionariesTypeEnum;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -19,14 +20,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class NewTaskType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add(
-                'project',
-                ProjectSelectType::class,
-                ['label' => 'task.project.label', 'help' => 'task.project.help']
-            )
             ->add(
                 'caption',
                 TextType::class,
@@ -36,6 +32,15 @@ class NewTaskType extends AbstractType
                 'assignedTo',
                 UserSelectType::class,
                 ['label' => 'task.assignedTo.label', 'help' => 'task.assignedTo.help']
+            )
+            ->add(
+                'type',
+                DictionarySelectType::class,
+                [
+                    'label' => 'task.type.label',
+                    'help' => 'task.type.help',
+                    'dictionary' => DictionariesTypeEnum::TASK_TYPE()
+                ]
             )
             ->add(
                 'description',
@@ -50,7 +55,7 @@ class NewTaskType extends AbstractType
             );
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefault('data_class', NewTaskDTO::class);
     }

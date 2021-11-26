@@ -7,6 +7,8 @@
  */
 namespace App\Entity;
 
+use App\Entity\Contract\CommentableInterface;
+use App\Entity\Contract\NoInterface;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use DomainException;
@@ -95,6 +97,12 @@ class Task implements NoInterface, CommentableInterface
      * @ORM\Column (type="boolean")
      */
     private bool $isClosed = false;
+
+    /**
+     * @var int - тип задачи, справочник TaskType
+     * @ORM\Column (type="integer")
+     */
+    private int $type = 0;
 
     /**
      * @var string
@@ -211,6 +219,24 @@ class Task implements NoInterface, CommentableInterface
     public function close(): Task
     {
         $this->isClosed = true;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getType(): int
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param int $type
+     * @return Task
+     */
+    public function setType(int $type): Task
+    {
+        $this->type = $type;
         return $this;
     }
 

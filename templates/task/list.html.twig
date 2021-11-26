@@ -28,16 +28,18 @@
                     <col class="task-col-no">
                     <col class="task-col-name">
                     <col>
+{#                    <col>#}
                     <col>
-                    <col>
+{#                    <col>#}
                     <col>
                 </colgroup>
                 <tr>
                     <th scope="col">{{ knp_pagination_sortable(tasks, 'task.No'|trans, 't.no') }}</th>
                     <th scope="col">{{ knp_pagination_sortable(tasks, 'task.caption.label'|trans, 't.caption') }}</th>
-                    <th scope="col">{{ knp_pagination_sortable(tasks, 'task.createdBy.label'|trans, 't.createdBy') }}</th>
+                    <th scope="col">{{ knp_pagination_sortable(tasks, 'task.type.label'|trans, 't.type') }}</th>
+{#                    <th scope="col">{{ knp_pagination_sortable(tasks, 'task.createdBy.label'|trans, 't.createdBy') }}</th>#}
                     <th scope="col">{{ knp_pagination_sortable(tasks, 'task.created.label'|trans, 't.createdAt') }}</th>
-                    <th scope="col">{{ knp_pagination_sortable(tasks, 'task.assignedTo.label'|trans, 't.assignedTo') }}</th>
+{#                    <th scope="col">{{ knp_pagination_sortable(tasks, 'task.assignedTo.label'|trans, 't.assignedTo') }}</th>#}
                     <th scope="col">{{ knp_pagination_sortable(tasks, 'task.updated.label'|trans, 't.updatedAt') }}</th>
                 </tr>
                 {%  for task in tasks %}
@@ -45,9 +47,10 @@
                         {# здесь проставляем класс напрямую ячейке, потому что из col он не достается  #}
                         <td class="task-col-no">{{ mTask.no(task) }}</td>
                         <td>{{ mTask.caption(task, 160) }}</td>
-                        <td>{{ mUser.badge(task.createdBy, true, false) }}</td>
+                        <td>{{ dictionary(task, 'type') }}</td>
+{#                        <td>{{ mUser.badge(task.createdBy, true, false) }}</td>#}
                         <td>{{ task.createdAt|ago }}</td>
-                        <td>{{ mUser.badge(task.assignedTo, true, false) }}</td>
+{#                        <td>{{ mUser.badge(task.assignedTo, true, false) }}</td>#}
                         <td>{{ task.updatedAt|ago }}</td>{# localizeddate('medium', 'medium') #}
                     </tr>
                 {% endfor %}

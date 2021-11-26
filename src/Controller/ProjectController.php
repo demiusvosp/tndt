@@ -9,15 +9,16 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\Project;
-use App\Entity\Task;
 use App\Form\DTO\Project\EditProjectCommonDTO;
 use App\Form\DTO\Project\EditProjectPermissionsDTO;
 use App\Form\DTO\Project\NewProjectDTO;
 use App\Form\DTO\Project\ProjectListFilterDTO;
 use App\Form\Type\Project\EditProjectCommonType;
 use App\Form\Type\Project\EditProjectPermissionsType;
+use App\Form\Type\Project\EditProjectTaskSettingsType;
 use App\Form\Type\Project\NewProjectType;
 use App\Form\Type\Project\ListFilterType;
+use App\Object\Project\TaskSettings;
 use App\Repository\DocRepository;
 use App\Repository\TaskRepository;
 use App\Repository\UserRepository;
@@ -147,10 +148,9 @@ class ProjectController extends AbstractController
     /**
      * @IsGranted("PERM_PROJECT_SETTINGS")
      * @param Request $request
-     * @param UserRepository $userRepository
      * @return Response
      */
-    public function editPermissions(Request $request, UserRepository $userRepository): Response
+    public function editPermissions(Request $request): Response
     {
         $project = $this->projectContext->getProject();
         if (!$project) {
@@ -172,6 +172,41 @@ class ProjectController extends AbstractController
         }
 
         return $this->render('project/edit_permissions.html.twig', ['project' => $project, 'form' => $form->createView()]);
+    }
+
+    /**
+     * @IsGranted("PERM_PROJECT_SETTINGS")
+     * @param Request $request
+     * @return Response
+     */
+    public function editTaskSettings(Request $request): Response
+    {
+        $project = $this->projectContext->getProject();
+        if (!$project) {
+            throw $this->createNotFoundException($this->translator->trans('project.not_found'));
+        }
+
+        // В формах нельзя использовать реальные объекты, чтобы неправильная форма не испортила их состояние.
+        // В данном месте мне не нужна dto хоть как-то отличающаяся от исходного объекта,
+        //   но инстанс-объекта должен быть отдельный
+        $formData = clone $project->getTaskSettings();
+        $form = $this->createForm(EditProjectTaskSettingsType::class, $formData);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            try {
+                $this->projectFiller->fillTaskSettings($formData, $project);
+            } catch (InvalidArgumentException $e) {
+                $form->addError(new FormError($e->getMessage()));
+            }
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
+        }
+
+        return $this->render(
+            'project/edit_task_settings.html.twig',
+            ['project' => $project, 'form' => $form->createView()]
+        );
     }
 
     /**

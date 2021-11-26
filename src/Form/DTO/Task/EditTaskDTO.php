@@ -39,6 +39,11 @@ class EditTaskDTO
      */
     private string $description = '';
 
+    /**
+     * @var int
+     */
+    private int $type = 0;
+
     public function __construct(Task $task)
     {
         $this->project = $task->getSuffix();
@@ -116,6 +121,24 @@ class EditTaskDTO
     public function setDescription(string $description): EditTaskDTO
     {
         $this->description = $description;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getType(): int
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param int|null $type
+     * @return EditTaskDTO
+     */
+    public function setType(?int $type): EditTaskDTO
+    {
+        $this->type = (int) $type;
         return $this;
     }
 }

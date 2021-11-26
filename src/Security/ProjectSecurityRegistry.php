@@ -28,9 +28,9 @@ class ProjectSecurityRegistry
     public function isPublic(string $projectSuffix): bool
     {
         if (!isset($this->projects[$projectSuffix])) {
-            $project = $this->projectRepository->findBySuffix($projectSuffix);
+            $project = $this->projectRepository->findSecurityAttributesBySuffix($projectSuffix);
             if ($project) {
-                $this->projects[$projectSuffix]['isPublic'] = $project->isPublic();
+                $this->projects[$projectSuffix] = $project;
                 //$this->projects[$projectSuffix]['projectUsers'] = $project->getProjectUsers();
             }
         }

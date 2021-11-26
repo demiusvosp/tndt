@@ -16,6 +16,7 @@ breadcrumb:
     edit:
       common: Настройки
       permissions: Полномочия
+      task_settings: Задачи
     docs: Документы
     tasks: Задачи
   task:
@@ -47,6 +48,13 @@ Create_task: Создать задачу
 Create_user: Создать пользователя
 CreatedAt: Создана
 dashboard: Обзор
+dictionaries:
+  not_set:
+    name: не назначен
+    description:
+  task_types:
+    label: Тип задачи
+    help: 'Разделение задач по типам, например: Ошибка, Задача, Рефакторинг'
 Docs: Документы
 Doc_list: Список документов
 Documents: Документы
@@ -121,9 +129,11 @@ project:
   description:
     label: Описание проекта
     help: Разрешен markdown, целиком readme копировать не стоит, но общие соображения можно
-  edit.title: Редактирование
-  edit.common: Общие
-  edit.permsions: Полномочия
+  edit:
+    title: Редактирование
+    common: Общие
+    permsions: Полномочия
+    task_settings: Настройки задач
   icon:
     label: Иконка проекта
     help: Необязательна, но с её помощью легко найти проект. На даный момент выбор из коллекции font-awesome (https://fontawesome.com/v5.15/icons?d=gallery&p=2&m=free)
@@ -147,6 +157,8 @@ project:
     help: Рядовые работники проекта, программисты, тестировщики, дизайнеры, все, кто работают с задачами
     error:
       not_found: Пользователь на роль работника проекта не найден
+  task_settings:
+    label: Настройки задач
   visitors:
     label: Наблюдающие за проектом
     help: Те, кто могут смотреть и комментировать приватные проекты, но не работают напрямую с задачами (CTO, профильные специалисты из соседних отделов и т.д.)
@@ -190,6 +202,9 @@ task:
   project:
     label: Проект
     help: Проект, к которому будет прикреплена задача.
+  type:
+    label: Тип
+    help: Категория к которой относится задача (задача, ошибка, рефакторинг и т.д.)
   show_closed: Показывать закрытые
   updated:
     label: Обновлена
