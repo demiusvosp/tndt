@@ -133,12 +133,12 @@ class EditTaskDTO
     }
 
     /**
-     * @param int $type
+     * @param int|null $type
      * @return EditTaskDTO
      */
-    public function setType(int $type): EditTaskDTO
+    public function setType(?int $type): EditTaskDTO
     {
-        $this->type = $type;
+        $this->type = (int) $type;
         return $this;
     }
 }

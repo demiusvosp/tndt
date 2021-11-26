@@ -10,6 +10,7 @@ namespace App\Form\Type\Project;
 
 use App\Form\Type\Base\DictionaryEditType;
 use App\Object\Project\TaskSettings;
+use App\Service\DictionariesTypeEnum;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -22,6 +23,7 @@ class EditProjectTaskSettingsType extends AbstractType
             'types',
             DictionaryEditType::class,
             [
+                'dictionaryType' => DictionariesTypeEnum::TASK_TYPE(),
                 'label' => 'dictionaries.task_types.label',
                 'help' => 'dictionaries.task_types.help',
                 'required' => false,

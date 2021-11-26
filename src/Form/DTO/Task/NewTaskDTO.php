@@ -125,12 +125,12 @@ class NewTaskDTO
     }
 
     /**
-     * @param int $type
+     * @param int|null $type
      * @return NewTaskDTO
      */
-    public function setType(int $type): NewTaskDTO
+    public function setType(?int $type): NewTaskDTO
     {
-        $this->type = $type;
+        $this->type = (int) $type;
         return $this;
     }
 }

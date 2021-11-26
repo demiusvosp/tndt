@@ -24,9 +24,12 @@ class Dictionary implements JlobObjectInterface
 
     public function __construct(array $arg = [])
     {
-        foreach ($arg as $item) {
-            if (!isset($item['id'])) {
-                $item['id'] = $this->generateNewId();
+        foreach ($arg as $k => $item) {
+            if (empty($item['name'])) {
+                continue;
+            }
+            if (empty($item['id'])) {
+                $item['id'] = $k ?? $this->generateNewId();
             }
             $this->items[$item['id']] = new DictionaryItem($item);
         }
@@ -66,9 +69,14 @@ class Dictionary implements JlobObjectInterface
                 $existItem = $this->items[$newItem->getId()];
                 $existItem->setName($newItem->getName());
                 $existItem->setDescription($newItem->getDescription());
+
             } else {
                 $newId = $newItem->getId() ?? $this->generateNewId();
-                $this->items[$newId] = new DictionaryItem([$newId, $newItem->getName(), $newItem->getDescription()]);
+                $this->items[$newId] = new DictionaryItem([
+                    'id' => $newId,
+                    'name' => $newItem->getName(),
+                    'description' => $newItem->getDescription()
+                ]);
             }
         }
         /*
@@ -79,8 +87,9 @@ class Dictionary implements JlobObjectInterface
 
     public function addItem(string $name, string $description): void
     {
-        $this->items[] = new DictionaryItem([
-            $this->generateNewId(),
+        $newId = $this->generateNewId();
+        $this->items[$newId] = new DictionaryItem([
+            $newId,
             $name,
             $description
         ]);

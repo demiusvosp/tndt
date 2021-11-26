@@ -9,6 +9,7 @@ declare(strict_types=1);
 namespace App\Service;
 
 use App\Entity\Task;
+use App\Object\Dictionary\Dictionary;
 use App\Object\Task\TaskType;
 use DomainException;
 use MyCLabs\Enum\Enum;
@@ -24,7 +25,7 @@ class DictionariesTypeEnum extends Enum
      * Получить класс справочника по его типу. Довольно странно, но пока не используется
      * @return string[]
      */
-    public static function getClassByType(): array
+    public static function classes(): array
     {
         return [
             self::TASK_TYPE => TaskType::class,
@@ -110,4 +111,10 @@ class DictionariesTypeEnum extends Enum
         return self::relatedEntities()[$this->value]['getter'];
     }
 
+    public function createDictionary(array $args): Dictionary
+    {
+        $class = self::classes()[$this->value];
+
+        return new $class($args);
+    }
 }
