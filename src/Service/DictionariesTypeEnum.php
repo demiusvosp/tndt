@@ -6,18 +6,30 @@
  */
 declare(strict_types=1);
 
-namespace App\Enum;
+namespace App\Service;
 
 use App\Entity\Task;
+use App\Object\Task\TaskType;
 use DomainException;
 use MyCLabs\Enum\Enum;
 
 /**
  * @method static TASK_TYPE()
  */
-class DictionariesEnum extends Enum
+class DictionariesTypeEnum extends Enum
 {
     public const TASK_TYPE = 'task.type';
+
+    /**
+     * Получить класс справочника по его типу. Довольно странно, но пока не используется
+     * @return string[]
+     */
+    public static function getClassByType(): array
+    {
+        return [
+            self::TASK_TYPE => TaskType::class,
+        ];
+    }
 
     /**
      * @return string[][] - [<type> => [<getSubobjectMethod>, ...]
@@ -31,7 +43,16 @@ class DictionariesEnum extends Enum
 
     /**
      * Получить способ получения значения справочника
-     * @return string[][] - [<type> => [<entityClass>, <dictionary value getter>]
+     * [
+     *   <type> => [
+     *     'class' => <entityClass>,
+     *     'getter' => <dictionary value getter>,
+     *     'subType' => <dictionary typename without entity name>
+     *   ],
+     *   ...
+     * ]
+     *
+     * @return string[][]
      */
     public static function relatedEntities(): array
     {

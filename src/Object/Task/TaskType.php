@@ -8,7 +8,7 @@ declare(strict_types=1);
 
 namespace App\Object\Task;
 
-use App\Object\Base\Dictionary;
+use App\Object\Dictionary\Dictionary;
 
 class TaskType extends Dictionary
 {

@@ -8,8 +8,6 @@ declare(strict_types=1);
 
 namespace App\Form\Type\Base;
 
-use App\Enum\DictionariesEnum;
-use App\Object\Base\DictionaryItem;
 use App\Service\DictionaryService;
 use App\Service\ProjectContext;
 use Symfony\Component\Form\AbstractType;

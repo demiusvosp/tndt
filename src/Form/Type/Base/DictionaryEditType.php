@@ -9,7 +9,7 @@ declare(strict_types=1);
 namespace App\Form\Type\Base;
 
 use App\Form\DataTransformer\JlobObjectToTextEditTransformer;
-use App\Object\Base\Dictionary;
+use App\Object\Dictionary\Dictionary;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;

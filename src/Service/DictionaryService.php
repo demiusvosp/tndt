@@ -9,9 +9,8 @@ declare(strict_types=1);
 namespace App\Service;
 
 use App\Entity\Contract\InProjectInterface;
-use App\Enum\DictionariesEnum;
-use App\Object\Base\Dictionary;
-use App\Object\Base\DictionaryItem;
+use App\Object\Dictionary\Dictionary;
+use App\Object\Dictionary\DictionaryItem;
 use App\Repository\ProjectRepository;
 
 /**
@@ -40,11 +39,11 @@ class DictionaryService
      *    справочника. Строго говоря справочник необязательно хранится в проекте, но сейчас все справочники относятся
      *    к проектам, а когда будет не так, нужно будет создать систему хендлеров умеющий брать справочники из разных
      *    сущностей)
-     * @param DictionariesEnum $dictionaryType
+     * @param DictionariesTypeEnum $dictionaryType
      * @param InProjectInterface $entity
      * @return DictionaryItem
      */
-    public function getDictionaryItem(DictionariesEnum $dictionaryType, InProjectInterface $entity): DictionaryItem
+    public function getDictionaryItem(DictionariesTypeEnum $dictionaryType, InProjectInterface $entity): DictionaryItem
     {
         $dictionaryObject = $this->getDictionary($dictionaryType, $entity);
 
@@ -56,11 +55,11 @@ class DictionaryService
 
     /**
      * Получить указанный справочник из указанного проекта (или любой сущности, связанной с проектом)
-     * @param DictionariesEnum $dictionaryType
+     * @param DictionariesTypeEnum $dictionaryType
      * @param InProjectInterface|null $entity - null - текущий проект из сервиса ProjectContext
      * @return Dictionary
      */
-    public function getDictionary(DictionariesEnum $dictionaryType, InProjectInterface $entity): Dictionary
+    public function getDictionary(DictionariesTypeEnum $dictionaryType, InProjectInterface $entity): Dictionary
     {
         if (!isset($this->projects[$entity->getSuffix()])) {
             $this->loadProject($entity->getSuffix());

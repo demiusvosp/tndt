@@ -187,7 +187,8 @@ class ProjectController extends AbstractController
         }
 
         // В формах нельзя использовать реальные объекты, чтобы неправильная форма не испортила их состояние.
-        // В данном месте мне не нужна дто хоть как-то отличающаяся от исходного объекта, но инстанс-объекта должен быть отдельный
+        // В данном месте мне не нужна dto хоть как-то отличающаяся от исходного объекта,
+        //   но инстанс-объекта должен быть отдельный
         $formData = clone $project->getTaskSettings();
         $form = $this->createForm(EditProjectTaskSettingsType::class, $formData);
 
@@ -202,7 +203,10 @@ class ProjectController extends AbstractController
             $em->flush();
         }
 
-        return $this->render('project/edit_task_settings.html.twig', ['project' => $project, 'form' => $form->createView()]);
+        return $this->render(
+            'project/edit_task_settings.html.twig',
+            ['project' => $project, 'form' => $form->createView()]
+        );
     }
 
     /**

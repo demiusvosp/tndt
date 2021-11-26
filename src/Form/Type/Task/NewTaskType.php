@@ -8,10 +8,10 @@ declare(strict_types=1);
 
 namespace App\Form\Type\Task;
 
-use App\Enum\DictionariesEnum;
 use App\Form\DTO\Task\NewTaskDTO;
 use App\Form\Type\Base\DictionarySelectType;
 use App\Form\Type\User\UserSelectType;
+use App\Service\DictionariesTypeEnum;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -39,7 +39,7 @@ class NewTaskType extends AbstractType
                 [
                     'label' => 'task.type.label',
                     'help' => 'task.type.help',
-                    'dictionary' => DictionariesEnum::TASK_TYPE()
+                    'dictionary' => DictionariesTypeEnum::TASK_TYPE()
                 ]
             )
             ->add(

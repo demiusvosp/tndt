@@ -6,12 +6,14 @@
  */
 declare(strict_types=1);
 
-namespace App\Object\Base;
+namespace App\Object\Dictionary;
 
 use App\Object\JlobObjectInterface;
 
 /**
- * здесь будет всякая логика не тянущая на контракт. Но и в сервисы это класть странно не факт, что тут будут зависимости
+ * Объект справочник. Хранит набор элементов, дающих метаинформацию по своему значению (id),
+ *   например человеко читаемое имя. А в будущем разные настройки применяемые к сущности, особенности форматирования,
+ *   логика обработки (например запрет закрытия, или пояснение причины закрытия)
  */
 class Dictionary implements JlobObjectInterface
 {
@@ -24,7 +26,7 @@ class Dictionary implements JlobObjectInterface
     {
         foreach ($arg as $item) {
             if (!isset($item['id'])) {
-                $item['id'] = $this->getLastId() + 1;
+                $item['id'] = $this->generateNewId();
             }
             $this->items[$item['id']] = new DictionaryItem($item);
         }
@@ -65,7 +67,7 @@ class Dictionary implements JlobObjectInterface
                 $existItem->setName($newItem->getName());
                 $existItem->setDescription($newItem->getDescription());
             } else {
-                $newId = $newItem->getId() ?? $this->getLastId() + 1;
+                $newId = $newItem->getId() ?? $this->generateNewId();
                 $this->items[$newId] = new DictionaryItem([$newId, $newItem->getName(), $newItem->getDescription()]);
             }
         }
@@ -78,7 +80,7 @@ class Dictionary implements JlobObjectInterface
     public function addItem(string $name, string $description): void
     {
         $this->items[] = new DictionaryItem([
-            $this->getLastId(),
+            $this->generateNewId(),
             $name,
             $description
         ]);
@@ -110,12 +112,13 @@ class Dictionary implements JlobObjectInterface
         return $item;
     }
 
-    protected function getLastId(): int
+    protected function generateNewId(): int
     {
-        return array_reduce(
+        $lastId = array_reduce(
             $this->items,
             static function ($carry, $item) { return max($carry, $item->getId()); },
             0
         );
+        return $lastId + 1;
     }
 }

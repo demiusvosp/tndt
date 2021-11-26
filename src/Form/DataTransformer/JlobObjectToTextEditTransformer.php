@@ -8,21 +8,17 @@ declare(strict_types=1);
 
 namespace App\Form\DataTransformer;
 
-use App\Object\Base\Dictionary;
+use App\Object\Dictionary\Dictionary;
 use App\Object\JlobObjectInterface;
+use JsonException;
 use Symfony\Component\Form\DataTransformerInterface;
 
 class JlobObjectToTextEditTransformer implements DataTransformerInterface
 {
-    public function __construct()
-    {
-        //$this->jsonEncoder = $jsonEncoder;JsonEncoder $jsonEncoder
-    }
-
     /**
      * @param Dictionary $value
      * @return string
-     * @throws \JsonException
+     * @throws JsonException
      */
     public function transform($value): string
     {
@@ -33,6 +29,9 @@ class JlobObjectToTextEditTransformer implements DataTransformerInterface
         return $this->beautifyJson($value->jsonSerialize());
     }
 
+    /**
+     * @throws JsonException
+     */
     public function reverseTransform($value): JlobObjectInterface
     {
         return new Dictionary(json_decode($value, true, 512, JSON_THROW_ON_ERROR));
@@ -40,9 +39,9 @@ class JlobObjectToTextEditTransformer implements DataTransformerInterface
 
     /**
      * Отформатировать JSON красиво и удобно для редактирования.
-     * @param string $text
+     * @param array $array
      * @return string
-     * @throws \JsonException
+     * @throws JsonException
      */
     private function beautifyJson(array $array): string
     {

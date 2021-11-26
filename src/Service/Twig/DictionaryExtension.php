@@ -9,7 +9,7 @@ declare(strict_types=1);
 namespace App\Service\Twig;
 
 use App\Entity\Contract\InProjectInterface;
-use App\Enum\DictionariesEnum;
+use App\Service\DictionariesTypeEnum;
 use App\Service\DictionaryService;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Extension\AbstractExtension;
@@ -42,7 +42,7 @@ class DictionaryExtension extends AbstractExtension
         if (!$entity instanceof InProjectInterface) {
             throw new \InvalidArgumentException('Справочник можно получить только от сущности относящейся к проекту');
         }
-        $dictionary = DictionariesEnum::fromEntity($entity, $dictionaryType);
+        $dictionary = DictionariesTypeEnum::fromEntity($entity, $dictionaryType);
         $item = $this->dictionaryService->getDictionaryItem($dictionary, $entity);
 
         if ($item->getId() === 0) { // возможно стоит проверять через интерфейс TranslatableItem
