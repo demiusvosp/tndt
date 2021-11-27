@@ -37,6 +37,7 @@
                     <th scope="col">{{ knp_pagination_sortable(tasks, 'task.No'|trans, 't.no') }}</th>
                     <th scope="col">{{ knp_pagination_sortable(tasks, 'task.caption.label'|trans, 't.caption') }}</th>
                     <th scope="col">{{ knp_pagination_sortable(tasks, 'task.type.label'|trans, 't.type') }}</th>
+                    <th scope="col">{{ knp_pagination_sortable(tasks, 'task.complexity.label'|trans, 't.complexity') }}</th>
 {#                    <th scope="col">{{ knp_pagination_sortable(tasks, 'task.createdBy.label'|trans, 't.createdBy') }}</th>#}
                     <th scope="col">{{ knp_pagination_sortable(tasks, 'task.created.label'|trans, 't.createdAt') }}</th>
 {#                    <th scope="col">{{ knp_pagination_sortable(tasks, 'task.assignedTo.label'|trans, 't.assignedTo') }}</th>#}
@@ -48,6 +49,7 @@
                         <td class="task-col-no">{{ mTask.no(task) }}</td>
                         <td>{{ mTask.caption(task, 160) }}</td>
                         <td>{{ dictionary(task, 'type') }}</td>
+                        <td>{{ dictionary(task, 'complexity') }}</td>
 {#                        <td>{{ mUser.badge(task.createdBy, true, false) }}</td>#}
                         <td>{{ task.createdAt|ago }}</td>
 {#                        <td>{{ mUser.badge(task.assignedTo, true, false) }}</td>#}

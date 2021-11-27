@@ -54,7 +54,7 @@ class DictionaryEditType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'attr' => ['class' => 'form-control manual-edit', 'rows' => 8],
+            'attr' => ['class' => 'form-control manual-edit', 'rows' => 15],
         ]);
         $resolver->setRequired(['dictionaryType']);
     }

@@ -19,16 +19,27 @@ class EditProjectTaskSettingsType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->add(
-            'types',
-            DictionaryEditType::class,
-            [
-                'dictionaryType' => DictionariesTypeEnum::TASK_TYPE(),
-                'label' => 'dictionaries.task_types.label',
-                'help' => 'dictionaries.task_types.help',
-                'required' => false,
-            ]
-        );
+        $builder
+            ->add(
+                'types',
+                DictionaryEditType::class,
+                [
+                    'dictionaryType' => DictionariesTypeEnum::TASK_TYPE(),
+                    'label' => 'dictionaries.task_types.label',
+                    'help' => 'dictionaries.task_types.help',
+                    'required' => false,
+                ]
+            )
+            ->add(
+                'complexity',
+                DictionaryEditType::class,
+                [
+                    'dictionaryType' => DictionariesTypeEnum::TASK_COMPLEXITY(),
+                    'label' => 'dictionaries.task_complexity.label',
+                    'help' => 'dictionaries.task_complexity.help',
+                    'required' => false,
+                ]
+            );
     }
 
     public function configureOptions(OptionsResolver $resolver): void

@@ -44,6 +44,11 @@ class EditTaskDTO
      */
     private int $type = 0;
 
+    /**
+     * @var int
+     */
+    private int $complexity = 0;
+
     public function __construct(Task $task)
     {
         $this->project = $task->getSuffix();
@@ -139,6 +144,24 @@ class EditTaskDTO
     public function setType(?int $type): EditTaskDTO
     {
         $this->type = (int) $type;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getComplexity(): int
+    {
+        return $this->complexity;
+    }
+
+    /**
+     * @param int $complexity
+     * @return EditTaskDTO
+     */
+    public function setComplexity(int $complexity): EditTaskDTO
+    {
+        $this->complexity = $complexity;
         return $this;
     }
 }

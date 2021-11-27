@@ -53,7 +53,6 @@ class TaskRepository extends ServiceEntityRepository implements NoEntityReposito
     public function getProjectsTasks(string $project, int $limit = null): array
     {
         $qb = $this->createQueryBuilder('t');
-        $qb->where('t.isClosed = false');
         $qb->andWhere($qb->expr()->eq('t.project', ':project'))
             ->setParameter('project', $project);
 

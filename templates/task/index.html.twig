@@ -18,32 +18,56 @@
                     {{ mTask.badge(task, true) }}
                 {% endblock %}
                 {% block box_body %}
-                    <div class="row">
-                        <div class="col-md-4">
-                            {{ 'task.project.label'|trans }}: {{ mProject.badge(task.project, true, true) }}
+                    <div class="task-properties">
+                        <div class="row">
+                            <div class="col-md-4 task-property-item">
+                                {{ 'task.project.label'|trans }}: {{ mProject.badge(task.project, true, true) }}
+                            </div>
+                            <div class="col-md-4 task-property-item">
+                                {# Этап #}
+                            </div>
+                            <div class="col-md-4 task-property-item">
+                                {# хз возможно этап сюда, в левее к проекту категорию/Систему #}
+                            </div>
                         </div>
-                        <div class="col-md-4">
-                            {{ 'task.type.label'|trans }}: {{ dictionary(task, 'type') }}
+                        <div class="row">
+                            <div class="col-md-4 task-property-item">
+                                {{ 'task.type.label'|trans }}: {{ dictionary(task, 'type') }}
+                            </div>
+                            <div class="col-md-4 task-property-item">
+                                {{ 'task.createdBy.label'|trans }}: {{ mUser.badge(task.createdBy) }}
+                            </div>
+                            <div class="col-md-4 task-property-item">
+                                {{ 'task.assignedTo.label'|trans }}: {{ mUser.badge(task.assignedTo) }}
+                            </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-4">
-                            {{ 'task.createdBy.label'|trans }}: {{ mUser.badge(task.createdBy) }}
+                        <div class="row">
+                            <div class="col-md-4 task-property-item">
+                                {{ 'task.complexity.label'|trans }}: {{ dictionary(task, 'complexity') }}
+                            </div>
+                            <div class="col-md-4 task-property-item">
+                                {{ 'task.created.label'|trans }}: {{ task.createdAt|ago }}
+                            </div>
+                            <div class="col-md-4 task-property-item">
+                                {{ 'task.updated.label'|trans }}: {{ task.updatedAt|ago }}
+                            </div>
                         </div>
-                        <div class="col-md-4">
-                            {{ 'task.created.label'|trans }}: {{ task.createdAt|ago }}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-4">
-                            {{ 'task.assignedTo.label'|trans }}: {{ mUser.badge(task.assignedTo) }}
-                        </div>
-                        <div class="col-md-4">
-                            {{ 'task.updated.label'|trans }}: {{ task.updatedAt|ago }}
+                        <div class="row">
+                            <div class="col-md-4 task-property-item">
+                                {# Приоритет #}
+                            </div>
+                            <div class="col-md-4 task-property-item">
+
+                            </div>
+                            <div class="col-md-4 task-property-item">
+
+                            </div>
                         </div>
                     </div>
                     <hr>
-                    <p>{{ task.description|markdown_to_html }}</p>
+                    <p>
+                        {{ task.description|markdown_to_html }}
+                    </p>
                 {% endblock %}
             {% endembed %}
         </div>

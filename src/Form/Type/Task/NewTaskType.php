@@ -43,6 +43,15 @@ class NewTaskType extends AbstractType
                 ]
             )
             ->add(
+                'complexity',
+                DictionarySelectType::class,
+                [
+                    'label' => 'task.complexity.label',
+                    'help' => 'task.complexity.help',
+                    'dictionary' => DictionariesTypeEnum::TASK_COMPLEXITY()
+                ]
+            )
+            ->add(
                 'description',
                 TextareaType::class,
                 [

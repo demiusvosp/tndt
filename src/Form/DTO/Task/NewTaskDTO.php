@@ -45,6 +45,11 @@ class NewTaskDTO
     private int $type = 0;
 
     /**
+     * @var int
+     */
+    private int $complexity = 0;
+
+    /**
      * @return string
      */
     public function getProject(): string
@@ -131,6 +136,24 @@ class NewTaskDTO
     public function setType(?int $type): NewTaskDTO
     {
         $this->type = (int) $type;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getComplexity(): int
+    {
+        return $this->complexity;
+    }
+
+    /**
+     * @param int $complexity
+     * @return NewTaskDTO
+     */
+    public function setComplexity(int $complexity): NewTaskDTO
+    {
+        $this->complexity = $complexity;
         return $this;
     }
 }
