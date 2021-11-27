@@ -38,6 +38,7 @@ class TaskFiller
         $task->setDescription($dto->getDescription());
 
         $task->setType($dto->getType());
+        $task->setComplexity($dto->getComplexity());
 
         $newAssignedUser = $this->userRepository->findByUsername($dto->getAssignedTo());
         if (!$newAssignedUser) {
@@ -61,6 +62,7 @@ class TaskFiller
         $task->setDescription($dto->getDescription());
 
         $task->setType($dto->getType());
+        $task->setComplexity($dto->getComplexity());
 
         $newAssignedUser = $this->userRepository->find($dto->getAssignedTo());
         if (!$newAssignedUser) {

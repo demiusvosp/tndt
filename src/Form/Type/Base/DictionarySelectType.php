@@ -8,10 +8,13 @@ declare(strict_types=1);
 
 namespace App\Form\Type\Base;
 
+use App\Object\Dictionary\PreselectedItemInterface;
 use App\Service\DictionaryService;
 use App\Service\ProjectContext;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -29,6 +32,28 @@ class DictionarySelectType extends AbstractType
     public function getParent(): string
     {
         return ChoiceType::class;
+    }
+
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $builder->addModelTransformer(
+            new CallbackTransformer(
+                function ($value) use ($options) {
+                    if (empty($value)) {
+                        $dictionary = $this->dictionaryService->getDictionary(
+                            $options['dictionary'],
+                            $this->projectContext->getProject()
+                        );
+
+                        if ($dictionary instanceof PreselectedItemInterface) {
+                            return $dictionary->getPreselectedItem();
+                        }
+                    }
+                    return $value;
+                },
+                function ($value) { return $value; }
+            )
+        );
     }
 
     public function configureOptions(OptionsResolver $resolver): void
