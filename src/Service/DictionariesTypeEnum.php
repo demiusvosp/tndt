@@ -11,17 +11,20 @@ namespace App\Service;
 use App\Entity\Task;
 use App\Object\Dictionary\Dictionary;
 use App\Object\Task\TaskComplexity;
+use App\Object\Task\TaskPriority;
 use App\Object\Task\TaskType;
 use DomainException;
 use MyCLabs\Enum\Enum;
 
 /**
  * @method static TASK_TYPE()
+ * @method static TASK_PRIORITY()
  * @method static TASK_COMPLEXITY()
  */
 class DictionariesTypeEnum extends Enum
 {
     public const TASK_TYPE = 'task.type';
+    public const TASK_PRIORITY = 'task.priority';
     public const TASK_COMPLEXITY = 'task.complexity';
 
     /**
@@ -32,6 +35,7 @@ class DictionariesTypeEnum extends Enum
     {
         return [
             self::TASK_TYPE => TaskType::class,
+            self::TASK_PRIORITY => TaskPriority::class,
             self::TASK_COMPLEXITY => TaskComplexity::class,
         ];
     }
@@ -43,6 +47,7 @@ class DictionariesTypeEnum extends Enum
     {
         return [
             self::TASK_TYPE => ['getTaskSettings', 'getTypes'],
+            self::TASK_PRIORITY => ['getTaskSettings', 'getPriority'],
             self::TASK_COMPLEXITY => ['getTaskSettings', 'getComplexity'],
         ];
     }
@@ -64,6 +69,7 @@ class DictionariesTypeEnum extends Enum
     {
         return [
             self::TASK_TYPE => ['class' => Task::class, 'getter' => 'getType', 'subType' => 'type'],
+            self::TASK_PRIORITY => ['class' => Task::class, 'getter' => 'getPriority', 'subType' => 'priority'],
             self::TASK_COMPLEXITY => ['class' => Task::class, 'getter' => 'getComplexity', 'subType' => 'complexity'],
         ];
     }

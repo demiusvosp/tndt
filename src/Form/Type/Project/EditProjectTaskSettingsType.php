@@ -31,6 +31,16 @@ class EditProjectTaskSettingsType extends AbstractType
                 ]
             )
             ->add(
+                'priority',
+                DictionaryEditType::class,
+                [
+                    'dictionaryType' => DictionariesTypeEnum::TASK_PRIORITY(),
+                    'label' => 'dictionaries.task_priority.label',
+                    'help' => 'dictionaries.task_priority.help',
+                    'required' => false,
+                ]
+            )
+            ->add(
                 'complexity',
                 DictionaryEditType::class,
                 [

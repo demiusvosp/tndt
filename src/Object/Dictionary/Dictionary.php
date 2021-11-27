@@ -22,6 +22,11 @@ class Dictionary implements JlobObjectInterface
      */
     protected array $items = [];
 
+    /**
+     * @var int
+     */
+    private int $default;
+
     public function __construct(array $arg = [])
     {
         $items = $arg['items'] ?? [];
@@ -35,6 +40,8 @@ class Dictionary implements JlobObjectInterface
 
             $this->items[$item['id']] = $this->createItem($item);
         }
+
+        $this->default = $arg['default'] ?? 0;
     }
 
     public function jsonSerialize(): array
@@ -43,7 +50,7 @@ class Dictionary implements JlobObjectInterface
         foreach ($this->items as $item) {
             $return[$item->getId()] = $item->jsonSerialize();
         }
-        return [ "items" => $return ];
+        return [ "items" => $return, 'default' => $this->default ];
     }
 
     /**
@@ -92,6 +99,9 @@ class Dictionary implements JlobObjectInterface
          * Удаление сейчас не предусмотренно. При реализации метод вынести в сервис и кидать событие проверяющее
          * можно ли удалять указанный id
          */
+
+
+        $this->default = $new->default;
     }
 
     public function addItem(string $name, string $description): void
@@ -117,13 +127,22 @@ class Dictionary implements JlobObjectInterface
     }
 
     /**
-     * Получить значение справочника по умолчанию.
-     * С точки зрения единообразия лучше возвращать DictionaryItem
+     * Значение справочника по умолчанию
      * @return int
      */
-    public function getDefaultItemId(): int
+    public function getDefault(): int
     {
-        return 0;
+        return $this->default;
+    }
+
+    /**
+     * @param int $default
+     * @return Dictionary
+     */
+    public function setDefault(int $default): Dictionary
+    {
+        $this->default = $default;
+        return $this;
     }
 
     /**

@@ -119,6 +119,12 @@ class Task implements NoInterface, CommentableInterface
     private string $description = '';
 
     /**
+     * @var int - приоритетность задачи
+     * @ORM\Column (type="integer")
+     */
+    private int $priority = 0;
+
+    /**
      * @var int - сложность, трудоемкость задачи
      * @ORM\Column (type="integer")
      */
@@ -333,6 +339,24 @@ class Task implements NoInterface, CommentableInterface
     public function setAssignedTo(User $assignedTo): Task
     {
         $this->assignedTo = $assignedTo;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPriority(): int
+    {
+        return $this->priority;
+    }
+
+    /**
+     * @param int $priority
+     * @return Task
+     */
+    public function setPriority(int $priority): Task
+    {
+        $this->priority = $priority;
         return $this;
     }
 
