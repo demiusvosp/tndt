@@ -47,6 +47,11 @@ class NewTaskDTO
     /**
      * @var int
      */
+    private int $priority = 0;
+
+    /**
+     * @var int
+     */
     private int $complexity = 0;
 
     /**
@@ -136,6 +141,24 @@ class NewTaskDTO
     public function setType(?int $type): NewTaskDTO
     {
         $this->type = (int) $type;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPriority(): int
+    {
+        return $this->priority;
+    }
+
+    /**
+     * @param int $priority
+     * @return NewTaskDTO
+     */
+    public function setPriority(int $priority): NewTaskDTO
+    {
+        $this->priority = $priority;
         return $this;
     }
 

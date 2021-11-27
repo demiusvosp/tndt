@@ -44,7 +44,7 @@ class DictionarySelectType extends AbstractType
                             $this->projectContext->getProject()
                         );
 
-                        return $dictionary->getDefaultItemId();
+                        return $dictionary->getDefault();
                     }
                     return $value;
                 },

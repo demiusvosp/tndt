@@ -47,7 +47,7 @@
             <tr>
                 <td>{{ this.no(task) }}</td>
                 <td>{{ this.caption(task, 80) }}</td>
-                <td>{{ dictionary(task, 'type') }}</td>
+                <td>{{ dictionary_name(task, 'type') }}</td>
                 <td>{{ mUser.badge(task.assignedTo) }}</td>
                 <td>{{ task.updatedAt|ago }}</td>{# localizeddate('medium', 'medium') #}
             </tr>

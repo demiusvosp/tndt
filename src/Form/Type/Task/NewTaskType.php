@@ -43,6 +43,15 @@ class NewTaskType extends AbstractType
                 ]
             )
             ->add(
+                'priority',
+                DictionarySelectType::class,
+                [
+                    'label' => 'task.priority.label',
+                    'help' => 'task.priority.help',
+                    'dictionary' => DictionariesTypeEnum::TASK_PRIORITY()
+                ]
+            )
+            ->add(
                 'complexity',
                 DictionarySelectType::class,
                 [

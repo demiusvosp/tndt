@@ -37,6 +37,7 @@
                     <th scope="col">{{ knp_pagination_sortable(tasks, 'task.No'|trans, 't.no') }}</th>
                     <th scope="col">{{ knp_pagination_sortable(tasks, 'task.caption.label'|trans, 't.caption') }}</th>
                     <th scope="col">{{ knp_pagination_sortable(tasks, 'task.type.label'|trans, 't.type') }}</th>
+                    <th scope="col">{{ knp_pagination_sortable(tasks, 'task.priority.label'|trans, 't.priority') }}</th>
                     <th scope="col">{{ knp_pagination_sortable(tasks, 'task.complexity.label'|trans, 't.complexity') }}</th>
 {#                    <th scope="col">{{ knp_pagination_sortable(tasks, 'task.createdBy.label'|trans, 't.createdBy') }}</th>#}
                     <th scope="col">{{ knp_pagination_sortable(tasks, 'task.created.label'|trans, 't.createdAt') }}</th>
@@ -48,8 +49,9 @@
                         {# здесь проставляем класс напрямую ячейке, потому что из col он не достается  #}
                         <td class="task-col-no">{{ mTask.no(task) }}</td>
                         <td>{{ mTask.caption(task, 160) }}</td>
-                        <td>{{ dictionary(task, 'type') }}</td>
-                        <td>{{ dictionary(task, 'complexity') }}</td>
+                        <td>{{ dictionary_name(task, 'type', true) }}</td>
+                        <td>{{ dictionary_name(task, 'priority', true) }}</td>
+                        <td>{{ dictionary_name(task, 'complexity', true) }}</td>
 {#                        <td>{{ mUser.badge(task.createdBy, true, false) }}</td>#}
                         <td>{{ task.createdAt|ago }}</td>
 {#                        <td>{{ mUser.badge(task.assignedTo, true, false) }}</td>#}

@@ -30,14 +30,14 @@ class DictionaryExtension extends AbstractExtension
     {
         return [
             new TwigFunction(
-                'dictionary',
-                [$this, 'dictionary'],
+                'dictionary_name',
+                [$this, 'dictionaryName'],
                 ['is_safe' => ['html']],
             ),
         ];
     }
 
-    public function dictionary($entity, string $dictionaryType): string
+    public function dictionaryName($entity, string $dictionaryType, bool $withAlt = false): string
     {
         if (!$entity instanceof InProjectInterface) {
             throw new \InvalidArgumentException('Справочник можно получить только от сущности относящейся к проекту');
@@ -46,8 +46,15 @@ class DictionaryExtension extends AbstractExtension
         $item = $this->dictionaryService->getDictionaryItem($dictionary, $entity);
 
         if ($item->getId() === 0) { // возможно стоит проверять через интерфейс TranslatableItem
-            return '<i>' . $this->translator->trans($item->getName()) . '</i>';
+            $html = '<i class="dictionary-not-set">' . $this->translator->trans($item->getName()) . '</i>';
+        } else {
+            $html = $item->getName();
         }
-        return $item->getName();
+
+        if ($withAlt) {
+            $html = '<span title="' . $item->getDescription() . '">' . $html . '</span>';
+        }
+
+        return $html;
     }
 }

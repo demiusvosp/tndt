@@ -32,7 +32,7 @@
                         </div>
                         <div class="row">
                             <div class="col-md-4 task-property-item">
-                                {{ 'task.type.label'|trans }}: {{ dictionary(task, 'type') }}
+                                {{ 'task.type.label'|trans }}: {{ dictionary_name(task, 'type') }}
                             </div>
                             <div class="col-md-4 task-property-item">
                                 {{ 'task.createdBy.label'|trans }}: {{ mUser.badge(task.createdBy) }}
@@ -43,7 +43,7 @@
                         </div>
                         <div class="row">
                             <div class="col-md-4 task-property-item">
-                                {{ 'task.complexity.label'|trans }}: {{ dictionary(task, 'complexity') }}
+                                {{ 'task.complexity.label'|trans }}: {{ dictionary_name(task, 'complexity') }}
                             </div>
                             <div class="col-md-4 task-property-item">
                                 {{ 'task.created.label'|trans }}: {{ task.createdAt|ago }}
@@ -54,7 +54,7 @@
                         </div>
                         <div class="row">
                             <div class="col-md-4 task-property-item">
-                                {# Приоритет #}
+                                {{ 'task.priority.label'|trans }}: {{ dictionary_name(task, 'priority') }}
                             </div>
                             <div class="col-md-4 task-property-item">
 
