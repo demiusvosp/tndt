@@ -8,7 +8,6 @@ declare(strict_types=1);
 
 namespace App\Form\Type\Base;
 
-use App\Object\Dictionary\PreselectedItemInterface;
 use App\Service\DictionaryService;
 use App\Service\ProjectContext;
 use Symfony\Component\Form\AbstractType;
@@ -45,9 +44,7 @@ class DictionarySelectType extends AbstractType
                             $this->projectContext->getProject()
                         );
 
-                        if ($dictionary instanceof PreselectedItemInterface) {
-                            return $dictionary->getPreselectedItem();
-                        }
+                        return $dictionary->getDefaultItemId();
                     }
                     return $value;
                 },

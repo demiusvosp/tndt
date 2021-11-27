@@ -27,12 +27,12 @@ class TaskSettings implements JlobObjectInterface
     public function __construct(array $arg = [])
     {
         $this->types = new TaskType($arg['types'] ?? []);
-        $this->complexity = new TaskComplexity($arg['difficulties'] ?? []);
+        $this->complexity = new TaskComplexity($arg['complexity'] ?? []);
     }
 
     public function jsonSerialize(): array
     {
-        return ['types' => $this->types->jsonSerialize(), 'difficulties' => $this->complexity->jsonSerialize()];
+        return ['types' => $this->types->jsonSerialize(), 'complexity' => $this->complexity->jsonSerialize()];
     }
 
     /**

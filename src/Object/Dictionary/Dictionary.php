@@ -117,6 +117,16 @@ class Dictionary implements JlobObjectInterface
     }
 
     /**
+     * Получить значение справочника по умолчанию.
+     * С точки зрения единообразия лучше возвращать DictionaryItem
+     * @return int
+     */
+    public function getDefaultItemId(): int
+    {
+        return 0;
+    }
+
+    /**
      * Получить класс элемента справочника
      * @param array $args
      * @return DictionaryItem

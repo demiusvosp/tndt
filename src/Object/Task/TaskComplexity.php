@@ -9,9 +9,8 @@ declare(strict_types=1);
 namespace App\Object\Task;
 
 use App\Object\Dictionary\Dictionary;
-use App\Object\Dictionary\PreselectedItemInterface;
 
-class TaskComplexity extends Dictionary implements PreselectedItemInterface
+class TaskComplexity extends Dictionary
 {
     private int $default = 0;
 
@@ -29,7 +28,10 @@ class TaskComplexity extends Dictionary implements PreselectedItemInterface
         );
     }
 
-    public function getPreselectedItem(): int
+    /**
+     * @inheritDoc
+     */
+    public function getDefaultItemId(): int
     {
         return $this->default;
     }
