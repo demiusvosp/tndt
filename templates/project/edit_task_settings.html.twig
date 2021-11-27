@@ -7,24 +7,24 @@
     {{ form_start(form) }}
     <div class="project-settings-blocks">
         <div class="row">
-            <div class="col-md-5 settings-block">
+            <div class="col-md-6"><div class="settings-block">
                 {{ form_label(form.types) }}
                 <div>{{ form_widget(form.types) }}</div>
                 {{ form_help(form.types, {'attr': {'class': 'help-block'}}) }}
-            </div>
-            <div class="col-md-5 settings-block">
+            </div></div>
+            <div class="col-md-6"><div class="settings-block">
                 <i>Здесь будет этап задачи</i>
-            </div>
+            </div></div>
         </div>
         <div class="row">
-            <div class="col-md-5 settings-block">
+            <div class="col-md-6"><div class="settings-block">
                 {{ form_label(form.complexity) }}
                 <div>{{ form_widget(form.complexity) }}</div>
                 {{ form_help(form.complexity, {'attr': {'class': 'help-block'}}) }}
-            </div>
-        </div>
-        <div class="col-md-5 settings-block">
-            <i>Здесь будет приоритет задачи</i>
+            </div></div>
+            <div class="col-md-6"><div class="settings-block">
+                <i>Здесь будет приоритет задачи</i>
+            </div></div>
         </div>
     </div>
 {% endblock %}
