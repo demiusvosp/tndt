@@ -12,5 +12,8 @@ use App\Object\Dictionary\Dictionary;
 
 class TaskPriority extends Dictionary
 {
-
+    protected function createItem(array $args = []): TaskPriorityItem
+    {
+        return new TaskPriorityItem($args);
+    }
 }

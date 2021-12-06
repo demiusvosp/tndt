@@ -28,9 +28,16 @@ class DictionaryItem implements JlobObjectInterface
      */
     private string $description;
 
-    public function __construct(array $arg = [])
+    public function __construct(array $args = [])
     {
-        $this->id = $arg['id'] ?? 0;
+        if (!empty($args)) {
+            $this->id = $args['id'] ?? 0;
+            $this->setFromArray($args);
+        }
+    }
+
+    public function setFromArray(array $arg): void
+    {
         $this->name = $arg['name'] ?? '';
         $this->description = $arg['description'] ?? '';
     }

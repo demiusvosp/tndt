@@ -48,9 +48,11 @@ class Dictionary implements JlobObjectInterface
     {
         $return = [];
         foreach ($this->items as $item) {
-            $return[$item->getId()] = $item->jsonSerialize();
+            $return['items'][$item->getId()] = $item->jsonSerialize();
         }
-        return [ "items" => $return, 'default' => $this->default ];
+
+        $return['default'] = $this->default;
+        return $return;
     }
 
     /**
@@ -83,16 +85,14 @@ class Dictionary implements JlobObjectInterface
         foreach ($new->items as $newItem) {
             if ($newItem->getId() && isset($this->items[$newItem->getId()])) {
                 $existItem = $this->items[$newItem->getId()];
-                $existItem->setName($newItem->getName());
-                $existItem->setDescription($newItem->getDescription());
-
+                $newItemData = $newItem->jsonSerialize();
+                $existItem->setFromArray($newItemData);
             } else {
                 $newId = $newItem->getId() ?? $this->generateNewId();
-                $this->items[$newId] = $this->createItem([
-                    'id' => $newId,
-                    'name' => $newItem->getName(),
-                    'description' => $newItem->getDescription()
-                ]);
+                $newItemData = $newItem->jsonSerialize();
+                $newItemData['id'] = $newId;
+
+                $this->items[$newId] = $this->createItem($newItemData);
             }
         }
         /*
