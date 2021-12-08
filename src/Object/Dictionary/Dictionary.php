@@ -100,7 +100,6 @@ class Dictionary implements JlobObjectInterface
          * можно ли удалять указанный id
          */
 
-
         $this->default = $new->default;
     }
 

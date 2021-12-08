@@ -12,5 +12,22 @@ use App\Object\Dictionary\Dictionary;
 
 class TaskComplexity extends Dictionary
 {
-
+    /**
+     * Насколько указанный элемент выше или ниже базового
+     * @param $item
+     * @return int
+     */
+    public function getPositionDelta(int $itemId): int
+    {
+        $delta = 0;
+        foreach ($this->items as $id => $item) {
+            if ($id >= $itemId && $id < $this->getDefault()) {
+                $delta--;
+            }
+            if ($id <= $itemId && $id > $this->getDefault()) {
+                $delta++;
+            }
+        }
+        return $delta;
+    }
 }

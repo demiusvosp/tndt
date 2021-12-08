@@ -16,7 +16,7 @@ use App\Repository\ProjectRepository;
 /**
  * Система справочников. Позволяет получить по типу справочника и его значению его элемент
  */
-class DictionaryService
+class DictionaryFetcher
 {
     /**
      * @var array
@@ -76,6 +76,22 @@ class DictionaryService
             );
         }
         return $object;
+    }
+
+    /**
+     * Получить элементы всех, связанных с объектом словарей.
+     * @param InProjectInterface $entity
+     * @return array
+     */
+    public function getRelatedItems(InProjectInterface $entity): array
+    {
+        $items = [];
+        $dictionaries = DictionariesTypeEnum::allFromEntity($entity);
+        foreach ($dictionaries as $dictionary) {
+            $items[$dictionary->getValue()] = $this->getDictionaryItem($dictionary, $entity);
+        }
+
+        return $items;
     }
 
     private function loadProject(string $suffix): void

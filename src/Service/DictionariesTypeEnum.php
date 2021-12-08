@@ -88,11 +88,29 @@ class DictionariesTypeEnum extends Enum
                 return self::from($fullType);
             }
         }
+
         throw new \InvalidArgumentException(
             'Справочник ' . $dictionary
             . ' относящийся к ' . get_class($entity)
             . ' не найден'
         );
+    }
+
+    /**
+     * Получить все словари, имеющие отношение к сущности
+     * @param $entity
+     * @return array
+     */
+    public static function allFromEntity($entity): array
+    {
+        $dictionaries = [];
+        foreach (self::relatedEntities() as $fullType => $related) {
+            if ($entity instanceof $related['class']) {
+                $dictionaries[] = self::from($fullType);
+            }
+        }
+
+        return $dictionaries;
     }
 
     /**

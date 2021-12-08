@@ -20,7 +20,7 @@ class TaskPriorityItem extends DictionaryItem
     public function setFromArray(array $args): void
     {
         parent::setFromArray($args);
-        $this->bgColor = $args['bgColor'] ?? null;
+        $this->bgColor = isset($args['bgColor']) ? str_replace(['#', ';'], '', $args['bgColor']) : null;
     }
 
     public function jsonSerialize(): array
@@ -45,7 +45,7 @@ class TaskPriorityItem extends DictionaryItem
      */
     public function setBgColor($bgColor)
     {
-        $this->bgColor = $bgColor;
+        $this->bgColor = str_replace(['#', ';'], '', $bgColor);
         return $this;
     }
 }

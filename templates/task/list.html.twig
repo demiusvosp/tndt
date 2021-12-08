@@ -45,7 +45,7 @@
                     <th scope="col">{{ knp_pagination_sortable(tasks, 'task.updated.label'|trans, 't.updatedAt') }}</th>
                 </tr>
                 {%  for task in tasks %}
-                    <tr>
+                    <tr style="{{ dictionary_style(task, 'list_row') }}">
                         {# здесь проставляем класс напрямую ячейке, потому что из col он не достается  #}
                         <td class="task-col-no">{{ mTask.no(task) }}</td>
                         <td>{{ mTask.caption(task, 160) }}</td>

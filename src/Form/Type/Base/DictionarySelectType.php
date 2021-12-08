@@ -8,7 +8,7 @@ declare(strict_types=1);
 
 namespace App\Form\Type\Base;
 
-use App\Service\DictionaryService;
+use App\Service\DictionaryFetcher;
 use App\Service\ProjectContext;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
@@ -19,10 +19,10 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class DictionarySelectType extends AbstractType
 {
-    private DictionaryService $dictionaryService;
+    private DictionaryFetcher $dictionaryService;
     private ProjectContext $projectContext;
 
-    public function __construct(DictionaryService $dictionaryService, ProjectContext $projectContext)
+    public function __construct(DictionaryFetcher $dictionaryService, ProjectContext $projectContext)
     {
         $this->dictionaryService = $dictionaryService;
         $this->projectContext = $projectContext;

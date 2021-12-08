@@ -10,19 +10,26 @@ namespace App\Service\Twig;
 
 use App\Entity\Contract\InProjectInterface;
 use App\Service\DictionariesTypeEnum;
-use App\Service\DictionaryService;
+use App\Service\DictionaryFetcher;
+use App\Service\DictionaryStylesEnum;
+use App\Service\DictionaryStylizer;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
 class DictionaryExtension extends AbstractExtension
 {
-    private DictionaryService $dictionaryService;
+    private DictionaryFetcher $dictionaryFetcher;
+    private DictionaryStylizer $dictionaryStylizer;
     private TranslatorInterface $translator;
 
-    public function __construct(DictionaryService $dictionaryService, TranslatorInterface $translator)
-    {
-        $this->dictionaryService = $dictionaryService;
+    public function __construct(
+        DictionaryFetcher $dictionaryService,
+        DictionaryStylizer $dictionaryStylizer,
+        TranslatorInterface $translator
+    ) {
+        $this->dictionaryFetcher = $dictionaryService;
+        $this->dictionaryStylizer = $dictionaryStylizer;
         $this->translator = $translator;
     }
 
@@ -34,6 +41,10 @@ class DictionaryExtension extends AbstractExtension
                 [$this, 'dictionaryName'],
                 ['is_safe' => ['html']],
             ),
+            new TwigFunction(
+                'dictionary_style',
+                [$this, 'dictionaryStyle']
+            )
         ];
     }
 
@@ -43,7 +54,7 @@ class DictionaryExtension extends AbstractExtension
             throw new \InvalidArgumentException('Справочник можно получить только от сущности относящейся к проекту');
         }
         $dictionary = DictionariesTypeEnum::fromEntity($entity, $dictionaryType);
-        $item = $this->dictionaryService->getDictionaryItem($dictionary, $entity);
+        $item = $this->dictionaryFetcher->getDictionaryItem($dictionary, $entity);
 
         if ($item->getId() === 0) { // возможно стоит проверять через интерфейс TranslatableItem
             $html = '<i class="dictionary-not-set">' . $this->translator->trans($item->getName()) . '</i>';
@@ -56,5 +67,12 @@ class DictionaryExtension extends AbstractExtension
         }
 
         return $html;
+    }
+
+    public function dictionaryStyle($entity, string $styleType): string
+    {
+        $style = DictionaryStylesEnum::fromEntity($entity, $styleType);
+
+        return $this->dictionaryStylizer->getStyle($entity, $style);
     }
 }
