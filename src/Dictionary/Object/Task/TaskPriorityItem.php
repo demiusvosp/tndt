@@ -6,9 +6,9 @@
  */
 declare(strict_types=1);
 
-namespace App\Object\Task;
+namespace App\Dictionary\Object\Task;
 
-use App\Object\Dictionary\DictionaryItem;
+use App\Dictionary\Object\DictionaryItem;
 
 class TaskPriorityItem extends DictionaryItem
 {
@@ -34,7 +34,7 @@ class TaskPriorityItem extends DictionaryItem
     /**
      * @return string|null
      */
-    public function getBgColor()
+    public function getBgColor(): ?string
     {
         return $this->bgColor;
     }

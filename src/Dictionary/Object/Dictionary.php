@@ -6,7 +6,7 @@
  */
 declare(strict_types=1);
 
-namespace App\Object\Dictionary;
+namespace App\Dictionary\Object;
 
 use App\Object\JlobObjectInterface;
 

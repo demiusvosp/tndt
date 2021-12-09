@@ -8,9 +8,9 @@ declare(strict_types=1);
 
 namespace App\Form\Type\Base;
 
-use App\Object\Dictionary\Dictionary;
+use App\Dictionary\Object\Dictionary;
+use App\Dictionary\TypesEnum;
 use App\Object\JlobObjectInterface;
-use App\Service\DictionariesTypeEnum;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -36,7 +36,7 @@ class DictionaryEditType extends AbstractType
                     );
                 },
                 function (string $string) use ($options): Dictionary {
-                    /** @var DictionariesTypeEnum $dictionaryType */
+                    /** @var TypesEnum $dictionaryType */
                     $dictionaryType = $options['dictionaryType'];
 
                     $array = json_decode($string, true, 512, JSON_THROW_ON_ERROR);

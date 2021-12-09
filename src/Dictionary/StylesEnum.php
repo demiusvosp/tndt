@@ -6,7 +6,7 @@
  */
 declare(strict_types=1);
 
-namespace App\Service;
+namespace App\Dictionary;
 
 use App\Entity\Task;
 use MyCLabs\Enum\Enum;
@@ -14,7 +14,7 @@ use MyCLabs\Enum\Enum;
 /**
  * @method static TASK_ROW()
  */
-class DictionaryStylesEnum extends Enum
+class StylesEnum extends Enum
 {
     public const TASK_ROW = 'task.list_row';
 

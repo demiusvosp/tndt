@@ -6,9 +6,9 @@
  */
 declare(strict_types=1);
 
-namespace App\Object\Task;
+namespace App\Dictionary\Object\Task;
 
-use App\Object\Dictionary\Dictionary;
+use App\Dictionary\Object\Dictionary;
 
 class TaskComplexity extends Dictionary
 {

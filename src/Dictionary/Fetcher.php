@@ -6,17 +6,18 @@
  */
 declare(strict_types=1);
 
-namespace App\Service;
+namespace App\Dictionary;
 
 use App\Entity\Contract\InProjectInterface;
-use App\Object\Dictionary\Dictionary;
-use App\Object\Dictionary\DictionaryItem;
+use App\Dictionary\Object\Dictionary;
+use App\Dictionary\Object\DictionaryItem;
 use App\Repository\ProjectRepository;
+use App\Service\ProjectContext;
 
 /**
  * Система справочников. Позволяет получить по типу справочника и его значению его элемент
  */
-class DictionaryFetcher
+class Fetcher
 {
     /**
      * @var array
@@ -39,11 +40,11 @@ class DictionaryFetcher
      *    справочника. Строго говоря справочник необязательно хранится в проекте, но сейчас все справочники относятся
      *    к проектам, а когда будет не так, нужно будет создать систему хендлеров умеющий брать справочники из разных
      *    сущностей)
-     * @param DictionariesTypeEnum $dictionaryType
+     * @param TypesEnum $dictionaryType
      * @param InProjectInterface $entity
      * @return DictionaryItem
      */
-    public function getDictionaryItem(DictionariesTypeEnum $dictionaryType, InProjectInterface $entity): DictionaryItem
+    public function getDictionaryItem(TypesEnum $dictionaryType, InProjectInterface $entity): DictionaryItem
     {
         $dictionaryObject = $this->getDictionary($dictionaryType, $entity);
 
@@ -55,11 +56,11 @@ class DictionaryFetcher
 
     /**
      * Получить указанный справочник из указанного проекта (или любой сущности, связанной с проектом)
-     * @param DictionariesTypeEnum $dictionaryType
+     * @param TypesEnum $dictionaryType
      * @param InProjectInterface|null $entity - null - текущий проект из сервиса ProjectContext
      * @return Dictionary
      */
-    public function getDictionary(DictionariesTypeEnum $dictionaryType, InProjectInterface $entity): Dictionary
+    public function getDictionary(TypesEnum $dictionaryType, InProjectInterface $entity): Dictionary
     {
         if (!isset($this->projects[$entity->getSuffix()])) {
             $this->loadProject($entity->getSuffix());
@@ -86,7 +87,7 @@ class DictionaryFetcher
     public function getRelatedItems(InProjectInterface $entity): array
     {
         $items = [];
-        $dictionaries = DictionariesTypeEnum::allFromEntity($entity);
+        $dictionaries = TypesEnum::allFromEntity($entity);
         foreach ($dictionaries as $dictionary) {
             $items[$dictionary->getValue()] = $this->getDictionaryItem($dictionary, $entity);
         }

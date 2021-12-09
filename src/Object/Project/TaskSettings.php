@@ -9,9 +9,9 @@ declare(strict_types=1);
 namespace App\Object\Project;
 
 use App\Object\JlobObjectInterface;
-use App\Object\Task\TaskComplexity;
-use App\Object\Task\TaskPriority;
-use App\Object\Task\TaskType;
+use App\Dictionary\Object\Task\TaskComplexity;
+use App\Dictionary\Object\Task\TaskPriority;
+use App\Dictionary\Object\Task\TaskType;
 
 class TaskSettings implements JlobObjectInterface
 {

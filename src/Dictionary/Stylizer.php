@@ -6,32 +6,30 @@
  */
 declare(strict_types=1);
 
-namespace App\Service;
+namespace App\Dictionary;
 
-use App\Object\Dictionary\DictionaryItem;
-use App\Object\Task\TaskComplexity;
-use App\Object\Task\TaskPriorityItem;
+use App\Dictionary\Object\Task\TaskPriorityItem;
 
-class DictionaryStylizer
+class Stylizer
 {
-    private DictionaryFetcher $fetcher;
+    private Fetcher $fetcher;
 
-    public function __construct(DictionaryFetcher $fetcher)
+    public function __construct(Fetcher $fetcher)
     {
         $this->fetcher = $fetcher;
     }
 
-    public function getStyle($entity, DictionaryStylesEnum $styleType): string
+    public function getStyle($entity, StylesEnum $styleType): string
     {
         $items = $this->fetcher->getRelatedItems($entity);
 
         // @TODO когда появятся больше разных стилизуемых мест и правил, создать систему хендлеров, а пока так.
-        if ($styleType->equals(DictionaryStylesEnum::TASK_ROW())) {
+        if ($styleType->equals(StylesEnum::TASK_ROW())) {
             $style = '';
             $bgColor = [255, 255, 255];
-            if (isset($items[DictionariesTypeEnum::TASK_PRIORITY])) {
+            if (isset($items[TypesEnum::TASK_PRIORITY])) {
                 /** @var TaskPriorityItem $item */
-                $item = $items[DictionariesTypeEnum::TASK_PRIORITY];
+                $item = $items[TypesEnum::TASK_PRIORITY];
                 if (!empty($item->getBgColor())) {
                     $bgColor = $this->colorStr2Hex($item->getBgColor());
                 }

@@ -6,13 +6,13 @@
  */
 declare(strict_types=1);
 
-namespace App\Service;
+namespace App\Dictionary;
 
 use App\Entity\Task;
-use App\Object\Dictionary\Dictionary;
-use App\Object\Task\TaskComplexity;
-use App\Object\Task\TaskPriority;
-use App\Object\Task\TaskType;
+use App\Dictionary\Object\Dictionary;
+use App\Dictionary\Object\Task\TaskComplexity;
+use App\Dictionary\Object\Task\TaskPriority;
+use App\Dictionary\Object\Task\TaskType;
 use DomainException;
 use MyCLabs\Enum\Enum;
 
@@ -21,7 +21,7 @@ use MyCLabs\Enum\Enum;
  * @method static TASK_PRIORITY()
  * @method static TASK_COMPLEXITY()
  */
-class DictionariesTypeEnum extends Enum
+class TypesEnum extends Enum
 {
     public const TASK_TYPE = 'task.type';
     public const TASK_PRIORITY = 'task.priority';
