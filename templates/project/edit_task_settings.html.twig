@@ -18,12 +18,14 @@
         </div>
         <div class="row">
             <div class="col-md-6"><div class="settings-block">
+                {{ form_label(form.priority) }}
+                <div>{{ form_widget(form.priority) }}</div>
+                {{ form_help(form.priority, {'attr': {'class': 'help-block'}}) }}
+            </div></div>
+            <div class="col-md-6"><div class="settings-block">
                 {{ form_label(form.complexity) }}
                 <div>{{ form_widget(form.complexity) }}</div>
                 {{ form_help(form.complexity, {'attr': {'class': 'help-block'}}) }}
-            </div></div>
-            <div class="col-md-6"><div class="settings-block">
-                <i>Здесь будет приоритет задачи</i>
             </div></div>
         </div>
     </div>

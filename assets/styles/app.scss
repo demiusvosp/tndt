@@ -144,6 +144,11 @@ $color-disabled: #333;
     }
 }
 
+/* Dictionaries */
+.dictionary-not-set {
+    color: $text-muted;
+}
+
 .modal-header h5 {
     float: left;
 }

@@ -9,20 +9,27 @@ declare(strict_types=1);
 namespace App\Service\Twig;
 
 use App\Entity\Contract\InProjectInterface;
-use App\Service\DictionariesTypeEnum;
-use App\Service\DictionaryService;
+use App\Dictionary\TypesEnum;
+use App\Dictionary\Fetcher;
+use App\Dictionary\StylesEnum;
+use App\Dictionary\Stylizer;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
 class DictionaryExtension extends AbstractExtension
 {
-    private DictionaryService $dictionaryService;
+    private Fetcher $fetcher;
+    private Stylizer $stylizer;
     private TranslatorInterface $translator;
 
-    public function __construct(DictionaryService $dictionaryService, TranslatorInterface $translator)
-    {
-        $this->dictionaryService = $dictionaryService;
+    public function __construct(
+        Fetcher             $fetcher,
+        Stylizer            $stylizer,
+        TranslatorInterface $translator
+    ) {
+        $this->fetcher = $fetcher;
+        $this->stylizer = $stylizer;
         $this->translator = $translator;
     }
 
@@ -30,24 +37,42 @@ class DictionaryExtension extends AbstractExtension
     {
         return [
             new TwigFunction(
-                'dictionary',
-                [$this, 'dictionary'],
+                'dictionary_name',
+                [$this, 'dictionaryName'],
                 ['is_safe' => ['html']],
             ),
+            new TwigFunction(
+                'dictionary_style',
+                [$this, 'dictionaryStyle']
+            )
         ];
     }
 
-    public function dictionary($entity, string $dictionaryType): string
+    public function dictionaryName($entity, string $dictionaryType, bool $withAlt = false): string
     {
         if (!$entity instanceof InProjectInterface) {
             throw new \InvalidArgumentException('Справочник можно получить только от сущности относящейся к проекту');
         }
-        $dictionary = DictionariesTypeEnum::fromEntity($entity, $dictionaryType);
-        $item = $this->dictionaryService->getDictionaryItem($dictionary, $entity);
+        $dictionary = TypesEnum::fromEntity($entity, $dictionaryType);
+        $item = $this->fetcher->getDictionaryItem($dictionary, $entity);
 
         if ($item->getId() === 0) { // возможно стоит проверять через интерфейс TranslatableItem
-            return '<i>' . $this->translator->trans($item->getName()) . '</i>';
+            $html = '<i class="dictionary-not-set">' . $this->translator->trans($item->getName()) . '</i>';
+        } else {
+            $html = $item->getName();
         }
-        return $item->getName();
+
+        if ($withAlt) {
+            $html = '<span title="' . $item->getDescription() . '">' . $html . '</span>';
+        }
+
+        return $html;
+    }
+
+    public function dictionaryStyle($entity, string $styleType): string
+    {
+        $style = StylesEnum::fromEntity($entity, $styleType);
+
+        return $this->stylizer->getStyle($entity, $style);
     }
 }

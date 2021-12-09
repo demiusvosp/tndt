@@ -47,6 +47,11 @@ class EditTaskDTO
     /**
      * @var int
      */
+    private int $priority = 0;
+
+    /**
+     * @var int
+     */
     private int $complexity = 0;
 
     public function __construct(Task $task)
@@ -144,6 +149,24 @@ class EditTaskDTO
     public function setType(?int $type): EditTaskDTO
     {
         $this->type = (int) $type;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPriority(): int
+    {
+        return $this->priority;
+    }
+
+    /**
+     * @param int $priority
+     * @return EditTaskDTO
+     */
+    public function setPriority(int $priority): EditTaskDTO
+    {
+        $this->priority = $priority;
         return $this;
     }
 

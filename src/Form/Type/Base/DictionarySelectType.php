@@ -8,7 +8,7 @@ declare(strict_types=1);
 
 namespace App\Form\Type\Base;
 
-use App\Service\DictionaryService;
+use App\Dictionary\Fetcher;
 use App\Service\ProjectContext;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
@@ -19,12 +19,12 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class DictionarySelectType extends AbstractType
 {
-    private DictionaryService $dictionaryService;
+    private Fetcher $fetcher;
     private ProjectContext $projectContext;
 
-    public function __construct(DictionaryService $dictionaryService, ProjectContext $projectContext)
+    public function __construct(Fetcher $fetcher, ProjectContext $projectContext)
     {
-        $this->dictionaryService = $dictionaryService;
+        $this->fetcher = $fetcher;
         $this->projectContext = $projectContext;
     }
 
@@ -39,12 +39,12 @@ class DictionarySelectType extends AbstractType
             new CallbackTransformer(
                 function ($value) use ($options) {
                     if (empty($value)) {
-                        $dictionary = $this->dictionaryService->getDictionary(
+                        $dictionary = $this->fetcher->getDictionary(
                             $options['dictionary'],
                             $this->projectContext->getProject()
                         );
 
-                        return $dictionary->getDefaultItemId();
+                        return $dictionary->getDefault();
                     }
                     return $value;
                 },
@@ -65,7 +65,7 @@ class DictionarySelectType extends AbstractType
             'choices',
             function(Options $options) {
                 $choices = [];
-                $dictionary = $this->dictionaryService->getDictionary(
+                $dictionary = $this->fetcher->getDictionary(
                     $options['dictionary'],
                     $this->projectContext->getProject()
                 );
