@@ -19,8 +19,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class DictionarySelectType extends AbstractType
 {
-    private Fetcher $fetcher;
-    private ProjectContext $projectContext;
+    protected Fetcher $fetcher;
+    protected ProjectContext $projectContext;
 
     public function __construct(Fetcher $fetcher, ProjectContext $projectContext)
     {

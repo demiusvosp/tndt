@@ -8,9 +8,11 @@ declare(strict_types=1);
 
 namespace App\Form\Type\Task;
 
+use App\Dictionary\Object\Task\StageTypesEnum;
 use App\Dictionary\TypesEnum;
 use App\Form\DTO\Task\NewTaskDTO;
 use App\Form\Type\Base\DictionarySelectType;
+use App\Form\Type\Base\DictionaryStageSelectType;
 use App\Form\Type\User\UserSelectType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -32,6 +34,15 @@ class NewTaskType extends AbstractType
                 'assignedTo',
                 UserSelectType::class,
                 ['label' => 'task.assignedTo.label', 'help' => 'task.assignedTo.help']
+            )
+            ->add(
+                'stage',
+                DictionaryStageSelectType::class,
+                [
+                    'label' => 'task.stage.label',
+                    'help' => 'task.stage.help',
+                    'scenario' => DictionaryStageSelectType::SCENARIO_NEW,
+                ]
             )
             ->add(
                 'type',
@@ -66,7 +77,7 @@ class NewTaskType extends AbstractType
                 [
                     'label' => 'task.description.label',
                     'help' => 'task.description.help',
-                    'attr' => ['rows' => 20],
+                    'attr' => ['rows' => 25],
                     'required' => false,
                     'empty_data' => '',
                 ]

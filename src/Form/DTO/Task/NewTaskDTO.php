@@ -47,6 +47,11 @@ class NewTaskDTO
     /**
      * @var int
      */
+    private int $stage = 0;
+
+    /**
+     * @var int
+     */
     private int $priority = 0;
 
     /**
@@ -141,6 +146,24 @@ class NewTaskDTO
     public function setType(?int $type): NewTaskDTO
     {
         $this->type = (int) $type;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getStage(): int
+    {
+        return $this->stage;
+    }
+
+    /**
+     * @param int $stage
+     * @return NewTaskDTO
+     */
+    public function setStage(int $stage): NewTaskDTO
+    {
+        $this->stage = $stage;
         return $this;
     }
 

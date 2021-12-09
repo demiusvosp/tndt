@@ -47,6 +47,11 @@ class EditTaskDTO
     /**
      * @var int
      */
+    private int $stage = 0;
+
+    /**
+     * @var int
+     */
     private int $priority = 0;
 
     /**
@@ -149,6 +154,24 @@ class EditTaskDTO
     public function setType(?int $type): EditTaskDTO
     {
         $this->type = (int) $type;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getStage(): int
+    {
+        return $this->stage;
+    }
+
+    /**
+     * @param int $stage
+     * @return EditTaskDTO
+     */
+    public function setStage(int $stage): EditTaskDTO
+    {
+        $this->stage = $stage;
         return $this;
     }
 
