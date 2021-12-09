@@ -8,6 +8,7 @@ declare(strict_types=1);
 
 namespace App\Dictionary;
 
+use App\Dictionary\Object\Task\TaskStage;
 use App\Entity\Task;
 use App\Dictionary\Object\Dictionary;
 use App\Dictionary\Object\Task\TaskComplexity;
@@ -18,12 +19,14 @@ use MyCLabs\Enum\Enum;
 
 /**
  * @method static TASK_TYPE()
+ * @method static TASK_STAGE()
  * @method static TASK_PRIORITY()
  * @method static TASK_COMPLEXITY()
  */
 class TypesEnum extends Enum
 {
     public const TASK_TYPE = 'task.type';
+    public const TASK_STAGE = 'task.stage';
     public const TASK_PRIORITY = 'task.priority';
     public const TASK_COMPLEXITY = 'task.complexity';
 
@@ -35,6 +38,7 @@ class TypesEnum extends Enum
     {
         return [
             self::TASK_TYPE => TaskType::class,
+            self::TASK_STAGE => TaskStage::class,
             self::TASK_PRIORITY => TaskPriority::class,
             self::TASK_COMPLEXITY => TaskComplexity::class,
         ];
@@ -47,6 +51,7 @@ class TypesEnum extends Enum
     {
         return [
             self::TASK_TYPE => ['getTaskSettings', 'getTypes'],
+            self::TASK_STAGE => ['getTaskSettings', 'getStages'],
             self::TASK_PRIORITY => ['getTaskSettings', 'getPriority'],
             self::TASK_COMPLEXITY => ['getTaskSettings', 'getComplexity'],
         ];
@@ -69,6 +74,7 @@ class TypesEnum extends Enum
     {
         return [
             self::TASK_TYPE => ['class' => Task::class, 'getter' => 'getType', 'subType' => 'type'],
+            self::TASK_STAGE => ['class' => Task::class, 'getter' => 'getStage', 'subType' => 'stage'],
             self::TASK_PRIORITY => ['class' => Task::class, 'getter' => 'getPriority', 'subType' => 'priority'],
             self::TASK_COMPLEXITY => ['class' => Task::class, 'getter' => 'getComplexity', 'subType' => 'complexity'],
         ];

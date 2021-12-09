@@ -8,6 +8,7 @@ declare(strict_types=1);
 
 namespace App\Object\Project;
 
+use App\Dictionary\Object\Task\TaskStage;
 use App\Object\JlobObjectInterface;
 use App\Dictionary\Object\Task\TaskComplexity;
 use App\Dictionary\Object\Task\TaskPriority;
@@ -19,6 +20,11 @@ class TaskSettings implements JlobObjectInterface
      * @var TaskType
      */
     private TaskType $types;
+
+    /**
+     * @var TaskStage
+     */
+    private TaskStage $stages;
 
     /**
      * @var TaskPriority
@@ -33,6 +39,7 @@ class TaskSettings implements JlobObjectInterface
     public function __construct(array $arg = [])
     {
         $this->types = new TaskType($arg['types'] ?? []);
+        $this->stages = new TaskStage($arg['stages'] ?? []);
         $this->priority = new TaskPriority($arg['priority'] ?? []);
         $this->complexity = new TaskComplexity($arg['complexity'] ?? []);
     }
@@ -41,6 +48,7 @@ class TaskSettings implements JlobObjectInterface
     {
         return [
             'types' => $this->types->jsonSerialize(),
+            'stages' => $this->stages->jsonSerialize(),
             'priority' => $this->priority->jsonSerialize(),
             'complexity' => $this->complexity->jsonSerialize()
         ];
@@ -61,6 +69,24 @@ class TaskSettings implements JlobObjectInterface
     public function setTypes(TaskType $types): TaskSettings
     {
         $this->types = $types;
+        return $this;
+    }
+
+    /**
+     * @return TaskStage
+     */
+    public function getStages(): TaskStage
+    {
+        return $this->stages;
+    }
+
+    /**
+     * @param TaskStage $stages
+     * @return TaskSettings
+     */
+    public function setStages(TaskStage $stages): TaskSettings
+    {
+        $this->stages = $stages;
         return $this;
     }
 

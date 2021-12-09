@@ -99,6 +99,12 @@ class Task implements NoInterface, CommentableInterface
     private bool $isClosed = false;
 
     /**
+     * @var int - этап реализации задачи, справочник TaskStage
+     * @ORM\Column (type="integer")
+     */
+    private int $stage = 0;
+
+    /**
      * @var int - тип задачи, справочник TaskType
      * @ORM\Column (type="integer")
      */
@@ -231,6 +237,24 @@ class Task implements NoInterface, CommentableInterface
     public function close(): Task
     {
         $this->isClosed = true;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getStage(): int
+    {
+        return $this->stage;
+    }
+
+    /**
+     * @param int $stage
+     * @return Task
+     */
+    public function setStage(int $stage): Task
+    {
+        $this->stage = $stage;
         return $this;
     }
 

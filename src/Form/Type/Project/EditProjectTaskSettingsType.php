@@ -31,6 +31,16 @@ class EditProjectTaskSettingsType extends AbstractType
                 ]
             )
             ->add(
+                'stages',
+                DictionaryEditType::class,
+                [
+                    'dictionaryType' => TypesEnum::TASK_STAGE(),
+                    'label' => 'dictionaries.task_stages.label',
+                    'help' => 'dictionaries.task_stages.help',
+                    'required' => false,
+                ]
+            )
+            ->add(
                 'priority',
                 DictionaryEditType::class,
                 [
