@@ -1,12 +1,20 @@
-{% macro no(task) %}
+{% macro no(task, style = null) %}
     {% if task.isClosed() %}<s>{% endif %}
-    <a class="invisible_link" href="{{ path('task.index', {'taskId': task.taskId}) }}">{{ task.no }}</a>
+    <a class="invisible_link"
+       {{ (style ? 'style="'~style~'"' : '')|raw }}
+       href="{{ path('task.index', {'taskId': task.taskId}) }}"
+    >
+        {{ task.no }}
+    </a>
     {% if task.isClosed() %}</s>{% endif %}
 {% endmacro %}
 
-{% macro caption(task, limit = null) %}
+{% macro caption(task, limit = null, style = null) %}
     {% if task.isClosed() %}<s>{% endif %}
-    <a class="invisible_link" href="{{ path('task.index', {'taskId': task.taskId}) }}">
+    <a class="invisible_link"
+       {{ (style ? 'style="'~style~'"' : '')|raw }}
+       href="{{ path('task.index', {'taskId': task.taskId}) }}"
+    >
         {% set label = task.caption %}
         {% if limit %}{% set label = label|u.truncate(limit, '...') %}{% endif %}
         {{ label }}

@@ -34,9 +34,11 @@ class Stylizer
                     $bgColor = $this->colorStr2Hex($item->getBgColor());
                 }
             }
+            if ($bgColor[0] < 127 && $bgColor[1] < 127 && $bgColor[2] < 127) {
+                $style .= 'color:#fff; ';
+            }
 
             $bgColor = $this->colorHex2Str($bgColor);
-
             $style .= 'background-color:#' . $bgColor . ';';
             return $style;
         }
