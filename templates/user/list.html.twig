@@ -46,16 +46,20 @@
             {% endembed %}
         </div>
         <div class="col-md-2">
+            {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
             {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
                 {% block box_title %}
                     {{ 'ControlPanel'|trans }}
                 {% endblock  %}
                 {% block box_body %}
                     <div class="btn-group-vertical" role="toolbar" aria-label="{{ 'ControlPanel'|trans }}">
-                        <a class="btn btn-default btn-secondary" href="{{ path('user.create') }}">{{ 'Create_user'|trans }}</a>
+                        {% if is_granted("PERM_USER_CREATE") %}
+                            <a class="btn btn-default btn-secondary" href="{{ path('user.create') }}">{{ 'Create_user'|trans }}</a>
+                        {% endif %}
                     </div>
                 {% endblock %}
             {% endembed %}
+            {% endif %}
         </div>
     </div>
 {% endblock %}

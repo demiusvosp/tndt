@@ -4,7 +4,7 @@ twig:
     strict_variables: '%kernel.debug%'
     exception_controller: null
     form_themes:
-        - 'bootstrap_3_horizontal_layout.html.twig'
+        - '@AdminLTE/layout/form-theme-horizontal.html.twig'
 #        - '@TetranzSelect2Entity/Form/fields.html.twig'
 
     globals:
@@ -22,9 +22,3 @@ services:
     time.twig.extension.time:
         alias: App\Service\Twig\TimeExtension
         public: true
-
-    App\Service\Twig\UserRoleExtension:
-        class: App\Service\Twig\UserRoleExtension
-        arguments: ['@translator', '@App\Service\ProjectManager', '@twig']
-        tags:
-            - { name: twig.extension }

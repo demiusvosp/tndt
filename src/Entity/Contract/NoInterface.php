@@ -5,9 +5,12 @@
  * Time: 13:05
  */
 
-namespace App\Entity;
+namespace App\Entity\Contract;
 
-interface NoInterface
+/**
+ * Интерфейс сущностей, имеющих отдельную нумерацию внутри проекта
+ */
+interface NoInterface extends InProjectInterface
 {
     /**
      * @return string суффикс проекта, в рамках которого присваиваются уникальные номера

@@ -40,6 +40,21 @@ class NewTaskDTO
     private $description = '';
 
     /**
+     * @var int
+     */
+    private int $type = 0;
+
+    /**
+     * @var int
+     */
+    private int $priority = 0;
+
+    /**
+     * @var int
+     */
+    private int $complexity = 0;
+
+    /**
      * @return string
      */
     public function getProject(): string
@@ -111,4 +126,57 @@ class NewTaskDTO
         return $this;
     }
 
+    /**
+     * @return int
+     */
+    public function getType(): int
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param int|null $type
+     * @return NewTaskDTO
+     */
+    public function setType(?int $type): NewTaskDTO
+    {
+        $this->type = (int) $type;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPriority(): int
+    {
+        return $this->priority;
+    }
+
+    /**
+     * @param int $priority
+     * @return NewTaskDTO
+     */
+    public function setPriority(int $priority): NewTaskDTO
+    {
+        $this->priority = $priority;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getComplexity(): int
+    {
+        return $this->complexity;
+    }
+
+    /**
+     * @param int $complexity
+     * @return NewTaskDTO
+     */
+    public function setComplexity(int $complexity): NewTaskDTO
+    {
+        $this->complexity = $complexity;
+        return $this;
+    }
 }

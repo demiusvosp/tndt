@@ -549,6 +549,9 @@
     "symfony/property-access": {
         "version": "v4.3.11"
     },
+    "symfony/property-info": {
+        "version": "v4.4.31"
+    },
     "symfony/proxy-manager-bridge": {
         "version": "v4.4.27"
     },
@@ -589,6 +592,9 @@
     },
     "symfony/security-http": {
         "version": "v4.3.11"
+    },
+    "symfony/serializer": {
+        "version": "v4.4.33"
     },
     "symfony/service-contracts": {
         "version": "v1.1.7"

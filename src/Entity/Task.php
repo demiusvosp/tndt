@@ -7,6 +7,8 @@
  */
 namespace App\Entity;
 
+use App\Entity\Contract\CommentableInterface;
+use App\Entity\Contract\NoInterface;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use DomainException;
@@ -97,6 +99,12 @@ class Task implements NoInterface, CommentableInterface
     private bool $isClosed = false;
 
     /**
+     * @var int - тип задачи, справочник TaskType
+     * @ORM\Column (type="integer")
+     */
+    private int $type = 0;
+
+    /**
      * @var string
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank()
@@ -109,6 +117,18 @@ class Task implements NoInterface, CommentableInterface
      * @ORM\Column(type="text")
      */
     private string $description = '';
+
+    /**
+     * @var int - приоритетность задачи
+     * @ORM\Column (type="integer")
+     */
+    private int $priority = 0;
+
+    /**
+     * @var int - сложность, трудоемкость задачи
+     * @ORM\Column (type="integer")
+     */
+    private int $complexity = 0;
 
 
     /**
@@ -215,6 +235,24 @@ class Task implements NoInterface, CommentableInterface
     }
 
     /**
+     * @return int
+     */
+    public function getType(): int
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param int $type
+     * @return Task
+     */
+    public function setType(int $type): Task
+    {
+        $this->type = $type;
+        return $this;
+    }
+
+    /**
      * @return string
      */
     public function getCaption(): string
@@ -301,6 +339,42 @@ class Task implements NoInterface, CommentableInterface
     public function setAssignedTo(User $assignedTo): Task
     {
         $this->assignedTo = $assignedTo;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPriority(): int
+    {
+        return $this->priority;
+    }
+
+    /**
+     * @param int $priority
+     * @return Task
+     */
+    public function setPriority(int $priority): Task
+    {
+        $this->priority = $priority;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getComplexity(): int
+    {
+        return $this->complexity;
+    }
+
+    /**
+     * @param int $complexity
+     * @return Task
+     */
+    public function setComplexity(int $complexity): Task
+    {
+        $this->complexity = $complexity;
         return $this;
     }
 }

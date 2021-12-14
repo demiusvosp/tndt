@@ -36,6 +36,11 @@ class TaskFiller
         $task = new Task($project);
         $task->setCaption($dto->getCaption());
         $task->setDescription($dto->getDescription());
+
+        $task->setType($dto->getType());
+        $task->setPriority($dto->getPriority());
+        $task->setComplexity($dto->getComplexity());
+
         $newAssignedUser = $this->userRepository->findByUsername($dto->getAssignedTo());
         if (!$newAssignedUser) {
             throw new BadRequestException('Выбранный пользователь не найден');
@@ -53,8 +58,13 @@ class TaskFiller
         if($dto->getProject() !== $task->getProject()->getSuffix()) {
             throw new BadRequestException('Нельзя поменять проект задачи. Для этого её надо конвертировать в другой проект.');
         }
+
         $task->setCaption($dto->getCaption());
         $task->setDescription($dto->getDescription());
+
+        $task->setType($dto->getType());
+        $task->setPriority($dto->getPriority());
+        $task->setComplexity($dto->getComplexity());
 
         $newAssignedUser = $this->userRepository->find($dto->getAssignedTo());
         if (!$newAssignedUser) {

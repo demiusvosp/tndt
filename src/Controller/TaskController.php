@@ -17,6 +17,7 @@ use App\Repository\TaskRepository;
 use App\Service\CommentService;
 use App\Service\Filler\TaskFiller;
 use App\Service\ProjectContext;
+use InvalidArgumentException;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -101,12 +102,14 @@ class TaskController extends AbstractController
     {
         $formData = new NewTaskDTO();
         $currentProject = $this->projectContext->getProject();
-        if ($currentProject) {
-            $formData->setProject($currentProject->getSuffix());
+        if (!$currentProject) {
+            throw new InvalidArgumentException(
+                'В данный момент нельзя создавать задачи вне проекта. Смотри http://tasks.demius.ru/p/tndt-41'
+            );
         }
-
         $form = $this->createForm(NewTaskType::class, $formData);
 
+        $formData->setProject($currentProject->getSuffix());
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
@@ -165,7 +168,7 @@ class TaskController extends AbstractController
         $task->close();
 
         $closeForm = $commentService->getCommentAddForm();
-        $commentService->applyCommentFromForm($closeForm, $task);
+        $commentService->applyCommentFromForm($task, $closeForm, $this->getUser());
 
         $this->getDoctrine()->getManager()->flush();
         $this->addFlash('warning', 'task.close.success');

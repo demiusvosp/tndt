@@ -41,6 +41,7 @@
             {% endembed %}
         </div>
         <div class="col-md-2">
+            {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
             {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
                 {% block box_title %}
                     {{ 'ControlPanel'|trans }}
@@ -66,6 +67,7 @@
                     </div>
                 {% endblock %}
             {% endembed %}
+            {% endif %}
         </div>
     </div>
     <div class="row">

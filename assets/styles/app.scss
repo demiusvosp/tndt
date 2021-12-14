@@ -22,6 +22,32 @@ $color-disabled: #333;
     }
 }
 
+.project-settings-blocks {
+    .settings-block {
+        border: $gray-lighter 1px solid;
+        border-radius: 0.5em;
+        margin: 0;
+        padding: 1em;
+
+        label {
+            position: relative;
+            top: -2em;
+            left: 0;
+            padding: 0.2em 1em;
+            background-color: $body-bg;
+        }
+        .help-text {
+            color: lighten($text-color, 25%);
+            margin-bottom: 0;
+        }
+        .dictionary-add-item {
+            color: $brand-success;
+            font-size: large;
+            padding: 0.1em 0.3em;
+        }
+    }
+}
+
 /* Tasks */
 .task-table {
     th {
@@ -33,6 +59,12 @@ $color-disabled: #333;
     }
     .task-col-name {
         width: 50%;
+    }
+}
+
+.task-properties {
+    .task-property-item {
+        padding: 0.2em 1em;
     }
 }
 
@@ -86,6 +118,37 @@ $color-disabled: #333;
     margin: 1em;
 }
 
+/* Forms */
+/* Create/Edit Entity */
+.form-entity {
+    .form-group {
+        margin: 0 1em;
+        .form-label {
+            float: left;
+            padding: 0 2em;
+        }
+        .form-widget {
+            float: left;
+        }
+    }
+    .form-right-column {
+        .form-group {
+            margin-top: 1em;
+            .form-label {
+                float: none;
+            }
+            .form-widget {
+                float: none;
+            }
+        }
+    }
+}
+
+/* Dictionaries */
+.dictionary-not-set {
+    color: $text-muted;
+}
+
 .modal-header h5 {
     float: left;
 }
@@ -134,4 +197,8 @@ a.invisible_link, a.invisible_link:hover {
 select option.service-item {
     color: $input-color-placeholder;
     font-style: italic;
+}
+
+.manual-edit {
+    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
 }

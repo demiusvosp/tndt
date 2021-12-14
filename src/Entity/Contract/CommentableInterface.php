@@ -5,7 +5,7 @@
  * Time: 15:19
  */
 
-namespace App\Entity;
+namespace App\Entity\Contract;
 
 use Doctrine\Common\Collections\Collection;
 

@@ -14,6 +14,7 @@ use App\Entity\User;
 use App\Form\DTO\Project\EditProjectCommonDTO;
 use App\Form\DTO\Project\EditProjectPermissionsDTO;
 use App\Form\DTO\Project\NewProjectDTO;
+use App\Object\Project\TaskSettings;
 use App\Repository\UserRepository;
 use App\Security\UserRolesEnum;
 use \InvalidArgumentException;
@@ -62,7 +63,7 @@ class ProjectFiller
     {
         $project->setIsPublic($dto->isPublic());
 
-        // одним запросом вытянем всех нужных нам польователей
+        // одним запросом вытянем всех нужных нам пользователей
         $newUsers = $this->userRepository->findAllByUsername(
             array_merge([$dto->getPm()], $dto->getStaff(), $dto->getVisitors())
         );
@@ -93,5 +94,14 @@ class ProjectFiller
             $projectVisitors[] = $projectUser;
         }
         $project->setProjectUsers($projectVisitors, UserRolesEnum::PROLE_VISITOR());
+    }
+
+    public function fillTaskSettings(TaskSettings $settings, Project $project): void
+    {
+        $currentSetting = $project->getTaskSettings();
+
+        $currentSetting->getTypes()->merge($settings->getTypes());
+        $currentSetting->getPriority()->merge($settings->getPriority());
+        $currentSetting->getComplexity()->merge($settings->getComplexity());
     }
 }

@@ -1,0 +1,39 @@
+{% extends 'project/edit.base.html.twig' %}
+
+{% block edit_page_title%}{{ 'project.edit.task_settings'|trans }}{% endblock %}
+
+{% block edit_page %}
+    {% form_theme form 'form_div_layout.html.twig' %}
+    {{ form_start(form) }}
+    <div class="project-settings-blocks">
+        <div class="row">
+            <div class="col-md-6"><div class="settings-block">
+                {{ form_label(form.types) }}
+                <div>{{ form_widget(form.types) }}</div>
+                {{ form_help(form.types, {'attr': {'class': 'help-block'}}) }}
+            </div></div>
+            <div class="col-md-6"><div class="settings-block">
+                <i>Здесь будет этап задачи</i>
+            </div></div>
+        </div>
+        <div class="row">
+            <div class="col-md-6"><div class="settings-block">
+                {{ form_label(form.priority) }}
+                <div>{{ form_widget(form.priority) }}</div>
+                {{ form_help(form.priority, {'attr': {'class': 'help-block'}}) }}
+            </div></div>
+            <div class="col-md-6"><div class="settings-block">
+                {{ form_label(form.complexity) }}
+                <div>{{ form_widget(form.complexity) }}</div>
+                {{ form_help(form.complexity, {'attr': {'class': 'help-block'}}) }}
+            </div></div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block box_footer %}
+    <div class="pull-right">
+        <button type="submit" class="btn btn-success">{{ 'Edit'|trans }}</button>
+    </div>
+    {{ form_end(form) }}
+{% endblock %}

@@ -9,7 +9,7 @@ declare(strict_types=1);
 namespace App\Repository;
 
 use App\Entity\Comment;
-use App\Entity\CommentableInterface;
+use App\Entity\Contract\CommentableInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -24,7 +24,7 @@ class CommentRepository extends ServiceEntityRepository
      * @param CommentableInterface $ownerObject
      * @return Comment[]
      */
-    public function getAllByOwner(CommentableInterface $ownerObject): array
+    public function getAllByOwner(CommentableInterface $ownerObject, array $order = []): array
     {
         $qb = $this->createQueryBuilder('c');
         $qb->where($qb->expr()->andX(
@@ -36,7 +36,13 @@ class CommentRepository extends ServiceEntityRepository
             'id' => $ownerObject->getId()
         ]);
 
-        $qb->addOrderBy('c.createdAt', 'ASC');
+        if ($order) {
+            foreach ($order as $orderField => $orderDir) {
+                $qb->addOrderBy('c.' . $orderField, $orderDir);
+            }
+        } else {
+            $qb->addOrderBy('c.createdAt', 'ASC');
+        }
 
         return $qb->getQuery()->getResult();
     }
