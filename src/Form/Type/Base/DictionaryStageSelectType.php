@@ -34,7 +34,7 @@ class DictionaryStageSelectType extends DictionarySelectType
             function(Options $options) {
                 $choices = [];
                 $dictionary = $this->fetcher->getDictionary(
-                    $options['dictionary'],
+                    TypesEnum::TASK_STAGE(),
                     $this->projectContext->getProject()
                 );
 

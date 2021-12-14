@@ -234,9 +234,9 @@ class Task implements NoInterface, CommentableInterface
     /**
      * @return Task
      */
-    public function close(): Task
+    public function setIsClosed(bool $isClosed): Task
     {
-        $this->isClosed = true;
+        $this->isClosed = $isClosed;
         return $this;
     }
 

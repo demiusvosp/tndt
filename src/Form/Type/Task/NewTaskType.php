@@ -8,7 +8,6 @@ declare(strict_types=1);
 
 namespace App\Form\Type\Task;
 
-use App\Dictionary\Object\Task\StageTypesEnum;
 use App\Dictionary\TypesEnum;
 use App\Form\DTO\Task\NewTaskDTO;
 use App\Form\Type\Base\DictionarySelectType;
