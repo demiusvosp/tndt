@@ -131,6 +131,7 @@ class TaskController extends AbstractController
     /**
      * @IsGranted ("PERM_TASK_EDIT")
      * @param Request $request
+     * @param TaskFiller $taskFiller
      * @return Response
      */
     public function edit(Request $request, TaskFiller $taskFiller): Response

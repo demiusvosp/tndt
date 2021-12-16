@@ -8,7 +8,9 @@ declare(strict_types=1);
 
 namespace App\Dictionary;
 
+use App\Dictionary\Object\Task\StageTypesEnum;
 use App\Dictionary\Object\Task\TaskPriorityItem;
+use App\Dictionary\Object\Task\TaskStageItem;
 
 class Stylizer
 {
@@ -34,6 +36,16 @@ class Stylizer
                     $bgColor = $this->colorStr2Hex($item->getBgColor());
                 }
             }
+            if (isset($items[TypesEnum::TASK_STAGE])) {
+                /** @var TaskStageItem $item */
+                $item = $items[TypesEnum::TASK_STAGE];
+                if ($item->getType()->equals(StageTypesEnum::STAGE_ON_CLOSED())) {
+                    $bgColor[0] -= 35;
+                    $bgColor[1] -= 35;
+                    $bgColor[2] -= 35;
+                }
+            }
+
             if ($bgColor[0] < 127 && $bgColor[1] < 127 && $bgColor[2] < 127) {
                 $style .= 'color:#fff; ';
             }

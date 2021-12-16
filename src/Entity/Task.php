@@ -7,6 +7,7 @@
  */
 namespace App\Entity;
 
+use App\Dictionary\Object\Task\StageClosedInterface;
 use App\Entity\Contract\CommentableInterface;
 use App\Entity\Contract\NoInterface;
 use App\Service\Constraints\DictionaryValue;
@@ -32,7 +33,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     }
  * )
  */
-class Task implements NoInterface, CommentableInterface
+class Task implements NoInterface, CommentableInterface, StageClosedInterface
 {
     public const TASKID_SEPARATOR = '-';
 

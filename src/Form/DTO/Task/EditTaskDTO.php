@@ -8,13 +8,14 @@ declare(strict_types=1);
 
 namespace App\Form\DTO\Task;
 
+use App\Dictionary\Object\Task\StageClosedInterface;
 use App\Entity\Contract\InProjectInterface;
 use App\Entity\Task;
 use App\Service\Constraints\DictionaryValue;
 use Happyr\Validator\Constraint\EntityExist;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class EditTaskDTO implements InProjectInterface
+class EditTaskDTO implements InProjectInterface, StageClosedInterface
 {
     /**
      * @var string
@@ -33,37 +34,43 @@ class EditTaskDTO implements InProjectInterface
      * @Assert\NotBlank()
      * @Assert\Length(min=1, max=255, maxMessage="task.caption.to_long")
      */
-    private string $caption = '';
+    private string $caption;
 
     /**
      * @var string
      * @Assert\Length(max=10000, maxMessage="task.description.to_long")
      */
-    private string $description = '';
+    private string $description ;
 
     /**
      * @var int
      * @DictionaryValue("task.type")
      */
-    private int $type = 0;
+    private int $type;
 
     /**
      * @var int
      * @DictionaryValue("task.stage")
      */
-    private int $stage = 0;
+    private int $stage;
+
+    /**
+     * Необходим для корректной работы stage
+     * @var bool закрыта ли задача.
+     */
+    private bool $isClosed;
 
     /**
      * @var int
      * @DictionaryValue("task.priority")
      */
-    private int $priority = 0;
+    private int $priority;
 
     /**
      * @var int
      * @DictionaryValue("task.complexity")
      */
-    private int $complexity = 0;
+    private int $complexity;
 
     public function __construct(Task $task)
     {
@@ -71,6 +78,12 @@ class EditTaskDTO implements InProjectInterface
         $this->caption = $task->getCaption();
         $this->description = $task->getDescription();
         $this->assignedTo = $task->getAssignedTo() ? $task->getAssignedTo()->getUsername() : '';
+
+        $this->stage = $task->getStage();
+        $this->isClosed = $task->isClosed();
+        $this->type = $task->getType();
+        $this->priority = $task->getPriority();
+        $this->complexity = $task->getComplexity();
     }
 
     public function getSuffix(): string
@@ -220,5 +233,10 @@ class EditTaskDTO implements InProjectInterface
     {
         $this->complexity = $complexity;
         return $this;
+    }
+
+    public function isClosed(): bool
+    {
+        return $this->isClosed;
     }
 }

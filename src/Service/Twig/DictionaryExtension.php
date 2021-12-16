@@ -58,6 +58,7 @@ class DictionaryExtension extends AbstractExtension
 
         if ($item->getId() === 0) { // возможно стоит проверять через интерфейс TranslatableItem
             $html = '<i class="dictionary-not-set">' . $this->translator->trans($item->getName()) . '</i>';
+            $withAlt = false;
         } else {
             $html = $item->getName();
         }

@@ -51,7 +51,7 @@ dashboard: Обзор
 dictionaries:
   not_set:
     name: не назначен
-    description:
+    description: ''
   task_types:
     label: Типы задач
     help: 'Разделение задач по типам, например: Ошибка, Задача, Рефакторинг'

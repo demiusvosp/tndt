@@ -8,6 +8,7 @@ declare(strict_types=1);
 
 namespace App\Form\Type\Task;
 
+use App\Dictionary\Object\Task\StageClosedInterface;
 use App\Dictionary\TypesEnum;
 use App\Form\DTO\Task\EditTaskDTO;
 use App\Form\Type\Base\DictionarySelectType;
@@ -17,6 +18,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class EditTaskType extends AbstractType
@@ -81,6 +84,27 @@ class EditTaskType extends AbstractType
                     'empty_data' => '',
                 ]
             );
+
+        $builder->addEventListener(
+            FormEvents::PRE_SET_DATA,
+            function (FormEvent $event) {
+                $entity = $event->getData();
+                if ($entity instanceof StageClosedInterface && $entity->isClosed()) {
+                    // так как опции уже добавленных контролов менять нельзя, пересоздаем контрол выбора этапа
+                    // с новыми данными
+                    $stageTypeConfig = $event->getForm()->get('stage')->getConfig()->getOptions();
+                    unset($stageTypeConfig['choices']);
+                    $stageTypeConfig['scenario'] = DictionaryStageSelectType::SCENARIO_CLOSE;
+
+                    $event->getForm()->remove('stage');
+                    $event->getForm()->add(
+                        'stage',
+                        DictionaryStageSelectType::class,
+                        $stageTypeConfig
+                    );
+                }
+            }
+        );
     }
 
     public function configureOptions(OptionsResolver $resolver): void
