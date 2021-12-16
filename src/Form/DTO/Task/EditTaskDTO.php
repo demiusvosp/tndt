@@ -8,11 +8,13 @@ declare(strict_types=1);
 
 namespace App\Form\DTO\Task;
 
+use App\Entity\Contract\InProjectInterface;
 use App\Entity\Task;
+use App\Service\Constraints\DictionaryValue;
 use Happyr\Validator\Constraint\EntityExist;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class EditTaskDTO
+class EditTaskDTO implements InProjectInterface
 {
     /**
      * @var string
@@ -41,21 +43,25 @@ class EditTaskDTO
 
     /**
      * @var int
+     * @DictionaryValue("task.type")
      */
     private int $type = 0;
 
     /**
      * @var int
+     * @DictionaryValue("task.stage")
      */
     private int $stage = 0;
 
     /**
      * @var int
+     * @DictionaryValue("task.priority")
      */
     private int $priority = 0;
 
     /**
      * @var int
+     * @DictionaryValue("task.complexity")
      */
     private int $complexity = 0;
 
@@ -67,7 +73,12 @@ class EditTaskDTO
         $this->assignedTo = $task->getAssignedTo() ? $task->getAssignedTo()->getUsername() : '';
     }
 
-   /**
+    public function getSuffix(): string
+    {
+        return $this->project;
+    }
+
+    /**
      * @return string
      */
     public function getProject(): string

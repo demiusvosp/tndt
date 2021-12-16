@@ -168,7 +168,7 @@ class TaskController extends AbstractController
         if (!$task) {
             throw $this->createNotFoundException($this->translator->trans('task.not_found'));
         }
-        $formData = new CloseTaskDTO($task);
+        $formData = new CloseTaskDTO($task->getSuffix());
         $form = $this->createForm(CloseTaskForm::class, $formData);
 
         $form->handleRequest($request);

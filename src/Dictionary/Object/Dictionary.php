@@ -73,6 +73,11 @@ class Dictionary implements JlobObjectInterface
         return $this;
     }
 
+    public function hasItem(int $itemId): bool
+    {
+        return isset($this->items[$itemId]);
+    }
+
     /**
      * Слить переданный справочник с текущим
      * Меняет элементы, уже лежащие в этом справочнике, и добавляет те, что пришли. Удаление исчезнувших пока

@@ -37,7 +37,7 @@ class TaskExtension extends AbstractExtension
 
     public function closeForm(Task $task): FormView
     {
-        $formData = new CloseTaskDTO();
+        $formData = new CloseTaskDTO($task->getSuffix());
         $closeTaskForm = $this->formFactory->create(CloseTaskForm::class, $formData);
 
         return $closeTaskForm->createView();

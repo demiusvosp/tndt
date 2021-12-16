@@ -30,6 +30,16 @@ class TypesEnum extends Enum
     public const TASK_PRIORITY = 'task.priority';
     public const TASK_COMPLEXITY = 'task.complexity';
 
+    public static function labels(): array
+    {
+        return [
+            self::TASK_TYPE => 'dictionaries.task_types.label',
+            self::TASK_STAGE => 'dictionaries.task_stages.label',
+            self::TASK_PRIORITY => 'dictionaries.task_priority.label',
+            self::TASK_COMPLEXITY => 'dictionaries.task_complexity.label',
+        ];
+    }
+
     /**
      * Получить класс справочника по его типу. Довольно странно, но пока не используется
      * @return string[]
@@ -119,6 +129,14 @@ class TypesEnum extends Enum
         return $dictionaries;
     }
 
+    public function getLabel(): string
+    {
+        if (!isset(self::labels()[$this->value])) {
+            throw new DomainException('Unknown dictionary ' . $this->value);
+        }
+        return self::labels()[$this->value];
+    }
+
     /**
      * Получить способ получения объекта справочника.
      * На данный момент цепочку методов от проекта, до Jlob-объекта справочника, когда справочники будут лежать
@@ -128,7 +146,7 @@ class TypesEnum extends Enum
     public function getSource(): array
     {
         if (!isset(self::sources()[$this->value])) {
-            throw new DomainException('Unknown dictionary '.$this->value);
+            throw new DomainException('Unknown dictionary ' . $this->value);
         }
         return self::sources()[$this->value];
     }

@@ -9,6 +9,7 @@ namespace App\Entity;
 
 use App\Entity\Contract\CommentableInterface;
 use App\Entity\Contract\NoInterface;
+use App\Service\Constraints\DictionaryValue;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use DomainException;
@@ -101,12 +102,14 @@ class Task implements NoInterface, CommentableInterface
     /**
      * @var int - этап реализации задачи, справочник TaskStage
      * @ORM\Column (type="integer")
+     * @DictionaryValue("task.stage")
      */
     private int $stage = 0;
 
     /**
      * @var int - тип задачи, справочник TaskType
      * @ORM\Column (type="integer")
+     * @DictionaryValue("task.type")
      */
     private int $type = 0;
 
@@ -127,12 +130,14 @@ class Task implements NoInterface, CommentableInterface
     /**
      * @var int - приоритетность задачи
      * @ORM\Column (type="integer")
+     * @DictionaryValue("task.priority")
      */
     private int $priority = 0;
 
     /**
      * @var int - сложность, трудоемкость задачи
      * @ORM\Column (type="integer")
+     * @DictionaryValue("task.complexity")
      */
     private int $complexity = 0;
 
