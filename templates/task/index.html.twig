@@ -24,37 +24,46 @@
                                 {{ 'task.project.label'|trans }}: {{ mProject.badge(task.project, true, true) }}
                             </div>
                             <div class="col-md-4 task-property-item">
-                                {{ 'task.stage.label'|trans }}: {{ dictionary_name(task, 'stage') }}
-                            </div>
-                            <div class="col-md-4 task-property-item">
+                                {% if dictionary_enabled(task, 'stage') %}
+                                    {{ 'task.stage.label'|trans }}: {{ dictionary_name(task, 'stage') }}
+                                {% endif %}
                                 {# хз возможно этап сюда, в левее к проекту категорию/Систему #}
                             </div>
+                            <div class="col-md-4 task-property-item">
+                                {% if dictionary_enabled(task, 'type') %}
+                                    {{ 'task.type.label'|trans }}: {{ dictionary_name(task, 'type') }}
+                                {% endif %}
+                            </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-4 task-property-item">
-                                {{ 'task.type.label'|trans }}: {{ dictionary_name(task, 'type') }}
-                            </div>
                             <div class="col-md-4 task-property-item">
                                 {{ 'task.createdBy.label'|trans }}: {{ mUser.badge(task.createdBy) }}
-                            </div>
-                            <div class="col-md-4 task-property-item">
-                                {{ 'task.assignedTo.label'|trans }}: {{ mUser.badge(task.assignedTo) }}
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-4 task-property-item">
-                                {{ 'task.complexity.label'|trans }}: {{ dictionary_name(task, 'complexity') }}
                             </div>
                             <div class="col-md-4 task-property-item">
                                 {{ 'task.created.label'|trans }}: {{ task.createdAt|ago }}
                             </div>
                             <div class="col-md-4 task-property-item">
-                                {{ 'task.updated.label'|trans }}: {{ task.updatedAt|ago }}
+                                {% if dictionary_enabled(task, 'priority') %}
+                                    {{ 'task.priority.label'|trans }}: {{ dictionary_name(task, 'priority') }}
+                                {% endif %}
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-4 task-property-item">
-                                {{ 'task.priority.label'|trans }}: {{ dictionary_name(task, 'priority') }}
+                                {{ 'task.assignedTo.label'|trans }}: {{ mUser.badge(task.assignedTo) }}
+                            </div>
+                            <div class="col-md-4 task-property-item">
+                                {{ 'task.updated.label'|trans }}: {{ task.updatedAt|ago }}
+                            </div>
+                            <div class="col-md-4 task-property-item">
+                                {% if dictionary_enabled(task, 'complexity') %}
+                                    {{ 'task.complexity.label'|trans }}: {{ dictionary_name(task, 'complexity') }}
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 task-property-item">
+
                             </div>
                             <div class="col-md-4 task-property-item">
 
