@@ -18,6 +18,8 @@ class DictionaryValue extends Constraint
 {
     public string $type;
 
+    public bool $allowEmpty = true;
+
     public string $message = 'dictionary_value {{ dictionary_type }}';
 
     public function getDefaultOption(): string

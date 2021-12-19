@@ -103,13 +103,13 @@ class TaskController extends AbstractController
      */
     public function create(Request $request, TaskFiller $taskFiller): Response
     {
-        $formData = new NewTaskDTO();
         $currentProject = $this->projectContext->getProject();
         if (!$currentProject) {
             throw new InvalidArgumentException(
                 'В данный момент нельзя создавать задачи вне проекта. Смотри http://tasks.demius.ru/p/tndt-41'
             );
         }
+        $formData = new NewTaskDTO($currentProject->getSuffix());
         $form = $this->createForm(NewTaskType::class, $formData);
 
         $formData->setProject($currentProject->getSuffix());

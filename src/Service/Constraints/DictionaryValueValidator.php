@@ -44,6 +44,10 @@ class DictionaryValueValidator extends ConstraintValidator
                 'Валидация справочника возможна только для объектов, принадлежащих проекту'
             );
         }
+        if ($constraint->allowEmpty && empty($value)) {
+            // разрешаем не заполнять значением справочника
+            return;
+        }
 
         $dictionary = $this->fetcher->getDictionary($type, $object);
         if(!$dictionary->hasItem($value)) {

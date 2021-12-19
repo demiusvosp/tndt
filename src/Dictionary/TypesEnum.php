@@ -15,6 +15,7 @@ use App\Dictionary\Object\Task\TaskComplexity;
 use App\Dictionary\Object\Task\TaskPriority;
 use App\Dictionary\Object\Task\TaskType;
 use DomainException;
+use InvalidArgumentException;
 use MyCLabs\Enum\Enum;
 
 /**
@@ -105,7 +106,7 @@ class TypesEnum extends Enum
             }
         }
 
-        throw new \InvalidArgumentException(
+        throw new InvalidArgumentException(
             'Справочник ' . $dictionary
             . ' относящийся к ' . get_class($entity)
             . ' не найден'
@@ -114,14 +115,14 @@ class TypesEnum extends Enum
 
     /**
      * Получить все словари, имеющие отношение к сущности
-     * @param $entity
+     * @param string|object $entity
      * @return array
      */
     public static function allFromEntity($entity): array
     {
         $dictionaries = [];
         foreach (self::relatedEntities() as $fullType => $related) {
-            if ($entity instanceof $related['class']) {
+            if ($entity instanceof $related['class'] || $entity === $related['class']) {
                 $dictionaries[] = self::from($fullType);
             }
         }

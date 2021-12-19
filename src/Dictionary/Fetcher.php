@@ -70,6 +70,7 @@ class Fetcher
         foreach ($dictionaryType->getSource() as $method) {
             $object = $object->{$method}();
         }
+
         if (!$object instanceof Dictionary) {
             throw new \DomainException(
                 'Не удалось получить справочник по указанному по источнику '
@@ -80,6 +81,23 @@ class Fetcher
     }
 
     /**
+     * Получить все, связанные с объектом словари
+     * @param string $entityClass
+     * @param InProjectInterface $entity
+     * @return array
+     */
+    public function getDictionariesByEntityClass(string $entityClass, InProjectInterface $entity): array
+    {
+        $items = [];
+        $dictionaryTypes = TypesEnum::allFromEntity($entityClass);
+        foreach ($dictionaryTypes as $type) {
+            $items[$type->getValue()] = $this->getDictionary($type, $entity);
+        }
+
+        return $items;
+    }
+
+    /**
      * Получить элементы всех, связанных с объектом словарей.
      * @param InProjectInterface $entity
      * @return array
@@ -87,9 +105,9 @@ class Fetcher
     public function getRelatedItems(InProjectInterface $entity): array
     {
         $items = [];
-        $dictionaries = TypesEnum::allFromEntity($entity);
-        foreach ($dictionaries as $dictionary) {
-            $items[$dictionary->getValue()] = $this->getDictionaryItem($dictionary, $entity);
+        $dictionaryTypes = TypesEnum::allFromEntity($entity);
+        foreach ($dictionaryTypes as $type) {
+            $items[$type->getValue()] = $this->getDictionaryItem($type, $entity);
         }
 
         return $items;

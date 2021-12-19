@@ -79,6 +79,15 @@ class Dictionary implements JlobObjectInterface
     }
 
     /**
+     * Готов ли справочник к работе.
+     * @return bool
+     */
+    public function isEnabled(): bool
+    {
+        return !empty($this->items);
+    }
+
+    /**
      * Слить переданный справочник с текущим
      * Меняет элементы, уже лежащие в этом справочнике, и добавляет те, что пришли. Удаление исчезнувших пока
      * не предполагается.
