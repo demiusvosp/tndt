@@ -8,14 +8,14 @@ declare(strict_types=1);
 
 namespace App\Form\DTO\Task;
 
-use App\Dictionary\Object\Task\StageClosedInterface;
+use App\Entity\Contract\HasClosedStatusInterface;
 use App\Entity\Contract\InProjectInterface;
 use App\Entity\Task;
 use App\Service\Constraints\DictionaryValue;
 use Happyr\Validator\Constraint\EntityExist;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class EditTaskDTO implements InProjectInterface, StageClosedInterface
+class EditTaskDTO implements InProjectInterface, HasClosedStatusInterface
 {
     /**
      * @var string

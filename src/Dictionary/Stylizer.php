@@ -8,10 +8,10 @@ declare(strict_types=1);
 
 namespace App\Dictionary;
 
-use App\Dictionary\Object\Task\StageClosedInterface;
 use App\Dictionary\Object\Task\StageTypesEnum;
 use App\Dictionary\Object\Task\TaskPriorityItem;
 use App\Dictionary\Object\Task\TaskStageItem;
+use App\Entity\Contract\HasClosedStatusInterface;
 
 class Stylizer
 {
@@ -44,7 +44,7 @@ class Stylizer
                 /** @var TaskStageItem $item */
                 $item = $items[TypesEnum::TASK_STAGE];
                 // стилизация закрытого состояние не совсем прерогатива справочника, но раз он отвечает за стиль списка
-                if (($entity instanceof StageClosedInterface && $entity->isClosed())
+                if (($entity instanceof HasClosedStatusInterface && $entity->isClosed())
                     || $item->getType()->equals(StageTypesEnum::STAGE_ON_CLOSED())
                 ) {
                     $bgColor = $this->colorTransform(

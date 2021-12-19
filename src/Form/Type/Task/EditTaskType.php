@@ -9,8 +9,8 @@ declare(strict_types=1);
 namespace App\Form\Type\Task;
 
 use App\Dictionary\Fetcher;
-use App\Dictionary\Object\Task\StageClosedInterface;
 use App\Dictionary\TypesEnum;
+use App\Entity\Contract\HasClosedStatusInterface;
 use App\Entity\Task;
 use App\Form\DTO\Task\EditTaskDTO;
 use App\Form\Type\Base\DictionarySelectType;
@@ -118,7 +118,7 @@ class EditTaskType extends AbstractType
                 if ($dictionaries[TypesEnum::TASK_STAGE]) {
                     if (!$dictionaries[TypesEnum::TASK_STAGE]->isEnabled()) {
                         $event->getForm()->remove('stage');
-                    } elseif ($entity instanceof StageClosedInterface && $entity->isClosed()) {
+                    } elseif ($entity instanceof HasClosedStatusInterface && $entity->isClosed()) {
                         // так как опции уже добавленных контролов менять нельзя, пересоздаем контрол выбора этапа
                         // с новыми данными
                         $stageTypeConfig = $event->getForm()->get('stage')->getConfig()->getOptions();

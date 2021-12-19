@@ -16,7 +16,6 @@ use App\Form\Type\Task\EditTaskType;
 use App\Form\Type\Task\ListFilterType;
 use App\Form\Type\Task\NewTaskType;
 use App\Repository\TaskRepository;
-use App\Service\CommentService;
 use App\Service\Filler\TaskFiller;
 use App\Service\ProjectContext;
 use App\Service\TaskService;

@@ -7,8 +7,8 @@
  */
 namespace App\Entity;
 
-use App\Dictionary\Object\Task\StageClosedInterface;
 use App\Entity\Contract\CommentableInterface;
+use App\Entity\Contract\HasClosedStatusInterface;
 use App\Entity\Contract\NoInterface;
 use App\Service\Constraints\DictionaryValue;
 use DateTime;
@@ -33,7 +33,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     }
  * )
  */
-class Task implements NoInterface, CommentableInterface, StageClosedInterface
+class Task implements NoInterface, CommentableInterface, HasClosedStatusInterface
 {
     public const TASKID_SEPARATOR = '-';
 
