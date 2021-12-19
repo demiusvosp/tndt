@@ -133,6 +133,7 @@ nobody: >-
   }
 Only_for_authorized:
   comment: Комментарии могут оставлять только авторизованные пользователи
+open: открыта
 Post: Написать
 Project: Проект
 Projects: Проекты
@@ -218,6 +219,8 @@ task:
     label: Описание
     help: Подробное ТЗ по задачи. Можно использовтаь markdown для выразительноти
   edit: Редактирование задачи
+  isClosed:
+    label: Статус
   No: "№"
   not_found: Задача не найдена
   priority:

@@ -23,7 +23,7 @@ class CloseTaskDTO implements InProjectInterface
      * @var int
      * @DictionaryValue("task.stage")
      */
-    private int $stage;
+    private int $stage = 0;
 
     /**
      * @var string
@@ -54,12 +54,12 @@ class CloseTaskDTO implements InProjectInterface
     }
 
     /**
-     * @param int $stage
+     * @param int|null $stage
      * @return CloseTaskDTO
      */
-    public function setStage(int $stage): CloseTaskDTO
+    public function setStage(?int $stage): CloseTaskDTO
     {
-        $this->stage = $stage;
+        $this->stage = (int) $stage;
         return $this;
     }
 

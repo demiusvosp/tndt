@@ -78,9 +78,11 @@
                 {{ form_start(form, {'attr': {'class': 'closeTaskForm'}}) }}
                 <div class="modal-body">
                     <div class="close-message">{{ 'task.close.text'|trans|nl2br }}</div>
-                    <div class="close-stage">
-                        {{ form_row(form.stage) }}
-                    </div>
+                    {% if dictionary_enabled(task, 'stage') %}
+                        <div class="close-stage">
+                            {{ form_row(form.stage) }}
+                        </div>
+                    {% endif %}
                     <div class="close-comment">
                         {{ form_row(form.comment) }}
                     </div>
