@@ -25,7 +25,7 @@ class Dictionary implements JlobObjectInterface
     /**
      * @var int
      */
-    private int $default;
+    protected int $default;
 
     public function __construct(array $arg = [])
     {
