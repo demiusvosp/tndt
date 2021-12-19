@@ -7,16 +7,18 @@
 namespace App\Controller;
 
 use App\Exception\CurrentProjectNotFoundException;
+use App\Form\DTO\Task\CloseTaskDTO;
 use App\Form\DTO\Task\EditTaskDTO;
 use App\Form\DTO\Task\ListFilterDTO;
 use App\Form\DTO\Task\NewTaskDTO;
+use App\Form\Type\Task\CloseTaskForm;
 use App\Form\Type\Task\EditTaskType;
 use App\Form\Type\Task\ListFilterType;
 use App\Form\Type\Task\NewTaskType;
 use App\Repository\TaskRepository;
-use App\Service\CommentService;
 use App\Service\Filler\TaskFiller;
 use App\Service\ProjectContext;
+use App\Service\TaskService;
 use InvalidArgumentException;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -100,13 +102,13 @@ class TaskController extends AbstractController
      */
     public function create(Request $request, TaskFiller $taskFiller): Response
     {
-        $formData = new NewTaskDTO();
         $currentProject = $this->projectContext->getProject();
         if (!$currentProject) {
             throw new InvalidArgumentException(
                 'В данный момент нельзя создавать задачи вне проекта. Смотри http://tasks.demius.ru/p/tndt-41'
             );
         }
+        $formData = new NewTaskDTO($currentProject->getSuffix());
         $form = $this->createForm(NewTaskType::class, $formData);
 
         $formData->setProject($currentProject->getSuffix());
@@ -128,6 +130,7 @@ class TaskController extends AbstractController
     /**
      * @IsGranted ("PERM_TASK_EDIT")
      * @param Request $request
+     * @param TaskFiller $taskFiller
      * @return Response
      */
     public function edit(Request $request, TaskFiller $taskFiller): Response
@@ -156,23 +159,29 @@ class TaskController extends AbstractController
     /**
      * @IsGranted ("PERM_TASK_CLOSE")
      * @param Request $request
+     * @param TaskService $taskService
      * @return Response
      */
-    public function close(Request $request, CommentService $commentService): Response
+    public function close(Request $request, TaskService $taskService): Response
     {
         $task = $this->taskRepository->getByTaskId($request->get('taskId'));
         if (!$task) {
             throw $this->createNotFoundException($this->translator->trans('task.not_found'));
         }
+        $formData = new CloseTaskDTO($task->getSuffix());
+        $form = $this->createForm(CloseTaskForm::class, $formData);
 
-        $task->close();
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()) {
+            /** @noinspection PhpParamsInspection */
+            $taskService->close($formData, $task, $this->getUser());
 
-        $closeForm = $commentService->getCommentAddForm();
-        $commentService->applyCommentFromForm($task, $closeForm, $this->getUser());
+            $this->getDoctrine()->getManager()->flush();
+            $this->addFlash('warning', 'task.close.success');
+            return $this->redirectToRoute('task.list', ['suffix' => $task->getSuffix()]);
+        }
 
-        $this->getDoctrine()->getManager()->flush();
-        $this->addFlash('warning', 'task.close.success');
-
-        return $this->redirectToRoute('task.list', ['suffix' => $task->getSuffix()]);
+        $this->addFlash('error', 'task.close.error');
+        return $this->redirectToRoute('task.index', ['taskId' => $task->getTaskId()]);
     }
 }

@@ -13,7 +13,9 @@
                 {{ form_help(form.types, {'attr': {'class': 'help-block'}}) }}
             </div></div>
             <div class="col-md-6"><div class="settings-block">
-                <i>Здесь будет этап задачи</i>
+                {{ form_label(form.stages) }}
+                <div>{{ form_widget(form.stages) }}</div>
+                {{ form_help(form.stages, {'attr': {'class': 'help-block'}}) }}
             </div></div>
         </div>
         <div class="row">

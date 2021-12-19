@@ -8,7 +8,9 @@
 namespace App\Entity;
 
 use App\Entity\Contract\CommentableInterface;
+use App\Entity\Contract\HasClosedStatusInterface;
 use App\Entity\Contract\NoInterface;
+use App\Service\Constraints\DictionaryValue;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use DomainException;
@@ -31,7 +33,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     }
  * )
  */
-class Task implements NoInterface, CommentableInterface
+class Task implements NoInterface, CommentableInterface, HasClosedStatusInterface
 {
     public const TASKID_SEPARATOR = '-';
 
@@ -99,8 +101,16 @@ class Task implements NoInterface, CommentableInterface
     private bool $isClosed = false;
 
     /**
+     * @var int - этап реализации задачи, справочник TaskStage
+     * @ORM\Column (type="integer")
+     * @DictionaryValue("task.stage")
+     */
+    private int $stage = 0;
+
+    /**
      * @var int - тип задачи, справочник TaskType
      * @ORM\Column (type="integer")
+     * @DictionaryValue("task.type")
      */
     private int $type = 0;
 
@@ -121,12 +131,14 @@ class Task implements NoInterface, CommentableInterface
     /**
      * @var int - приоритетность задачи
      * @ORM\Column (type="integer")
+     * @DictionaryValue("task.priority")
      */
     private int $priority = 0;
 
     /**
      * @var int - сложность, трудоемкость задачи
      * @ORM\Column (type="integer")
+     * @DictionaryValue("task.complexity")
      */
     private int $complexity = 0;
 
@@ -228,9 +240,27 @@ class Task implements NoInterface, CommentableInterface
     /**
      * @return Task
      */
-    public function close(): Task
+    public function setIsClosed(bool $isClosed): Task
     {
-        $this->isClosed = true;
+        $this->isClosed = $isClosed;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getStage(): int
+    {
+        return $this->stage;
+    }
+
+    /**
+     * @param int $stage
+     * @return Task
+     */
+    public function setStage(int $stage): Task
+    {
+        $this->stage = $stage;
         return $this;
     }
 

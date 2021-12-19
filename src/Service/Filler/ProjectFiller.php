@@ -101,6 +101,7 @@ class ProjectFiller
         $currentSetting = $project->getTaskSettings();
 
         $currentSetting->getTypes()->merge($settings->getTypes());
+        $currentSetting->getStages()->merge($settings->getStages());
         $currentSetting->getPriority()->merge($settings->getPriority());
         $currentSetting->getComplexity()->merge($settings->getComplexity());
     }

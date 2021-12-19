@@ -14,7 +14,7 @@ final class Version20211126220359 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return '';
+        return 'Add task.complexity dictionary to Task entity';
     }
 
     public function up(Schema $schema): void
