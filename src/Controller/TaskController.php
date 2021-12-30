@@ -6,6 +6,8 @@
  */
 namespace App\Controller;
 
+use App\Event\AppEvents;
+use App\Event\TaskEvent;
 use App\Exception\CurrentProjectNotFoundException;
 use App\Form\DTO\Task\CloseTaskDTO;
 use App\Form\DTO\Task\EditTaskDTO;
@@ -23,6 +25,7 @@ use InvalidArgumentException;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -32,18 +35,21 @@ class TaskController extends AbstractController
 {
     private const TASK_PER_PAGE = 50;
 
+    private EventDispatcherInterface $eventDispatcher;
+    private ProjectContext $projectContext;
     private TranslatorInterface $translator;
     private TaskRepository $taskRepository;
-    private ProjectContext $projectContext;
 
     public function __construct(
+        EventDispatcherInterface $eventDispatcher,
+        ProjectContext      $projectContext,
         TranslatorInterface $translator,
-        TaskRepository      $taskRepository,
-        ProjectContext      $projectContext)
-    {
+        TaskRepository      $taskRepository
+    ) {
+        $this->eventDispatcher = $eventDispatcher;
+        $this->projectContext = $projectContext;
         $this->translator = $translator;
         $this->taskRepository = $taskRepository;
-        $this->projectContext = $projectContext;
     }
 
     /**
@@ -117,6 +123,7 @@ class TaskController extends AbstractController
             $em = $this->getDoctrine()->getManager();
 
             $task = $taskFiller->createFromForm($formData);
+            $this->eventDispatcher->dispatch(new TaskEvent($task), AppEvents::TASK_OPEN);
             $em->persist($task);
             $em->flush();
 
@@ -145,6 +152,7 @@ class TaskController extends AbstractController
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()) {
             $taskFiller->fillFromEditForm($formData, $task);
+            $this->eventDispatcher->dispatch(new TaskEvent($task), AppEvents::TASK_EDIT);
 
             $em = $this->getDoctrine()->getManager();
             $em->flush();

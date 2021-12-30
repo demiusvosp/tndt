@@ -6,12 +6,12 @@
  */
 declare(strict_types=1);
 
-namespace App\Event\Comment;
+namespace App\Event;
 
 use App\Entity\Comment;
 use Symfony\Contracts\EventDispatcher\Event;
 
-class AddCommentEvent extends Event
+class CommentEvent extends Event
 {
     private $comment;
 
