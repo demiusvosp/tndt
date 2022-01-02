@@ -63,7 +63,7 @@ class TaskOnUpdateSubscriber implements EventSubscriberInterface
 
     private function isServiceUser(): bool
     {
-        return $this->security->getUser() instanceof User ||
+        return !$this->security->getUser() instanceof User ||
             $this->security->isGranted(UserRolesEnum::ROLE_ROOT);
     }
 }
