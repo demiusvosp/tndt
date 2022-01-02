@@ -82,7 +82,7 @@ class Task implements NoInterface, CommentableInterface, HasClosedStatusInterfac
     /**
      * @var DateTime
      * @ORM\Column(type="datetime")
-     * @Gedmo\Timestampable(on="update")
+     * Автоматически обновляется через OnUpdateTaskManager
      */
     private DateTime $updatedAt;
 
@@ -90,7 +90,7 @@ class Task implements NoInterface, CommentableInterface, HasClosedStatusInterfac
      * @var User|null
      * @ORM\ManyToOne (targetEntity="User")
      * @ORM\JoinColumn (name="assigned_to", referencedColumnName="username", nullable=true)
-     * @Gedmo\Blameable (on="create")
+     * Автоматически обновляется через OnUpdateTaskManager
      */
     private ?User $assignedTo;
 
@@ -352,6 +352,16 @@ class Task implements NoInterface, CommentableInterface, HasClosedStatusInterfac
     public function getCreatedBy(): User
     {
         return $this->createdBy;
+    }
+
+    /**
+     * @param User $createdBy
+     * @return Task
+     */
+    public function setCreatedBy(User $createdBy): Task
+    {
+        $this->createdBy = $createdBy;
+        return $this;
     }
 
     /**

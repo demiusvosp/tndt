@@ -9,23 +9,61 @@ declare(strict_types=1);
 namespace App\EventSubscriber;
 
 use App\Entity\Task;
+use App\Entity\User;
 use App\Event\AppEvents;
-use App\Event\Comment\AddCommentEvent;
+use App\Event\CommentEvent;
+use App\Event\TaskEvent;
+use App\Security\UserRolesEnum;
 use DateTime;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Security\Core\Security;
 
 class TaskOnUpdateSubscriber implements EventSubscriberInterface
 {
-    public static function getSubscribedEvents(): array
+    private Security $security;
+
+    public function __construct(Security $security)
     {
-        return [AppEvents::COMMENT_ADD => ['onCommentAdd', 0]];
+        $this->security = $security;
     }
 
-    public function onCommentAdd(AddCommentEvent $event): void
+    public static function getSubscribedEvents(): array
     {
+        return [
+//            AppEvents::TASK_OPEN => ['onTaskOpen', 0], @TODO in [tndt-57]
+            AppEvents::TASK_EDIT => ['onTaskChange', 0],
+            AppEvents::TASK_CLOSE => ['onTaskChange', 0],
+            AppEvents::COMMENT_ADD => ['onCommentAdd', 0],
+        ];
+    }
+
+    public function onTaskChange(TaskEvent $event)
+    {
+        if ($this->isServiceUser()) {
+            return;
+        }
+        if ($event->getTask()->isClosed()) {
+            return;
+        }
+
+        $event->getTask()->setUpdatedAt(new \DateTime());
+    }
+
+    public function onCommentAdd(CommentEvent $event): void
+    {
+        if ($this->isServiceUser()) {
+            return;
+        }
+
         $task = $event->getComment()->getOwnerEntity();
-        if ($task && $task instanceof Task) {
+        if ($task instanceof Task && !$task->isClosed()) {
             $task->setUpdatedAt(new DateTime());
         }
+    }
+
+    private function isServiceUser(): bool
+    {
+        return !$this->security->getUser() instanceof User ||
+            $this->security->isGranted(UserRolesEnum::ROLE_ROOT);
     }
 }

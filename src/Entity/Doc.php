@@ -70,7 +70,7 @@ class Doc implements NoInterface, CommentableInterface
     /**
      * @var DateTime
      * @ORM\Column(type="datetime")
-     * @Gedmo\Timestampable(on="update")
+     * Автоматически обновляется через DocOnUpdateSubscriber
      */
     private DateTime $updatedAt;
 
@@ -78,7 +78,7 @@ class Doc implements NoInterface, CommentableInterface
      * @var User|null
      * @ORM\ManyToOne (targetEntity="User")
      * @ORM\JoinColumn (name="updated_by", referencedColumnName="username", nullable=true)
-     * @Gedmo\Blameable (on="change", field={"caption", "abstract", "body", "isArchived"})
+     * Автоматически обновляется через DocOnUpdateSubscriber
      */
     private ?User $updatedBy;
 

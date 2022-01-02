@@ -10,15 +10,20 @@ namespace App\Service;
 
 use App\Entity\Task;
 use App\Entity\User;
+use App\Event\AppEvents;
+use App\Event\TaskEvent;
 use App\Form\DTO\Task\CloseTaskDTO;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class TaskService
 {
     private CommentService $commentService;
+    private EventDispatcherInterface $eventDispatcher;
 
-    public function __construct(CommentService $commentService)
+    public function __construct(CommentService $commentService, EventDispatcherInterface $eventDispatcher)
     {
         $this->commentService = $commentService;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function close(CloseTaskDTO $dto, Task $task, User $whoClose): void
@@ -28,5 +33,6 @@ class TaskService
         }
         $task->setStage($dto->getStage());
         $task->setIsClosed(true);
+        $this->eventDispatcher->dispatch(new TaskEvent($task), AppEvents::TASK_CLOSE);
     }
 }
