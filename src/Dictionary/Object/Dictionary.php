@@ -133,7 +133,7 @@ class Dictionary implements JlobObjectInterface
             return $this->getNoSetItem();
         }
         if (!isset($this->items[$value])) {
-            throw new \InvalidArgumentException('Не существует справочника с id:' . $value);
+            return $this->getNoSetItem();
         }
 
         return $this->items[$value];
