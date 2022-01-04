@@ -12,10 +12,11 @@ use App\Entity\Comment;
 use App\Entity\Contract\CommentableInterface;
 use App\Entity\User;
 use App\Event\AppEvents;
-use App\Event\Comment\AddCommentEvent;
+use App\Event\CommentEvent;
 use App\Exception\BadRequestException;
 use App\Form\Type\Comment\NewCommentType;
 use Doctrine\ORM\EntityManagerInterface;
+use InvalidArgumentException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
@@ -75,14 +76,23 @@ class CommentService
         return false;
     }
 
+    /**
+     * @param CommentableInterface $commentableObject
+     * @param string $message
+     * @param User $author
+     */
     public function applyCommentFromString(CommentableInterface $commentableObject, string $message, User $author): void
     {
+        if (empty($message)) {
+            throw new InvalidArgumentException('Нельзя добавить пустой комментарий');
+        }
+
         $comment = new Comment($commentableObject);
         $comment->setAuthor($author);
         $comment->setMessage($message);
         $this->entityManager->persist($comment);
 
-        $commentEvent = new AddCommentEvent($comment);
+        $commentEvent = new CommentEvent($comment);
         $this->eventDispatcher->dispatch($commentEvent, AppEvents::COMMENT_ADD);
 
         $this->entityManager->flush();

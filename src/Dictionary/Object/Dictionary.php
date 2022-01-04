@@ -25,7 +25,7 @@ class Dictionary implements JlobObjectInterface
     /**
      * @var int
      */
-    private int $default;
+    protected int $default;
 
     public function __construct(array $arg = [])
     {
@@ -71,6 +71,20 @@ class Dictionary implements JlobObjectInterface
     {
         $this->items = $items;
         return $this;
+    }
+
+    public function hasItem(int $itemId): bool
+    {
+        return isset($this->items[$itemId]);
+    }
+
+    /**
+     * Готов ли справочник к работе.
+     * @return bool
+     */
+    public function isEnabled(): bool
+    {
+        return !empty($this->items);
     }
 
     /**
@@ -119,7 +133,7 @@ class Dictionary implements JlobObjectInterface
             return $this->getNoSetItem();
         }
         if (!isset($this->items[$value])) {
-            throw new \InvalidArgumentException('Не существует справочника с id:' . $value);
+            return $this->getNoSetItem();
         }
 
         return $this->items[$value];

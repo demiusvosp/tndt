@@ -9,6 +9,7 @@ project:
   edit.success: Проект отредактирован
 task:
   create.success: Задача создана
+  close.error: Не удалось закрыть задачу
   close.success: Задача закрыта
   edit.success: Задача отредактирована
 user:

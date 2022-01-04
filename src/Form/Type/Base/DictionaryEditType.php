@@ -26,7 +26,7 @@ class DictionaryEditType extends AbstractType
                 function ($object): string {
                     if (!$object instanceof JlobObjectInterface) {
                         throw new \InvalidArgumentException(
-                            '"' . get_class($object) . '" must be implement JlobObjectInterface'
+                            '"' . ($object ? get_class($object) : 'null') . '" must be implement JlobObjectInterface'
                         );
                     }
 

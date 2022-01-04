@@ -37,6 +37,10 @@ class DictionaryExtension extends AbstractExtension
     {
         return [
             new TwigFunction(
+                'dictionary_enabled',
+                [$this, 'dictionaryEnabled'],
+            ),
+            new TwigFunction(
                 'dictionary_name',
                 [$this, 'dictionaryName'],
                 ['is_safe' => ['html']],
@@ -48,16 +52,30 @@ class DictionaryExtension extends AbstractExtension
         ];
     }
 
+    public function dictionaryEnabled(InProjectInterface $projectableEntity, string $dictionaryType): bool
+    {
+        if (strpos($dictionaryType, '.') !== false) {
+            $type = TypesEnum::from($dictionaryType);
+        } else {
+            $type = TypesEnum::fromEntity($projectableEntity, $dictionaryType);
+        }
+
+        $dictionary = $this->fetcher->getDictionary($type, $projectableEntity);
+
+        return $dictionary->isEnabled();
+    }
+
     public function dictionaryName($entity, string $dictionaryType, bool $withAlt = false): string
     {
         if (!$entity instanceof InProjectInterface) {
             throw new \InvalidArgumentException('Справочник можно получить только от сущности относящейся к проекту');
         }
-        $dictionary = TypesEnum::fromEntity($entity, $dictionaryType);
-        $item = $this->fetcher->getDictionaryItem($dictionary, $entity);
+        $type = TypesEnum::fromEntity($entity, $dictionaryType);
+        $item = $this->fetcher->getDictionaryItem($type, $entity);
 
         if ($item->getId() === 0) { // возможно стоит проверять через интерфейс TranslatableItem
             $html = '<i class="dictionary-not-set">' . $this->translator->trans($item->getName()) . '</i>';
+            $withAlt = false;
         } else {
             $html = $item->getName();
         }

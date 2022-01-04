@@ -11,6 +11,7 @@ namespace App\Dictionary;
 use App\Entity\Contract\InProjectInterface;
 use App\Dictionary\Object\Dictionary;
 use App\Dictionary\Object\DictionaryItem;
+use App\Entity\Project;
 use App\Repository\ProjectRepository;
 use App\Service\ProjectContext;
 
@@ -57,26 +58,61 @@ class Fetcher
     /**
      * Получить указанный справочник из указанного проекта (или любой сущности, связанной с проектом)
      * @param TypesEnum $dictionaryType
-     * @param InProjectInterface|null $entity - null - текущий проект из сервиса ProjectContext
+     * @param InProjectInterface|string|null $entity - null - текущий проект из сервиса ProjectContext
      * @return Dictionary
      */
-    public function getDictionary(TypesEnum $dictionaryType, InProjectInterface $entity): Dictionary
+    public function getDictionary(TypesEnum $dictionaryType, $entity): Dictionary
     {
-        if (!isset($this->projects[$entity->getSuffix()])) {
-            $this->loadProject($entity->getSuffix());
+        $object = null;
+        if (is_string($entity)) {
+            $object = $this->loadProject($entity);
         }
 
-        $object = $this->projects[$entity->getSuffix()];
+        if ($entity instanceof Project) {
+            $this->projects[$entity->getSuffix()] = $entity;
+            $object = $entity;
+        }
+
+        if ($entity instanceof InProjectInterface) {
+            $object = $this->loadProject($entity->getSuffix());
+        }
+
+        if (!$object) {
+            throw new \DomainException(
+                'Не удалось получить проект из переданного объекта '
+                . (is_string($entity) ? $entity : get_class($entity))
+            );
+        }
+
         foreach ($dictionaryType->getSource() as $method) {
             $object = $object->{$method}();
         }
+
         if (!$object instanceof Dictionary) {
             throw new \DomainException(
                 'Не удалось получить справочник по указанному по источнику '
                 . implode('->', $dictionaryType->getSource())
             );
         }
+
         return $object;
+    }
+
+    /**
+     * Получить все, связанные с объектом словари
+     * @param string $entityClass
+     * @param InProjectInterface $entity
+     * @return array
+     */
+    public function getDictionariesByEntityClass(string $entityClass, InProjectInterface $entity): array
+    {
+        $items = [];
+        $dictionaryTypes = TypesEnum::allFromEntity($entityClass);
+        foreach ($dictionaryTypes as $type) {
+            $items[$type->getValue()] = $this->getDictionary($type, $entity);
+        }
+
+        return $items;
     }
 
     /**
@@ -87,25 +123,32 @@ class Fetcher
     public function getRelatedItems(InProjectInterface $entity): array
     {
         $items = [];
-        $dictionaries = TypesEnum::allFromEntity($entity);
-        foreach ($dictionaries as $dictionary) {
-            $items[$dictionary->getValue()] = $this->getDictionaryItem($dictionary, $entity);
+        $dictionaryTypes = TypesEnum::allFromEntity($entity);
+        foreach ($dictionaryTypes as $type) {
+            $items[$type->getValue()] = $this->getDictionaryItem($type, $entity);
         }
 
         return $items;
     }
 
-    private function loadProject(string $suffix): void
+    private function loadProject(string $suffix): ?Project
     {
+        if (isset($this->projects[$suffix])) {
+            return $this->projects[$suffix];
+        }
+
         $project = $this->projectContext->getProject();
         if ($project && $project->getSuffix() === $suffix) {
             $this->projects[$suffix] = $project;
-            return;
+            return $project;
         }
 
         $project = $this->projectRepository->findBySuffix($suffix);
         if ($project) {
             $this->projects[$suffix] = $project;
+            return $project;
         }
+
+        return null;
     }
 }

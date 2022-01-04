@@ -8,10 +8,16 @@ declare(strict_types=1);
 
 namespace App\Dictionary;
 
+use App\Dictionary\Object\Task\StageTypesEnum;
 use App\Dictionary\Object\Task\TaskPriorityItem;
+use App\Dictionary\Object\Task\TaskStageItem;
+use App\Entity\Contract\HasClosedStatusInterface;
 
 class Stylizer
 {
+    private const LIGHTER_STEP = 35;
+    private const INVERSE_THRESHOLD = 127;
+
     private Fetcher $fetcher;
 
     public function __construct(Fetcher $fetcher)
@@ -34,7 +40,25 @@ class Stylizer
                     $bgColor = $this->colorStr2Hex($item->getBgColor());
                 }
             }
-            if ($bgColor[0] < 127 && $bgColor[1] < 127 && $bgColor[2] < 127) {
+            if (isset($items[TypesEnum::TASK_STAGE])) {
+                /** @var TaskStageItem $item */
+                $item = $items[TypesEnum::TASK_STAGE];
+                // стилизация закрытого состояние не совсем прерогатива справочника, но раз он отвечает за стиль списка
+                if (($entity instanceof HasClosedStatusInterface && $entity->isClosed())
+                    || $item->getType()->equals(StageTypesEnum::STAGE_ON_CLOSED())
+                ) {
+                    $bgColor = $this->colorTransform(
+                        $bgColor,
+                        self::LIGHTER_STEP,
+                        self::INVERSE_THRESHOLD
+                    );
+                }
+            }
+
+            if ($bgColor[0] < self::INVERSE_THRESHOLD
+                && $bgColor[1] < self::INVERSE_THRESHOLD
+                && $bgColor[2] < self::INVERSE_THRESHOLD
+            ) {
                 $style .= 'color:#fff; ';
             }
 
@@ -57,5 +81,22 @@ class Stylizer
         return str_pad(dechex($color[0]), 2, '0', STR_PAD_LEFT) .
             str_pad(dechex($color[1]), 2, '0', STR_PAD_LEFT) .
             str_pad(dechex($color[2]), 2, '0', STR_PAD_LEFT);
+    }
+
+    private function colorTransform(array $color, int $delta, ?int $threshold = null): array
+    {
+        if ($threshold === null || $threshold < $delta) {
+            $threshold = $delta;
+        }
+
+        foreach ($color as &$component) {
+            if ($component > $threshold) {
+                $component -= $delta;
+            } else {
+                $component += $delta;
+            }
+        }
+
+        return  $color;
     }
 }

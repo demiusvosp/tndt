@@ -8,24 +8,38 @@ declare(strict_types=1);
 
 namespace App\Dictionary;
 
+use App\Dictionary\Object\Task\TaskStage;
 use App\Entity\Task;
 use App\Dictionary\Object\Dictionary;
 use App\Dictionary\Object\Task\TaskComplexity;
 use App\Dictionary\Object\Task\TaskPriority;
 use App\Dictionary\Object\Task\TaskType;
 use DomainException;
+use InvalidArgumentException;
 use MyCLabs\Enum\Enum;
 
 /**
  * @method static TASK_TYPE()
+ * @method static TASK_STAGE()
  * @method static TASK_PRIORITY()
  * @method static TASK_COMPLEXITY()
  */
 class TypesEnum extends Enum
 {
     public const TASK_TYPE = 'task.type';
+    public const TASK_STAGE = 'task.stage';
     public const TASK_PRIORITY = 'task.priority';
     public const TASK_COMPLEXITY = 'task.complexity';
+
+    public static function labels(): array
+    {
+        return [
+            self::TASK_TYPE => 'dictionaries.task_types.label',
+            self::TASK_STAGE => 'dictionaries.task_stages.label',
+            self::TASK_PRIORITY => 'dictionaries.task_priority.label',
+            self::TASK_COMPLEXITY => 'dictionaries.task_complexity.label',
+        ];
+    }
 
     /**
      * Получить класс справочника по его типу. Довольно странно, но пока не используется
@@ -35,6 +49,7 @@ class TypesEnum extends Enum
     {
         return [
             self::TASK_TYPE => TaskType::class,
+            self::TASK_STAGE => TaskStage::class,
             self::TASK_PRIORITY => TaskPriority::class,
             self::TASK_COMPLEXITY => TaskComplexity::class,
         ];
@@ -47,6 +62,7 @@ class TypesEnum extends Enum
     {
         return [
             self::TASK_TYPE => ['getTaskSettings', 'getTypes'],
+            self::TASK_STAGE => ['getTaskSettings', 'getStages'],
             self::TASK_PRIORITY => ['getTaskSettings', 'getPriority'],
             self::TASK_COMPLEXITY => ['getTaskSettings', 'getComplexity'],
         ];
@@ -69,6 +85,7 @@ class TypesEnum extends Enum
     {
         return [
             self::TASK_TYPE => ['class' => Task::class, 'getter' => 'getType', 'subType' => 'type'],
+            self::TASK_STAGE => ['class' => Task::class, 'getter' => 'getStage', 'subType' => 'stage'],
             self::TASK_PRIORITY => ['class' => Task::class, 'getter' => 'getPriority', 'subType' => 'priority'],
             self::TASK_COMPLEXITY => ['class' => Task::class, 'getter' => 'getComplexity', 'subType' => 'complexity'],
         ];
@@ -89,7 +106,7 @@ class TypesEnum extends Enum
             }
         }
 
-        throw new \InvalidArgumentException(
+        throw new InvalidArgumentException(
             'Справочник ' . $dictionary
             . ' относящийся к ' . get_class($entity)
             . ' не найден'
@@ -98,19 +115,27 @@ class TypesEnum extends Enum
 
     /**
      * Получить все словари, имеющие отношение к сущности
-     * @param $entity
+     * @param string|object $entity
      * @return array
      */
     public static function allFromEntity($entity): array
     {
         $dictionaries = [];
         foreach (self::relatedEntities() as $fullType => $related) {
-            if ($entity instanceof $related['class']) {
+            if ($entity instanceof $related['class'] || $entity === $related['class']) {
                 $dictionaries[] = self::from($fullType);
             }
         }
 
         return $dictionaries;
+    }
+
+    public function getLabel(): string
+    {
+        if (!isset(self::labels()[$this->value])) {
+            throw new DomainException('Unknown dictionary ' . $this->value);
+        }
+        return self::labels()[$this->value];
     }
 
     /**
@@ -122,7 +147,7 @@ class TypesEnum extends Enum
     public function getSource(): array
     {
         if (!isset(self::sources()[$this->value])) {
-            throw new DomainException('Unknown dictionary '.$this->value);
+            throw new DomainException('Unknown dictionary ' . $this->value);
         }
         return self::sources()[$this->value];
     }

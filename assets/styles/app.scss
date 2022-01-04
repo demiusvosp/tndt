@@ -68,6 +68,22 @@ $color-disabled: #333;
     }
 }
 
+#modalConfirmClose {
+    .form-label {
+        padding: 0 2em 0 0;
+    }
+    .close-stage {
+        margin: 1em;
+        .form-widget {
+            float: right;
+            width: 60%;
+        }
+    }
+    .close-comment {
+        margin: 1em;
+    }
+}
+
 /* Docs */
 .doc-property-string {
 
@@ -113,9 +129,6 @@ $color-disabled: #333;
 
         }
     }
-}
-#modalConfirmClose .comment-form {
-    margin: 1em;
 }
 
 /* Forms */

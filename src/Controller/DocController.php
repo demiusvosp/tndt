@@ -8,8 +8,8 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Entity\Doc;
-use App\Entity\Project;
+use App\Event\AppEvents;
+use App\Event\DocEvent;
 use App\Exception\CurrentProjectNotFoundException;
 use App\Form\DTO\Doc\EditDocDTO;
 use App\Form\DTO\Doc\ListFilterDTO;
@@ -22,6 +22,7 @@ use App\Service\ProjectContext;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -30,18 +31,21 @@ class DocController extends AbstractController
 {
     private const DOC_PER_PAGE = 50;
 
-    private TranslatorInterface $translator;
     private DocRepository $docRepository;
+    private EventDispatcherInterface $eventDispatcher;
     private ProjectContext $projectContext;
+    private TranslatorInterface $translator;
 
     public function __construct(
-        TranslatorInterface $translator,
         DocRepository       $docRepository,
-        ProjectContext      $projectContext)
-    {
-        $this->translator = $translator;
+        EventDispatcherInterface $eventDispatcher,
+        ProjectContext      $projectContext,
+        TranslatorInterface $translator
+    ) {
         $this->docRepository = $docRepository;
+        $this->eventDispatcher = $eventDispatcher;
         $this->projectContext = $projectContext;
+        $this->translator = $translator;
     }
 
     /**
@@ -111,6 +115,7 @@ class DocController extends AbstractController
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($doc);
+            $this->eventDispatcher->dispatch(new DocEvent($doc), AppEvents::DOC_CREATE);
             $em->flush();
 
             $this->addFlash('success', 'doc.create.success');
@@ -141,6 +146,7 @@ class DocController extends AbstractController
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()) {
             $docFiller->fillFromEditForm($formData, $doc);
+            $this->eventDispatcher->dispatch(new DocEvent($doc), AppEvents::DOC_EDIT);
 
             $em = $this->getDoctrine()->getManager();
             $em->flush();
@@ -170,6 +176,7 @@ class DocController extends AbstractController
         }
 
         $doc->setIsArchived(!$doc->isArchived());
+        $this->eventDispatcher->dispatch(new DocEvent($doc), AppEvents::DOC_ARCHIVE);
         $em->flush();
         $this->addFlash('success', $doc->isArchived() ? 'doc.archived' : 'doc.unarchived');
 

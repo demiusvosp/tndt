@@ -8,10 +8,12 @@ declare(strict_types=1);
 
 namespace App\Form\DTO\Task;
 
+use App\Entity\Contract\InProjectInterface;
+use App\Service\Constraints\DictionaryValue;
 use Happyr\Validator\Constraint\EntityExist;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class NewTaskDTO
+class NewTaskDTO implements InProjectInterface
 {
     /**
      * @var string
@@ -41,18 +43,38 @@ class NewTaskDTO
 
     /**
      * @var int
+     * @DictionaryValue("task.type")
      */
     private int $type = 0;
 
     /**
      * @var int
+     * @DictionaryValue("task.stage")
+     */
+    private int $stage = 0;
+
+    /**
+     * @var int
+     * @DictionaryValue("task.priority")
      */
     private int $priority = 0;
 
     /**
      * @var int
+     * @DictionaryValue("task.complexity")
      */
     private int $complexity = 0;
+
+
+    public function __construct(string $project)
+    {
+        $this->project = $project;
+    }
+
+    public function getSuffix(): string
+    {
+        return $this->project;
+    }
 
     /**
      * @return string
@@ -147,6 +169,24 @@ class NewTaskDTO
     /**
      * @return int
      */
+    public function getStage(): int
+    {
+        return $this->stage;
+    }
+
+    /**
+     * @param int $stage
+     * @return NewTaskDTO
+     */
+    public function setStage(?int $stage): NewTaskDTO
+    {
+        $this->stage = (int) $stage;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
     public function getPriority(): int
     {
         return $this->priority;
@@ -156,9 +196,9 @@ class NewTaskDTO
      * @param int $priority
      * @return NewTaskDTO
      */
-    public function setPriority(int $priority): NewTaskDTO
+    public function setPriority(?int $priority): NewTaskDTO
     {
-        $this->priority = $priority;
+        $this->priority = (int) $priority;
         return $this;
     }
 
@@ -174,9 +214,9 @@ class NewTaskDTO
      * @param int $complexity
      * @return NewTaskDTO
      */
-    public function setComplexity(int $complexity): NewTaskDTO
+    public function setComplexity(?int $complexity): NewTaskDTO
     {
-        $this->complexity = $complexity;
+        $this->complexity = (int) $complexity;
         return $this;
     }
 }

@@ -14,7 +14,8 @@ class TaskComplexity extends Dictionary
 {
     /**
      * Насколько указанный элемент выше или ниже базового
-     * @param $item
+     * @TODO будет использовано в tndt-47
+     * @param int $itemId
      * @return int
      */
     public function getPositionDelta(int $itemId): int

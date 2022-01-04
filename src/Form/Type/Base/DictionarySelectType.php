@@ -19,8 +19,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class DictionarySelectType extends AbstractType
 {
-    private Fetcher $fetcher;
-    private ProjectContext $projectContext;
+    protected Fetcher $fetcher;
+    protected ProjectContext $projectContext;
 
     public function __construct(Fetcher $fetcher, ProjectContext $projectContext)
     {
@@ -33,7 +33,7 @@ class DictionarySelectType extends AbstractType
         return ChoiceType::class;
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->addModelTransformer(
             new CallbackTransformer(
@@ -44,7 +44,10 @@ class DictionarySelectType extends AbstractType
                             $this->projectContext->getProject()
                         );
 
-                        return $dictionary->getDefault();
+                        if ($dictionary->isEnabled()) {
+                            return $dictionary->getDefault();
+                        }
+                        return 0;
                     }
                     return $value;
                 },

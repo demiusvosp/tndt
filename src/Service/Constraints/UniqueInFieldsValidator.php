@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class UniqueInFieldsValidator extends ConstraintValidator
 {
-    private $propertyAccessor;
+    private ?PropertyAccessorInterface $propertyAccessor;
 
     public function __construct(PropertyAccessorInterface $propertyAccessor = null)
     {
@@ -97,7 +97,7 @@ class UniqueInFieldsValidator extends ConstraintValidator
      *
      * @return string|null The error code or `null` if no code should be set
      */
-    protected function getErrorCode()
+    protected function getErrorCode(): ?string
     {
         return null;
     }
