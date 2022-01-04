@@ -148,6 +148,9 @@ class Fetcher
         $project = $this->projectRepository->findBySuffix($suffix);
         if ($project) {
             $this->projects[$suffix] = $project;
+            return;
         }
+
+        throw new \InvalidArgumentException('Не удалось получить проект ' . $suffix);
     }
 }

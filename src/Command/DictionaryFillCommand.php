@@ -71,18 +71,29 @@ class DictionaryFillCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
-        $dictionaryType = TypesEnum::from($input->getArgument('dictionary'));
+
+        try {
+            $dictionaryType = TypesEnum::from($input->getArgument('dictionary'));
+        } catch (\UnexpectedValueException $e) {
+            $io->error('Wrong dictionary type');
+            $io->note('Valid types: ' . implode(', ', TypesEnum::values()));
+            return -1;
+        }
         $project = $input->getArgument('project');
-        $dictionary = $this->dictionaryFetcher->getDictionary(
-            $dictionaryType,
-            $project
-        );
+        try {
+            $dictionary = $this->dictionaryFetcher->getDictionary(
+                $dictionaryType,
+                $project
+            );
+        } catch (\InvalidArgumentException $e) {
+            $io->error('Project ' . $project . ' not found');
+            return -1;
+        }
         if (!$dictionary->isEnabled()) {
-            $io->error(
+            $io->warning(
                 'Dictionary ' . $dictionaryType->getLabel()
                 . ' in project ' . $project . ' is not configured. Configure it on project setting page.'
             );
-            return -1;
         }
 
         $io->text('Fill ' . $dictionaryType->getLabel() . ' to ' . $project . ' project');
@@ -99,10 +110,25 @@ class DictionaryFillCommand extends Command
         $criteria->where($criteria::expr()->eq('suffix', $project));
         if ($input->getOption('restore')) {
             $validValues = [];
-            foreach ($dictionary->getItems() as $item) {
-                $validValues[] = $item->getId();
+            if ($dictionary->isEnabled()) {
+                $io->writeln(
+                    'dictionary configured, search all except valid dictionary values',
+                    OutputInterface::VERBOSITY_VERBOSE
+                );
+
+                foreach ($dictionary->getItems() as $item) {
+                    $validValues[] = $item->getId();
+                }
+                $criteria->andWhere($criteria::expr()->notIn($entityMeta['subType'], $validValues));
+
+            } else {
+                $io->writeln(
+                    'dictionary empty, search all, except default dictionary value',
+                    OutputInterface::VERBOSITY_VERBOSE
+                );
+
+                $criteria->andWhere($criteria::expr()->neq($entityMeta['subType'], $to));
             }
-            $criteria->andWhere($criteria::expr()->notIn($entityMeta['subType'], $validValues));
             $io->text('search entity with invalid ' . $dictionaryType->getValue() . ' values...');
 
         } else {
@@ -110,18 +136,27 @@ class DictionaryFillCommand extends Command
             if ($from === null) {
                 $from = 0;
             }
+            $io->writeln(
+                'search equal from value',
+                OutputInterface::VERBOSITY_VERBOSE
+            );
+
             $criteria->andWhere($criteria::expr()->eq($entityMeta['subType'], $from));
-            $io->text('search entity with ' . ($from ?? 'null') . ' ' . $dictionaryType->getValue() . ' value...');
+            $io->text('search entity with ' . $from . ' ' . $dictionaryType->getValue() . ' value...');
         }
 
         $result = $repository->matching($criteria);
-        $io->note('Found ' . $result->count() . ' entities ');
+        $io->note('Found ' . $result->count() . ' entities ' . $entityMeta['class']);
+        if ($result->count() === 0) {
+            $io->warning('Entities not found, nothing to change');
+            return 0;
+        }
         foreach ($result as $entity) {
             if ($input->getOption('dry-run') || $output->getVerbosity() > OutputInterface::VERBOSITY_NORMAL) {
                 $entityId = $this->propertyAccessor->getValue($entity, 'id');
                 $oldValue = $this->propertyAccessor->getValue($entity, $entityMeta['subType']);
                 $newValue = $to;
-                $io->text($entityMeta['class'] . '::' . $entityId . ': ' . $oldValue . ' -> ' . $newValue);
+                $io->text($entityId . ': ' . $oldValue . ' -> ' . $newValue);
             }
 
             if (!$input->getOption('dry-run')) {
@@ -134,8 +169,8 @@ class DictionaryFillCommand extends Command
         }
         if (!$input->getOption('dry-run')) {
             $this->entityManager->flush();
+            $io->success('In ' . $entityMeta['class'].'::'.$entityMeta['subType']. ' filled successfully');
         }
-        $io->success('In ' . $entityMeta['class'].'::'.$entityMeta['subType']. ' filled successfully');
 
         return 0;
     }
