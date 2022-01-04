@@ -65,8 +65,7 @@ class Fetcher
     {
         $object = null;
         if (is_string($entity)) {
-            $this->loadProject($entity);
-            $object = $this->projects[$entity];
+            $object = $this->loadProject($entity);
         }
 
         if ($entity instanceof Project) {
@@ -75,8 +74,7 @@ class Fetcher
         }
 
         if ($entity instanceof InProjectInterface) {
-            $this->loadProject($entity->getSuffix());
-            $object = $this->projects[$entity->getSuffix()];
+            $object = $this->loadProject($entity->getSuffix());
         }
 
         if (!$object) {
@@ -133,24 +131,24 @@ class Fetcher
         return $items;
     }
 
-    private function loadProject(string $suffix): void
+    private function loadProject(string $suffix): ?Project
     {
         if (isset($this->projects[$suffix])) {
-            return;
+            return $this->projects[$suffix];
         }
 
         $project = $this->projectContext->getProject();
         if ($project && $project->getSuffix() === $suffix) {
             $this->projects[$suffix] = $project;
-            return;
+            return $project;
         }
 
         $project = $this->projectRepository->findBySuffix($suffix);
         if ($project) {
             $this->projects[$suffix] = $project;
-            return;
+            return $project;
         }
 
-        throw new \InvalidArgumentException('Не удалось получить проект ' . $suffix);
+        return null;
     }
 }

@@ -54,7 +54,7 @@
             <th>{{ 'task.assignedTo.label'|trans }}</th>
             <th>{{ 'task.updated.label'|trans }}</th>
         </tr>
-        {%  for task in tasks %}
+        {% for task in tasks %}
             <tr>
                 <td>{{ this.no(task) }}</td>
                 <td>{{ this.caption(task, 80) }}</td>

@@ -166,20 +166,6 @@ class TypesEnum extends Enum
         return self::relatedEntities()[$this->value]['getter'];
     }
 
-    /**
-     * Получить класс сущности, отдающий значение справочника
-     * @return string
-     */
-    public function getEntityClass(): string
-    {
-        if (!isset(self::relatedEntities()[$this->value]['class'])) {
-            throw new DomainException(
-                'Попытка получить значение справочника у которого не указано откуда получать его значение'
-            );
-        }
-        return self::relatedEntities()[$this->value]['class'];
-    }
-
     public function createDictionary(array $args): Dictionary
     {
         $class = self::classes()[$this->value];
