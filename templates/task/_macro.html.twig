@@ -40,22 +40,27 @@
     {% endif %}
 {% endmacro %}
 
-{% macro table(tasks) %}
+{% macro table(tasks, project) %}
     {% import _self as this %}
     {% import 'user/_macro.html.twig' as mUser %}
+    {% set project = project ?? project_context.project %}
     <table class="table table-condensed">
         <tr>
             <th>#</th>
             <th>{{ 'task.caption.label'|trans }}</th>
-            <th>{{ 'task.type.label'|trans }}</th>
+            {% if project and dictionary_enabled(project, 'task.type') %}
+                <th>{{ 'task.type.label'|trans }}</th>
+            {% endif %}
             <th>{{ 'task.assignedTo.label'|trans }}</th>
             <th>{{ 'task.updated.label'|trans }}</th>
         </tr>
-        {%  for task in tasks %}
+        {% for task in tasks %}
             <tr>
                 <td>{{ this.no(task) }}</td>
                 <td>{{ this.caption(task, 80) }}</td>
-                <td>{{ dictionary_name(task, 'type') }}</td>
+                {% if project and dictionary_enabled(project, 'task.type') %}
+                    <td>{{ dictionary_name(task, 'type') }}</td>
+                {% endif %}
                 <td>{{ mUser.badge(task.assignedTo) }}</td>
                 <td>{{ task.updatedAt|ago }}</td>{# localizeddate('medium', 'medium') #}
             </tr>
