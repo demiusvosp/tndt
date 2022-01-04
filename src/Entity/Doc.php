@@ -69,10 +69,10 @@ class Doc implements NoInterface, CommentableInterface
 
     /**
      * @var DateTime
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      * Автоматически обновляется через DocOnUpdateSubscriber
      */
-    private DateTime $updatedAt;
+    private ?DateTime $updatedAt = null;
 
     /**
      * @var User|null
@@ -80,7 +80,7 @@ class Doc implements NoInterface, CommentableInterface
      * @ORM\JoinColumn (name="updated_by", referencedColumnName="username", nullable=true)
      * Автоматически обновляется через DocOnUpdateSubscriber
      */
-    private ?User $updatedBy;
+    private ?User $updatedBy = null;
 
     /**
      * @var boolean
