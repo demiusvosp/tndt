@@ -59,6 +59,12 @@ class DictionaryFillCommand extends Command
                 InputOption::VALUE_REQUIRED,
                 'set to the specified value, instead of default'
             )
+            ->addOption(
+                'dry-run',
+                'd',
+                InputOption::VALUE_NONE,
+                'only print planning changes without real change'
+            )
         ;
     }
 
@@ -111,13 +117,24 @@ class DictionaryFillCommand extends Command
         $result = $repository->matching($criteria);
         $io->note('Found ' . $result->count() . ' entities ');
         foreach ($result as $entity) {
-            $this->propertyAccessor->setValue(
-                $entity,
-                $entityMeta['subType'],
-                $to
-            );
+            if ($input->getOption('dry-run') || $output->getVerbosity() > OutputInterface::VERBOSITY_NORMAL) {
+                $entityId = $this->propertyAccessor->getValue($entity, 'id');
+                $oldValue = $this->propertyAccessor->getValue($entity, $entityMeta['subType']);
+                $newValue = $to;
+                $io->text($entityMeta['class'] . '::' . $entityId . ': ' . $oldValue . ' -> ' . $newValue);
+            }
+
+            if (!$input->getOption('dry-run')) {
+                $this->propertyAccessor->setValue(
+                    $entity,
+                    $entityMeta['subType'],
+                    $to
+                );
+            }
         }
-        $this->entityManager->flush();
+        if (!$input->getOption('dry-run')) {
+            $this->entityManager->flush();
+        }
         $io->success('In ' . $entityMeta['class'].'::'.$entityMeta['subType']. ' filled successfully');
 
         return 0;
