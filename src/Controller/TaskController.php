@@ -33,7 +33,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class TaskController extends AbstractController
 {
-    private const TASK_PER_PAGE = 50;
+    private const TASK_PER_PAGE = 25;
 
     private EventDispatcherInterface $eventDispatcher;
     private ProjectContext $projectContext;

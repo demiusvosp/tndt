@@ -29,7 +29,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class DocController extends AbstractController
 {
-    private const DOC_PER_PAGE = 50;
+    private const DOC_PER_PAGE = 25;
 
     private DocRepository $docRepository;
     private EventDispatcherInterface $eventDispatcher;
