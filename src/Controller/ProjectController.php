@@ -18,12 +18,11 @@ use App\Form\Type\Project\EditProjectPermissionsType;
 use App\Form\Type\Project\EditProjectTaskSettingsType;
 use App\Form\Type\Project\NewProjectType;
 use App\Form\Type\Project\ListFilterType;
-use App\Object\Project\TaskSettings;
 use App\Repository\DocRepository;
 use App\Repository\TaskRepository;
 use App\Repository\UserRepository;
 use App\Service\Filler\ProjectFiller;
-use App\Service\ProjectContext;
+use App\Service\InProjectContext;
 use InvalidArgumentException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -39,14 +38,12 @@ class ProjectController extends AbstractController
     private const DOC_BLOCK_LIMIT = 15;
 
     private TranslatorInterface $translator;
-    private ProjectContext $projectContext;
     private ProjectFiller $projectFiller;
 
 
-    public function __construct(TranslatorInterface $translator, ProjectContext $projectContext, ProjectFiller $projectFiller)
+    public function __construct(TranslatorInterface $translator, ProjectFiller $projectFiller)
     {
         $this->translator = $translator;
-        $this->projectContext = $projectContext;
         $this->projectFiller = $projectFiller;
     }
 
@@ -73,18 +70,16 @@ class ProjectController extends AbstractController
     }
 
     /**
+     * @InProjectContext
      * @IsGranted ("PERM_PROJECT_VIEW")
      * @param Request $request
+     * @param Project $project
      * @param TaskRepository $taskRepository
      * @param DocRepository $docRepository
      * @return Response
      */
-    public function index(Request $request, TaskRepository $taskRepository, DocRepository $docRepository): Response
+    public function index(Request $request, Project $project, TaskRepository $taskRepository, DocRepository $docRepository): Response
     {
-        $project = $this->projectContext->getProject();
-        if (!$project) {
-            throw $this->createNotFoundException($this->translator->trans('project.not_found'));
-        }
         $tasks = $taskRepository->getProjectsTasks($project->getSuffix(), self::TASK_BLOCK_LIMIT);
         $docs = $docRepository->getProjectsDocs($project->getSuffix(), self::DOC_BLOCK_LIMIT);
 
@@ -120,17 +115,14 @@ class ProjectController extends AbstractController
     }
 
     /**
+     * @InProjectContext
      * @IsGranted("PERM_PROJECT_SETTINGS")
      * @param Request $request
+     * @param Project $project
      * @return Response
      */
-    public function editCommon(Request $request): Response
+    public function editCommon(Request $request, Project $project): Response
     {
-        $project = $this->projectContext->getProject();
-        if (!$project) {
-            throw $this->createNotFoundException($this->translator->trans('project.not_found'));
-        }
-
         $formData = new EditProjectCommonDTO($project);
         $form = $this->createForm(EditProjectCommonType::class, $formData);
 
@@ -146,17 +138,14 @@ class ProjectController extends AbstractController
     }
 
     /**
+     * @InProjectContext
      * @IsGranted("PERM_PROJECT_SETTINGS")
      * @param Request $request
+     * @param Project $project
      * @return Response
      */
-    public function editPermissions(Request $request): Response
+    public function editPermissions(Request $request, Project $project): Response
     {
-        $project = $this->projectContext->getProject();
-        if (!$project) {
-            throw $this->createNotFoundException($this->translator->trans('project.not_found'));
-        }
-
         $formData = new EditProjectPermissionsDTO($project);
         $form = $this->createForm(EditProjectPermissionsType::class, $formData);
         $form->handleRequest($request);
@@ -175,17 +164,14 @@ class ProjectController extends AbstractController
     }
 
     /**
+     * @InProjectContext
      * @IsGranted("PERM_PROJECT_SETTINGS")
      * @param Request $request
+     * @param Project $project
      * @return Response
      */
-    public function editTaskSettings(Request $request): Response
+    public function editTaskSettings(Request $request, Project $project): Response
     {
-        $project = $this->projectContext->getProject();
-        if (!$project) {
-            throw $this->createNotFoundException($this->translator->trans('project.not_found'));
-        }
-
         // В формах нельзя использовать реальные объекты, чтобы неправильная форма не испортила их состояние.
         // В данном месте мне не нужна dto хоть как-то отличающаяся от исходного объекта,
         //   но инстанс-объекта должен быть отдельный
@@ -210,17 +196,15 @@ class ProjectController extends AbstractController
     }
 
     /**
+     * @InProjectContext
      * @IsGranted("PERM_PROJECT_ARCHIVE")
      * @param Request $request
+     * @param Project $project
      * @return Response
      */
-    public function archive(Request $request): Response
+    public function archive(Request $request, Project $project): Response
     {
         $em = $this->getDoctrine()->getManager();
-        $project = $this->projectContext->getProject();
-        if (!$project) {
-            throw $this->createNotFoundException($this->translator->trans('project.not_found'));
-        }
 
         $project->doArchive();
         $em->flush();

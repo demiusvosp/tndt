@@ -25,11 +25,20 @@ class ErrorController extends AbstractController
 
     public function __invoke(FlattenException $exception): Response
     {
-        if (ErrorCodesEnum::isValid($exception->getStatusCode())) {
+        if (ErrorCodesEnum::isValid($exception->getCode())) {
+            // ошибки с собственными кодами
+            $errorType = ErrorCodesEnum::from($exception->getCode());
+            $statusCode = $exception->getCode();
+        } elseif (ErrorCodesEnum::isValid($exception->getStatusCode())) {
+            // ошибки с http кодами
             $errorType = ErrorCodesEnum::from($exception->getStatusCode());
+            $statusCode = $exception->getStatusCode();
         } else {
+            // прочая неспецифическая ошибка
             $errorType = ErrorCodesEnum::COMMON();
+            $statusCode = 500;
         }
+
         $statusLabel = $this->translator->trans(
             $errorType->label(),
             [],
@@ -44,7 +53,7 @@ class ErrorController extends AbstractController
         return $this->render(
             'error/error.html.twig',
             [
-                'status_code' => $exception->getStatusCode(),
+                'status_code' => $statusCode,
                 'status_label' => $statusLabel,
                 'status_description' => $statusDescription,
             ]

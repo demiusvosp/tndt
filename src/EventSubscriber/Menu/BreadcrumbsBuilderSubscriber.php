@@ -90,7 +90,7 @@ class BreadcrumbsBuilderSubscriber implements EventSubscriberInterface
                     'fa fa-tasks'
                 );
                 if ($taskId = $event->getRequest()->get('taskId')) {
-                    $currentTask = $this->taskRepository->getByTaskId($taskId);
+                    $currentTask = $this->taskRepository->findByTaskId($taskId);
                     if ($currentTask) {
                         $currentTaskMenu = new MenuItemModel(
                             'task.index',

@@ -8,9 +8,9 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Entity\Project;
 use App\Event\AppEvents;
 use App\Event\DocEvent;
-use App\Exception\NotInProjectContextException;
 use App\Form\DTO\Doc\EditDocDTO;
 use App\Form\DTO\Doc\ListFilterDTO;
 use App\Form\DTO\Doc\NewDocDTO;
@@ -18,7 +18,7 @@ use App\Form\Type\Doc\EditDocType;
 use App\Form\Type\Doc\NewDocType;
 use App\Repository\DocRepository;
 use App\Service\Filler\DocFiller;
-use App\Service\ProjectContext;
+use App\Service\InProjectContext;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -27,39 +27,36 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+/**
+ * @InProjectContext()
+ */
 class DocController extends AbstractController
 {
     private const DOC_PER_PAGE = 25;
 
     private DocRepository $docRepository;
     private EventDispatcherInterface $eventDispatcher;
-    private ProjectContext $projectContext;
     private TranslatorInterface $translator;
 
     public function __construct(
         DocRepository       $docRepository,
         EventDispatcherInterface $eventDispatcher,
-        ProjectContext      $projectContext,
         TranslatorInterface $translator
     ) {
         $this->docRepository = $docRepository;
         $this->eventDispatcher = $eventDispatcher;
-        $this->projectContext = $projectContext;
         $this->translator = $translator;
     }
 
     /**
      * @IsGranted ("PERM_DOC_VIEW")
      * @param Request $request
+     * @param Project $project
      * @param PaginatorInterface $paginator
      * @return Response
      */
-    public function list(Request $request, PaginatorInterface $paginator): Response
+    public function list(Request $request, Project $project, PaginatorInterface $paginator): Response
     {
-        $project = $this->projectContext->getProject();
-        if (!$project) {
-            throw new NotInProjectContextException();
-        }
         $filterData = new ListFilterDTO($project->getSuffix());
 
         $docs = $paginator->paginate(
@@ -77,14 +74,11 @@ class DocController extends AbstractController
     /**
      * @IsGranted ("PERM_DOC_VIEW")
      * @param Request $request
+     * @param Project $project
      * @return Response
      */
-    public function index(Request $request): Response
+    public function index(Request $request, Project $project): Response
     {
-        $project = $this->projectContext->getProject();
-        if (!$project) {
-            throw new NotInProjectContextException();
-        }
         $doc = $this->docRepository->getBySlug($request->get('slug'));
         if (!$doc || $doc->getSuffix() !== $project->getSuffix()) {
             throw $this->createNotFoundException($this->translator->trans('doc.not_found'));
@@ -96,16 +90,14 @@ class DocController extends AbstractController
     /**
      * @IsGranted ("PERM_DOC_CREATE")
      * @param Request $request
+     * @param Project $project
      * @param DocFiller $docFiller
      * @return Response
      */
-    public function create(Request $request, DocFiller $docFiller): Response
+    public function create(Request $request, Project $project, DocFiller $docFiller): Response
     {
         $formData = new NewDocDTO();
-        $currentProject = $this->projectContext->getProject();
-        if ($currentProject) {
-            $formData->setProject($currentProject->getSuffix());
-        }
+        $formData->setProject($project->getSuffix());
 
         $form = $this->createForm(NewDocType::class, $formData);
 
@@ -128,16 +120,16 @@ class DocController extends AbstractController
     /**
      * @IsGranted ("PERM_DOC_EDIT")
      * @param Request $request
+     * @param Project $project
+     * @param DocFiller $docFiller
      * @return Response
      */
-    public function edit(Request $request, DocFiller $docFiller): Response
+    public function edit(Request $request, Project $project, DocFiller $docFiller): Response
     {
-        $project = $this->projectContext->getProject();
-        if (!$project) {
-            throw new NotInProjectContextException();
-        }
         $doc = $this->docRepository->getBySlug($request->get('slug'));
         if (!$doc || $doc->getSuffix() !== $project->getSuffix()) {
+            // В doc slug не содержит suffix проекта (в отличие от taskId), поэтому нам необходимо проверить
+            //   консистентность suffix и slug в реквесте.
             throw $this->createNotFoundException($this->translator->trans('doc.not_found'));
         }
         $formData = new EditDocDTO($doc);
@@ -161,14 +153,11 @@ class DocController extends AbstractController
     /**
      * @IsGranted ("PERM_DOC_ARCHIVE")
      * @param Request $request
+     * @param Project $project
      * @return Response
      */
-    public function archive(Request $request): Response
+    public function archive(Request $request, Project $project): Response
     {
-        $project = $this->projectContext->getProject();
-        if (!$project) {
-            throw new NotInProjectContextException();
-        }
         $em = $this->getDoctrine()->getManager();
         $doc = $this->docRepository->getBySlug($request->get('slug'));
         if (!$doc || $doc->getSuffix() !== $project->getSuffix()) {
