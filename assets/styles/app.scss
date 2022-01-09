@@ -213,5 +213,13 @@ select option.service-item {
 }
 
 .manual-edit {
-    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+    font-family: $font-family-monospace;
+}
+
+.error-title {
+    font-family: $font-family-monospace;
+
+    .error-code {
+        font-weight: bolder;
+    }
 }

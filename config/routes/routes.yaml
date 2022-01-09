@@ -90,3 +90,7 @@ doc.edit:
 doc.archive:
     path: /p/{suffix<\w+>}/doc/{slug<[\w\d\-_]+>}/archive
     controller: App\Controller\DocController::archive
+
+_errors:
+    resource: '@TwigBundle/Resources/config/routing/errors.xml'
+    prefix: /_error

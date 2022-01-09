@@ -75,7 +75,7 @@ class SidebarBuilderSubscriber implements EventSubscriberInterface
                 ['suffix' => $currentProject->getSuffix()],
                 'fa fa-tasks fa-fw'
             ));
-            if (preg_match('/^task./', $route)) {
+            if ($route && preg_match('/^task./', $route)) {
                 if ($taskId = $event->getRequest()->get('taskId')) {
                     $currentTask = $this->taskRepository->getByTaskId($taskId);
                     if ($currentTask) {
@@ -86,7 +86,7 @@ class SidebarBuilderSubscriber implements EventSubscriberInterface
                             ['taskId' => $taskId],
                             'fa fa-tasks fa-fw'
                         );
-                        if($this->security->isGranted(UserPermissionsEnum::PERM_TASK_EDIT)) {
+                        if($this->isGranted(UserPermissionsEnum::PERM_TASK_EDIT)) {
                             $currentTaskMenu->addChild(new MenuItemModel(
                                 'task.edit',
                                 'menu.task.edit',
@@ -99,7 +99,7 @@ class SidebarBuilderSubscriber implements EventSubscriberInterface
                     }
                 }
             }
-            if($this->security->isGranted(UserPermissionsEnum::PERM_TASK_CREATE)) {
+            if($this->isGranted(UserPermissionsEnum::PERM_TASK_CREATE)) {
                 $event->addItem(new MenuItemModel(
                     'task.create',
                     'menu.task.create',
@@ -116,7 +116,7 @@ class SidebarBuilderSubscriber implements EventSubscriberInterface
                 ['suffix' => $currentProject->getSuffix()],
                 'far fa-copy fa-fw'
             ));
-            if (preg_match('/^doc./', $route)) {
+            if ($route && preg_match('/^doc./', $route)) {
                 if ($docId = $event->getRequest()->get('docId')) {
                     $currentDoc = $this->docRepository->getByDocId($docId);
                     if ($currentDoc) {
@@ -127,7 +127,7 @@ class SidebarBuilderSubscriber implements EventSubscriberInterface
                             ['docId' => $docId],
                             'fa fa-file-alt fa-fw'
                         );
-                        if($this->security->isGranted(UserPermissionsEnum::PERM_DOC_EDIT)) {
+                        if($this->isGranted(UserPermissionsEnum::PERM_DOC_EDIT)) {
                             $currentDocMenu->addChild(new MenuItemModel(
                                 'doc.edit',
                                 'menu.doc.edit',
@@ -140,7 +140,7 @@ class SidebarBuilderSubscriber implements EventSubscriberInterface
                     }
                 }
             }
-            if($this->security->isGranted(UserPermissionsEnum::PERM_DOC_CREATE)) {
+            if($this->isGranted(UserPermissionsEnum::PERM_DOC_CREATE)) {
                 $event->addItem(new MenuItemModel(
                     'doc.create',
                     'menu.doc.create',
@@ -150,7 +150,7 @@ class SidebarBuilderSubscriber implements EventSubscriberInterface
                 ));
             }
 
-            if($this->security->isGranted(UserPermissionsEnum::PERM_PROJECT_SETTINGS)) {
+            if($this->isGranted(UserPermissionsEnum::PERM_PROJECT_SETTINGS)) {
                 $event->addItem(new MenuItemModel(
                     'project.edit',
                     'menu.project.edit',
@@ -161,7 +161,7 @@ class SidebarBuilderSubscriber implements EventSubscriberInterface
             }
         }
 
-        if($this->security->isGranted(UserPermissionsEnum::PERM_USER_LIST)) {
+        if($this->isGranted(UserPermissionsEnum::PERM_USER_LIST)) {
             $event->addItem(new MenuItemModel(
                 'users',
                 'menu.users',
@@ -179,10 +179,12 @@ class SidebarBuilderSubscriber implements EventSubscriberInterface
             'fa fa-info fa-fw'
         ));
 
-        $this->activateByRoute(
-            $route,
-            $event->getItems()
-        );
+        if ($route) {
+            $this->activateByRoute(
+                $route,
+                $event->getItems()
+            );
+        }
     }
 
     /**
@@ -199,5 +201,11 @@ class SidebarBuilderSubscriber implements EventSubscriberInterface
                 $item->setIsActive(true);
             }
         }
+    }
+
+    private function isGranted(string $permission): bool
+    {
+        return $this->security->getToken() !== null &&
+            $this->security->isGranted($permission);
     }
 }

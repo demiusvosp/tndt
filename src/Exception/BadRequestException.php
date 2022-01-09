@@ -8,6 +8,7 @@ declare(strict_types=1);
 
 namespace App\Exception;
 
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class BadRequestException extends BadRequestHttpException
@@ -17,6 +18,7 @@ class BadRequestException extends BadRequestHttpException
         if(empty($message)) {
             $message = 'Некорректный запрос, возможно его пытались подделать';
         }
-        parent::__construct($message, $previous, $code, $headers);
+        parent::__construct($message, $previous, $code ?? Response::HTTP_BAD_REQUEST , $headers);
     }
+
 }

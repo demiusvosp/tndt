@@ -14,7 +14,7 @@ use App\Dictionary\Object\Dictionary;
 use App\Dictionary\Object\Task\TaskComplexity;
 use App\Dictionary\Object\Task\TaskPriority;
 use App\Dictionary\Object\Task\TaskType;
-use DomainException;
+use App\Exception\DomainException;
 use InvalidArgumentException;
 use MyCLabs\Enum\Enum;
 

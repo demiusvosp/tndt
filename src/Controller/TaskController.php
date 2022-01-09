@@ -8,7 +8,7 @@ namespace App\Controller;
 
 use App\Event\AppEvents;
 use App\Event\TaskEvent;
-use App\Exception\CurrentProjectNotFoundException;
+use App\Exception\NotInProjectContextException;
 use App\Form\DTO\Task\CloseTaskDTO;
 use App\Form\DTO\Task\EditTaskDTO;
 use App\Form\DTO\Task\ListFilterDTO;
@@ -62,7 +62,7 @@ class TaskController extends AbstractController
     {
         $project = $this->projectContext->getProject();
         if (!$project) {
-            throw new CurrentProjectNotFoundException();
+            throw new NotInProjectContextException();
         }
 
         $filterData = new ListFilterDTO($project->getSuffix());

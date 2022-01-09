@@ -9,6 +9,7 @@ declare(strict_types=1);
 namespace App\Security\Voter;
 
 use App\Entity\Project;
+use App\Exception\NotInProjectContextException;
 use App\Repository\ProjectRepository;
 use App\Security\ProjectSecurityRegistry;
 use App\Security\UserPermissionsEnum;

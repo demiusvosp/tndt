@@ -105,6 +105,7 @@ class Project implements InProjectInterface
     {
         $this->suffix = $suffix;
         $this->projectUsers = new ArrayCollection();
+        $this->getTaskSettings();
     }
 
     public function __toString(): string

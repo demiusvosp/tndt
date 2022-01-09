@@ -10,7 +10,7 @@ namespace App\Controller;
 
 use App\Event\AppEvents;
 use App\Event\DocEvent;
-use App\Exception\CurrentProjectNotFoundException;
+use App\Exception\NotInProjectContextException;
 use App\Form\DTO\Doc\EditDocDTO;
 use App\Form\DTO\Doc\ListFilterDTO;
 use App\Form\DTO\Doc\NewDocDTO;
@@ -58,7 +58,7 @@ class DocController extends AbstractController
     {
         $project = $this->projectContext->getProject();
         if (!$project) {
-            throw new CurrentProjectNotFoundException();
+            throw new NotInProjectContextException();
         }
         $filterData = new ListFilterDTO($project->getSuffix());
 
@@ -83,7 +83,7 @@ class DocController extends AbstractController
     {
         $project = $this->projectContext->getProject();
         if (!$project) {
-            throw new CurrentProjectNotFoundException();
+            throw new NotInProjectContextException();
         }
         $doc = $this->docRepository->getBySlug($request->get('slug'));
         if (!$doc || $doc->getSuffix() !== $project->getSuffix()) {
@@ -134,7 +134,7 @@ class DocController extends AbstractController
     {
         $project = $this->projectContext->getProject();
         if (!$project) {
-            throw new CurrentProjectNotFoundException();
+            throw new NotInProjectContextException();
         }
         $doc = $this->docRepository->getBySlug($request->get('slug'));
         if (!$doc || $doc->getSuffix() !== $project->getSuffix()) {
@@ -167,7 +167,7 @@ class DocController extends AbstractController
     {
         $project = $this->projectContext->getProject();
         if (!$project) {
-            throw new CurrentProjectNotFoundException();
+            throw new NotInProjectContextException();
         }
         $em = $this->getDoctrine()->getManager();
         $doc = $this->docRepository->getBySlug($request->get('slug'));
