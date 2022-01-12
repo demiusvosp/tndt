@@ -13,9 +13,8 @@ use Throwable;
 
 class DomainException extends \DomainException
 {
-    public function __construct($message = "", $code = 0, Throwable $previous = null)
+    public function __construct($message = "", $code = ErrorCodesEnum::DOMAIN_ERROR, Throwable $previous = null)
     {
-        parent::__construct($message, $code ?? Response::HTTP_INTERNAL_SERVER_ERROR, $previous);
+        parent::__construct($message, $code, $previous);
     }
-
 }

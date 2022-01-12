@@ -10,6 +10,8 @@ namespace App\Service\Filler;
 
 use App\Entity\Task;
 use App\Exception\BadRequestException;
+use App\Exception\BadUserException;
+use App\Exception\DomainException;
 use App\Form\DTO\Task\EditTaskDTO;
 use App\Form\DTO\Task\NewTaskDTO;
 use App\Repository\ProjectRepository;
@@ -30,7 +32,7 @@ class TaskFiller
     {
         $project = $this->projectRepository->findBySuffix($dto->getProject());
         if (!$project) {
-            throw new BadRequestException('Не найден проект к которому относится задача');
+            throw new DomainException('Не найден проект к которому относится задача');
         }
 
         $task = new Task($project);
@@ -44,10 +46,10 @@ class TaskFiller
 
         $newAssignedUser = $this->userRepository->findByUsername($dto->getAssignedTo());
         if (!$newAssignedUser) {
-            throw new BadRequestException('Выбранный пользователь не найден');
+            throw new BadUserException('Выбранный пользователь не найден');
         }
         if (!$newAssignedUser->hasProject($task->getProject())) {
-            throw new BadRequestException('Нельзя назначить пользователя на задачу проекта к которому у него нет доступа');
+            throw new BadUserException('Нельзя назначить пользователя на задачу проекта к которому у него нет доступа');
         }
         $task->setAssignedTo($newAssignedUser);
 
@@ -57,7 +59,7 @@ class TaskFiller
     public function fillFromEditForm(EditTaskDTO $dto, Task $task): void
     {
         if($dto->getProject() !== $task->getProject()->getSuffix()) {
-            throw new BadRequestException('Нельзя поменять проект задачи. Для этого её надо конвертировать в другой проект.');
+            throw new DomainException('Нельзя поменять проект задачи. Для этого её надо конвертировать в другой проект.');
         }
 
         $task->setCaption($dto->getCaption());
@@ -70,10 +72,10 @@ class TaskFiller
 
         $newAssignedUser = $this->userRepository->find($dto->getAssignedTo());
         if (!$newAssignedUser) {
-            throw new BadRequestException('Выбранный пользователь не найден');
+            throw new BadUserException('Выбранный пользователь не найден');
         }
         if (!$newAssignedUser->hasProject($task->getProject())) {
-            throw new BadRequestException('Нельзя назначить пользователя на задачу проекта к которому у него нет доступа');
+            throw new BadUserException('Пользователь не относится к указанному проекту');
         }
         $task->setAssignedTo($newAssignedUser);
     }

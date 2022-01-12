@@ -9,6 +9,8 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\Project;
+use App\Exception\BadUserException;
+use App\Exception\DictionaryException;
 use App\Form\DTO\Project\EditProjectCommonDTO;
 use App\Form\DTO\Project\EditProjectPermissionsDTO;
 use App\Form\DTO\Project\NewProjectDTO;
@@ -37,13 +39,11 @@ class ProjectController extends AbstractController
     private const TASK_BLOCK_LIMIT = 15;
     private const DOC_BLOCK_LIMIT = 15;
 
-    private TranslatorInterface $translator;
     private ProjectFiller $projectFiller;
 
 
-    public function __construct(TranslatorInterface $translator, ProjectFiller $projectFiller)
+    public function __construct(ProjectFiller $projectFiller)
     {
-        $this->translator = $translator;
         $this->projectFiller = $projectFiller;
     }
 

@@ -14,6 +14,8 @@ use App\Entity\User;
 use App\Event\AppEvents;
 use App\Event\CommentEvent;
 use App\Exception\BadRequestException;
+use App\Exception\BadUserException;
+use App\Exception\DomainException;
 use App\Form\Type\Comment\NewCommentType;
 use Doctrine\ORM\EntityManagerInterface;
 use InvalidArgumentException;
@@ -63,7 +65,7 @@ class CommentService
         if (!$author) {
             $author = $this->security->getUser();
             if (!$author) {
-                throw new BadRequestException('Комментарий могут оставлять только зарегистрированные пользователи');
+                throw new BadUserException('Комментарий могут оставлять только зарегистрированные пользователи');
             }
         }
 
@@ -84,7 +86,7 @@ class CommentService
     public function applyCommentFromString(CommentableInterface $commentableObject, string $message, User $author): void
     {
         if (empty($message)) {
-            throw new InvalidArgumentException('Нельзя добавить пустой комментарий');
+            throw new DomainException('Нельзя добавить пустой комментарий');
         }
 
         $comment = new Comment($commentableObject);

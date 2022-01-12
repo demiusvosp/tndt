@@ -11,6 +11,7 @@ namespace App\Service\Filler;
 use App\Entity\Doc;
 use App\Entity\Project;
 use App\Exception\BadRequestException;
+use App\Exception\DomainException;
 use App\Form\DTO\Doc\EditDocDTO;
 use App\Form\DTO\Doc\NewDocDTO;
 use App\Repository\ProjectRepository;
@@ -28,7 +29,7 @@ class DocFiller
     {
         $project = $this->projectRepository->find($dto->getProject());
         if (!$project) {
-            throw new BadRequestException('Не найден проект к которому относится задача');
+            throw new DomainException('Не найден проект к которому относится задача');
         }
 
         $doc = new Doc($project);

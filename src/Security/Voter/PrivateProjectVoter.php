@@ -81,7 +81,7 @@ class PrivateProjectVoter implements VoterInterface, LoggerAwareInterface
             if (!UserRolesEnum::isValid($role)) {
                 $this->logger->debug('{role} is invalid self project role - critical error', ['role' => $role]);
                 // неизвестная роль
-                throw new \DomainException('Unknown '.$role.' role');
+                throw new \DomainException('Неизвестная роль ' . $role);
             }
 
             foreach ($attributes as $attribute) {

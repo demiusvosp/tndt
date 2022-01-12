@@ -12,6 +12,7 @@ use App\Entity\Contract\InProjectInterface;
 use App\Dictionary\Object\Dictionary;
 use App\Dictionary\Object\DictionaryItem;
 use App\Entity\Project;
+use App\Exception\DictionaryException;
 use App\Repository\ProjectRepository;
 use App\Service\ProjectContext;
 
@@ -78,8 +79,8 @@ class Fetcher
         }
 
         if (!$object) {
-            throw new \DomainException(
-                'Не удалось получить проект из переданного объекта '
+            throw new DictionaryException(
+                'Не удалось получить проект, хранящий справочник, по переданным данным '
                 . (is_string($entity) ? $entity : get_class($entity))
             );
         }
@@ -89,7 +90,7 @@ class Fetcher
         }
 
         if (!$object instanceof Dictionary) {
-            throw new \DomainException(
+            throw new DictionaryException(
                 'Не удалось получить справочник по указанному по источнику '
                 . implode('->', $dictionaryType->getSource())
             );

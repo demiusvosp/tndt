@@ -9,6 +9,7 @@ declare(strict_types=1);
 namespace App\Dictionary;
 
 use App\Entity\Task;
+use App\Exception\DictionaryException;
 use MyCLabs\Enum\Enum;
 
 /**
@@ -33,7 +34,7 @@ class StylesEnum extends Enum
             }
         }
 
-        throw new \InvalidArgumentException(
+        throw new DictionaryException(
             'Для сущности ' . get_class($entity) . ' не найден тип стилизации ' . $subType
         );
     }
