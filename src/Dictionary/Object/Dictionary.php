@@ -31,9 +31,6 @@ class Dictionary implements JlobObjectInterface
     {
         $items = $arg['items'] ?? [];
         foreach ($items as $k => $item) {
-            if (empty($item['name'])) {
-                continue;
-            }
             if (empty($item['id'])) {
                 $item['id'] = $k ?? $this->generateNewId();
             }
