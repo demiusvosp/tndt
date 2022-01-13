@@ -21,29 +21,6 @@ class DictionaryEditType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->addModelTransformer(
-            new CallbackTransformer(
-                function ($object): string {
-                    if (!$object instanceof JlobObjectInterface) {
-                        throw new \InvalidArgumentException(
-                            '"' . ($object ? get_class($object) : 'null') . '" must be implement JlobObjectInterface'
-                        );
-                    }
-
-                    return json_encode(
-                        $object->jsonSerialize(),
-                        JSON_PRETTY_PRINT | JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE
-                    );
-                },
-                function (string $string) use ($options): Dictionary {
-                    /** @var TypesEnum $dictionaryType */
-                    $dictionaryType = $options['dictionaryType'];
-
-                    $array = json_decode($string, true, 512, JSON_THROW_ON_ERROR);
-                    return $dictionaryType->createDictionary($array);
-                }
-            )
-        );
     }
 
     public function getParent(): string

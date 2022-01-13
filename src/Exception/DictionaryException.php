@@ -12,8 +12,8 @@ use Throwable;
 
 class DictionaryException extends DomainException
 {
-    public function __construct($message = "", $code = ErrorCodesEnum::DICTIONARY_ERROR, Throwable $previous = null)
+    public function __construct($message = "", Throwable $previous = null)
     {
-        parent::__construct($message, $code, $previous);
+        parent::__construct($message, ErrorCodesEnum::DICTIONARY_ERROR, $previous);
     }
 }

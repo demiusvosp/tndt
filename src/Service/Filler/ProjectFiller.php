@@ -8,27 +8,30 @@ declare(strict_types=1);
 
 namespace App\Service\Filler;
 
+use App\Dictionary\Object\Dictionary;
+use App\Dictionary\TypesEnum;
 use App\Entity\Project;
 use App\Entity\ProjectUser;
-use App\Entity\User;
+use App\Exception\DictionaryException;
 use App\Form\DTO\Project\EditProjectCommonDTO;
 use App\Form\DTO\Project\EditProjectPermissionsDTO;
+use App\Form\DTO\Project\EditTaskSettingsDTO;
 use App\Form\DTO\Project\NewProjectDTO;
-use App\Object\Project\TaskSettings;
 use App\Repository\UserRepository;
 use App\Security\UserRolesEnum;
 use \InvalidArgumentException;
+use JsonException;
 use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ProjectFiller
 {
     private UserRepository $userRepository;
-    private Security $security;
 
-    public function __construct(UserRepository $userRepository, Security $security)
+    public function __construct(UserRepository $userRepository)
     {
         $this->userRepository = $userRepository;
-        $this->security = $security;
     }
 
     public function createProjectByForm(NewProjectDTO $dto): Project
@@ -96,13 +99,47 @@ class ProjectFiller
         $project->setProjectUsers($projectVisitors, UserRolesEnum::PROLE_VISITOR());
     }
 
-    public function fillTaskSettings(TaskSettings $settings, Project $project): void
+    /**
+     * @param EditTaskSettingsDTO $dto
+     * @param Project $project
+     * @throws InvalidArgumentException
+     */
+    public function fillTaskSettings(EditTaskSettingsDTO $dto, Project $project): void
     {
         $currentSetting = $project->getTaskSettings();
 
-        $currentSetting->getTypes()->merge($settings->getTypes());
-        $currentSetting->getStages()->merge($settings->getStages());
-        $currentSetting->getPriority()->merge($settings->getPriority());
-        $currentSetting->getComplexity()->merge($settings->getComplexity());
+        $currentSetting->getTypes()->merge(
+            $this->stringToDictionary(TypesEnum::TASK_TYPE(), $dto->getTypes())
+        );
+        $currentSetting->getStages()->merge(
+            $this->stringToDictionary(TypesEnum::TASK_STAGE(), $dto->getStages())
+        );
+        $currentSetting->getPriority()->merge(
+            $this->stringToDictionary(TypesEnum::TASK_PRIORITY(), $dto->getPriority())
+        );
+        $currentSetting->getComplexity()->merge(
+            $this->stringToDictionary(TypesEnum::TASK_COMPLEXITY(), $dto->getComplexity())
+        );
+    }
+
+    /**
+     * @param TypesEnum $dictionaryType
+     * @param string $string
+     * @return Dictionary
+     * @throws InvalidArgumentException
+     * @throws DictionaryException
+     */
+    private function stringToDictionary(TypesEnum $dictionaryType, string $string): Dictionary
+    {
+        try {
+            $array = json_decode($string, true, 512, JSON_THROW_ON_ERROR);
+
+            return $dictionaryType->createDictionary($array);
+
+        } catch (JsonException $e) {
+            throw new DictionaryException('Не удалось десериализовать справочник ' . $dictionaryType->getLabel());
+        } catch (DictionaryException $e) {
+            throw new DictionaryException('Справочник ' . $dictionaryType->getLabel() . ', ' . $e->getMessage());
+        }
     }
 }

@@ -1,4 +1,5 @@
-dictionary_value {{ dictionary_type }}: Значение {{ value }} отсутствует в справочнике {{ dictionary_type }}
+dictionary_invalid_object {{ dictionary_type }}: Невозможно восстановить объект справочника {{ dictionary_type }} из {{ value }}, {{ dictionary_error }}
+dictionary_invalid_value {{ dictionary_type }}: Значение {{ value }} отсутствует в справочнике {{ dictionary_type }}
 not_unique_in_fields {{ not_unique_values }}: Элементы ({{ not_unique_values }}) встречаются несколько раз.
 not_unique_usernames {{ not_unique_values }}: Пользователи не могут иметь несолько ролей. ({{ not_unique_values }}) указанны несколько раз.
 doc:

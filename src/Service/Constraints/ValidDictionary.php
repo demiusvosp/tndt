@@ -1,8 +1,8 @@
 <?php
 /**
  * User: demius
- * Date: 14.12.2021
- * Time: 23:45
+ * Date: 13.01.2022
+ * Time: 22:56
  */
 declare(strict_types=1);
 
@@ -14,13 +14,13 @@ use Symfony\Component\Validator\Constraint;
  * @Annotation
  * @Target({"PROPERTY", "METHOD", "ANNOTATION"})
  */
-class DictionaryValue extends Constraint
+class ValidDictionary extends Constraint
 {
     public string $type;
 
     public bool $allowEmpty = true;
 
-    public string $message = 'dictionary_invalid_value {{ dictionary_type }}';
+    public string $message = 'dictionary_invalid_object {{ dictionary_type }}';
 
     public function getDefaultOption(): string
     {

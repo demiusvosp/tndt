@@ -8,6 +8,7 @@ declare(strict_types=1);
 
 namespace App\Dictionary\Object;
 
+use App\Exception\DictionaryException;
 use App\Object\JlobObjectInterface;
 
 class DictionaryItem implements JlobObjectInterface
@@ -38,7 +39,10 @@ class DictionaryItem implements JlobObjectInterface
 
     public function setFromArray(array $arg): void
     {
-        $this->name = $arg['name'] ?? '';
+        if (!isset($arg['name'])) {
+            throw new DictionaryException('Элемент справочника должен иметь имя');
+        }
+        $this->name = $arg['name'];
         $this->description = $arg['description'] ?? '';
     }
 

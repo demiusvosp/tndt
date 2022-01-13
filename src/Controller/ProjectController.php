@@ -13,6 +13,7 @@ use App\Exception\BadUserException;
 use App\Exception\DictionaryException;
 use App\Form\DTO\Project\EditProjectCommonDTO;
 use App\Form\DTO\Project\EditProjectPermissionsDTO;
+use App\Form\DTO\Project\EditTaskSettingsDTO;
 use App\Form\DTO\Project\NewProjectDTO;
 use App\Form\DTO\Project\ProjectListFilterDTO;
 use App\Form\Type\Project\EditProjectCommonType;
@@ -169,20 +170,18 @@ class ProjectController extends AbstractController
      * @param Request $request
      * @param Project $project
      * @return Response
+     * @throws \JsonException
      */
     public function editTaskSettings(Request $request, Project $project): Response
     {
-        // В формах нельзя использовать реальные объекты, чтобы неправильная форма не испортила их состояние.
-        // В данном месте мне не нужна dto хоть как-то отличающаяся от исходного объекта,
-        //   но инстанс-объекта должен быть отдельный
-        $formData = clone $project->getTaskSettings();
+        $formData = new EditTaskSettingsDTO($project->getTaskSettings());
         $form = $this->createForm(EditProjectTaskSettingsType::class, $formData);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             try {
                 $this->projectFiller->fillTaskSettings($formData, $project);
-            } catch (InvalidArgumentException $e) {
+            } catch (DictionaryException $e) {
                 $form->addError(new FormError($e->getMessage()));
             }
             $em = $this->getDoctrine()->getManager();

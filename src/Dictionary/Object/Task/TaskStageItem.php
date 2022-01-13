@@ -9,6 +9,7 @@ declare(strict_types=1);
 namespace App\Dictionary\Object\Task;
 
 use App\Dictionary\Object\DictionaryItem;
+use App\Exception\DictionaryException;
 
 class TaskStageItem extends DictionaryItem
 {
@@ -17,7 +18,11 @@ class TaskStageItem extends DictionaryItem
     public function setFromArray(array $arg): void
     {
         parent::setFromArray($arg);
-        $this->type = StageTypesEnum::from($arg['type'] ?? StageTypesEnum::STAGE_ON_NORMAL);
+        try {
+            $this->type = StageTypesEnum::from($arg['type'] ?? StageTypesEnum::STAGE_ON_NORMAL);
+        } catch (\UnexpectedValueException $e) {
+            throw new DictionaryException('Элемент справочника \"' . $this->getName() .'\" имеет некорректный тип', $e);
+        }
     }
 
     public function jsonSerialize(): array
