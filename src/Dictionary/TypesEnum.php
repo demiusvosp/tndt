@@ -134,7 +134,7 @@ class TypesEnum extends Enum
     public function getLabel(): string
     {
         if (!isset(self::labels()[$this->value])) {
-            throw new DomainException('Неизвестный справочник ' . $this->value);
+            throw new DictionaryException('Неизвестный справочник ' . $this->value);
         }
         return self::labels()[$this->value];
     }

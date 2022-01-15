@@ -22,8 +22,8 @@ class ErrorCodesEnum extends Enum
     public const NOT_IN_PROJECT_CONTEXT = 701;
 
     public const DOMAIN_ERROR = 800;
-    public const DICTIONARY_ERROR = 801;
-    public const BAD_USER_ERROR = 802;
+    public const DICTIONARY_ERROR = 810;
+    public const BAD_USER_ERROR = 820;
 
     public static function labels(): array
     {

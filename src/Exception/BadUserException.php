@@ -12,8 +12,8 @@ use Throwable;
 
 class BadUserException extends DomainException
 {
-    public function __construct($message = "", $code = 0, Throwable $previous = null)
+    public function __construct($message = "", $code = ErrorCodesEnum::BAD_USER_ERROR, Throwable $previous = null)
     {
-        parent::__construct($message, ErrorCodesEnum::BAD_USER_ERROR, $previous);
+        parent::__construct($message, $code, $previous);
     }
 }

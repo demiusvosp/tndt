@@ -13,12 +13,12 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class BadRequestException extends BadRequestHttpException
 {
-    public function __construct(?string $message = '', \Throwable $previous = null, int $code = 0, array $headers = [])
+    public function __construct(?string $message = '', \Throwable $previous = null, int $code = Response::HTTP_BAD_REQUEST, array $headers = [])
     {
         if(empty($message)) {
             $message = 'Некорректный запрос, возможно его пытались подделать';
         }
-        parent::__construct($message, $previous, $code ?? Response::HTTP_BAD_REQUEST , $headers);
+        parent::__construct($message, $previous, $code, $headers);
     }
 
 }
