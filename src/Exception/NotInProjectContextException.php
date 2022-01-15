@@ -9,23 +9,24 @@ declare(strict_types=1);
 namespace App\Exception;
 
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Throwable;
 
 /**
  * Без проекта не имеет смысла, но проект не найден. Или недоступен.
  */
-class CurrentProjectNotFoundException extends NotFoundHttpException
+class NotInProjectContextException extends NotFoundHttpException
 {
     /**
-     * @param \Throwable|null $previous The previous exception
-     * @param int             $code     The internal exception code
+     * @param Throwable|null $previous The previous exception
      */
-    public function __construct(\Throwable $previous = null, int $code = 0, array $headers = [])
+    public function __construct(Throwable $previous = null, array $headers = [])
     {
         parent::__construct(
             'Without the project it does not make sense, but the project could not be found',
             $previous,
-            $code,
+            ErrorCodesEnum::NOT_IN_PROJECT_CONTEXT,
             $headers
         );
     }
+
 }

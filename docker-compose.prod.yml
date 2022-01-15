@@ -19,7 +19,7 @@ services:
       - './:/app'
     environment:
       - 'APP_ENV=prod'
-      - 'APP_DEBUG=true'
+      - 'APP_DEBUG=false'
 
   mysql:
     volumes:

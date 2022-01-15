@@ -81,10 +81,10 @@ class Task implements NoInterface, CommentableInterface, HasClosedStatusInterfac
 
     /**
      * @var DateTime
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      * Автоматически обновляется через OnUpdateTaskManager
      */
-    private DateTime $updatedAt;
+    private ?DateTime $updatedAt = null;
 
     /**
      * @var User|null
@@ -92,7 +92,7 @@ class Task implements NoInterface, CommentableInterface, HasClosedStatusInterfac
      * @ORM\JoinColumn (name="assigned_to", referencedColumnName="username", nullable=true)
      * Автоматически обновляется через OnUpdateTaskManager
      */
-    private ?User $assignedTo;
+    private ?User $assignedTo = null;
 
     /**
      * @var boolean
@@ -331,7 +331,7 @@ class Task implements NoInterface, CommentableInterface, HasClosedStatusInterfac
     /**
      * @return DateTime
      */
-    public function getUpdatedAt(): DateTime
+    public function getUpdatedAt(): ?DateTime
     {
         return $this->updatedAt;
     }

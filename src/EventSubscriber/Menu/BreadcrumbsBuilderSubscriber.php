@@ -90,7 +90,7 @@ class BreadcrumbsBuilderSubscriber implements EventSubscriberInterface
                     'fa fa-tasks'
                 );
                 if ($taskId = $event->getRequest()->get('taskId')) {
-                    $currentTask = $this->taskRepository->getByTaskId($taskId);
+                    $currentTask = $this->taskRepository->findByTaskId($taskId);
                     if ($currentTask) {
                         $currentTaskMenu = new MenuItemModel(
                             'task.index',
@@ -167,7 +167,7 @@ class BreadcrumbsBuilderSubscriber implements EventSubscriberInterface
             $event->addItem($projectsMenu);
         }
 
-        if (preg_match('/^user./', $route)) {
+        if ($route && preg_match('/^user./', $route)) {
             $userMenu = new MenuItemModel(
                 'user.home',
                 'breadcrumb.user.home',

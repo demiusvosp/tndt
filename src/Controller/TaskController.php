@@ -6,9 +6,9 @@
  */
 namespace App\Controller;
 
+use App\Entity\Project;
 use App\Event\AppEvents;
 use App\Event\TaskEvent;
-use App\Exception\CurrentProjectNotFoundException;
 use App\Form\DTO\Task\CloseTaskDTO;
 use App\Form\DTO\Task\EditTaskDTO;
 use App\Form\DTO\Task\ListFilterDTO;
@@ -19,9 +19,8 @@ use App\Form\Type\Task\ListFilterType;
 use App\Form\Type\Task\NewTaskType;
 use App\Repository\TaskRepository;
 use App\Service\Filler\TaskFiller;
-use App\Service\ProjectContext;
+use App\Service\InProjectContext;
 use App\Service\TaskService;
-use InvalidArgumentException;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -30,24 +29,23 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-
+/**
+ * @InProjectContext()
+ */
 class TaskController extends AbstractController
 {
-    private const TASK_PER_PAGE = 50;
+    private const TASK_PER_PAGE = 25;
 
     private EventDispatcherInterface $eventDispatcher;
-    private ProjectContext $projectContext;
     private TranslatorInterface $translator;
     private TaskRepository $taskRepository;
 
     public function __construct(
         EventDispatcherInterface $eventDispatcher,
-        ProjectContext      $projectContext,
         TranslatorInterface $translator,
         TaskRepository      $taskRepository
     ) {
         $this->eventDispatcher = $eventDispatcher;
-        $this->projectContext = $projectContext;
         $this->translator = $translator;
         $this->taskRepository = $taskRepository;
     }
@@ -55,16 +53,12 @@ class TaskController extends AbstractController
     /**
      * @IsGranted ("PERM_TASK_VIEW")
      * @param Request $request
+     * @param Project $project
      * @param PaginatorInterface $paginator
      * @return Response
      */
-    public function list(Request $request, PaginatorInterface $paginator): Response
+    public function list(Request $request, Project $project, PaginatorInterface $paginator): Response
     {
-        $project = $this->projectContext->getProject();
-        if (!$project) {
-            throw new CurrentProjectNotFoundException();
-        }
-
         $filterData = new ListFilterDTO($project->getSuffix());
         $filterForm = $this->createForm(ListFilterType::class, $filterData);
 
@@ -92,7 +86,7 @@ class TaskController extends AbstractController
      */
     public function index(Request $request): Response
     {
-        $task = $this->taskRepository->getByTaskId($request->get('taskId'));
+        $task = $this->taskRepository->findByTaskId($request->get('taskId'));
         if (!$task) {
             throw $this->createNotFoundException($this->translator->trans('task.not_found'));
         }
@@ -106,18 +100,11 @@ class TaskController extends AbstractController
      * @param TaskFiller $taskFiller
      * @return Response
      */
-    public function create(Request $request, TaskFiller $taskFiller): Response
+    public function create(Request $request, Project $project, TaskFiller $taskFiller): Response
     {
-        $currentProject = $this->projectContext->getProject();
-        if (!$currentProject) {
-            throw new InvalidArgumentException(
-                'В данный момент нельзя создавать задачи вне проекта. Смотри http://tasks.demius.ru/p/tndt-41'
-            );
-        }
-        $formData = new NewTaskDTO($currentProject->getSuffix());
+        $formData = new NewTaskDTO($project->getSuffix());
         $form = $this->createForm(NewTaskType::class, $formData);
 
-        $formData->setProject($currentProject->getSuffix());
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
@@ -142,7 +129,7 @@ class TaskController extends AbstractController
      */
     public function edit(Request $request, TaskFiller $taskFiller): Response
     {
-        $task = $this->taskRepository->getByTaskId($request->get('taskId'));
+        $task = $this->taskRepository->findByTaskId($request->get('taskId'));
         if (!$task) {
             throw $this->createNotFoundException($this->translator->trans('task.not_found'));
         }
@@ -172,7 +159,7 @@ class TaskController extends AbstractController
      */
     public function close(Request $request, TaskService $taskService): Response
     {
-        $task = $this->taskRepository->getByTaskId($request->get('taskId'));
+        $task = $this->taskRepository->findByTaskId($request->get('taskId'));
         if (!$task) {
             throw $this->createNotFoundException($this->translator->trans('task.not_found'));
         }

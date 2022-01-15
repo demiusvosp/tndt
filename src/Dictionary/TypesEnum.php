@@ -14,7 +14,8 @@ use App\Dictionary\Object\Dictionary;
 use App\Dictionary\Object\Task\TaskComplexity;
 use App\Dictionary\Object\Task\TaskPriority;
 use App\Dictionary\Object\Task\TaskType;
-use DomainException;
+use App\Exception\DictionaryException;
+use App\Exception\DomainException;
 use InvalidArgumentException;
 use MyCLabs\Enum\Enum;
 
@@ -106,7 +107,7 @@ class TypesEnum extends Enum
             }
         }
 
-        throw new InvalidArgumentException(
+        throw new DictionaryException(
             'Справочник ' . $dictionary
             . ' относящийся к ' . get_class($entity)
             . ' не найден'
@@ -133,7 +134,7 @@ class TypesEnum extends Enum
     public function getLabel(): string
     {
         if (!isset(self::labels()[$this->value])) {
-            throw new DomainException('Unknown dictionary ' . $this->value);
+            throw new DictionaryException('Неизвестный справочник ' . $this->value);
         }
         return self::labels()[$this->value];
     }
@@ -147,7 +148,7 @@ class TypesEnum extends Enum
     public function getSource(): array
     {
         if (!isset(self::sources()[$this->value])) {
-            throw new DomainException('Unknown dictionary ' . $this->value);
+            throw new DictionaryException('Неизвестный справочник ' . $this->value);
         }
         return self::sources()[$this->value];
     }
@@ -159,7 +160,7 @@ class TypesEnum extends Enum
     public function getEntityGetter(): string
     {
         if (!isset(self::relatedEntities()[$this->value]['getter'])) {
-            throw new DomainException(
+            throw new DictionaryException(
                 'Попытка получить значение справочника у которого не указано откуда получать его значение'
             );
         }

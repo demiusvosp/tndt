@@ -9,6 +9,7 @@ declare(strict_types=1);
 namespace App\Form\Type\Project;
 
 use App\Dictionary\TypesEnum;
+use App\Form\DTO\Project\EditTaskSettingsDTO;
 use App\Form\Type\Base\DictionaryEditType;
 use App\Object\Project\TaskSettings;
 use Symfony\Component\Form\AbstractType;
@@ -64,6 +65,6 @@ class EditProjectTaskSettingsType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefault('data_class', TaskSettings::class);
+        $resolver->setDefault('data_class', EditTaskSettingsDTO::class);
     }
 }

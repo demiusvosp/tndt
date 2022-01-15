@@ -13,6 +13,7 @@ use App\Dictionary\TypesEnum;
 use App\Dictionary\Fetcher;
 use App\Dictionary\StylesEnum;
 use App\Dictionary\Stylizer;
+use App\Exception\DictionaryException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
@@ -68,7 +69,7 @@ class DictionaryExtension extends AbstractExtension
     public function dictionaryName($entity, string $dictionaryType, bool $withAlt = false): string
     {
         if (!$entity instanceof InProjectInterface) {
-            throw new \InvalidArgumentException('Справочник можно получить только от сущности относящейся к проекту');
+            throw new DictionaryException('Справочник можно получить только от сущности относящейся к проекту');
         }
         $type = TypesEnum::fromEntity($entity, $dictionaryType);
         $item = $this->fetcher->getDictionaryItem($type, $entity);

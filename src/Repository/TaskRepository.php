@@ -22,7 +22,11 @@ class TaskRepository extends ServiceEntityRepository implements NoEntityReposito
         parent::__construct($registry, Task::class);
     }
 
-    public function getByTaskId(string $taskId)
+    /**
+     * @param string $taskId
+     * @return Task|mixed|object|null
+     */
+    public function findByTaskId(string $taskId)
     {
         [$suffix, $no] = explode(Task::TASKID_SEPARATOR, $taskId);
 

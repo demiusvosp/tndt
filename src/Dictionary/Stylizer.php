@@ -12,6 +12,7 @@ use App\Dictionary\Object\Task\StageTypesEnum;
 use App\Dictionary\Object\Task\TaskPriorityItem;
 use App\Dictionary\Object\Task\TaskStageItem;
 use App\Entity\Contract\HasClosedStatusInterface;
+use App\Exception\DictionaryException;
 
 class Stylizer
 {
@@ -67,7 +68,7 @@ class Stylizer
             return $style;
         }
 
-        throw new \InvalidArgumentException('Невозможно обработать стиль ' . $styleType->getValue());
+        throw new DictionaryException('Невозможно обработать стиль ' . $styleType->getValue());
     }
 
     private function colorStr2Hex(string $color): array
