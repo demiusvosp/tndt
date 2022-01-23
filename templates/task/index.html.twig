@@ -92,7 +92,7 @@
                         {% if is_granted("PERM_TASK_EDIT") %}
                             <a class="btn btn-default btn-secondary" href="{{ path('task.edit', {'taskId':task.taskId}) }}">{{ 'Edit'|trans }}</a>
                         {% endif %}
-                        {% if is_granted("PERM_TASK_CLOSE") %}
+                        {% if not task.isClosed and is_granted("PERM_TASK_CLOSE") %}
                             <button
                                     class="btn btn-secondary btn-warning confirm-close"
                                     data-action="{{ path('task.close', {'taskId':task.taskId}) }}"
