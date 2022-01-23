@@ -4,8 +4,73 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ed5a772f53ed5739cf80ffce7f04ccf7",
+    "content-hash": "7520dd834c7d7722bc44ddbaed47a7de",
     "packages": [
+        {
+            "name": "acelaya/doctrine-enum-type",
+            "version": "v2.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/acelaya/doctrine-enum-type.git",
+                "reference": "1a37ad15c35258890ecd2a18992bcd88b64937cb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/acelaya/doctrine-enum-type/zipball/1a37ad15c35258890ecd2a18992bcd88b64937cb",
+                "reference": "1a37ad15c35258890ecd2a18992bcd88b64937cb",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/dbal": "^2.12 || ^3.0",
+                "myclabs/php-enum": "^1.7",
+                "php": "^7.4 || ^8.0"
+            },
+            "require-dev": {
+                "infection/infection": "^0.20",
+                "phpspec/prophecy-phpunit": "^2.0",
+                "phpstan/phpstan": "^0.12.52",
+                "phpunit/phpunit": "^9.4",
+                "roave/security-advisories": "dev-master",
+                "shlinkio/php-coding-standard": "~2.1.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Acelaya\\Doctrine\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Alejandro Celaya",
+                    "email": "alejandro@alejandrocelaya.com"
+                }
+            ],
+            "description": "A custom Doctrine type that maps column values to enum objects using myclabs/php-enum",
+            "keywords": [
+                "doctrine",
+                "enum",
+                "type"
+            ],
+            "support": {
+                "issues": "https://github.com/acelaya/doctrine-enum-type/issues",
+                "source": "https://github.com/acelaya/doctrine-enum-type/tree/v2.5.0"
+            },
+            "funding": [
+                {
+                    "url": "https://acel.me/donate",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/acelaya",
+                    "type": "github"
+                }
+            ],
+            "time": "2021-01-25T14:38:39+00:00"
+        },
         {
             "name": "behat/transliterator",
             "version": "v1.3.0",

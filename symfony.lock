@@ -1,4 +1,7 @@
 {
+    "acelaya/doctrine-enum-type": {
+        "version": "v2.5.0"
+    },
     "behat/behat": {
         "version": "v3.8.1"
     },

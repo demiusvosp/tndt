@@ -10,6 +10,7 @@ namespace App\Entity;
 
 use App\Entity\Contract\CommentableInterface;
 use App\Entity\Contract\NoInterface;
+use App\Entity\Doc\DocStateEnum;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -23,7 +24,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Doc implements NoInterface, CommentableInterface
 {
     public const DOCID_SEPARATOR = '#';
+
     private const ABSTRACT_FROM_BODY_LIMIT = 1000;
+
 
     /**
      * @var int
@@ -83,10 +86,16 @@ class Doc implements NoInterface, CommentableInterface
     private ?User $updatedBy = null;
 
     /**
-     * @var boolean
+     * @var boolean - документ отправлен
      * @ORM\Column (type="boolean")
      */
     private bool $isArchived = false;
+
+    /**
+     * @var DocStateEnum
+     * @ORM\Column (type=DocStateEnum::class, nullable=false)
+     */
+    private DocStateEnum $state;
 
     /**
      * @var string
@@ -126,6 +135,7 @@ class Doc implements NoInterface, CommentableInterface
     public function __construct(Project $project)
     {
         $this->setProject($project);
+        $this->state = DocStateEnum::NORMAL();
     }
 
     public function __toString(): string
@@ -268,6 +278,24 @@ class Doc implements NoInterface, CommentableInterface
     public function setIsArchived(bool $isArchived): Doc
     {
         $this->isArchived = $isArchived;
+        return $this;
+    }
+
+    /**
+     * @return DocStateEnum
+     */
+    public function getState(): DocStateEnum
+    {
+        return $this->state;
+    }
+
+    /**
+     * @param DocStateEnum $state
+     * @return Doc
+     */
+    public function setState(DocStateEnum $state): Doc
+    {
+        $this->state = $state;
         return $this;
     }
 

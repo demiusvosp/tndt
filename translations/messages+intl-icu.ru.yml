@@ -94,6 +94,10 @@ doc:
   project:
     label: Проект
     help: Проект, к которому будет прикреплен документ.
+  state:
+    normal: Актуальный
+    deprecated: Устаревший
+    archive: В архиве
   updated:
     label: Последнее обновление
   updatedBy:
