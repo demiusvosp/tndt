@@ -87,6 +87,8 @@ COPY ./templates /app/templates
 COPY ./public/build /app/public/build
 COPY ./src /app/src
 
-RUN mkdir -p /app/var/cache && chmod 775 /app/var/cache
+RUN mkdir -p /app/var/cache
 
 VOLUME ["/app/var/cache"]
+
+RUN chmod 775 /app/var/cache
