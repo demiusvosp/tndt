@@ -17,4 +17,9 @@ class PhpIntEnumType extends PhpEnumType
     {
         return $platform->getSmallIntTypeDeclarationSQL($fieldDeclaration);
     }
+
+    public function convertToPHPValue($value, AbstractPlatform $platform)
+    {
+        return parent::convertToPHPValue((int) $value, $platform);
+    }
 }
