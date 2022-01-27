@@ -70,7 +70,7 @@ class TaskRepository extends ServiceEntityRepository implements NoEntityReposito
 
     /**
      * @param int $limit
-     * @param array|null $availableProjects - доступные проекты (null - доступны все)
+     * @param array|null $availableProjects - доступные проекты (null - доступны все (например для root))
      * @return Task[]
      */
     public function getPopularTasks(int $limit, ?array $availableProjects = []): array

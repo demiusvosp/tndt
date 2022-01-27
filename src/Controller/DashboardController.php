@@ -38,6 +38,8 @@ class DashboardController extends AbstractController
         $user = $this->getUser();
         if ($user) {
             if ($user->hasRole(UserRolesEnum::ROLE_ROOT)) {
+                // null конечно не очень понятный признак отсутствия необходимости фильтровать по этому признаку,
+                //   а не только набору, стоит придумать что-то яснее
                 $involvedProjects = null;
             } else {
                 $involvedProjects = $user->getProjectsIInvolve();
