@@ -7,26 +7,46 @@
 
 {% block page_content %}
     <section id="projects">
-        <h2 class="page-header"><a href="{{ path('project.list') }}">{% trans %}Projects{% endtrans %}</a>:</h2>
-        <div class="row">
-        {% for project in projects %}
-            <div class="col-md-3">
-                {{ mProject.snippet(project) }}
-            </div>
-        {% endfor %}
         {% if is_granted("PERM_PROJECT_CREATE") %}
+            {% set projects = projects|merge(['create']) %}
+        {% endif %}
+        {% for project in projects %}
+            {% if loop.index0 is divisible by(4) %}
+                <div class="row">
+            {% endif %}
             <div class="col-md-3">
-                {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
-                    {% block box_title %}
-                        {{ 'project.new_project'|trans }}
-                    {% endblock %}
-                    {% block box_body %}
-                        <a class="btn btn-success btn-lg" href="{{ path('project.create') }}">{{ 'project.create'|trans }}</a>
-                    {% endblock %}
-                {% endembed %}
+                {% if project != 'create' %}
+                    {{ mProject.snippet(project, 500) }}
+                {% else %}
+                    {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
+                        {% block box_title %}
+                            {{ 'project.new_project'|trans }}
+                        {% endblock %}
+                        {% block box_body %}
+                            <div class="text-center">
+                                <a class="btn btn-success btn-lg" href="{{ path('project.create') }}">{{ 'project.create'|trans }}</a>
+                            </div>
+                        {% endblock %}
+                    {% endembed %}
+                {% endif %}
+            </div>
+            {% if loop.index is divisible by(4) %}
+                </div>
+            {% endif %}
+        {% endfor %}
+        {% if has_more_projects %}
+            <div class="row">
+                <div class="col-md-offset-1 col-md-10">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="text-center">
+                            <h4><a href="{{ path('project.list') }}">{{ 'And_more'|trans }} {{ 'Projects'|trans }}</a></h4>
+                        </div>
+                    </div>
+                </div>
+                </div>
             </div>
         {% endif %}
-        </div>
     </section>
 
     <div class="row">

@@ -19,23 +19,32 @@
 {% block page_subtitle %}{% endblock %}
 
 {% block page_content %}
-    <div class="row">
-        {% for project in projects %}
+    {% if is_granted("PERM_PROJECT_CREATE") %}
+        {% set projects = projects|merge(['create']) %}
+    {% endif %}
+
+    {% for project in projects %}
+        {% if loop.index0 is divisible by(4) %}
+            <div class="row">
+        {% endif %}
             <div class="col-md-3">
-                {{ mProject.snippet(project, 500) }}
+                {% if project != 'create' %}
+                    {{ mProject.snippet(project, 500) }}
+                {% else %}
+                    {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
+                        {% block box_title %}
+                            {{ 'project.new_project'|trans }}
+                        {% endblock %}
+                        {% block box_body %}
+                            <div class="text-center">
+                            <a class="btn btn-success btn-lg" href="{{ path('project.create') }}">{{ 'project.create'|trans }}</a>
+                            </div>
+                        {% endblock %}
+                    {% endembed %}
+                {% endif %}
             </div>
-        {% endfor %}
-        {% if is_granted("PERM_PROJECT_CREATE") %}
-            <div class="col-md-3">
-                {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
-                    {% block box_title %}
-                        {{ 'project.new_project'|trans }}
-                    {% endblock %}
-                    {% block box_body %}
-                        <a class="btn btn-success btn-lg" href="{{ path('project.create') }}">{{ 'project.create'|trans }}</a>
-                    {% endblock %}
-                {% endembed %}
+        {% if loop.index is divisible by(4) %}
             </div>
         {% endif %}
-    </div>
+    {% endfor %}
 {% endblock %}
