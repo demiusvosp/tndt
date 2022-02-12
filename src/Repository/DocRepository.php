@@ -63,6 +63,7 @@ class DocRepository extends ServiceEntityRepository implements NoEntityRepositor
         $qb->andWhere($qb->expr()->eq('d.project', ':project'))
             ->setParameter('project', $project);
 
+        $qb->addOrderBy('d.state', 'ASC');
         $qb->addOrderBy('d.updatedAt', 'desc');
         if ($limit) {
             $qb->setMaxResults($limit);
@@ -92,6 +93,7 @@ class DocRepository extends ServiceEntityRepository implements NoEntityRepositor
                 $qb->andWhere('p.isPublic = true');
             }
         }
+        $qb->addOrderBy('d.state', 'ASC');
         $qb->addOrderBy('d.updatedAt', 'desc');
         $qb->setMaxResults($limit);
 
