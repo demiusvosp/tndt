@@ -51,16 +51,30 @@
                         {% if is_granted("PERM_DOC_EDIT") %}
                             <a class="btn btn-default btn-secondary" href="{{ path('doc.edit', {'slug':doc.slug, 'suffix': doc.suffix}) }}">{{ 'Edit'|trans }}</a>
                         {% endif %}
-                        {% if is_granted("PERM_DOC_ARCHIVE") %}
-                            {% if doc.archived %}
-                                <a class="btn btn-default btn-success" href="{{ path('doc.archive', doc.getUrlParams) }}">{{ 'Unarchive'|trans }}</a>
-                            {% else %}
-                                <button
-                                        class="btn btn-secondary btn-warning need-confirm"
-                                        data-action="{{ path('doc.archive', doc.getUrlParams) }}"
-                                        data-text="{{ 'doc.archive.confirm'|trans|nl2br }}"
+                        {% if is_granted("PERM_DOC_CHANGE_STATE") %}
+                            {% if not doc.state is constant('STATE_NORMAL', doc) %}
+                                <a
+                                    class="btn btn-default btn-success"
+                                    href="{{ path('doc.change_state', doc.getUrlParams({'state': constant('STATE_NORMAL', doc)})) }}"
                                 >
-                                    {{ 'Archive'|trans }}
+                                    {{ 'To_actual'|trans }}
+                                </a>
+                            {% endif %}
+                            {% if not doc.state is constant('STATE_DEPRECATED', doc) %}
+                                <a
+                                    class="btn btn-default btn-info"
+                                    href="{{ path('doc.change_state', doc.getUrlParams({'state': constant('STATE_DEPRECATED', doc)})) }}"
+                                >
+                                    {{ 'To_deprecated'|trans }}
+                                </a>
+                            {%  endif %}
+                            {% if not doc.state is constant('STATE_ARCHIVED', doc) %}
+                                <button
+                                    class="btn btn-secondary btn-warning need-confirm"
+                                    data-action="{{ path('doc.change_state', doc.getUrlParams({'state': constant('STATE_ARCHIVED', doc)})) }}"
+                                    data-text="{{ 'doc.state.archive.confirm'|trans|nl2br }}"
+                                >
+                                    {{ 'To_archive'|trans }}
                                 </button>
                             {% endif %}
                         {% endif %}

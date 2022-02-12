@@ -2,7 +2,6 @@ About: О системе
 Abstract: Синопсис
 Access_granted: Доступ предоставлен
 Administrate: Администрирование
-Archive: Убрать в архив
 archived: в архиве
 breadcrumb:
   dashboard.about: О системе
@@ -68,15 +67,13 @@ dictionaries:
   task_complexity:
     label: Трудоемкость задач
     help: 'Разделение задач по трудоемкости, например: XL, X, M, L, S или легкая, средняя, тяжелая, эпичная'
-Docs: Документы
 Doc_list: Список документов
+Docs: Документы
 Documents: Документы
 doc:
   abstract:
     label: Аннотация
     help: Краткий синопсис документа. (Можно не заполнять, будет подставляться начало документа)
-  archive:
-    confirm: Вы уверены, что хотите перевести документ в архив? Может стоит его актуализировать?
   body:
     label: Содержимое
     help: Полное содержимое документа
@@ -95,9 +92,13 @@ doc:
     label: Проект
     help: Проект, к которому будет прикреплен документ.
   state:
-    normal: Актуальный
-    deprecated: Устаревший
-    archive: В архиве
+    normal:
+      label: Актуальный
+    deprecated:
+      label: Устаревший
+    archive:
+      label: В архиве
+      confirm: Вы уверены, что хотите перевести документ в архив? Может стоит его актуализировать?
   updated:
     label: Последнее обновление
   updatedBy:
@@ -243,6 +244,9 @@ task:
   updated:
     label: Обновлена
 Task_list: Список задач
+To_actual: Отметить актуальным
+To_archive: Убрать в архив
+To_deprecated: Отметить устаревшим
 UpdatedAt: Обновлена
 user:
   controls:

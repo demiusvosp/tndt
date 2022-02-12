@@ -31,7 +31,7 @@ class UserPermissionsEnum extends UserRolesEnum
     // Doc Permissions
     public const PERM_DOC_CREATE = 'PERM_DOC_CREATE';
     public const PERM_DOC_EDIT = 'PERM_DOC_EDIT';
-    public const PERM_DOC_ARCHIVE = 'PERM_DOC_ARCHIVE';
+    public const PERM_DOC_CHANGE_STATE = 'PERM_DOC_CHANGE_STATE';
     public const PERM_DOC_VIEW = 'PERM_DOC_VIEW';
 
     public static function labels(): array
@@ -71,7 +71,7 @@ class UserPermissionsEnum extends UserRolesEnum
                 self::PERM_TASK_CLOSE,
                 self::PERM_DOC_CREATE,
                 self::PERM_DOC_EDIT,
-                self::PERM_DOC_ARCHIVE,
+                self::PERM_DOC_CHANGE_STATE,
             ],
             self::PROLE_VISITOR => [
                 self::PERM_PROJECT_VIEW,

@@ -8,6 +8,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Entity\Doc;
 use App\Entity\Project;
 use App\Event\AppEvents;
 use App\Event\DocEvent;
@@ -17,6 +18,7 @@ use App\Form\DTO\Doc\NewDocDTO;
 use App\Form\Type\Doc\EditDocType;
 use App\Form\Type\Doc\NewDocType;
 use App\Repository\DocRepository;
+use App\Service\DocService;
 use App\Service\Filler\DocFiller;
 use App\Service\InProjectContext;
 use Knp\Component\Pager\PaginatorInterface;
@@ -151,23 +153,30 @@ class DocController extends AbstractController
     }
 
     /**
-     * @IsGranted ("PERM_DOC_ARCHIVE")
-     * @param Request $request
+     * @IsGranted ("PERM_DOC_CHANGE_STATE")
+     * @param string $slug
+     * @param int $state
      * @param Project $project
+     * @param DocService $docService
      * @return Response
      */
-    public function archive(Request $request, Project $project): Response
+    public function changeState(string $slug, int $state, Project $project, DocService $docService): Response
     {
         $em = $this->getDoctrine()->getManager();
-        $doc = $this->docRepository->getBySlug($request->get('slug'));
+        $doc = $this->docRepository->getBySlug($slug);
         if (!$doc || $doc->getSuffix() !== $project->getSuffix()) {
             throw $this->createNotFoundException($this->translator->trans('doc.not_found'));
         }
 
-        $doc->setIsArchived(!$doc->isArchived());
-        $this->eventDispatcher->dispatch(new DocEvent($doc), AppEvents::DOC_ARCHIVE);
+        $docService->changeState($doc, $state);
         $em->flush();
-        $this->addFlash('success', $doc->isArchived() ? 'doc.archived' : 'doc.unarchived');
+
+        $messages = [
+            Doc::STATE_NORMAL => 'doc.actualized',
+            Doc::STATE_DEPRECATED => 'doc.deprecated',
+            Doc::STATE_ARCHIVED => 'doc.archived',
+        ];
+        $this->addFlash('success', $messages[$doc->getState()]);
 
         return $this->redirectToRoute('doc.index', $doc->getUrlParams());
     }

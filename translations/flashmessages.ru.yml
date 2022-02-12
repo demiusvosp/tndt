@@ -1,8 +1,9 @@
 doc:
+  actualized: Документ вновь актуален
   archived: Документ отправлен в архив
+  deprecated: Документ объявлен устаревшим
   create.success: Документ создан
   edit.success: Документ отредактирован
-  unarchived: Документ возвращен из архива
 project:
   archive.success: Проект архивирован
   create.success: Проект создан

@@ -10,7 +10,6 @@ namespace App\Entity;
 
 use App\Entity\Contract\CommentableInterface;
 use App\Entity\Contract\NoInterface;
-use App\Entity\Doc\DocStateEnum;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -24,6 +23,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Doc implements NoInterface, CommentableInterface
 {
     public const DOCID_SEPARATOR = '#';
+
+    public const STATE_NORMAL = 0;
+    public const STATE_DEPRECATED = 1;
+    public const STATE_ARCHIVED = 2;
 
     private const ABSTRACT_FROM_BODY_LIMIT = 1000;
 
@@ -86,16 +89,10 @@ class Doc implements NoInterface, CommentableInterface
     private ?User $updatedBy = null;
 
     /**
-     * @var boolean - документ отправлен
-     * @ORM\Column (type="boolean")
+     * @var int
+     * @ORM\Column (type="integer", nullable=false)
      */
-    private bool $isArchived = false;
-
-    /**
-     * @var DocStateEnum
-     * @ORM\Column (type=DocStateEnum::class, nullable=false)
-     */
-    private DocStateEnum $state;
+    private int $state;
 
     /**
      * @var string
@@ -135,7 +132,7 @@ class Doc implements NoInterface, CommentableInterface
     public function __construct(Project $project)
     {
         $this->setProject($project);
-        $this->state = DocStateEnum::NORMAL();
+        $this->state = self::STATE_NORMAL;
     }
 
     public function __toString(): string
@@ -268,32 +265,22 @@ class Doc implements NoInterface, CommentableInterface
      */
     public function isArchived(): bool
     {
-        return $this->isArchived;
+        return $this->state === self::STATE_ARCHIVED;
     }
 
     /**
-     * @param bool $isArchived
-     * @return Doc
+     * @return int
      */
-    public function setIsArchived(bool $isArchived): Doc
-    {
-        $this->isArchived = $isArchived;
-        return $this;
-    }
-
-    /**
-     * @return DocStateEnum
-     */
-    public function getState(): DocStateEnum
+    public function getState(): int
     {
         return $this->state;
     }
 
     /**
-     * @param DocStateEnum $state
+     * @param int $state
      * @return Doc
      */
-    public function setState(DocStateEnum $state): Doc
+    public function setState(int $state): Doc
     {
         $this->state = $state;
         return $this;

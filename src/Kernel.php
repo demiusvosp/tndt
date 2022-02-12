@@ -2,8 +2,6 @@
 
 namespace App;
 
-use App\Entity\Doc\DocStateEnum;
-use App\Service\Doctrine\Type\PhpIntEnumType;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\Config\Resource\FileResource;
@@ -60,15 +58,8 @@ class Kernel extends BaseKernel
         $routes->import($confDir.'/{routes}'.self::CONFIG_EXTS, '/', 'glob');
     }
 
-    /**
-     * @throws \Doctrine\DBAL\Exception
-     */
     private function configureDoctrine(): void
     {
-        PhpIntEnumType::registerEnumTypes(
-            [
-                DocStateEnum::class,
-            ]
-        );
+
     }
 }
