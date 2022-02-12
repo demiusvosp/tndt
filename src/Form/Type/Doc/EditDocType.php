@@ -12,6 +12,7 @@ use App\Entity\Doc;
 use App\Form\DTO\Doc\EditDocDTO;
 use App\Form\Type\Project\ProjectSelectType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -48,6 +49,19 @@ class EditDocType extends AbstractType
                     'attr' => ['rows' => 40],
                     'required' => false,
                     'empty_data' => '',
+                ]
+            )
+            ->add(
+                'state',
+                ChoiceType::class,
+                [
+                    'label' => 'doc.state.label',
+                    'help' => 'doc.state.help',
+                    'choices' => [
+                        'doc.state.normal.label' => Doc::STATE_NORMAL,
+                        'doc.state.deprecated.label' => Doc::STATE_DEPRECATED,
+                        'doc.state.archive.label' => Doc::STATE_ARCHIVED,
+                    ]
                 ]
             );
     }

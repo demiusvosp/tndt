@@ -39,6 +39,12 @@ class EditDocDTO
     private string $body = '';
 
     /**
+     * @var int
+     * @Assert\Choice(choices={0, 1, 2})
+     */
+    private int $state;
+
+    /**
      * @return string
      */
     public function getCaption(): string
@@ -53,6 +59,7 @@ class EditDocDTO
         $this->caption = $doc->getCaption();
         $this->abstract = $doc->getAbstract(true);
         $this->body = $doc->getBody();
+        $this->state = $doc->getState();
     }
 
     /**
@@ -98,6 +105,24 @@ class EditDocDTO
     public function setBody(string $body): EditDocDTO
     {
         $this->body = $body;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getState(): int
+    {
+        return $this->state;
+    }
+
+    /**
+     * @param int $state
+     * @return EditDocDTO
+     */
+    public function setState(int $state): EditDocDTO
+    {
+        $this->state = $state;
         return $this;
     }
 }

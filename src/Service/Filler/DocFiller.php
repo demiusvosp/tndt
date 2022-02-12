@@ -13,14 +13,17 @@ use App\Exception\DomainException;
 use App\Form\DTO\Doc\EditDocDTO;
 use App\Form\DTO\Doc\NewDocDTO;
 use App\Repository\ProjectRepository;
+use App\Service\DocService;
 
 class DocFiller
 {
     private ProjectRepository $projectRepository;
+    private DocService $docService;
 
-    public function __construct(ProjectRepository $projectRepository)
+    public function __construct(ProjectRepository $projectRepository, DocService $docService)
     {
         $this->projectRepository = $projectRepository;
+        $this->docService = $docService;
     }
 
     public function createFromForm(NewDocDTO $dto): Doc
@@ -43,5 +46,8 @@ class DocFiller
         $doc->setCaption($dto->getCaption());
         $doc->setAbstract($dto->getAbstract());
         $doc->setBody($dto->getBody());
+        if ($doc->getState() !== $dto->getState()) {
+            $this->docService->changeState($doc, $dto->getState());
+        }
     }
 }
