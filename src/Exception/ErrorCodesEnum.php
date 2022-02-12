@@ -16,6 +16,7 @@ use MyCLabs\Enum\Enum;
 class ErrorCodesEnum extends Enum
 {
     public const COMMON = 500;
+    public const BAD_REQUEST = 400;
     public const FORBIDDEN = 403;
     public const NOT_FOUND = 404;
 
@@ -29,6 +30,7 @@ class ErrorCodesEnum extends Enum
     {
         return [
             self::COMMON => 'common',
+            self::BAD_REQUEST => 'bad_request',
             self::FORBIDDEN => 'forbidden',
             self::NOT_FOUND => 'not_found',
             self::NOT_IN_PROJECT_CONTEXT => 'not_in_project_context',
