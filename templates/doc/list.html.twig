@@ -39,12 +39,7 @@
                             </a>
                         </td>
                         <td>
-                            <a class="invisible_link" href="{{ path('doc.index', doc.getUrlParams) }}">
-                                <span class="{{ doc.isArchived ? 'text-muted' }}">
-                                    {{ doc.caption }}
-                                </span>
-                                {% if doc.isArchived %}<span class="label label-default">{{ 'archived'|trans }}</span>{% endif %}
-                            </a>
+                            {{ mDoc.caption(doc, 160) }}
                         </td>
                         <td>{{ doc.createdAt|ago }}</td>
                         <td>{{ mUser.badge(doc.createdBy, true, false) }}</td>
