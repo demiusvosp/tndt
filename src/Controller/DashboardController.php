@@ -27,7 +27,6 @@ class DashboardController extends AbstractController
     private const USER_LENGTH = 10;
 
     public function index(
-        Request $request,
         ProjectRepository $projectRepository,
         TaskRepository $taskRepository,
         DocRepository $docRepository,
@@ -37,26 +36,39 @@ class DashboardController extends AbstractController
         $involvedProjects = [];
         /** @var User $user */
         $user = $this->getUser();
-        if($user) {
+        if ($user) {
             if ($user->hasRole(UserRolesEnum::ROLE_ROOT)) {
+                // null конечно не очень понятный признак отсутствия необходимости фильтровать по этому признаку,
+                //   а не только набору, стоит придумать что-то яснее
                 $involvedProjects = null;
             } else {
                 $involvedProjects = $user->getProjectsIInvolve();
             }
         }
 
-        $projects = $projectRepository->getPopularProjectsSnippets(self::PROJECT_LENGTH, $this->getUser());
+        $projects = $projectRepository->getPopularProjectsSnippets(self::PROJECT_LENGTH + 1, $this->getUser());
         $tasks = $taskRepository->getPopularTasks(self::TASK_LENGTH, $involvedProjects);
         $docs = $docRepository->getPopularDocs(self::DOC_LENGTH, $involvedProjects);
         $users = $userRepository->getPopularUsers(self::USER_LENGTH);
 
+        $hasMoreProjects = count($projects) > self::PROJECT_LENGTH;
+        if ($hasMoreProjects) {
+             $projects = array_splice($projects, 0, self::PROJECT_LENGTH);
+        }
+
         return $this->render(
             'dashboard/index.html.twig',
-            ['projects' => $projects, 'tasks' => $tasks, 'docs' => $docs, 'users' => $users]
+            [
+                'projects' => $projects,
+                'has_more_projects' => $hasMoreProjects,
+                'tasks' => $tasks,
+                'docs' => $docs,
+                'users' => $users
+            ]
         );
     }
 
-    public function about(Request $request): Response
+    public function about(): Response
     {
         $about = file_get_contents($this->getParameter('kernel.project_dir') . '/README.md');
 
