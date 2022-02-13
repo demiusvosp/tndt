@@ -7,8 +7,10 @@
 
 namespace App\Entity\Contract;
 
-use Doctrine\Common\Collections\Collection;
 
+/**
+ * Интерфейс сущностей, которые можно комментировать
+ */
 interface CommentableInterface
 {
     public function getId(): int;

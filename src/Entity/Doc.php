@@ -10,6 +10,7 @@ namespace App\Entity;
 
 use App\Entity\Contract\CommentableInterface;
 use App\Entity\Contract\NoInterface;
+use App\Entity\Contract\TimestampableInterface;
 use App\Exception\BadRequestException;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
@@ -231,7 +232,7 @@ class Doc implements NoInterface, CommentableInterface
      */
     public function getUpdatedAt(): ?DateTime
     {
-        return $this->updatedAt;
+        return $this->updatedAt != $this->getCreatedAt() ? $this->updatedAt : null;
     }
 
     /**
