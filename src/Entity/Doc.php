@@ -76,10 +76,10 @@ class Doc implements NoInterface, CommentableInterface
 
     /**
      * @var DateTime
-     * @ORM\Column(type="datetime", nullable=true)
+     * @ORM\Column(type="datetime", nullable=false)
      * Автоматически обновляется через DocOnUpdateSubscriber
      */
-    private ?DateTime $updatedAt = null;
+    private DateTime $updatedAt;
 
     /**
      * @var User|null
@@ -133,6 +133,7 @@ class Doc implements NoInterface, CommentableInterface
     public function __construct(Project $project)
     {
         $this->setProject($project);
+        $this->createdAt = $this->updatedAt = new DateTime();
         $this->state = self::STATE_NORMAL;
     }
 

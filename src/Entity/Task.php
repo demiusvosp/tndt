@@ -81,10 +81,10 @@ class Task implements NoInterface, CommentableInterface, HasClosedStatusInterfac
 
     /**
      * @var DateTime
-     * @ORM\Column(type="datetime", nullable=true)
+     * @ORM\Column(type="datetime", nullable=false)
      * Автоматически обновляется через OnUpdateTaskManager
      */
-    private ?DateTime $updatedAt = null;
+    private DateTime $updatedAt;
 
     /**
      * @var User|null
@@ -153,6 +153,7 @@ class Task implements NoInterface, CommentableInterface, HasClosedStatusInterfac
         } else {
             $this->suffix = $project;
         }
+        $this->createdAt = $this->updatedAt = new DateTime();
     }
 
     public function __toString(): string
@@ -238,6 +239,7 @@ class Task implements NoInterface, CommentableInterface, HasClosedStatusInterfac
     }
 
     /**
+     * @param bool $isClosed
      * @return Task
      */
     public function setIsClosed(bool $isClosed): Task
