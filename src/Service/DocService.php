@@ -25,10 +25,6 @@ class DocService
 
     public function changeState(Doc $doc, int $newState): void
     {
-        if (!in_array($newState, [Doc::STATE_NORMAL, Doc::STATE_DEPRECATED, Doc::STATE_ARCHIVED], true)) {
-            throw new BadRequestException('Некорректный state документа');
-        }
-
         $doc->setState($newState);
         $this->eventDispatcher->dispatch(new DocEvent($doc), AppEvents::DOC_CHANGE_STATE);
     }

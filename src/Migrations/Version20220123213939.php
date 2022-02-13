@@ -19,13 +19,13 @@ final class Version20220123213939 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        $this->addSql('ALTER TABLE doc ADD state SMALLINT NOT NULL COMMENT \'(DC2Type:App\\\\Entity\\\\Doc\\\\DocStateEnum)\' AFTER is_archived');
+        $this->addSql('ALTER TABLE doc ADD state SMALLINT NOT NULL AFTER is_archived');
         $this->addSql('UPDATE doc SET state = 2 WHERE is_archived = true'); // DocStateEnum::ARCHIVE = 2
     }
 
     public function down(Schema $schema): void
     {
-        $this->addSql('UPDATE doc SET is_archived = true WHERE state = 2'); // DocStateEnum::ARCHIVE = 2
+        $this->addSql('UPDATE doc SET is_archived = true WHERE state = 2'); // Doc::STATE_ARCHIVED = 2
         $this->addSql('ALTER TABLE doc DROP state');
     }
 }

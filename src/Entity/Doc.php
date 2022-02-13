@@ -10,6 +10,7 @@ namespace App\Entity;
 
 use App\Entity\Contract\CommentableInterface;
 use App\Entity\Contract\NoInterface;
+use App\Exception\BadRequestException;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -282,6 +283,10 @@ class Doc implements NoInterface, CommentableInterface
      */
     public function setState(int $state): Doc
     {
+        if (!in_array($state, [self::STATE_NORMAL, self::STATE_DEPRECATED, self::STATE_ARCHIVED], true)) {
+            throw new BadRequestException('Некорректный state документа');
+        }
+
         $this->state = $state;
         return $this;
     }
