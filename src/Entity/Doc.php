@@ -10,7 +10,6 @@ namespace App\Entity;
 
 use App\Entity\Contract\CommentableInterface;
 use App\Entity\Contract\NoInterface;
-use App\Entity\Contract\TimestampableInterface;
 use App\Exception\BadRequestException;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
