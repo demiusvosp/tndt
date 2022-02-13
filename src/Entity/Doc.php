@@ -10,6 +10,7 @@ namespace App\Entity;
 
 use App\Entity\Contract\CommentableInterface;
 use App\Entity\Contract\NoInterface;
+use App\Exception\BadRequestException;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -23,7 +24,13 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Doc implements NoInterface, CommentableInterface
 {
     public const DOCID_SEPARATOR = '#';
+
+    public const STATE_NORMAL = 0;
+    public const STATE_DEPRECATED = 1;
+    public const STATE_ARCHIVED = 2;
+
     private const ABSTRACT_FROM_BODY_LIMIT = 1000;
+
 
     /**
      * @var int
@@ -83,10 +90,10 @@ class Doc implements NoInterface, CommentableInterface
     private ?User $updatedBy = null;
 
     /**
-     * @var boolean
-     * @ORM\Column (type="boolean")
+     * @var int
+     * @ORM\Column (type="integer", nullable=false)
      */
-    private bool $isArchived = false;
+    private int $state;
 
     /**
      * @var string
@@ -126,6 +133,7 @@ class Doc implements NoInterface, CommentableInterface
     public function __construct(Project $project)
     {
         $this->setProject($project);
+        $this->state = self::STATE_NORMAL;
     }
 
     public function __toString(): string
@@ -258,16 +266,28 @@ class Doc implements NoInterface, CommentableInterface
      */
     public function isArchived(): bool
     {
-        return $this->isArchived;
+        return $this->state === self::STATE_ARCHIVED;
     }
 
     /**
-     * @param bool $isArchived
+     * @return int
+     */
+    public function getState(): int
+    {
+        return $this->state;
+    }
+
+    /**
+     * @param int $state
      * @return Doc
      */
-    public function setIsArchived(bool $isArchived): Doc
+    public function setState(int $state): Doc
     {
-        $this->isArchived = $isArchived;
+        if (!in_array($state, [self::STATE_NORMAL, self::STATE_DEPRECATED, self::STATE_ARCHIVED], true)) {
+            throw new BadRequestException('Некорректный state документа');
+        }
+
+        $this->state = $state;
         return $this;
     }
 

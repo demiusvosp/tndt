@@ -87,6 +87,6 @@ doc.index:
 doc.edit:
     path: /p/{suffix<\w+>}/doc/{slug<[\w\d\-_]+>}/edit
     controller: App\Controller\DocController::edit
-doc.archive:
-    path: /p/{suffix<\w+>}/doc/{slug<[\w\d\-_]+>}/archive
-    controller: App\Controller\DocController::archive
+doc.change_state:
+    path: /p/{suffix<\w+>}/doc/{slug<[\w\d\-_]+>}/change_state/{state}
+    controller: App\Controller\DocController::changeState

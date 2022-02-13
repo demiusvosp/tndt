@@ -16,7 +16,7 @@ class AppEvents
 
     public const DOC_CREATE = 'app.doc.create';
     public const DOC_EDIT = 'app.doc.edit';
-    public const DOC_ARCHIVE = 'app.doc.archive';
+    public const DOC_CHANGE_STATE = 'app.doc.change_state';
 
     public const COMMENT_ADD = 'app.comment.add';
 }

@@ -31,13 +31,11 @@ class PermissionTestsFixtures extends Fixture implements FixtureGroupInterface
 
     public function load(ObjectManager $manager)
     {
-        $alice = new User();
-        $alice->setUsername('Alice');
+        $alice = new User('Alice');
         $alice->setPassword($this->passwordEncoder->encodePassword($alice, 'Alice'));
         $manager->persist($alice);
 
-        $bob = new User();
-        $bob->setUsername('Bob');
+        $bob = new User('Bob');
         $bob->setPassword($this->passwordEncoder->encodePassword($bob, 'Bob'));
         $manager->persist($bob);
 

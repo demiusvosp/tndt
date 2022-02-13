@@ -11,8 +11,8 @@ namespace App\Repository;
 use App\Entity\Doc;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NoResultException;
-use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
+
 
 class DocRepository extends ServiceEntityRepository implements NoEntityRepositoryInterface
 {
@@ -59,10 +59,11 @@ class DocRepository extends ServiceEntityRepository implements NoEntityRepositor
     public function getProjectsDocs(string $project, int $limit = null): array
     {
         $qb = $this->createQueryBuilder('d');
-        $qb->where('d.isArchived = false');
+        $qb->where($qb->expr()->neq('d.state', Doc::STATE_ARCHIVED));
         $qb->andWhere($qb->expr()->eq('d.project', ':project'))
             ->setParameter('project', $project);
 
+        $qb->addOrderBy('d.state', 'ASC');
         $qb->addOrderBy('d.updatedAt', 'desc');
         if ($limit) {
             $qb->setMaxResults($limit);
@@ -79,7 +80,7 @@ class DocRepository extends ServiceEntityRepository implements NoEntityRepositor
     public function getPopularDocs(int $limit, ?array $availableProjects = []): array
     {
         $qb = $this->createQueryBuilder('d');
-        $qb->where('d.isArchived = false');
+        $qb->where($qb->expr()->neq('d.state', Doc::STATE_ARCHIVED));
 
         $qb->leftJoin('d.project', 'p');
         if ($availableProjects !== null) {
@@ -92,6 +93,7 @@ class DocRepository extends ServiceEntityRepository implements NoEntityRepositor
                 $qb->andWhere('p.isPublic = true');
             }
         }
+        $qb->addOrderBy('d.state', 'ASC');
         $qb->addOrderBy('d.updatedAt', 'desc');
         $qb->setMaxResults($limit);
 

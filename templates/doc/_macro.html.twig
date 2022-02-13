@@ -1,8 +1,15 @@
 {% macro caption(doc, limit = null) %}
     <a class="invisible_link" href="{{ path('doc.index', doc.getUrlParams) }}">
-        {% set label = doc.caption %}
-        {% if limit %}{% set label = label|u.truncate(limit, '...') %}{% endif %}
-        {{ label }}
+        {% if doc.isArchived %}
+            <span class="text-muted">
+        {% endif %}
+            {% set label = doc.caption %}
+            {% if limit %}{% set label = label|u.truncate(limit, '...') %}{% endif %}
+            {{ label }}
+            {{ doc_badges(doc) }}
+        {% if doc.isArchived %}
+            </span>
+        {% endif %}
     </a>
 {% endmacro %}
 
@@ -10,15 +17,20 @@
     {% if link %}
         <a class="invisible_link" href="{{ path('doc.index', doc.getUrlParams) }}">
     {% endif %}
-    <span {{ doc.isArchived ? 'class="text-muted"' }}>
-        <i class="far fa-file-alt"></i>
-        {% import _self as this %}
-        {{ doc.docId }}
-        {% if withName %}
-            - {{ doc.caption|u.truncate(100, '...') }}
-            {% if doc.isArchived %}<span class="label label-default">{{ 'archived'|trans }}</span>{% endif %}
-        {% endif %}
-    </span>
+    {% if doc.isArchived %}
+        <span class="text-muted">
+    {% endif %}
+            <i class="far fa-file-alt"></i>
+            {% import _self as this %}
+            {{ doc.docId }}
+            {% if withName %}
+                - {{ doc.caption|u.truncate(100, '...') }}
+                {% if doc.isArchived %}<span class="label label-default">{{ 'archived'|trans }}</span>{% endif %}
+            {% endif %}
+            {{ doc_badges(doc) }}
+    {% if doc.isArchived %}
+        </span>
+    {% endif %}
     {% if link %}
         </a>
     {% endif %}
