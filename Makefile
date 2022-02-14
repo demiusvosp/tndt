@@ -19,7 +19,8 @@ help:
 	$(info   down ENV=test - down current environment (default dev))
 	$(info   ps ENV=test - compose ps current environment (default dev))
 	$(info   exec - login to current php container shell)
-	$(info   build_front [watch] - exec yarn insatall (one or watches changes) )
+	$(info   front_build [watch] - exec yarn install and compile and deploy front o public (one or watches changes) )
+	$(info   front_exec [<command>] - exec command into front_builder container)
 	$(info   init - initialize stage. (create db, migrates, create root user))
 	$(info   tests type=behat (default unit) - run test suites)
 	$(info )
@@ -37,7 +38,10 @@ ps:
 exec:
 	docker exec -it tndt_php_1 /bin/bash
 
-build_front:
+front_exec:
+	docker-compose run front_builder $(filter-out $@,$(MAKECMDGOALS))
+
+front_build:
 	docker-compose run front_builder yarn install
 	docker-compose run front_builder yarn encore dev $(filter-out $@,$(MAKECMDGOALS))
 %:

@@ -8,6 +8,7 @@ declare(strict_types=1);
 
 namespace App\Dictionary\Object;
 
+use App\Dictionary\BadgeEnum;
 use App\Exception\DictionaryException;
 use App\Object\JlobObjectInterface;
 
@@ -29,6 +30,9 @@ class DictionaryItem implements JlobObjectInterface
      */
     private string $description;
 
+    private ?BadgeEnum $useBadge = null;
+
+
     public function __construct(array $args = [])
     {
         if (!empty($args)) {
@@ -44,11 +48,17 @@ class DictionaryItem implements JlobObjectInterface
         }
         $this->name = $arg['name'];
         $this->description = $arg['description'] ?? '';
+        $this->useBadge = !empty($arg['useBadge']) ? BadgeEnum::from($arg['useBadge']) : null;
     }
 
     public function jsonSerialize(): array
     {
-        return ['id' => $this->id, 'name' => $this->name, 'description' => $this->description];
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'description' => $this->description,
+            'useBadge' => $this->useBadge ? $this->useBadge->getValue() : '',
+        ];
     }
 
     /**
@@ -102,6 +112,31 @@ class DictionaryItem implements JlobObjectInterface
     public function setDescription(string $description): DictionaryItem
     {
         $this->description = $description;
+        return $this;
+    }
+
+    /**
+     * @return BadgeEnum|null
+     */
+    public function getUseBadge(): ?BadgeEnum
+    {
+        return $this->useBadge;
+    }
+
+    /**
+     * @param BadgeEnum|string|null $useBadge
+     * @return DictionaryItem
+     */
+    public function setUseBadge($useBadge): DictionaryItem
+    {
+        if ($useBadge instanceof BadgeEnum) {
+            $this->useBadge = $useBadge;
+        } elseif (is_string($useBadge)) {
+            $this->useBadge = BadgeEnum::from($useBadge);
+        } else {
+            $this->useBadge = null;
+        }
+
         return $this;
     }
 }

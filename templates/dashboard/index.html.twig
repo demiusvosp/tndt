@@ -59,7 +59,7 @@
                         <ul class="list-unstyled">
                             {%  for task in tasks %}
                                 <li>
-                                    <b>{{ mTask.badge(task, false, true) }}</b> - {{ mTask.caption(task, 60) }}
+                                    {{ mTask.badge(task, true, true, 60) }}
                                 </li>
                             {% endfor %}
                         </ul>
