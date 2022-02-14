@@ -10,13 +10,21 @@ namespace App\Dictionary;
 
 use MyCLabs\Enum\Enum;
 
+/**
+ * @method static DEFAULT()
+ * @method static SECONDARY()
+ * @method static SUCCESS()
+ * @method static INFO()
+ * @method static WARNING()
+ * @method static DANGER()
+ */
 class BadgeEnum extends Enum
 {
     public const DEFAULT = 'default';
     public const SECONDARY = 'secondary';
     public const SUCCESS = 'success';
-    public const DANGER = 'danger';
-    public const WARNING = 'warning';
     public const INFO = 'info';
+    public const WARNING = 'warning';
+    public const DANGER = 'danger';
 
 }

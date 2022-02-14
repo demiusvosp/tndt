@@ -8,7 +8,11 @@ declare(strict_types=1);
 
 namespace App\Service\Twig;
 
+use App\Dictionary\BadgeEnum;
 use App\Dictionary\Fetcher;
+use App\Dictionary\Object\Task\StageTypesEnum;
+use App\Dictionary\Object\Task\TaskStageItem;
+use App\Dictionary\TypesEnum;
 use App\Entity\Task;
 use App\Form\DTO\Task\CloseTaskDTO;
 use App\Form\Type\Task\CloseTaskForm;
@@ -44,12 +48,21 @@ class TaskExtension extends AbstractExtension
         ];
     }
 
-    public function badges(Task $task): string
+    public function badges(Task $task, array $excepts = []): string
     {
         $badges = [];
         $dictionaryItems = $this->dictionaryFetcher->getRelatedItems($task);
-        foreach ($dictionaryItems as $item) {
+
+        foreach ($dictionaryItems as $type => $item) {
+            if (in_array($type, $excepts, true)) {
+                continue;
+            }
             $itemBadge = $item->getUseBadge();
+            if ($item instanceof TaskStageItem && $item->getType()->equals(StageTypesEnum::STAGE_ON_CLOSED())) {
+                if ($itemBadge === null) {
+                    $itemBadge = BadgeEnum::DEFAULT();
+                }
+            }
             if ($itemBadge) {
                 $badges[] = '<span class="label label-' . $itemBadge->getValue() . '">' . $item->getName() . '</span>';
             }

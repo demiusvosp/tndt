@@ -9,16 +9,13 @@
     {% if task.isClosed() %}</s>{% endif %}
 {% endmacro %}
 
-{% macro caption(task, limit = null, style = null) %}
+{% macro caption(task, limit = null) %}
     {% if task.isClosed() %}<s>{% endif %}
-    <a class="invisible_link"
-       {{ (style ? 'style="'~style~'"' : '')|raw }}
-       href="{{ path('task.index', {'taskId': task.taskId}) }}"
-    >
-        {% set label = task.caption %}
-        {% if limit %}{% set label = label|u.truncate(limit, '...') %}{% endif %}
-        {{ label }}
-    </a>
+        <a class="invisible_link" href="{{ path('task.index', {'taskId': task.taskId}) }}">
+            {% set label = task.caption %}
+            {% if limit %}{% set label = label|u.truncate(limit, '...') %}{% endif %}
+            {{ label }}
+        </a>
     {% if task.isClosed() %}</s>{% endif %}
 {% endmacro %}
 
@@ -57,7 +54,7 @@
         {% for task in tasks %}
             <tr>
                 <td>{{ this.no(task) }}</td>
-                <td>{{ this.caption(task, 80) }}</td>
+                <td>{{ this.caption(task, 80) }}{{ task_badges(task, ['task.type']) }}</td>
                 {% if project and dictionary_enabled(project, 'task.type') %}
                     <td>{{ dictionary_name(task, 'type') }}</td>
                 {% endif %}

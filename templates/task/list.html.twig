@@ -59,7 +59,17 @@
                     <tr style="{{ dictionary_style(task, 'list_row') }}">
                         {# здесь проставляем класс напрямую ячейке, потому что из col он не достается  #}
                         <td class="task-col-no">{{ mTask.no(task, dictionary_style(task, 'list_row')) }}</td>
-                        <td>{{ mTask.caption(task, 160, dictionary_style(task, 'list_row')) }}</td>
+                        <td>
+                            {% if task.isClosed() %}<s>{% endif %}
+                                <a class="invisible_link"
+                                   style="{{ dictionary_style(task, 'list_row') }}"
+                                   href="{{ path('task.index', {'taskId': task.taskId}) }}"
+                                >
+                                    {% set label = task.caption|u.truncate(160, '...') %}
+                                    {{ label }}
+                                </a>
+                            {% if task.isClosed() %}</s>{% endif %}
+                        </td>
                         {% if dictionary_enabled(project, 'task.stage') %}
                             <td>{{ dictionary_name(task, 'stage', true) }}</td>
                         {% else %}
