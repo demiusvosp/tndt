@@ -1,6 +1,8 @@
 About: О системе
 Abstract: Синопсис
-Access_granted: Доступ предоставлен
+Access_granted:
+  label: Доступ предоставлен
+  description: Проект приватный, но вам дан доступ к нему
 Administrate: Администрирование
 And_more: И еще
 archived: в архиве

@@ -22,6 +22,10 @@ $color-disabled: #333;
     }
 }
 
+.more-project-block .panel-body {
+    padding: 0;
+}
+
 .project-settings-blocks {
     .settings-block {
         border: $gray-lighter 1px solid;
