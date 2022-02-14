@@ -13,8 +13,8 @@ services:
 
   php:
     build:
-      dockerfile: './php.dockerfile'
-      target: 'dev'
+      dockerfile: './docker/php.dockerfile'
+      target: 'prod'
     volumes:
       - './:/app'
     environment:

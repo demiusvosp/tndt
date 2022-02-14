@@ -48,7 +48,9 @@ RUN curl -sS https://getcomposer.org/installer | php -- \
 
 VOLUME ["/app", "/composer/home/cache"]
 
+COPY ./docker/dev.php.ini /usr/local/etc/php/php.ini
 COPY ./docker/dev.opcache.ini /usr/local/etc/php/conf.d/opcache.ini
+RUN chmod 550 -R /usr/local/etc/php
 
 
 ### PreProd Stage
@@ -70,10 +72,15 @@ RUN mkdir -p /app/var/log && mkdir -p /app/var/cache
 VOLUME ["/app/var/log", "/app/var/cache"]
 
 
-### PROD Stage
-FROM base AS prod_stage
+### PREPROD (RC,PERFOMANCE etc.) and PROD Stage
+FROM base AS prod
 
+COPY ./docker/prod.php.ini /usr/local/etc/php/php.ini
 COPY ./docker/prod.opcache.ini /usr/local/etc/php/conf.d/opcache.ini
+RUN chmod 550 -R /usr/local/etc/php
+
+### PROD Stage
+FROM prod AS prod_stage
 
 COPY ./bin /app/bin
 # для работы страницы about
@@ -87,6 +94,8 @@ COPY ./templates /app/templates
 COPY ./public/build /app/public/build
 COPY ./src /app/src
 
-RUN mkdir -p /app/var/cache && chmod 775 /app/var/cache
+RUN mkdir -p /app/var/cache
 
 VOLUME ["/app/var/cache"]
+
+RUN chmod 775 /app/var/cache
