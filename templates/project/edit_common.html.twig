@@ -15,3 +15,22 @@
     </div>
     {{ form_end(form) }}
 {% endblock %}
+
+{% block box_after %}
+    {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
+        {% block box_title %}
+            {{ 'SpecialActions'|trans }}
+        {% endblock  %}
+        {% block box_body %}
+            {% if is_granted('PERM_PROJECT_ARCHIVE') %}
+                <button
+                        class="btn btn-secondary btn-danger need-confirm"
+                        data-action="{{ path('project.archive', {'suffix':project.suffix}) }}"
+                        data-text="{{ 'project.archive.confirm'|trans|nl2br }}"
+                >
+                    {{ 'Archive'|trans }}
+                </button>
+            {% endif %}
+        {% endblock %}
+    {% endembed %}
+{% endblock %}

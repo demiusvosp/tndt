@@ -6,7 +6,7 @@
             {% set label = doc.caption %}
             {% if limit %}{% set label = label|u.truncate(limit, '...') %}{% endif %}
             {{ label }}
-            {{ doc_badges(doc) }}
+            {{ badges(doc) }}
         {% if doc.isArchived %}
             </span>
         {% endif %}
@@ -25,9 +25,8 @@
             {{ doc.docId }}
             {% if withName %}
                 - {{ doc.caption|u.truncate(100, '...') }}
-                {% if doc.isArchived %}<span class="label label-default">{{ 'archived'|trans }}</span>{% endif %}
             {% endif %}
-            {{ doc_badges(doc) }}
+            {{ badges(doc) }}
     {% if doc.isArchived %}
         </span>
     {% endif %}

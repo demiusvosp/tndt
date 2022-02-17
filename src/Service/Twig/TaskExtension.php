@@ -32,6 +32,7 @@ class TaskExtension extends AbstractExtension
                 'task_close_form',
                 [$this, 'closeForm'],
             ),
+
         ];
     }
 

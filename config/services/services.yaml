@@ -61,3 +61,20 @@ services:
         class: 'App\Security\Voter\PrivateProjectVoter'
         tags:
             - { name: monolog.logger, channel: security }
+
+    App\Service\Badges\DocBadgesHandler:
+        class: 'App\Service\Badges\DocBadgesHandler'
+        tags: ['app.badges_handler']
+
+    App\Service\Badges\TaskBadgesHandler:
+        class: 'App\Service\Badges\TaskBadgesHandler'
+        tags: ['app.badges_handler']
+
+    App\Service\Badges\UserBadgesHandler:
+        class: 'App\Service\Badges\UserBadgesHandler'
+        tags: ['app.badges_handler']
+
+    App\Service\Twig\BadgesExtension:
+        class: 'App\Service\Twig\BadgesExtension'
+        arguments:
+            - !tagged_iterator app.badges_handler

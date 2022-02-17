@@ -37,10 +37,10 @@
         {% if has_more_projects %}
             <div class="row">
                 <div class="col-md-offset-1 col-md-10">
-                <div class="panel panel-default">
+                <div class="panel panel-default more-project-block">
                     <div class="panel-body">
                         <div class="text-center">
-                            <h4><a href="{{ path('project.list') }}">{{ 'And_more'|trans }} {{ 'Projects'|trans }}</a></h4>
+                            <h4><a href="{{ path('project.list') }}">{{ 'menu.projects'|trans }}</a></h4>
                         </div>
                     </div>
                 </div>
@@ -59,7 +59,7 @@
                         <ul class="list-unstyled">
                             {%  for task in tasks %}
                                 <li>
-                                    <b>{{ mTask.badge(task, false, true) }}</b> - {{ mTask.caption(task, 60) }}
+                                    {{ mTask.badge(task, true, true, 60) }}
                                 </li>
                             {% endfor %}
                         </ul>

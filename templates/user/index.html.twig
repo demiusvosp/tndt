@@ -10,7 +10,7 @@
             {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
                 {% import 'user/_macro.html.twig' as mUser %}
                 {% block box_title %}
-                    {{ user.name }}
+                    {{ mUser.badge(user, false, false) }}
                 {% endblock %}
                 {% block box_body %}
                     <div class="row">

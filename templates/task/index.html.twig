@@ -15,7 +15,7 @@
                 {% import 'user/_macro.html.twig' as mUser %}
 
                 {% block box_title %}
-                    {{ mTask.badge(task, true) }}
+                    <b>{{ task.taskId }}</b> - {{ task.caption }}
                 {% endblock %}
                 {% block box_body %}
                     <div class="task-properties">
