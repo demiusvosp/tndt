@@ -54,17 +54,9 @@ class TaskBadgesHandler implements BadgeHandlerInterface
             }
             $label = null;
             $itemBadge = $item->getUseBadge();
-            if ($item instanceof TaskStageItem) {
-                // особое поведение этапов задачи
-                if ($item->getType()->equals(StageTypesEnum::STAGE_ON_CLOSED())) {
-                    // всегда отображаем бадж закрытого этапа
-                    $label = $item->getName();
-                }
-
-                if (!$item->getId() && $task->isClosed()) {
-                    // если задача закрыта, а справочника нет, создаем бадж по состоянию задачи
-                    $label = $this->translator->trans('task.close.label');
-                }
+            if ($item instanceof TaskStageItem && !$item->getId() && $task->isClosed()) {
+                // если справочника этапа нет, а задача закрыта, создаем бадж об этом состоянии
+                $label = $this->translator->trans('task.close.label');
 
             } elseif ($itemBadge) {
                 $label = $item->getName();

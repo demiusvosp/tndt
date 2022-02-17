@@ -14,6 +14,7 @@ use App\Dictionary\Fetcher;
 use App\Dictionary\StylesEnum;
 use App\Dictionary\Stylizer;
 use App\Exception\DictionaryException;
+use App\Service\Badges\BadgeDTO;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
@@ -23,15 +24,18 @@ class DictionaryExtension extends AbstractExtension
     private Fetcher $fetcher;
     private Stylizer $stylizer;
     private TranslatorInterface $translator;
+    private BadgesExtension $badgesExtension;
 
     public function __construct(
         Fetcher             $fetcher,
         Stylizer            $stylizer,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
+        BadgesExtension  $badgesExtension
     ) {
         $this->fetcher = $fetcher;
         $this->stylizer = $stylizer;
         $this->translator = $translator;
+        $this->badgesExtension = $badgesExtension;
     }
 
     public function getFunctions(): array
@@ -66,7 +70,7 @@ class DictionaryExtension extends AbstractExtension
         return $dictionary->isEnabled();
     }
 
-    public function dictionaryName($entity, string $dictionaryType, bool $withAlt = false): string
+    public function dictionaryName($entity, string $dictionaryType, bool $useBadge = true): string
     {
         if (!$entity instanceof InProjectInterface) {
             throw new DictionaryException('Справочник можно получить только от сущности относящейся к проекту');
@@ -74,14 +78,18 @@ class DictionaryExtension extends AbstractExtension
         $type = TypesEnum::fromEntity($entity, $dictionaryType);
         $item = $this->fetcher->getDictionaryItem($type, $entity);
 
+        if ($useBadge && $item->getUseBadge()) {
+            $badge = new BadgeDTO($item->getName(), $item->getUseBadge(), $item->getDescription());
+            return $this->badgesExtension->badgeHtml($badge);
+        }
+
         if ($item->getId() === 0) { // возможно стоит проверять через интерфейс TranslatableItem
             $html = '<i class="dictionary-not-set">' . $this->translator->trans($item->getName()) . '</i>';
-            $withAlt = false;
         } else {
             $html = $item->getName();
         }
 
-        if ($withAlt) {
+        if (!empty($item->getDescription())) {
             $html = '<span title="' . $item->getDescription() . '">' . $html . '</span>';
         }
 

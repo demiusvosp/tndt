@@ -44,7 +44,7 @@ class DocBadgesHandler implements BadgeHandlerInterface
         if ($doc->getState() === Doc::STATE_DEPRECATED && !in_array('deprecated', $excepts, true)) {
             $badges[] = new BadgeDTO(
                 $this->translator->trans('doc.state.deprecated.label'),
-                null,
+                BadgeEnum::WARNING(),
                 $this->translator->trans('doc.state.deprecated.help')
             );
         }

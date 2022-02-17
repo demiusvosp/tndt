@@ -54,7 +54,7 @@ class UserBadgesHandler implements BadgeHandlerInterface
         }
         if ($user->isLocked()) {
             $badges[] = new BadgeDTO(
-                $this->translator->trans('user.locked.short'),
+                '🛇',
                 null,
                 $this->translator->trans('user.locked.label')
             );

@@ -71,18 +71,18 @@
                             {% if task.isClosed() %}</s>{% endif %}
                         </td>
                         {% if dictionary_enabled(project, 'task.stage') %}
-                            <td>{{ dictionary_name(task, 'stage', true) }}</td>
+                            <td>{{ dictionary_name(task, 'stage') }}</td>
                         {% else %}
                             <td>{{ (task.isClosed ? 'closed' : 'open')|trans }}</td>
                         {% endif %}
                         {% if dictionary_enabled(project, 'task.type') %}
-                            <td>{{ dictionary_name(task, 'type', true) }}</td>
+                            <td>{{ dictionary_name(task, 'type') }}</td>
                         {% endif %}
                         {% if dictionary_enabled(project, 'task.priority') %}
-                            <td>{{ dictionary_name(task, 'priority', true) }}</td>
+                            <td>{{ dictionary_name(task, 'priority') }}</td>
                         {% endif %}
                         {% if dictionary_enabled(project, 'task.complexity') %}
-                            <td>{{ dictionary_name(task, 'complexity', true) }}</td>
+                            <td>{{ dictionary_name(task, 'complexity') }}</td>
                         {% endif %}
 {#                        <td>{{ mUser.badge(task.createdBy, true, false) }}</td>#}
                         <td>{{ task.createdAt|ago }}</td>

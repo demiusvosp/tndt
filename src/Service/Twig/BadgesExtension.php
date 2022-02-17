@@ -8,6 +8,7 @@ declare(strict_types=1);
 
 namespace App\Service\Twig;
 
+use App\Service\Badges\BadgeDTO;
 use App\Service\Badges\BadgeHandlerInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
@@ -42,19 +43,25 @@ class BadgesExtension extends AbstractExtension
         foreach ($this->badgesHandlers as $handler) {
             if ($handler->supports($entity)) {
                 foreach ($handler->getBadges($entity, $excepts) as $badgeItem) {
-                    $badge = '<span class="label label-' . $badgeItem->getStyle() . '"';
-                    if ($badgeItem->getAlt()) {
-                        $badge .= ' title="' . $badgeItem->getAlt() . '"';
-                    }
-
-                    $badge .= '>'
-                        . $badgeItem->getLabel()
-                        . '</span>';
-                    $html[] = $badge;
+                    $html[] = $this->badgeHtml($badgeItem);
                 }
             }
         }
 
         return implode('', $html);
+    }
+
+    public function badgeHtml(BadgeDTO $badge): string
+    {
+        $badgeHtml = '<span class="label label-' . $badge->getStyle() . '"';
+        if ($badge->getAlt()) {
+            $badgeHtml .= ' title="' . $badge->getAlt() . '"';
+        }
+
+        $badgeHtml .= '>'
+            . $badge->getLabel()
+            . '</span>';
+
+        return $badgeHtml;
     }
 }
