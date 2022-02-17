@@ -204,6 +204,7 @@ role:
   user: пользователь
   visitor: посетитель
 search: Поиск
+SpecialActions: особые действия
 Support: Поддержка
 Tasks: Задачи
 task:
