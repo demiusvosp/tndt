@@ -42,13 +42,13 @@ class BadgesExtension extends AbstractExtension
         foreach ($this->badgesHandlers as $handler) {
             if ($handler->supports($entity)) {
                 foreach ($handler->getBadges($entity, $excepts) as $badgeItem) {
-                    $badge = '<span class="label label-' . $badgeItem['style'] . '"';
-                    if ($badgeItem['alt']) {
-                        $badge .= ' title="' . $badgeItem['alt'] . '"';
+                    $badge = '<span class="label label-' . $badgeItem->getStyle() . '"';
+                    if ($badgeItem->getAlt()) {
+                        $badge .= ' title="' . $badgeItem->getAlt() . '"';
                     }
 
                     $badge .= '>'
-                        . $badgeItem['label']
+                        . $badgeItem->getLabel()
                         . '</span>';
                     $html[] = $badge;
                 }

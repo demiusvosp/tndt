@@ -5,6 +5,7 @@ Access_granted:
   description: Проект приватный, но вам дан доступ к нему
 Administrate: Администрирование
 And_more: И еще
+Archive: Убрать в архив
 archived: в архиве
 breadcrumb:
   dashboard.about: О системе

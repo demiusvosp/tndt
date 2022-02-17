@@ -32,7 +32,7 @@ class DocBadgesHandler implements BadgeHandlerInterface
     /**
      * @param Doc $doc
      * @param array $excepts
-     * @return array ['style', 'label', ?'alt']
+     * @return BadgeDTO[]
      */
     public function getBadges($doc, array $excepts = []): array
     {
@@ -42,18 +42,18 @@ class DocBadgesHandler implements BadgeHandlerInterface
 
         $badges = [];
         if ($doc->getState() === Doc::STATE_DEPRECATED && !in_array('deprecated', $excepts, true)) {
-            $badges[] = [
-                'style' => 'default',
-                'label' => $this->translator->trans('doc.state.deprecated.label'),
-                'alt' => $this->translator->trans('doc.state.deprecated.help'),
-            ];
+            $badges[] = new BadgeDTO(
+                'default',
+                $this->translator->trans('doc.state.deprecated.label'),
+                $this->translator->trans('doc.state.deprecated.help')
+            );
         }
         if ($doc->getState() === Doc::STATE_ARCHIVED && !in_array('archived', $excepts, true)) {
-            $badges[] = [
-                'style' => 'default',
-                'label' => $this->translator->trans('doc.state.archive.label'),
-                'alt' => $this->translator->trans('doc.state.archive.help'),
-            ];
+            $badges[] = new BadgeDTO(
+                'default',
+                $this->translator->trans('doc.state.archive.label'),
+                $this->translator->trans('doc.state.archive.help')
+            );
         }
 
         return $badges;

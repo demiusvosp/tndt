@@ -36,7 +36,7 @@ class UserBadgesHandler implements BadgeHandlerInterface
     /**
      * @param User $user
      * @param array $excepts
-     * @return array ['style', 'label', ?'alt']
+     * @return BadgeDTO[]
      */
     public function getBadges($user, array $excepts = []): array
     {
@@ -46,18 +46,18 @@ class UserBadgesHandler implements BadgeHandlerInterface
 
         $badges = [];
         if ($user->hasRole(UserRolesEnum::PROLE_PM, $this->projectContext->getProject())) {
-            $badges[] = [
-                'style' => 'success',
-                'label' => $this->translator->trans('role.pm'),
-                'alt' => $this->translator->trans('role.project_manager')
-            ];
+            $badges[] = new BadgeDTO(
+                'success',
+                $this->translator->trans('role.pm'),
+                $this->translator->trans('role.project_manager')
+            );
         }
         if ($user->isLocked()) {
-            $badges[] = [
-                'style' => 'default',
-                'label' => $this->translator->trans('user.locked.short'),
-                'alt' => $this->translator->trans('user.locked.label')
-            ];
+            $badges[] = new BadgeDTO(
+                'default',
+                $this->translator->trans('user.locked.short'),
+                $this->translator->trans('user.locked.label')
+            );
         }
         return $badges;
     }

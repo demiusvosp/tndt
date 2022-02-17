@@ -19,7 +19,7 @@ interface BadgeHandlerInterface
     /**
      * @param object $entity
      * @param array $excepts
-     * @return array ['style', 'label', ?'alt']
+     * @return BadgeDTO[]
      */
     public function getBadges(object $entity, array $excepts = []): array;
 }

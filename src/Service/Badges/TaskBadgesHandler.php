@@ -38,7 +38,7 @@ class TaskBadgesHandler implements BadgeHandlerInterface
     /**
      * @param Task $task
      * @param array $excepts
-     * @return array ['style', 'label', ?'alt']
+     * @return BadgeDTO[]
      */
     public function getBadges($task, array $excepts = []): array
     {
@@ -80,11 +80,11 @@ class TaskBadgesHandler implements BadgeHandlerInterface
             }
 
             if ($style) {
-                $badges[] = [
-                    'style' => $style,
-                    'label' => $label,
-                    'alt' => $item->getId() > 0 ? $item->getDescription() : null,
-                ];
+                $badges[] = new BadgeDTO(
+                    $style,
+                    $label,
+                    $item->getId() > 0 ? $item->getDescription() : null
+                );
             }
         }
 
