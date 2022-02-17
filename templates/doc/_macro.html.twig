@@ -25,7 +25,6 @@
             {{ doc.docId }}
             {% if withName %}
                 - {{ doc.caption|u.truncate(100, '...') }}
-                {% if doc.isArchived %}<span class="label label-default">{{ 'archived'|trans }}</span>{% endif %}
             {% endif %}
             {{ badges(doc) }}
     {% if doc.isArchived %}
