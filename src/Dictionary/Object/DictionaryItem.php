@@ -8,9 +8,9 @@ declare(strict_types=1);
 
 namespace App\Dictionary\Object;
 
-use App\Dictionary\BadgeEnum;
 use App\Exception\DictionaryException;
 use App\Object\JlobObjectInterface;
+use App\Service\Badges\BadgeEnum;
 
 class DictionaryItem implements JlobObjectInterface
 {

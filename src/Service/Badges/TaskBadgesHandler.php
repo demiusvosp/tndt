@@ -8,7 +8,6 @@ declare(strict_types=1);
 
 namespace App\Service\Badges;
 
-use App\Dictionary\BadgeEnum;
 use App\Dictionary\Fetcher;
 use App\Dictionary\Object\Task\StageTypesEnum;
 use App\Dictionary\Object\Task\TaskStageItem;
@@ -53,36 +52,28 @@ class TaskBadgesHandler implements BadgeHandlerInterface
             if (in_array($type, $excepts, true)) {
                 continue;
             }
-            $style = $label = null;
+            $label = null;
             $itemBadge = $item->getUseBadge();
             if ($item instanceof TaskStageItem) {
                 // особое поведение этапов задачи
                 if ($item->getType()->equals(StageTypesEnum::STAGE_ON_CLOSED())) {
                     // всегда отображаем бадж закрытого этапа
                     $label = $item->getName();
-                    if ($itemBadge === null) {
-                        //стилизуя по умолчанию, если не настроена кастомная стилизация
-                        $style = BadgeEnum::DEFAULT()->getValue();
-                    } else {
-                        $style = $itemBadge->getValue();
-                    }
                 }
 
-                if (!$style && $task->isClosed()) {
-                    // если задача акрыта, а справочника нет, создаем бадж по состоянию задачи
-                    $style = BadgeEnum::DEFAULT()->getValue();
+                if (!$item->getId() && $task->isClosed()) {
+                    // если задача закрыта, а справочника нет, создаем бадж по состоянию задачи
                     $label = $this->translator->trans('task.close.label');
                 }
 
             } elseif ($itemBadge) {
                 $label = $item->getName();
-                $style = $itemBadge->getValue();
             }
 
-            if ($style) {
+            if ($label) {
                 $badges[] = new BadgeDTO(
-                    $style,
                     $label,
+                    $itemBadge,
                     $item->getId() > 0 ? $item->getDescription() : null
                 );
             }

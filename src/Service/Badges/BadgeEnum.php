@@ -6,7 +6,7 @@
  */
 declare(strict_types=1);
 
-namespace App\Dictionary;
+namespace App\Service\Badges;
 
 use MyCLabs\Enum\Enum;
 

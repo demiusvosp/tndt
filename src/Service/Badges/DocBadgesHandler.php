@@ -43,15 +43,15 @@ class DocBadgesHandler implements BadgeHandlerInterface
         $badges = [];
         if ($doc->getState() === Doc::STATE_DEPRECATED && !in_array('deprecated', $excepts, true)) {
             $badges[] = new BadgeDTO(
-                'default',
                 $this->translator->trans('doc.state.deprecated.label'),
+                null,
                 $this->translator->trans('doc.state.deprecated.help')
             );
         }
         if ($doc->getState() === Doc::STATE_ARCHIVED && !in_array('archived', $excepts, true)) {
             $badges[] = new BadgeDTO(
-                'default',
                 $this->translator->trans('doc.state.archive.label'),
+                null,
                 $this->translator->trans('doc.state.archive.help')
             );
         }

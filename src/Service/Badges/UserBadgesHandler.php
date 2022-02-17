@@ -47,15 +47,15 @@ class UserBadgesHandler implements BadgeHandlerInterface
         $badges = [];
         if ($user->hasRole(UserRolesEnum::PROLE_PM, $this->projectContext->getProject())) {
             $badges[] = new BadgeDTO(
-                'success',
                 $this->translator->trans('role.pm'),
+                BadgeEnum::SUCCESS(),
                 $this->translator->trans('role.project_manager')
             );
         }
         if ($user->isLocked()) {
             $badges[] = new BadgeDTO(
-                'default',
                 $this->translator->trans('user.locked.short'),
+                null,
                 $this->translator->trans('user.locked.label')
             );
         }

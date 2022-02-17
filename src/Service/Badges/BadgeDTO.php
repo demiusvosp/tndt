@@ -11,12 +11,12 @@ namespace App\Service\Badges;
 class BadgeDTO
 {
     private string $label;
-    private string $style;
+    private BadgeEnum $style;
     private ?string $alt;
 
-    public function __construct(string $label, string $style, ?string $alt = null) {
+    public function __construct(string $label, ?BadgeEnum $style = null, ?string $alt = null) {
         $this->label = $label;
-        $this->style = $style;
+        $this->style = $style ?? BadgeEnum::DEFAULT();
         $this->alt = $alt;
     }
 
@@ -33,7 +33,7 @@ class BadgeDTO
      */
     public function getStyle(): string
     {
-        return $this->style;
+        return $this->style->getValue();
     }
 
     /**
