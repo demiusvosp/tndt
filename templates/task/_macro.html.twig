@@ -29,7 +29,7 @@
         <b>{{ task.taskId }}</b>
         {% if withName %}
             - {{ this.caption(task, limit) }}
-            {{ task_badges(task) }}
+            {{ badges(task) }}
         {% endif %}
     </span>
     {% if link %}
@@ -54,7 +54,7 @@
         {% for task in tasks %}
             <tr>
                 <td>{{ this.no(task) }}</td>
-                <td>{{ this.caption(task, 80) }}{{ task_badges(task, ['task.type']) }}</td>
+                <td>{{ this.caption(task, 80) }}{{ badges(task, ['task.type']) }}</td>
                 {% if project and dictionary_enabled(project, 'task.type') %}
                     <td>{{ dictionary_name(task, 'type') }}</td>
                 {% endif %}

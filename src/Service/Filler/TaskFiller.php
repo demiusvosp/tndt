@@ -9,6 +9,7 @@ declare(strict_types=1);
 namespace App\Service\Filler;
 
 use App\Entity\Task;
+use App\Exception\BadRequestException;
 use App\Exception\BadUserException;
 use App\Exception\DomainException;
 use App\Form\DTO\Task\EditTaskDTO;

@@ -9,28 +9,27 @@ declare(strict_types=1);
 namespace App\Service\Filler;
 
 use App\Entity\Doc;
+use App\Entity\Project;
+use App\Exception\BadRequestException;
 use App\Exception\DomainException;
 use App\Form\DTO\Doc\EditDocDTO;
 use App\Form\DTO\Doc\NewDocDTO;
 use App\Repository\ProjectRepository;
-use App\Service\DocService;
 
 class DocFiller
 {
     private ProjectRepository $projectRepository;
-    private DocService $docService;
 
-    public function __construct(ProjectRepository $projectRepository, DocService $docService)
+    public function __construct(ProjectRepository $projectRepository)
     {
         $this->projectRepository = $projectRepository;
-        $this->docService = $docService;
     }
 
     public function createFromForm(NewDocDTO $dto): Doc
     {
         $project = $this->projectRepository->find($dto->getProject());
         if (!$project) {
-            throw new DomainException('Не найден проект к которому относится документ');
+            throw new DomainException('Не найден проект к которому относится задача');
         }
 
         $doc = new Doc($project);
@@ -46,8 +45,5 @@ class DocFiller
         $doc->setCaption($dto->getCaption());
         $doc->setAbstract($dto->getAbstract());
         $doc->setBody($dto->getBody());
-        if ($doc->getState() !== $dto->getState()) {
-            $this->docService->changeState($doc, $dto->getState());
-        }
     }
 }
