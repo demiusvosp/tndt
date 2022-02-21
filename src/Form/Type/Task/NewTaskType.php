@@ -15,6 +15,7 @@ use App\Entity\Task;
 use App\Form\DTO\Task\NewTaskDTO;
 use App\Form\Type\Base\DictionarySelectType;
 use App\Form\Type\Base\DictionaryStageSelectType;
+use App\Form\Type\Base\MdEditType;
 use App\Form\Type\User\UserSelectType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -60,7 +61,7 @@ class NewTaskType extends AbstractType
             )
             ->add(
                 'description',
-                TextareaType::class,
+                MdEditType::class,
                 [
                     'label' => 'task.description.label',
                     'help' => 'task.description.help',

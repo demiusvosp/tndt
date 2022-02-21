@@ -170,6 +170,32 @@ $color-disabled: #333;
     float: left;
 }
 
+/* Help right sidebar */
+.help-sidebar {
+    position: fixed;
+    width: 30%;
+    height: 100%;
+    top: 0;
+    bottom: 0;
+    margin: 0;
+    right: -20%;
+
+    .nav {
+        position: fixed;
+        top: auto;
+        bottom: 0;
+        height: 100%;
+        writing-mode: vertical-lr;
+         li {
+             background-color: #fff;
+             border: 1px solid #ddd;
+             border-right: 0;
+             padding: 0.25em;
+             margin: 0.25em;
+         }
+    }
+}
+
 /* Other small widgets */
 
 .label {

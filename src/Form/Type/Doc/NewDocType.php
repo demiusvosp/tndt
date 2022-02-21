@@ -9,6 +9,7 @@ declare(strict_types=1);
 namespace App\Form\Type\Doc;
 
 use App\Form\DTO\Doc\NewDocDTO;
+use App\Form\Type\Base\MdEditType;
 use App\Form\Type\Project\ProjectSelectType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -33,7 +34,7 @@ class NewDocType extends AbstractType
             )
             ->add(
                 'abstract',
-                TextareaType::class,
+                MdEditType::class,
                 [
                     'label' => 'doc.abstract.label',
                     'help' => 'doc.abstract.help',
@@ -44,7 +45,7 @@ class NewDocType extends AbstractType
             )
             ->add(
                 'body',
-                TextareaType::class,
+                MdEditType::class,
                 [
                     'label' => 'doc.body.label',
                     'help' => 'doc.body.help',
