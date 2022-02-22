@@ -5,6 +5,7 @@ twig:
     exception_controller: null
     form_themes:
         - '@AdminLTE/layout/form-theme-horizontal.html.twig'
+        - 'form_types_theme.html.twig'
 #        - '@TetranzSelect2Entity/Form/fields.html.twig'
 
     globals:

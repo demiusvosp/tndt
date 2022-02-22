@@ -3,7 +3,7 @@
 {% block edit_page_title%}{{ 'project.edit.task_settings'|trans }}{% endblock %}
 
 {% block edit_page %}
-    {% form_theme form 'form_layout.html.twig' %}
+    {% form_theme form 'form_condensed_theme.html.twig' %}
     {{ form_start(form) }}
     <div class="project-settings-blocks">
         <div class="row">
@@ -38,7 +38,7 @@
 {% endblock %}
 
 {% block box_footer %}
-    <div class="pull-right">
+    <div class="form-footer-buttons">
         <button type="submit" class="btn btn-success">{{ 'Edit'|trans }}</button>
     </div>
     {{ form_end(form) }}

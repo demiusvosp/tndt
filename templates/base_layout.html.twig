@@ -44,10 +44,11 @@
     {% include 'bundles/AdminLTEBundle/Sidebar/menu.html.twig' with {'adminlte_direct_include': true} %}
 {% endblock %}
 
-{% block page_content_after %}
-    {% include 'modals.html.twig' %}
-{% endblock %}
 {% block footer %}
     {% include 'footer.html.twig' %}
+    {% include 'modals.html.twig' %}
+    {% if app.request.get('addMdHelp') %}
+        {{ render(controller('App\\Controller\\HomeController::helpMd')) }}
+    {% endif %}
 {% endblock %}
 

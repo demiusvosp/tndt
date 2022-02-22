@@ -23,14 +23,14 @@ class InProjectContextRequestSubscriber implements EventSubscriberInterface
         $this->projectContext = $projectContext;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             KernelEvents::CONTROLLER => ['onKernelController' , -2],
         ];
     }
 
-    public function onKernelController(ControllerEvent $event)
+    public function onKernelController(ControllerEvent $event): void
     {
         $request = $event->getRequest();
 

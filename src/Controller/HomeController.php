@@ -15,12 +15,12 @@ use App\Repository\TaskRepository;
 use App\Repository\UserRepository;
 use App\Security\UserRolesEnum;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 
-class DashboardController extends AbstractController
+class HomeController extends AbstractController
 {
+    private const STATIC_PAGE_CACHE_TTL = 3600;
     private const PROJECT_LENGTH = 4;
     private const TASK_LENGTH = 10;
     private const DOC_LENGTH = 10;
@@ -31,8 +31,7 @@ class DashboardController extends AbstractController
         TaskRepository $taskRepository,
         DocRepository $docRepository,
         UserRepository $userRepository
-    ): Response
-    {
+    ): Response {
         $involvedProjects = [];
         /** @var User $user */
         $user = $this->getUser();
@@ -57,7 +56,7 @@ class DashboardController extends AbstractController
         }
 
         return $this->render(
-            'dashboard/index.html.twig',
+            'home/index.html.twig',
             [
                 'projects' => $projects,
                 'has_more_projects' => $hasMoreProjects,
@@ -72,6 +71,15 @@ class DashboardController extends AbstractController
     {
         $about = file_get_contents($this->getParameter('kernel.project_dir') . '/README.md');
 
-        return $this->render('dashboard/about.html.twig', ['about_text' => $about]);
+        return $this->render('home/about.html.twig', ['about_text' => $about]);
+    }
+
+    public function helpMd(): Response
+    {
+        $help = file_get_contents($this->getParameter('kernel.project_dir') . '/help/md/short.md');
+
+        return $this->render('home/help_widget.html.twig', ['text' => $help])
+            ->setPublic()
+            ->setMaxAge(self::STATIC_PAGE_CACHE_TTL);
     }
 }

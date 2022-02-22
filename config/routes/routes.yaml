@@ -1,10 +1,10 @@
 #Common
 home:
     path: /
-    controller: App\Controller\DashboardController::index
+    controller: App\Controller\HomeController::index
 about:
     path: /about
-    controller: App\Controller\DashboardController::about
+    controller: App\Controller\HomeController::about
 
 #Auth
 app.login:

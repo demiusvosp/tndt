@@ -9,6 +9,7 @@ declare(strict_types=1);
 namespace App\Form\Type\Project;
 
 use App\Form\DTO\Project\EditProjectCommonDTO;
+use App\Form\Type\Base\MdEditType;
 use App\Form\Type\User\UserSelectType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -34,7 +35,7 @@ class EditProjectCommonType extends AbstractType
             )
             ->add(
                 'description',
-                TextareaType::class,
+                TextareaType::class, // MdEditType хотелось бы, но пока нет особой необходимости
                 [
                     'label' => 'project.description.label',
                     'help' => 'project.description.help',

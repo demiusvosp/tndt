@@ -8,6 +8,7 @@ declare(strict_types=1);
 
 namespace App\Form\Type\Comment;
 
+use App\Form\Type\Base\MdEditType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -23,7 +24,7 @@ class NewCommentType extends AbstractType
         $builder
             ->add(
                 'message',
-                TextareaType::class,
+                MdEditType::class,
                 [
                     'label' => false,
                     'attr' => ['rows' => 5],
