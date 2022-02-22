@@ -22,7 +22,6 @@ class MdEditType extends AbstractType
         $request = $requestStack->getMasterRequest();
         if($request) {
             $request->attributes->add(['addMdHelp' => true]);
-dump($request->attributes);
         }
     }
 
