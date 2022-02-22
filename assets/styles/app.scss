@@ -173,30 +173,64 @@ $color-disabled: #333;
 /* Help right sidebar */
 .help-sidebar {
     position: fixed;
-    width: 30%;
+    width: 40%;
     height: 100%;
     top: 0;
     bottom: 0;
+    right: 0;
+    z-index: 2000;
+    transform: translateX(100%);
+    transition: 0.5s;
     margin: 0;
-    right: -20%;
+    padding: 0;
+    background-color: #fff;
 
     .nav {
-        position: fixed;
-        top: auto;
-        bottom: 0;
-        height: 100%;
+        position: relative;
+        top: 60%;
+        bottom: -5em;
+        left: -3.3em;
+        z-index: 2010;
+        margin: 0;
+        padding: 0;
         writing-mode: vertical-lr;
-         li {
-             background-color: #fff;
-             border: 1px solid #ddd;
-             border-right: 0;
-             padding: 0.25em;
-             margin: 0.25em;
-         }
+        li label {
+            cursor: pointer;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-right-color: transparent;
+            border-radius: 4px 0 0 4px;
+            padding: 3em 1em 3em 1em;
+        }
     }
+    .nav-tabs {
+        border: 0;
+    }
+    .help-container {
+        position: fixed;
+        top: 0;
+        height: 100%;
+        overflow: auto;
+        padding: 1em;
+        border-left: 1px solid #ddd;
+        margin: 0 0.2em;
+    }
+}
+#md-help-toggle {
+    display: none;
+}
+#md-help-toggle:checked ~ .help-sidebar {
+    -webkit-transform: translateX(0);
+    -moz-transform: translateX(0);
+    transform: translateX(0);
 }
 
 /* Other small widgets */
+
+.form-footer-buttons {
+    //float: right !important;
+    margin-left: 2em;
+}
 
 .label {
     margin-right: 0.3em;
