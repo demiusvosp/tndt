@@ -44,15 +44,16 @@ Markdown воспринимает звёздочки «*» и символы п�
 
 Используйте оператор `if`
 
-Для цитирования больших фрагментов кода, необходимо обернуть его в «```»
-```
+Для цитирования больших фрагментов кода, необходимо обернуть его в «\`\`\`»
+<pre lang="no-highlight"><code>
       ```
-           return $this
-               ->render('home/about.html.twig', ['about_text' => $about])
-               ->setPublic()
-               ->setMaxAge(self::STATIC_PAGE_CACHE_TTL);
+        return $this
+            ->render('home/about.html.twig', ['about_text' => $about])
+            ->setPublic()
+            ->setMaxAge(self::STATIC_PAGE_CACHE_TTL);
       ```
-```
+</code></pre>
+Выведет
 ```
      return $this
          ->render('home/about.html.twig', ['about_text' => $about])
