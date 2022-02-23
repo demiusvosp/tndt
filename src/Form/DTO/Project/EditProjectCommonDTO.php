@@ -44,6 +44,7 @@ class EditProjectCommonDTO
         $this->suffix = $project->getSuffix();
         $this->name = $project->getName();
         $this->icon = $project->getIcon();
+        $this->description = $project->getDescription();
     }
 
     /**

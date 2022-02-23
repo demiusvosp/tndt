@@ -41,6 +41,7 @@ class EditProjectCommonType extends AbstractType
                     'help' => 'project.description.help',
                     'required' => false,
                     'empty_data' => '',
+                    'attr' => ['rows' => 10],
                 ]
             );
     }
