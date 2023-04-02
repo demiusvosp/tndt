@@ -44,7 +44,7 @@
                 </div>
             </div>
             <small>
-                {{ (descriptionLength == 0) ? project.description : project.description|u.truncate(descriptionLength, true) }}
+                {{ (descriptionLength == 0) ? project.description|markdown_to_html : project.description|u.truncate(descriptionLength)|markdown_to_html }}
             </small>
             <hr>
         {% endblock %}

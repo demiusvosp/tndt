@@ -12,6 +12,7 @@ use App\Form\DTO\Project\EditProjectCommonDTO;
 use App\Form\Type\Base\MdEditType;
 use App\Form\Type\User\UserSelectType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -35,14 +36,26 @@ class EditProjectCommonType extends AbstractType
             )
             ->add(
                 'description',
-                TextareaType::class, // MdEditType хотелось бы, но пока нет особой необходимости
+                MdEditType::class,
                 [
                     'label' => 'project.description.label',
                     'help' => 'project.description.help',
                     'required' => false,
                     'empty_data' => '',
+                    'attr' => ['rows' => 10],
                 ]
             );
+        $builder->get('icon')->addViewTransformer(
+            new CallbackTransformer(
+                function ($normValue) {
+
+                    return $normValue;
+                },
+                function ($viewValue) {
+                    return preg_replace('/<\w+ class="([\w -]+)">\w*<\/\w+>/', '${1}', $viewValue);
+                }
+            )
+        );
     }
 
     public function configureOptions(OptionsResolver $resolver): void

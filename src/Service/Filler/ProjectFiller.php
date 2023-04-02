@@ -55,6 +55,7 @@ class ProjectFiller
     {
         $project->setName($dto->getName());
         $project->setIcon((string) $dto->getIcon());
+        $project->setDescription($dto->getDescription());
     }
 
     /**
