@@ -1,5 +1,18 @@
 # Changelog
 
+## [v0.2.1] - 2023-04-02
+
+### New feature
+- [tndt-8](http://tasks.demius.ru/p/tndt-8) - Шторка с кратким описанием правил написания markdown
+- [tndt-55](http://tasks.demius.ru/p/tndt-55) - Баджи на задачах, документах, пользователях
+- [tndt-71](http://tasks.demius.ru/p/tndt-71) - Флаг deprecated в документах
+### Minor features
+- [tndt-58](http://tasks.demius.ru/p/tndt-58) - На вкладке дашборда показывать, что есть еще проекты
+### Bugfixes
+- [tndt-74](http://tasks.demius.ru/p/tndt-74) - Ошибка при создании/редактировании описания проекта.
+- [tndt-69](http://tasks.demius.ru/p/tndt-69) - В продовых логах появился debug
+- [tndt-20](http://tasks.demius.ru/p/tndt-20) - Закрытую задачу нельзя вновь закрыть
+
 ## [v0.2.0] - 2022-01-15
 
 ### New feature
