@@ -35,7 +35,7 @@ class EditProjectCommonType extends AbstractType
             )
             ->add(
                 'description',
-                TextareaType::class, // MdEditType хотелось бы, но пока нет особой необходимости
+                MdEditType::class,
                 [
                     'label' => 'project.description.label',
                     'help' => 'project.description.help',
