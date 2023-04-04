@@ -40,11 +40,8 @@ FROM base AS dev
 RUN apt-get install git -y
 
 # Install composer
-RUN curl -sS https://getcomposer.org/installer | php -- \
-        --filename=composer \
-        --install-dir=/usr/local/bin && \
-        echo "alias composer='composer'" >> /root/.bashrc && \
-        composer
+RUN curl --silent --show-error "https://getcomposer.org/installer" | php -- --install-dir=/usr/local/bin --filename=composer
+
 
 VOLUME ["/app", "/composer/home/cache"]
 
