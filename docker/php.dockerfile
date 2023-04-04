@@ -55,6 +55,7 @@ FROM dev AS dev_stage
 
 COPY ./bin /app/bin
 COPY ./config /app/config
+COPY ./help /app/help
 COPY ./public/index.php /app/public/index.php
 COPY ./public/build /app/public/build
 COPY ./src /app/src
@@ -85,6 +86,7 @@ COPY ./README.md /app/README.md
 COPY ./vendor /app/vendor
 COPY ./.env /app/.env
 COPY ./config /app/config
+COPY ./help /app/help
 COPY ./translations /app/translations
 COPY ./public/index.php /app/public/index.php
 COPY ./templates /app/templates
