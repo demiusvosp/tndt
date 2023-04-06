@@ -1,5 +1,5 @@
 #!make
-.PHONY: help up down ps exec init tests build_front
+.PHONY: help up down ps back_bash back_exec front_build front_exec init tests
 
 # default arguments
 env = dev
@@ -18,7 +18,8 @@ help:
 	$(info   up ENV=test - up current environment (default dev))
 	$(info   down ENV=test - down current environment (default dev))
 	$(info   ps ENV=test - compose ps current environment (default dev))
-	$(info   exec [<command>] - login to current php container shell)
+	$(info   back_bash - login to current php container shell)
+	$(info   back_exec [<command>] - exec comand into php container)
 	$(info   front_build [watch] - exec yarn install and compile and deploy front o public (one or watches changes) )
 	$(info   front_exec [<command>] - exec command into front_builder container)
 	$(info   init - initialize stage. (create db, migrates, create root user))
@@ -35,7 +36,10 @@ down:
 ps:
 	docker-compose $(compose_file)  ps
 
-exec:
+back_exec:
+	docker-compose exec $(filter-out $@,$(MAKECMDGOALS))
+
+back_bash:
 	docker-compose exec php /bin/bash
 
 front_exec:
