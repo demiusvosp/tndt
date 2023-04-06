@@ -1,4 +1,5 @@
 version: '3.4'
+#Настройки продового стейджа по умолчанию, например для сборки контейнеров перед деплоем
 services:
   nginx:
     image: 'nginx:alpine'
@@ -26,15 +27,3 @@ services:
       - './var/storage/prod/mysql:/var/lib/mysql:rw'
     ports:
       - 4003:3306
-
-# тестам он строго говоря не нужен, но пока оставим в целях отладки, когда у нас уже все будет хорошо работать - уберем
-  pma:
-    image: phpmyadmin/phpmyadmin
-    links:
-      - mysql
-    ports:
-      - 4002:80
-    environment:
-      - "PMA_ARBITRARY=1"
-      - "PMA_HOST=mysql"
-      - "PMA_PORTS=3306"

@@ -1,4 +1,5 @@
 version: '3.4'
+#Настройка стейджа для локальной разработки
 services:
   nginx:
     image: 'nginx:alpine'
