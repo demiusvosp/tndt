@@ -1,5 +1,11 @@
 # Changelog
 
+## [v0.2.1.1] - 2023-04-06
+
+### Bugfixes
+- **hotfix** - [tndt-92](http://tasks.demius.ru/p/tndt-92) Шторка с справкой md не подргружалась в продовый контейнер
+- [tndt-93](http://tasks.demius.ru/p/tndt-93) Обновил пакеты composer, npm
+
 ## [v0.2.1] - 2023-04-02
 
 ### New feature
