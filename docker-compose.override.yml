@@ -26,6 +26,9 @@ services:
       - './var/storage/dev/mysql:/var/lib/mysql:rw'
     ports:
       - 4003:3306 # в дев можно подключаться к БД напрямую, например из IDE
+    environment:
+      MYSQL_ROOT_PASSWORD: '123'
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
 
   pma:
     image: phpmyadmin/phpmyadmin
