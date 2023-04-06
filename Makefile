@@ -1,5 +1,5 @@
 #!make
-.PHONY: help up down ps exec init tests build_front
+.PHONY: help up down ps back_bash back_exec front_build front_exec init tests
 
 # default arguments
 env = dev
@@ -18,7 +18,8 @@ help:
 	$(info   up ENV=test - up current environment (default dev))
 	$(info   down ENV=test - down current environment (default dev))
 	$(info   ps ENV=test - compose ps current environment (default dev))
-	$(info   exec - login to current php container shell)
+	$(info   back_bash - login to current php container shell)
+	$(info   back_exec [<command>] - exec comand into php container)
 	$(info   front_build [watch] - exec yarn install and compile and deploy front o public (one or watches changes) )
 	$(info   front_exec [<command>] - exec command into front_builder container)
 	$(info   init - initialize stage. (create db, migrates, create root user))
@@ -35,27 +36,30 @@ down:
 ps:
 	docker-compose $(compose_file)  ps
 
-exec:
-	docker exec -it tndt_php_1 /bin/bash
+back_exec:
+	docker-compose exec $(filter-out $@,$(MAKECMDGOALS))
+
+back_bash:
+	docker-compose exec php /bin/bash
 
 front_exec:
-	docker-compose run front_builder $(filter-out $@,$(MAKECMDGOALS))
+	docker-compose run --rm front_builder $(filter-out $@,$(MAKECMDGOALS))
 
 front_build:
-	docker-compose run front_builder yarn install
-	docker-compose run front_builder yarn encore dev $(filter-out $@,$(MAKECMDGOALS))
+	docker-compose run --rm front_builder yarn install
+	docker-compose run --rm front_builder yarn encore dev $(filter-out $@,$(MAKECMDGOALS))
 %:
 
 init:
-	docker exec -it tndt_php_1 composer install # пока мы используем dev контейнер все ок, но в будущем для этого надо готовить отдельный контейнер с композером, git и yarn
-	docker exec -it tndt_php_1 php bin/console doctrine:schema:create -vv
-	docker exec -it tndt_php_1 php bin/console doctrine:migrations:migrate --allow-no-migration -n -vv
-	docker exec -it tndt_php_1 php bin/console doctrine:fixtures:load --group=install -n -vv
+	docker-compose exec php composer install # пока мы используем dev контейнер все ок, но в будущем для этого надо готовить отдельный контейнер с композером, git и yarn
+	docker-compose exec php bin/console doctrine:schema:create -vv
+	docker-compose exec php bin/console doctrine:migrations:migrate --allow-no-migration -n -vv
+	docker-compose exec php bin/console doctrine:fixtures:load --group=install -n -vv
 
 tests:
 ifeq ($(type), behat)
-	docker exec -it tndt_php_1 php ./vendor/bin/behat
+	docker-compose exec php ./vendor/bin/behat
 else
-	docker exec -it tndt_php_1 php bin/console doctrine:fixtures:load -n -vv
-	docker exec -it tndt_php_1 php ./vendor/bin/phpunit
+	docker-compose exec php bin/console doctrine:fixtures:load -n -vv
+	docker-compose exec php ./vendor/bin/phpunit
 endif

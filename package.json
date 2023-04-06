@@ -3,7 +3,7 @@
         "@symfony/stimulus-bridge": "^2.1.0",
         "@symfony/webpack-encore": "^1.0.5",
         "admin-lte": "^2.4",
-        "bootstrap-sass": "^3.4",
+        "bootstrap-sass": "3.4.1",
         "bootstrap-select": "^1.13.18",
         "daterangepicker": "^3.1.0",
         "icheck": "^1.0",

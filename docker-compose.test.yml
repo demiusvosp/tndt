@@ -1,5 +1,16 @@
 version: '3.4'
+#Базовый стейдж для запуска тестов
 services:
+  nginx:
+    image: 'nginx:alpine'
+    volumes:
+      - './docker/dev.nginx.conf:/etc/nginx/conf.d/default.conf'
+      - './public:/app/public'
+      - './var/log/nginx:/var/log/nginx'
+    ports:
+      - 4001:80
+    links:
+      - php
   php:
     build:
       dockerfile: './php.dockerfile'
@@ -14,15 +25,3 @@ services:
       - './var/storage/test/mysql:/var/lib/mysql:rw'
     ports:
       - 4003:3306
-
-# тестам он строго говоря не нужен, но пока оставим в целях отладки, когда у нас уже все будет хорошо работать - уберем
-  pma:
-    image: phpmyadmin/phpmyadmin
-    links:
-      - mysql
-    ports:
-      - 4002:80
-    environment:
-      - "PMA_ARBITRARY=1"
-      - "PMA_HOST=mysql"
-      - "PMA_PORTS=3306"

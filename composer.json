@@ -37,7 +37,6 @@
         "symfony/validator": "4.4.*",
         "symfony/webpack-encore-bundle": "^1.12",
         "symfony/yaml": "4.4.*",
-        "tetranz/select2entity-bundle": "^3.1",
         "twig/extra-bundle": "^3.3",
         "twig/markdown-extra": "^3.3",
         "twig/string-extra": "^3.3",
@@ -65,7 +64,10 @@
         "preferred-install": {
             "*": "dist"
         },
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "symfony/flex": true
+        }
     },
     "autoload": {
         "psr-4": {

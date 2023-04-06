@@ -186,6 +186,9 @@
             "config/packages/admin_lte.yaml"
         ]
     },
+    "knplabs/knp-paginator-bundle": {
+        "version": "v5.9.0"
+    },
     "knplabs/knp-time-bundle": {
         "version": "v1.16.1"
     },
