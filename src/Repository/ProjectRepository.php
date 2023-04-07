@@ -10,15 +10,19 @@ namespace App\Repository;
 
 use App\Entity\Project;
 use App\Entity\User;
+use App\Specification\Project\VisibleByUserSpec;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
+use Happyr\DoctrineSpecification\Repository\EntitySpecificationRepositoryTrait;
+use Happyr\DoctrineSpecification\Spec;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 class ProjectRepository extends ServiceEntityRepository
 {
+    use EntitySpecificationRepositoryTrait;
     use ByFilterCriteriaQueryTrait;
 
     public function __construct(ManagerRegistry $registry)
@@ -86,6 +90,12 @@ class ProjectRepository extends ServiceEntityRepository
             ->setMaxResults($limit);
         $this->addVisibilityCondition($qb, $user);
 
-        return $qb->getQuery()->getResult();
+        Должен вывести: Секретный Алисы, Первый, Второй, Проект Алисы.
+        return $this->match(Spec::andX(
+            Spec::eq('isArchived', false),
+            new VisibleByUserSpec($user),
+            Spec::orderBy('updatedAt', 'DESC'),
+            Spec::limit($limit)
+        ));
     }
 }
