@@ -112,14 +112,15 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
      */
     public function getQueryByFilter(ToFindCriteriaInterface $filter): Query
     {
-        $qb = $this->createQueryBuilder('t');
-        foreach ($filter->getFilterCriteria() as $field => $value) {
-            $qb->andWhere($qb->expr()->eq('t.' . $field, ':' . $field))
-                ->setParameter($field, $value);
-        }
-        $qb->leftJoin('t.projectUsers', 'pu');
+        $spec = Spec::andX(
+            Spec::leftJoin('projectUsers', 'pu')
+        );
 
-        return $qb->getQuery();
+        foreach ($filter->getFilterCriteria() as $field => $value) {
+            $spec->andX(Spec::eq($field, $value));
+        }
+
+        return $this->getQuery($spec);
     }
 
     /**

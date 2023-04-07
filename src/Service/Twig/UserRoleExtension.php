@@ -69,7 +69,12 @@ class UserRoleExtension extends AbstractExtension
     public function roleLabel($role, bool $html = true): string
     {
         if(!UserRolesEnum::isProjectRole($role)) {
-            return $this->translator->trans(UserRolesEnum::label($role));
+            return sprintf(
+                '%s%s%s',
+                $html ? '<b>' : '',
+                strtoupper($this->translator->trans(UserRolesEnum::label($role))),
+                $html ? '</b>' : ''
+            );
         }
 
         [$projectRole, $projectSuffix] = UserRolesEnum::explodeSyntheticRole($role);
@@ -81,9 +86,12 @@ class UserRoleExtension extends AbstractExtension
             return '';
         }
 
-        return $this->translator->trans(UserRolesEnum::label($projectRole))
-            . ' ' . $this->translator->trans('role.at_project')
-            . ' ' . ($html ? $this->getProjectLink($projectSuffix) : $projectSuffix);
+        return sprintf(
+            '%s %s %s',
+            $this->translator->trans(UserRolesEnum::label($projectRole)),
+            $this->translator->trans('role.at_project'),
+            ($html ? $this->getProjectLink($projectSuffix) : $projectSuffix)
+        );
     }
 
     /**
@@ -104,11 +112,12 @@ class UserRoleExtension extends AbstractExtension
                 $labelList[] = $labelItem;
                 $labelListLength += mb_strlen($this->roleLabel($role, false)) + 2;// текст роли, плюс запятая с пробелом
             }
-            if ($labelListLength > $length) {
+            if ($length && $labelListLength > $length) {
                 array_pop($labelList);
                 break;
             }
         }
+
         return implode(', ', $labelList);
     }
 
