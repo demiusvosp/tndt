@@ -5,7 +5,7 @@
  * Time: 18:42
  */
 
-namespace App\Specification\user;
+namespace App\Specification\User;
 
 use Happyr\DoctrineSpecification\Spec;
 use Happyr\DoctrineSpecification\Specification\BaseSpecification;

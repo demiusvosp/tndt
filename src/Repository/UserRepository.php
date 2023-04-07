@@ -4,10 +4,9 @@ namespace App\Repository;
 
 use App\Entity\User;
 use App\Form\ToFindCriteriaInterface;
-use App\Specification\user\NotLockingSpec;
+use App\Specification\User\NotLockingSpec;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query;
-use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Happyr\DoctrineSpecification\Repository\EntitySpecificationRepositoryTrait;
 use Happyr\DoctrineSpecification\Spec;
@@ -88,21 +87,23 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
      */
     public function getPopularUsers(int $limit = 5, string $projectSuffix = null): array
     {
-        $qb = $this->createQueryBuilder('u')
-            ->where('u.locked = false')
-            ->setMaxResults($limit);
+        $spec = Spec::andX(
+            new NotLockingSpec(),
+            Spec::limit($limit),
+            Spec::neq('username', User::ROOT_USER)
+        );
 
         if($projectSuffix) {
-            $qb->join('u.projectUsers', 'pu', 'WITH', 'pu.suffix = :suffix')
-                ->andWhere($qb->expr()->isNotNull('pu.role'))
-                ->setParameter('suffix', $projectSuffix);
+            $spec->andX(Spec::andX(
+                Spec::leftJoin('projectUsers', 'pu'),
+                Spec::eq('suffix', $projectSuffix, 'projectUsers'),
+                Spec::isNotNull('role', 'projectUsers')
+            ));
         }
-        $qb->andWhere($qb->expr()->neq('u.username', ':root'))
-            ->setParameter('root', User::ROOT_USER);
 
-        $qb->orderBy('u.lastLogin', 'DESC');
+        $spec->andX(Spec::orderBy('lastLogin', 'DESC'));
 
-        return $qb->getQuery()->getResult();
+        return $this->match($spec);
     }
 
     /**
