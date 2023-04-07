@@ -37,7 +37,7 @@ ps:
 	docker-compose $(compose_file)  ps
 
 back_exec:
-	docker-compose exec $(filter-out $@,$(MAKECMDGOALS))
+	docker-compose exec php $(filter-out $@,$(MAKECMDGOALS))
 
 back_bash:
 	docker-compose exec php /bin/bash
