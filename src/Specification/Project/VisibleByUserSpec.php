@@ -8,6 +8,8 @@
 namespace App\Specification\Project;
 
 use App\Entity\User;
+use App\Specification\LeftJoin;
+use Doctrine\ORM\Query\Expr;
 use Happyr\DoctrineSpecification\Spec;
 use Happyr\DoctrineSpecification\Specification\BaseSpecification;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -31,8 +33,13 @@ class VisibleByUserSpec extends BaseSpecification
             return Spec::orX(
                 Spec::eq('isPublic', true),
                 Spec::andX( // здесь pu.username = 'bob' должно собираться именно внутри условия присоединения таблицы, а не общем условии на строки
-                    Spec::leftJoin('projectUsers', 'pu'),
-                    Spec::eq('user', $this->user, 'projectUsers'),
+                    new LeftJoin(
+                        'projectUsers',
+                        'pu',
+                        Expr\Join::WITH,
+                        'pu.user = :user',
+                        ['user' => $this->user]
+                    ),
                     Spec::isNotNull('role', 'projectUsers')
                 )
             );

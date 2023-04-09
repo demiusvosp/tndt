@@ -17,6 +17,7 @@ use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Happyr\DoctrineSpecification\Repository\EntitySpecificationRepositoryTrait;
+use Happyr\DoctrineSpecification\Result\AsArray;
 use Happyr\DoctrineSpecification\Spec;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -42,16 +43,18 @@ class ProjectRepository extends ServiceEntityRepository
      */
     public function findSecurityAttributesBySuffix(string $suffix): array
     {
-        $qb = $this->createQueryBuilder('p');
-        $qb->select('p.isPublic')
-            ->where($qb->expr()->eq('p.suffix', ':suffix'))
-            ->setParameter('suffix', $suffix);
-
-        return $qb->getQuery()->getSingleResult(AbstractQuery::HYDRATE_ARRAY);
+        return $this->matchSingleResult(
+            Spec::andX(
+                Spec::select('isPublic'),
+                Spec::eq('suffix', $suffix),
+            ),
+            new AsArray()
+        );
     }
 
     /**
      * Дополнить условием видимости проекта
+     * @deprecated
      * @param QueryBuilder $qb
      * @param User|UserInterface|null $user
      */
@@ -84,13 +87,6 @@ class ProjectRepository extends ServiceEntityRepository
      */
     public function getPopularProjectsSnippets(int $limit = 5, ?UserInterface $user = null): array
     {
-        $qb = $this->createQueryBuilder('p');
-        $qb->where('p.isArchived = false')
-            ->orderBy('p.updatedAt', 'DESC')
-            ->setMaxResults($limit);
-        $this->addVisibilityCondition($qb, $user);
-
-        Должен вывести: Секретный Алисы, Первый, Второй, Проект Алисы.
         return $this->match(Spec::andX(
             Spec::eq('isArchived', false),
             new VisibleByUserSpec($user),
