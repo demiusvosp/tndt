@@ -25,6 +25,10 @@ use App\Repository\TaskRepository;
 use App\Repository\UserRepository;
 use App\Service\Filler\ProjectFiller;
 use App\Service\InProjectContext;
+use App\Specification\Doc\DefaultSortSpec as DocDefaultSortSpec;
+use App\Specification\Doc\InProjectSpec;
+use App\Specification\Doc\NotArchivedSpec;
+use Happyr\DoctrineSpecification\Spec;
 use InvalidArgumentException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -80,7 +84,14 @@ class ProjectController extends AbstractController
     public function index(Request $request, Project $project, TaskRepository $taskRepository, DocRepository $docRepository): Response
     {
         $tasks = $taskRepository->getProjectsTasks($project->getSuffix(), self::TASK_BLOCK_LIMIT);
-        $docs = $docRepository->getProjectsDocs($project->getSuffix(), self::DOC_BLOCK_LIMIT);
+        $docs = $docRepository->match(
+            Spec::andX(
+                new NotArchivedSpec(),
+                new InProjectSpec($project),
+                new DocDefaultSortSpec(),
+                Spec::limit(self::DOC_BLOCK_LIMIT)
+            )
+        );
 
         return $this->render(
             'project/index.html.twig',
