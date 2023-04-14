@@ -56,10 +56,9 @@ class DocRepository extends ServiceEntityRepository implements NoEntityRepositor
 
     /**
      * @param int $limit
-     * @param array|null $availableProjects - доступные проекты (null - доступны все (например для root))
      * @return Doc[]
      */
-    public function getPopularDocs(int $limit, ?array $availableProjects = [], ?User $user = null): array
+    public function getPopularDocs(int $limit, ?User $user = null): array
     {
         return $this->match(Spec::andX(
             new NotArchivedSpec(),
