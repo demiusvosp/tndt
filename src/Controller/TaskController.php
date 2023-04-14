@@ -21,6 +21,7 @@ use App\Repository\TaskRepository;
 use App\Service\Filler\TaskFiller;
 use App\Service\InProjectContext;
 use App\Service\TaskService;
+use App\Specification\InProjectSpec;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -59,23 +60,19 @@ class TaskController extends AbstractController
      */
     public function list(Request $request, Project $project, PaginatorInterface $paginator): Response
     {
-        $filterData = new ListFilterDTO($project->getSuffix());
-        $filterForm = $this->createForm(ListFilterType::class, $filterData);
-
-        $filterForm->handleRequest($request);
-        if ($filterForm->isSubmitted() && !$filterForm->isValid()) {
-            $this->addFlash('warning', 'filterForm.error');
-        }
-
+        $query = $this->taskRepository->getQueryBuilder(new InProjectSpec($project), 't');
         $tasks = $paginator->paginate(
-            $this->taskRepository->getQueryByFilter($filterData),
+            $query,
             $request->query->getInt('page', 1),
             self::TASK_PER_PAGE
         );
 
         return $this->render(
             'task/list.html.twig',
-            ['project' => $project, 'tasks' => $tasks, 'filterForm' => $filterForm->createView()]
+            [
+                'project' => $project,
+                'tasks' => $tasks,
+            ]
         );
     }
 

@@ -15,7 +15,6 @@ use App\Specification\Project\VisibleByUserSpec;
 use App\Specification\Task\ByTaskIdSpec;
 use App\Specification\Task\NotClosedSpec;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
 use Happyr\DoctrineSpecification\Repository\EntitySpecificationRepositoryTrait;
 use Happyr\DoctrineSpecification\Spec;
@@ -23,7 +22,6 @@ use Happyr\DoctrineSpecification\Spec;
 class TaskRepository extends ServiceEntityRepository implements NoEntityRepositoryInterface
 {
     use EntitySpecificationRepositoryTrait;
-    use ByFilterCriteriaQueryTrait;
 
     public function __construct(ManagerRegistry $registry)
     {

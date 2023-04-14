@@ -21,6 +21,7 @@ use App\Repository\DocRepository;
 use App\Service\DocService;
 use App\Service\Filler\DocFiller;
 use App\Service\InProjectContext;
+use App\Specification\InProjectSpec;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -59,10 +60,9 @@ class DocController extends AbstractController
      */
     public function list(Request $request, Project $project, PaginatorInterface $paginator): Response
     {
-        $filterData = new ListFilterDTO($project->getSuffix());
-
+        $query = $this->docRepository->getQueryBuilder(new InProjectSpec($project), 't');
         $docs = $paginator->paginate(
-            $this->docRepository->getQueryByFilter($filterData),
+            $query,
             $request->query->getInt('page', 1),
             self::DOC_PER_PAGE
         );
