@@ -32,7 +32,7 @@ class VisibleByUserSpec extends BaseSpecification
             }
             return Spec::orX(
                 Spec::eq('isPublic', true),
-                Spec::andX( // здесь pu.username = 'bob' должно собираться именно внутри условия присоединения таблицы, а не общем условии на строки
+                Spec::andX(
                     new LeftJoin(
                         'projectUsers',
                         'pu',

@@ -61,33 +61,14 @@ class DocRepository extends ServiceEntityRepository implements NoEntityRepositor
      */
     public function getPopularDocs(int $limit, ?array $availableProjects = [], ?User $user = null): array
     {
-        $qb = $this->createQueryBuilder('d');
-        $qb->where($qb->expr()->neq('d.state', Doc::STATE_ARCHIVED));
-
-        $qb->leftJoin('d.project', 'p');
-        if ($availableProjects !== null) {
-            if (count($availableProjects) > 0) {
-                $qb->andWhere($qb->expr()->orX(
-                    'p.isPublic = true',
-                    $qb->expr()->in('d.suffix', $availableProjects)
-                ));
-            } else {
-                $qb->andWhere('p.isPublic = true');
-            }
-        }
-        $qb->addOrderBy('d.state', 'ASC');
-        $qb->addOrderBy('d.updatedAt', 'desc');
-        $qb->setMaxResults($limit);
-
-        return $qb->getQuery()->getResult();
-//        return $this->match(Spec::andX(
-//            new NotArchivedSpec(),
-//            Spec::andX(
-//                Spec::leftJoin('project', 'p'),
-//                new VisibleByUserSpec($user, 'p')
-//            ),
-//            new DefaultSortSpec()
-//        ));
+        return $this->match(Spec::andX(
+            new NotArchivedSpec(),
+            Spec::andX(
+                Spec::leftJoin('project', 'p'),
+                new VisibleByUserSpec($user, 'project')
+            ),
+            new DefaultSortSpec(),
+            Spec::limit($limit)
+        ));
     }
-
 }
