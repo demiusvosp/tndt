@@ -5,7 +5,7 @@
  * Time: 0:18
  */
 
-namespace App\Specification\Doc;
+namespace App\Specification;
 
 use App\Entity\Project;
 use Happyr\DoctrineSpecification\Spec;
@@ -28,6 +28,6 @@ class InProjectSpec extends BaseSpecification
 
     protected function getSpec()
     {
-        return Spec::eq('suffix', $this->project);
+        return Spec::eq('project', $this->project);
     }
 }

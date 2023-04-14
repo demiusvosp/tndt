@@ -9,12 +9,20 @@ declare(strict_types=1);
 namespace App\Repository;
 
 use App\Entity\Task;
+use App\Entity\User;
+use App\Specification\InProjectSpec;
+use App\Specification\Project\VisibleByUserSpec;
+use App\Specification\Task\ByTaskIdSpec;
+use App\Specification\Task\NotClosedSpec;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
+use Happyr\DoctrineSpecification\Repository\EntitySpecificationRepositoryTrait;
+use Happyr\DoctrineSpecification\Spec;
 
 class TaskRepository extends ServiceEntityRepository implements NoEntityRepositoryInterface
 {
+    use EntitySpecificationRepositoryTrait;
     use ByFilterCriteriaQueryTrait;
 
     public function __construct(ManagerRegistry $registry)
@@ -30,69 +38,36 @@ class TaskRepository extends ServiceEntityRepository implements NoEntityReposito
     {
         [$suffix, $no] = explode(Task::TASKID_SEPARATOR, $taskId);
 
-        return $this->findOneBy(['suffix' => $suffix, 'no' => $no]);
+        return $this->matchSingleResult(new ByTaskIdSpec($taskId));
     }
 
     public function getLastNo($suffix): int
     {
-        $qb = $this->createQueryBuilder('t');
-        $qb->select('t.no')
-            ->where($qb->expr()->eq('t.suffix', ':suffix'))
-            ->setParameter('suffix', $suffix)
-            ->orderBy('t.no', 'DESC')
-            ->setMaxResults(1);
-
-        try {
-            return (int)$qb->getQuery()->getSingleScalarResult();
-        } catch (NoResultException $e) {
-            return 0;
-        }
-    }
-
-    /**
-     * @param string $project
-     * @param int|null $limit
-     * @return Task[]
-     */
-    public function getProjectsTasks(string $project, int $limit = null): array
-    {
-        $qb = $this->createQueryBuilder('t');
-        $qb->andWhere($qb->expr()->eq('t.project', ':project'))
-            ->setParameter('project', $project);
-
-        $qb->addOrderBy('t.updatedAt', 'desc');
-        if ($limit) {
-            $qb->setMaxResults($limit);
-        }
-
-        return $qb->getQuery()->getResult();
+        $result = $this->matchSingleResult(
+            Spec::andX(
+                Spec::select('no'),
+                new InProjectSpec($suffix),
+                Spec::orderBy('no', 'DESC'),
+                Spec::limit(1)
+            )
+        );
+        return $result['no'] ?? 0;
     }
 
     /**
      * @param int $limit
-     * @param array|null $availableProjects - доступные проекты (null - доступны все (например для root))
+     * @param User|null $user
      * @return Task[]
      */
-    public function getPopularTasks(int $limit, ?array $availableProjects = []): array
+    public function getPopularTasks(int $limit, ?User $user = null): array
     {
-        $qb = $this->createQueryBuilder('t');
-        $qb->where('t.isClosed = false');
-
-        $qb->leftJoin('t.project', 'p');
-        if ($availableProjects !== null) {
-            if (count($availableProjects) > 0) {
-                $qb->andWhere($qb->expr()->orX(
-                    'p.isPublic = true',
-                    $qb->expr()->in('t.suffix', $availableProjects)
-                ));
-            } else {
-                $qb->andWhere('p.isPublic = true');
-            }
-        }
-        $qb->addOrderBy('t.updatedAt', 'desc');
-        $qb->setMaxResults($limit);
-
-        return $qb->getQuery()->getResult();
+        return $this->match(Spec::andX(
+            new NotClosedSpec(),
+            Spec::leftJoin('project', 'p'),
+                new VisibleByUserSpec($user, 'project'),
+            Spec::orderBy('updatedAt', 'desc'),
+            Spec::limit($limit)
+        ));
     }
 
 }

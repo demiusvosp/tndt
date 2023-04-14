@@ -7,14 +7,11 @@
 
 namespace App\Specification\Doc;
 
-use Happyr\DoctrineSpecification\Filter\Filter;
-use Happyr\DoctrineSpecification\Query\QueryModifier;
 use Happyr\DoctrineSpecification\Spec;
 use Happyr\DoctrineSpecification\Specification\BaseSpecification;
 
 class DefaultSortSpec extends BaseSpecification
 {
-
     protected function getSpec()
     {
         return Spec::andX(

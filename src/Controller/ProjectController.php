@@ -18,16 +18,16 @@ use App\Form\DTO\Project\ProjectListFilterDTO;
 use App\Form\Type\Project\EditProjectCommonType;
 use App\Form\Type\Project\EditProjectPermissionsType;
 use App\Form\Type\Project\EditProjectTaskSettingsType;
-use App\Form\Type\Project\NewProjectType;
 use App\Form\Type\Project\ListFilterType;
+use App\Form\Type\Project\NewProjectType;
 use App\Repository\DocRepository;
 use App\Repository\TaskRepository;
 use App\Repository\UserRepository;
 use App\Service\Filler\ProjectFiller;
 use App\Service\InProjectContext;
 use App\Specification\Doc\DefaultSortSpec as DocDefaultSortSpec;
-use App\Specification\Doc\InProjectSpec;
 use App\Specification\Doc\NotArchivedSpec;
+use App\Specification\InProjectSpec;
 use Happyr\DoctrineSpecification\Spec;
 use InvalidArgumentException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -83,15 +83,17 @@ class ProjectController extends AbstractController
      */
     public function index(Request $request, Project $project, TaskRepository $taskRepository, DocRepository $docRepository): Response
     {
-        $tasks = $taskRepository->getProjectsTasks($project->getSuffix(), self::TASK_BLOCK_LIMIT);
-        $docs = $docRepository->match(
-            Spec::andX(
-                new NotArchivedSpec(),
-                new InProjectSpec($project),
-                new DocDefaultSortSpec(),
-                Spec::limit(self::DOC_BLOCK_LIMIT)
-            )
-        );
+        $tasks = $taskRepository->match(Spec::andX(
+            new InProjectSpec($project),
+            Spec::orderBy('updatedAt', 'DESC'),
+            Spec::limit(self::TASK_BLOCK_LIMIT)
+        ));
+        $docs = $docRepository->match(Spec::andX(
+            new NotArchivedSpec(),
+            new InProjectSpec($project),
+            new DocDefaultSortSpec(),
+            Spec::limit(self::DOC_BLOCK_LIMIT)
+        ));
 
         return $this->render(
             'project/index.html.twig',

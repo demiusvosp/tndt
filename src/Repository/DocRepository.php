@@ -12,8 +12,8 @@ use App\Entity\Doc;
 use App\Entity\User;
 use App\Specification\Doc\ByDocIdSpec;
 use App\Specification\Doc\DefaultSortSpec;
-use App\Specification\Doc\InProjectSpec;
 use App\Specification\Doc\NotArchivedSpec;
+use App\Specification\InProjectSpec;
 use App\Specification\Project\VisibleByUserSpec;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -56,16 +56,15 @@ class DocRepository extends ServiceEntityRepository implements NoEntityRepositor
 
     /**
      * @param int $limit
+     * @param User|null $user
      * @return Doc[]
      */
     public function getPopularDocs(int $limit, ?User $user = null): array
     {
         return $this->match(Spec::andX(
             new NotArchivedSpec(),
-            Spec::andX(
-                Spec::leftJoin('project', 'p'),
-                new VisibleByUserSpec($user, 'project')
-            ),
+            Spec::leftJoin('project', 'p'),
+                new VisibleByUserSpec($user, 'project'),
             new DefaultSortSpec(),
             Spec::limit($limit)
         ));
