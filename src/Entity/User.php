@@ -57,7 +57,7 @@ class User implements UserInterface, Serializable
 
     /**
      * @var ProjectUser[]
-     * @ORM\OneToMany (targetEntity="App\Entity\ProjectUser", mappedBy="user", cascade={"all"}, fetch="EAGER", indexBy="suffix")
+     * @ORM\OneToMany (targetEntity="App\Entity\ProjectUser", mappedBy="user", cascade={"all"}, indexBy="suffix")
      * @ORM\JoinColumn (name="username", referencedColumnName="username")
      */
     protected $projectUsers;
@@ -187,7 +187,7 @@ class User implements UserInterface, Serializable
         // глобальные роли
         $roles = $this->roles;
 
-// @TODO Удалить. Я так и не нашел этому внятного применения, а местами оно мешает
+// @TODO tndt-98 Удалить. Я так и не нашел этому внятного применения, а местами оно мешает
 //
 //        // общая роль любого зарегистрированного пользователя, если у него нет более специфичной роли
 //        if(count($roles) === 0) {
@@ -299,18 +299,6 @@ class User implements UserInterface, Serializable
     {
         $this->projectUsers = $projectUsers;
         return $this;
-    }
-
-    /**
-     * Получить проекты, где юзер участвует
-     * @return array
-     */
-    public function getProjectsIInvolve(): array
-    {
-        return array_map(
-            static function (ProjectUser $projectUser) { return $projectUser->getSuffix(); },
-            $this->getProjectUsers()->toArray()
-        );
     }
 
     /**

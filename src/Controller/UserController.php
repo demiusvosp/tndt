@@ -18,6 +18,7 @@ use App\Form\Type\User\NewUserType;
 use App\Repository\UserRepository;
 use App\Security\UserPermissionsEnum;
 use App\Security\UserRolesEnum;
+use Happyr\DoctrineSpecification\Spec;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -64,9 +65,12 @@ class UserController extends AbstractController
      */
     public function list(Request $request, PaginatorInterface $paginator): Response
     {
-        $filterData = new ListFilterDTO();
+        $query = $this->userRepository->getQuery(Spec::andX(
+            Spec::leftJoin('projectUsers', 'pu'),
+            Spec::addSelect(Spec::selectEntity('projectUsers'))
+        ));
         $users = $paginator->paginate(
-            $this->userRepository->getQueryByFilter($filterData),
+            $query,
             $request->query->getInt('page', 1),
             self::USER_PER_PAGE
         );
@@ -117,7 +121,7 @@ class UserController extends AbstractController
             $user = $this->userRepository->findByUsername($request->get('username'));
         } else {
             $user = $this->getUser();
-            if ($user->getUsername() !== $request->get('username')) {
+            if (!$user || $user->getUsername() !== $request->get('username')) {
                 throw new AccessDeniedException('User can edit only self profile');
             }
         }

@@ -24,7 +24,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class UserRepository extends ServiceEntityRepository implements PasswordUpgraderInterface, UserLoaderInterface
 {
     use EntitySpecificationRepositoryTrait;
-    use ByFilterCriteriaQueryTrait;
 
     public function __construct(ManagerRegistry $registry)
     {
@@ -104,23 +103,6 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $spec->andX(Spec::orderBy('lastLogin', 'DESC'));
 
         return $this->match($spec);
-    }
-
-    /**
-     * @param ToFindCriteriaInterface $filter
-     * @return Query
-     */
-    public function getQueryByFilter(ToFindCriteriaInterface $filter): Query
-    {
-        $spec = Spec::andX(
-            Spec::leftJoin('projectUsers', 'pu')
-        );
-
-        foreach ($filter->getFilterCriteria() as $field => $value) {
-            $spec->andX(Spec::eq($field, $value));
-        }
-
-        return $this->getQuery($spec);
     }
 
     /**
