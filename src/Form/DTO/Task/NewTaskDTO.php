@@ -26,7 +26,7 @@ class NewTaskDTO implements InProjectInterface
      * @var string
      * @EntityExist(entity="App\Entity\User", property="username", message="task.assignTo.not_found")
      */
-    private string $assignedTo;
+    private ?string $assignedTo = null;
 
     /**
      * @var string
@@ -97,7 +97,7 @@ class NewTaskDTO implements InProjectInterface
     /**
      * @return string
      */
-    public function getAssignedTo(): string
+    public function getAssignedTo(): ?string
     {
         return $this->assignedTo;
     }

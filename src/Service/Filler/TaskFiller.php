@@ -43,14 +43,16 @@ class TaskFiller
         $task->setPriority($dto->getPriority());
         $task->setComplexity($dto->getComplexity());
 
-        $newAssignedUser = $this->userRepository->findByUsername($dto->getAssignedTo());
-        if (!$newAssignedUser) {
-            throw new BadUserException('Выбранный пользователь не найден');
+        if ($dto->getAssignedTo()) {
+            $newAssignedUser = $this->userRepository->findByUsername($dto->getAssignedTo());
+            if (!$newAssignedUser) {
+                throw new BadUserException('Выбранный пользователь не найден');
+            }
+            if (!$newAssignedUser->hasProject($task->getProject())) {
+                throw new BadUserException('Нельзя назначить пользователя на задачу проекта к которому у него нет доступа');
+            }
+            $task->setAssignedTo($newAssignedUser);
         }
-        if (!$newAssignedUser->hasProject($task->getProject())) {
-            throw new BadUserException('Нельзя назначить пользователя на задачу проекта к которому у него нет доступа');
-        }
-        $task->setAssignedTo($newAssignedUser);
 
         return $task;
     }
@@ -69,14 +71,17 @@ class TaskFiller
         $task->setPriority($dto->getPriority());
         $task->setComplexity($dto->getComplexity());
 
-        $newAssignedUser = $this->userRepository->find($dto->getAssignedTo());
-        if (!$newAssignedUser) {
-            throw new BadUserException('Выбранный пользователь не найден');
+        $oldAssignedUser = $task->getAssignedTo() ? $task->getAssignedTo()->getUsername() : null;
+        if ($dto->getAssignedTo() && $dto->getAssignedTo() !== $oldAssignedUser) {
+            $newAssignedUser = $this->userRepository->find($dto->getAssignedTo());
+            if (!$newAssignedUser) {
+                throw new BadUserException('Выбранный пользователь не найден');
+            }
+            if (!$newAssignedUser->hasProject($task->getProject())) {
+                throw new BadUserException('Пользователь не относится к указанному проекту');
+            }
+            $task->setAssignedTo($newAssignedUser);
         }
-        if (!$newAssignedUser->hasProject($task->getProject())) {
-            throw new BadUserException('Пользователь не относится к указанному проекту');
-        }
-        $task->setAssignedTo($newAssignedUser);
     }
 
 }

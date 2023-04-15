@@ -37,7 +37,7 @@ class TimeExtension extends BaseTimeExtension
     public function diff($since = null, $to = null, $locale = null): string
     {
         if ($since == null) {
-            return $this->translator->trans('never');
+            return '<i>' . $this->translator->trans('never') . '</i>';
         }
         return parent::diff($since, $to, $locale);
     }

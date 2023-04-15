@@ -37,7 +37,7 @@
                         </div>
                         <div class="row">
                             <div class="col-md-4 task-property-item">
-                                {{ 'task.createdBy.label'|trans }}: {{ mUser.badge(task.createdBy) }}
+                                {{ 'task.createdBy.label'|trans }}: {{ mUser.badge(task.createdBy, true, true, 'dative') }}
                             </div>
                             <div class="col-md-4 task-property-item">
                                 {{ 'task.created.label'|trans }}: {{ task.createdAt|ago }}
@@ -50,7 +50,7 @@
                         </div>
                         <div class="row">
                             <div class="col-md-4 task-property-item">
-                                {{ 'task.assignedTo.label'|trans }}: {{ mUser.badge(task.assignedTo) }}
+                                {{ 'task.assignedTo.label'|trans }}: {{ mUser.badge(task.assignedTo, true, true, 'dative') }}
                             </div>
                             <div class="col-md-4 task-property-item">
                                 {{ 'task.updated.label'|trans }}: {{ task.updatedAt|ago }}
