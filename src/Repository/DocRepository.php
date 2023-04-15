@@ -25,7 +25,6 @@ use Happyr\DoctrineSpecification\Spec;
 class DocRepository extends ServiceEntityRepository implements NoEntityRepositoryInterface
 {
     use EntitySpecificationRepositoryTrait;
-    use ByFilterCriteriaQueryTrait;
 
     public function __construct(ManagerRegistry $registry)
     {

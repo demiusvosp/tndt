@@ -21,13 +21,16 @@ use App\Form\Type\Project\EditProjectTaskSettingsType;
 use App\Form\Type\Project\ListFilterType;
 use App\Form\Type\Project\NewProjectType;
 use App\Repository\DocRepository;
+use App\Repository\ProjectRepository;
 use App\Repository\TaskRepository;
 use App\Repository\UserRepository;
 use App\Service\Filler\ProjectFiller;
 use App\Service\InProjectContext;
+use App\Service\SpecBuilder\ProjectListSpecBuilder;
 use App\Specification\Doc\DefaultSortSpec as DocDefaultSortSpec;
 use App\Specification\Doc\NotArchivedSpec;
 use App\Specification\InProjectSpec;
+use App\Specification\Project\VisibleByUserSpec;
 use Happyr\DoctrineSpecification\Spec;
 use InvalidArgumentException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -50,24 +53,25 @@ class ProjectController extends AbstractController
         $this->projectFiller = $projectFiller;
     }
 
-    public function list(Request $request): Response
+    public function list(Request $request, ProjectRepository $projectRepository, ProjectListSpecBuilder $specBuilder): Response
     {
         $filterData = new ProjectListFilterDTO();
         $filterForm = $this->createForm(ListFilterType::class, $filterData);
-        $projectRepository = $this->getDoctrine()->getRepository(Project::class);
+        $spec = Spec::andX(
+            new VisibleByUserSpec($this->getUser()),
+            Spec::orderBy('updatedAt', 'DESC'),
+            Spec::limit(self::PROJECT_BLOCKS_LIMIT)
+        );
 
         $filterForm->handleRequest($request);
-        if ($filterForm->isSubmitted() && !$filterForm->isValid()) {
-            $this->addFlash('warning', 'filterForm.error');
-            $query = $projectRepository->getQueryByFilter(new ProjectListFilterDTO(), 'p');
-        } else {
-            $query = $projectRepository->getQueryByFilter($filterData, 'p');
+        if ($filterForm->isSubmitted()) {
+            if ($filterForm->isValid()) {
+                $specBuilder->applyListFilter($spec, $filterData);
+            } else {
+                $this->addFlash('warning', 'filterForm.error');
+            }
         }
-
-        $projectRepository->addVisibilityCondition($query, $this->getUser());
-        $query->setMaxResults(self::PROJECT_BLOCKS_LIMIT)
-            ->orderBy('p.updatedAt', 'DESC');
-        $projects = $query->getQuery()->getResult();
+        $projects = $projectRepository->match($spec);
 
         return $this->render('project/list.html.twig', ['projects' => $projects, 'filterForm' => $filterForm->createView()]);
     }
@@ -104,10 +108,9 @@ class ProjectController extends AbstractController
     /**
      * @IsGranted("PERM_PROJECT_CREATE")
      * @param Request $request
-     * @param UserRepository $userRepository
      * @return Response
      */
-    public function create(Request $request, UserRepository $userRepository): Response
+    public function create(Request $request): Response
     {
         $formData = new NewProjectDTO();
         $form = $this->createForm(NewProjectType::class, $formData);

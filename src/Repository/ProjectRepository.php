@@ -24,7 +24,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class ProjectRepository extends ServiceEntityRepository
 {
     use EntitySpecificationRepositoryTrait;
-    use ByFilterCriteriaQueryTrait;
 
     public function __construct(ManagerRegistry $registry)
     {
@@ -50,33 +49,6 @@ class ProjectRepository extends ServiceEntityRepository
             ),
             new AsArray()
         );
-    }
-
-    /**
-     * Дополнить условием видимости проекта
-     * @deprecated
-     * @param QueryBuilder $qb
-     * @param User|UserInterface|null $user
-     */
-    public function addVisibilityCondition(QueryBuilder $qb, ?UserInterface $user = null): void
-    {
-        if($user) {
-            if ($user->getUsername() !== User::ROOT_USER) {
-                $qb->leftJoin(
-                    'p.projectUsers',
-                    'pu',
-                    Join::WITH,
-                    $qb->expr()->eq('pu.user', ':user')
-                );
-                $qb->setParameter('user', $user);
-                $qb->andWhere($qb->expr()->orX(
-                    'p.isPublic = true',
-                    $qb->expr()->isNotNull('pu.role')
-                ));
-            }
-        } else {
-            $qb->andWhere('p.isPublic = true');
-        }
     }
 
     /**

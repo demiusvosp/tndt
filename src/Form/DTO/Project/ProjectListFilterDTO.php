@@ -12,7 +12,7 @@ use App\Form\ToFindCriteriaInterface;
 
 class ProjectListFilterDTO implements ToFindCriteriaInterface
 {
-    private $isArchived = false;
+    private bool $isArchived = false;
 
     /**
      * @return bool
