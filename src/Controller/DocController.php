@@ -12,8 +12,8 @@ use App\Entity\Doc;
 use App\Entity\Project;
 use App\Event\AppEvents;
 use App\Event\DocEvent;
+use App\Exception\DomainException;
 use App\Form\DTO\Doc\EditDocDTO;
-use App\Form\DTO\Doc\ListFilterDTO;
 use App\Form\DTO\Doc\NewDocDTO;
 use App\Form\Type\Doc\EditDocType;
 use App\Form\Type\Doc\NewDocType;
@@ -98,6 +98,9 @@ class DocController extends AbstractController
      */
     public function create(Request $request, Project $project, DocFiller $docFiller): Response
     {
+        if ($project->isArchived()) {
+            throw new DomainException('Нельзя создавать документы в архивных проектах');
+        }
         $formData = new NewDocDTO();
         $formData->setProject($project->getSuffix());
 

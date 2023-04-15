@@ -9,13 +9,12 @@ namespace App\Controller;
 use App\Entity\Project;
 use App\Event\AppEvents;
 use App\Event\TaskEvent;
+use App\Exception\DomainException;
 use App\Form\DTO\Task\CloseTaskDTO;
 use App\Form\DTO\Task\EditTaskDTO;
-use App\Form\DTO\Task\ListFilterDTO;
 use App\Form\DTO\Task\NewTaskDTO;
 use App\Form\Type\Task\CloseTaskForm;
 use App\Form\Type\Task\EditTaskType;
-use App\Form\Type\Task\ListFilterType;
 use App\Form\Type\Task\NewTaskType;
 use App\Repository\TaskRepository;
 use App\Service\Filler\TaskFiller;
@@ -99,6 +98,9 @@ class TaskController extends AbstractController
      */
     public function create(Request $request, Project $project, TaskFiller $taskFiller): Response
     {
+        if ($project->isArchived()) {
+            throw new DomainException('Нельзя создавать задачи в архивных проектах');
+        }
         $formData = new NewTaskDTO($project->getSuffix());
         $form = $this->createForm(NewTaskType::class, $formData);
 
