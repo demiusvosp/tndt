@@ -17,6 +17,7 @@ use App\Specification\InProjectSpec;
 use App\Specification\Project\VisibleByUserSpec;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Happyr\DoctrineSpecification\Exception\NoResultException;
 use Happyr\DoctrineSpecification\Repository\EntitySpecificationRepositoryTrait;
 use Happyr\DoctrineSpecification\Spec;
 
@@ -43,14 +44,18 @@ class DocRepository extends ServiceEntityRepository implements NoEntityRepositor
 
     public function getLastNo($suffix): int
     {
-        $result = $this->matchSingleResult(
-            Spec::andX(
-                Spec::select('no'),
-                new InProjectSpec($suffix),
-                Spec::orderBy('no', 'DESC'),
-                Spec::limit(1)
-            )
-        );
+        try {
+            $result = $this->matchSingleResult(
+                Spec::andX(
+                    Spec::select('no'),
+                    new InProjectSpec($suffix),
+                    Spec::orderBy('no', 'DESC'),
+                    Spec::limit(1)
+                )
+            );
+        } catch (NoResultException $e) {
+            return 0;
+        }
         return $result['no'] ?? 0;
     }
 
