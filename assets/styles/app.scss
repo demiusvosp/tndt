@@ -58,14 +58,30 @@ $color-disabled: #333;
 /* Tasks */
 .task-table {
     th {
+        vertical-align: middle;
         text-align: center;
-    }
-    .task-col-no {
         font-weight: bold;
-        text-align: center;
     }
-    .task-col-name {
-        width: 50%;
+
+    .no {
+        font-weight: bold;
+        text-align: right;
+    }
+    .caption {
+        width: 50%; // потом что в th не ставится vertical-align: middle;
+    }
+}
+.task-table-small {
+    th {
+        text-align: center;
+        font-weight: bold;
+    }
+    .no {
+        font-weight: bold;
+        text-align: right;
+    }
+    .caption {
+        width: 70%;
     }
 }
 
@@ -92,8 +108,31 @@ $color-disabled: #333;
 }
 
 /* Docs */
+.doc-table {
+    th {
+        vertical-align: middle;
+        text-align: center;
+        font-weight: bold;
+    }
+    .no {
+        font-weight: bold;
+        text-align: right;
+    }
+}
+.doc-table-small {
+    th {
+        text-align: center;
+        font-weight: bold;
+    }
+    .no {
+        font-weight: bold;
+        text-align: right;
+    }
+    .caption {
+        width: 70%;
+    }
+}
 .doc-property-string {
-
     font-style: italic;
     color: $text-muted;
     margin: -0.5em 0.5em 1em 1em;
@@ -104,18 +143,6 @@ $color-disabled: #333;
 
     a, &:hover {
         color: $text-muted;
-    }
-}
-.doc-table {
-    th {
-        text-align: center;
-    }
-    .doc-col-no {
-        font-weight: bold;
-        text-align: center;
-    }
-    .doc-col-caption {
-        width: 50%;
     }
 }
 

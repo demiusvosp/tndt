@@ -41,10 +41,10 @@
     {% import _self as this %}
     {% import 'user/_macro.html.twig' as mUser %}
     {% set project = project ?? project_context.project %}
-    <table class="table table-condensed">
+    <table class="table table-condensed task-table-small">
         <tr>
-            <th>#</th>
-            <th>{{ 'task.caption.label'|trans }}</th>
+            <th class="no">#</th>
+            <th class="name">{{ 'task.caption.label'|trans }}</th>
             {% if project and dictionary_enabled(project, 'task.type') %}
                 <th>{{ 'task.type.label'|trans }}</th>
             {% endif %}
@@ -53,8 +53,8 @@
         </tr>
         {% for task in tasks %}
             <tr>
-                <td>{{ this.no(task) }}</td>
-                <td>{{ this.caption(task, 80) }}{{ badges(task, ['task.type']) }}</td>
+                <td class="no">{{ this.no(task) }}</td>
+                <td class="caption">{{ this.caption(task, 80) }}{{ badges(task, ['task.type']) }}</td>
                 {% if project and dictionary_enabled(project, 'task.type') %}
                     <td>{{ dictionary_name(task, 'type') }}</td>
                 {% endif %}
