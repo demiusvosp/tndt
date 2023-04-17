@@ -4,6 +4,8 @@ namespace App\Repository;
 
 use App\Entity\User;
 use App\Form\ToFindCriteriaInterface;
+use App\Specification\User\ExceptRootSpec;
+use App\Specification\User\InProjectSpec;
 use App\Specification\User\NotLockingSpec;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query;
@@ -88,19 +90,14 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     {
         $spec = Spec::andX(
             new NotLockingSpec(),
-            Spec::limit($limit),
-            Spec::neq('username', User::ROOT_USER)
+            new ExceptRootSpec(),
+            Spec::orderBy('lastLogin', 'DESC'),
+            Spec::limit($limit)
         );
 
         if($projectSuffix) {
-            $spec->andX(Spec::andX(
-                Spec::leftJoin('projectUsers', 'pu'),
-                Spec::eq('suffix', $projectSuffix, 'projectUsers'),
-                Spec::isNotNull('role', 'projectUsers')
-            ));
+            $spec->andX(new InProjectSpec($projectSuffix));
         }
-
-        $spec->andX(Spec::orderBy('lastLogin', 'DESC'));
 
         return $this->match($spec);
     }

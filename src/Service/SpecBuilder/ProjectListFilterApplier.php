@@ -12,7 +12,7 @@ use App\Specification\Project\ArchiveSpec;
 use Happyr\DoctrineSpecification\Spec;
 use Happyr\DoctrineSpecification\Specification\Specification;
 
-class ProjectListSpecBuilder
+class ProjectListFilterApplier
 {
     public function applyListFilter(?Specification $spec, ProjectListFilterDTO $dto): Specification
     {

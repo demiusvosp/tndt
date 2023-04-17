@@ -40,6 +40,7 @@ class UserSelectType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
+            'placeholder' => false,
             'choice_translation_domain' => false,
             'current_project_users' => true,
         ]);
@@ -79,7 +80,8 @@ class UserSelectType extends AbstractType
         $choices = [];
         $users = $this->userRepository->getPopularUsers(10, $project ? $project->getSuffix() : null);
         foreach ($users as $user) {
-            $choices[$user->getUsername()] = $user->getUsername();
+            $username = $user->getUsername();
+            $choices[$username] = $username;
         }
 
         return $choices;

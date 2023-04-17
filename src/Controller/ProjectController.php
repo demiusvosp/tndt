@@ -23,10 +23,9 @@ use App\Form\Type\Project\NewProjectType;
 use App\Repository\DocRepository;
 use App\Repository\ProjectRepository;
 use App\Repository\TaskRepository;
-use App\Repository\UserRepository;
 use App\Service\Filler\ProjectFiller;
 use App\Service\InProjectContext;
-use App\Service\SpecBuilder\ProjectListSpecBuilder;
+use App\Service\SpecBuilder\ProjectListFilterApplier;
 use App\Specification\Doc\DefaultSortSpec as DocDefaultSortSpec;
 use App\Specification\Doc\NotArchivedSpec;
 use App\Specification\InProjectSpec;
@@ -53,7 +52,7 @@ class ProjectController extends AbstractController
         $this->projectFiller = $projectFiller;
     }
 
-    public function list(Request $request, ProjectRepository $projectRepository, ProjectListSpecBuilder $specBuilder): Response
+    public function list(Request $request, ProjectRepository $projectRepository, ProjectListFilterApplier $listFilterApplier): Response
     {
         $filterData = new ProjectListFilterDTO();
         $filterForm = $this->createForm(ListFilterType::class, $filterData);
@@ -66,7 +65,7 @@ class ProjectController extends AbstractController
         $filterForm->handleRequest($request);
         if ($filterForm->isSubmitted()) {
             if ($filterForm->isValid()) {
-                $specBuilder->applyListFilter($spec, $filterData);
+                $listFilterApplier->applyListFilter($spec, $filterData);
             } else {
                 $this->addFlash('warning', 'filterForm.error');
             }
