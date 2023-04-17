@@ -11,6 +11,9 @@ use App\Entity\Project;
 use Happyr\DoctrineSpecification\Spec;
 use Happyr\DoctrineSpecification\Specification\BaseSpecification;
 
+/**
+ * Может применяться к сущностям имеющим атрибут проект
+ */
 class InProjectSpec extends BaseSpecification
 {
     /** @var string|Project */

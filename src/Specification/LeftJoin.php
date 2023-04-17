@@ -29,14 +29,14 @@ use Happyr\DoctrineSpecification\Query\AbstractJoin;
 class LeftJoin extends AbstractJoin
 {
     private ?string $joinConditionType;
-    private $joinCondition;
+    private string $joinCondition;
     private array $joinParameters;
 
     public function __construct(
         string $field,
-        ?string $newAlias = null,
-        ?string $joinConditionType = null,
-        $joinCondition = null,
+        ?string $newAlias,
+        ?string $joinConditionType,
+        string $joinCondition,
         array $joinParameters = [],
         ?string $context = null
     ) {
@@ -53,7 +53,7 @@ class LeftJoin extends AbstractJoin
     protected function modifyJoin(QueryBuilder $qb, string $join, string $alias): void
     {
         $qb->leftJoin($join, $alias, $this->joinConditionType, $this->joinCondition);
-        if (count($this->joinParameters)) {
+        if (count($this->joinParameters) > 0) {
             $qb->setParameters($this->joinParameters);
         }
     }
