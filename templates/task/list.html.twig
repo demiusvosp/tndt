@@ -24,42 +24,35 @@
 {#                {{ form_end(filterForm) }}#}
 {#            </nav>#}
             <table class="table table-condensed task-table">
-                <colgroup>
-                    <col class="task-col-no">
-                    <col class="task-col-name">
-                    <col>
-{#                    <col>#}
-                    <col>
-{#                    <col>#}
-                    <col>
-                </colgroup>
                 <tr>
-                    <th scope="col">{{ knp_pagination_sortable(tasks, 'task.No'|trans, 't.no') }}</th>
-                    <th scope="col">{{ knp_pagination_sortable(tasks, 'task.caption.label'|trans, 't.caption') }}</th>
-                    {% if dictionary_enabled(project, 'task.stage') %}
-                        <th scope="col">{{ knp_pagination_sortable(tasks, 'task.stage.label'|trans, 't.stage') }}</th>
-                    {% else %}
-                        <th scope="col">{{ knp_pagination_sortable(tasks, 'task.isClosed.label'|trans, 't.isClosed') }}</th>
-                    {% endif %}
+                    <th class="no">{{ knp_pagination_sortable(tasks, 'task.No'|trans, 't.no') }}</th>
+                    <th class="caption">{{ knp_pagination_sortable(tasks, 'task.caption.label'|trans, 't.caption') }}</th>
+                    <th>
+                        {% if dictionary_enabled(project, 'task.stage') %}
+                            {{ knp_pagination_sortable(tasks, 'task.stage.label'|trans, 't.stage') }}
+                        {% else %}
+                            {{ knp_pagination_sortable(tasks, 'task.isClosed.label'|trans, 't.isClosed') }}
+                        {% endif %}
+                    </th>
                     {% if dictionary_enabled(project, 'task.type') %}
-                        <th scope="col">{{ knp_pagination_sortable(tasks, 'task.type.label'|trans, 't.type') }}</th>
+                        <th>{{ knp_pagination_sortable(tasks, 'task.type.label'|trans, 't.type') }}</th>
                     {% endif %}
                     {% if dictionary_enabled(project, 'task.priority') %}
-                        <th scope="col">{{ knp_pagination_sortable(tasks, 'task.priority.label'|trans, 't.priority') }}</th>
+                        <th >{{ knp_pagination_sortable(tasks, 'task.priority.label'|trans, 't.priority') }}</th>
                     {% endif %}
                     {% if dictionary_enabled(project, 'task.complexity') %}
-                        <th scope="col">{{ knp_pagination_sortable(tasks, 'task.complexity.label'|trans, 't.complexity') }}</th>
+                        <th>{{ knp_pagination_sortable(tasks, 'task.complexity.label'|trans, 't.complexity') }}</th>
                     {% endif %}
-{#                    <th scope="col">{{ knp_pagination_sortable(tasks, 'task.createdBy.label'|trans, 't.createdBy') }}</th>#}
-                    <th scope="col">{{ knp_pagination_sortable(tasks, 'task.created.label'|trans, 't.createdAt') }}</th>
-{#                    <th scope="col">{{ knp_pagination_sortable(tasks, 'task.assignedTo.label'|trans, 't.assignedTo') }}</th>#}
-                    <th scope="col">{{ knp_pagination_sortable(tasks, 'task.updated.label'|trans, 't.updatedAt') }}</th>
+{#                    <th>{{ knp_pagination_sortable(tasks, 'task.createdBy.label'|trans, 't.createdBy') }}</th>#}
+                    <th>{{ knp_pagination_sortable(tasks, 'task.created.label'|trans, 't.createdAt') }}</th>
+{#                    <th>{{ knp_pagination_sortable(tasks, 'task.assignedTo.label'|trans, 't.assignedTo') }}</th>#}
+                    <th>{{ knp_pagination_sortable(tasks, 'task.updated.label'|trans, 't.updatedAt') }}</th>
                 </tr>
                 {%  for task in tasks %}
                     <tr style="{{ dictionary_style(task, 'list_row') }}">
                         {# здесь проставляем класс напрямую ячейке, потому что из col он не достается  #}
-                        <td class="task-col-no">{{ mTask.no(task, dictionary_style(task, 'list_row')) }}</td>
-                        <td>
+                        <td class="no">{{ mTask.no(task, dictionary_style(task, 'list_row')) }}</td>
+                        <td class="caption">
                             {% if task.isClosed() %}<s>{% endif %}
                                 <a class="invisible_link"
                                    style="{{ dictionary_style(task, 'list_row') }}"
@@ -70,11 +63,13 @@
                                 </a>
                             {% if task.isClosed() %}</s>{% endif %}
                         </td>
-                        {% if dictionary_enabled(project, 'task.stage') %}
-                            <td>{{ dictionary_name(task, 'stage') }}</td>
-                        {% else %}
-                            <td>{{ (task.isClosed ? 'closed' : 'open')|trans }}</td>
-                        {% endif %}
+                        <td>
+                            {% if dictionary_enabled(project, 'task.stage') %}
+                                {{ dictionary_name(task, 'stage') }}
+                            {% else %}
+                                {{ (task.isClosed ? 'closed' : 'open')|trans }}
+                            {% endif %}
+                        </td>
                         {% if dictionary_enabled(project, 'task.type') %}
                             <td>{{ dictionary_name(task, 'type') }}</td>
                         {% endif %}
