@@ -4,10 +4,14 @@ namespace App\Repository;
 
 use App\Entity\User;
 use App\Form\ToFindCriteriaInterface;
+use App\Specification\User\ExceptRootSpec;
+use App\Specification\User\InProjectSpec;
+use App\Specification\User\NotLockingSpec;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query;
-use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
+use Happyr\DoctrineSpecification\Repository\EntitySpecificationRepositoryTrait;
+use Happyr\DoctrineSpecification\Spec;
 use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
@@ -21,20 +25,16 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class UserRepository extends ServiceEntityRepository implements PasswordUpgraderInterface, UserLoaderInterface
 {
-    use ByFilterCriteriaQueryTrait;
+    use EntitySpecificationRepositoryTrait;
 
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, User::class);
     }
 
-    protected function andNotLocking(QueryBuilder $qb)
-    {
-        $qb->andWhere($qb->expr()->neq('u.locked', true));
-    }
-
     /**
      * Used to upgrade (rehash) the user's password automatically over time.
+     * @inheritDoc
      */
     public function upgradePassword(UserInterface $user, string $newEncodedPassword): void
     {
@@ -47,24 +47,29 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->_em->flush();
     }
 
+    /**
+     * @inheritDoc
+     * @param string $usernameOrEmail
+     * @return UserInterface|null
+     */
     public function loadUserByUsername($usernameOrEmail)
     {
-        $qb = $this->createQueryBuilder('u');
-        $qb->select('u');
-        $qb->where($qb->expr()->eq('u.username', ':login'))
-            ->setParameter('login', $usernameOrEmail);
+        $loginCriteria = Spec::eq('username', $usernameOrEmail);
+
         /*
          * так как в наших user case важнее возможность ставить нескольким пользователям одинаковый email, а
          * авторизоваться через него не особо надо, убираем такую возможность, с идеей потом это как-то совместить
          * (например разрешить email вместо username или с отметкой какой email разрешен для входа)
          */
-//        $qb->where($qb->expr()->orX(
-//            $qb->expr()->eq('u.username', ':login'),
-//            $qb->expr()->eq('u.email', ':login')
-//        ));
-        $this->andNotLocking($qb);
+//        $loginCriteria = Spec::orX(
+//            Spec::eq('username', $usernameOrEmail),
+//            Spec::eq('email', $usernameOrEmail)
+//        );
 
-        return $qb->getQuery()->getOneOrNullResult();
+        return $this->matchOneOrNullResult(Spec::andX(
+            new NotLockingSpec(),
+            $loginCriteria
+        ));
     }
 
     /**
@@ -83,37 +88,18 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
      */
     public function getPopularUsers(int $limit = 5, string $projectSuffix = null): array
     {
-        $qb = $this->createQueryBuilder('u')
-            ->where('u.locked = false')
-            ->setMaxResults($limit);
+        $spec = Spec::andX(
+            new NotLockingSpec(),
+            new ExceptRootSpec(),
+            Spec::orderBy('lastLogin', 'DESC'),
+            Spec::limit($limit)
+        );
 
         if($projectSuffix) {
-            $qb->join('u.projectUsers', 'pu', 'WITH', 'pu.suffix = :suffix')
-                ->andWhere($qb->expr()->isNotNull('pu.role'))
-                ->setParameter('suffix', $projectSuffix);
+            $spec->andX(new InProjectSpec($projectSuffix));
         }
-        $qb->andWhere($qb->expr()->neq('u.username', ':root'))
-            ->setParameter('root', User::ROOT_USER);
 
-        $qb->orderBy('u.lastLogin', 'DESC');
-
-        return $qb->getQuery()->getResult();
-    }
-
-    /**
-     * @param ToFindCriteriaInterface $filter
-     * @return Query
-     */
-    public function getQueryByFilter(ToFindCriteriaInterface $filter): Query
-    {
-        $qb = $this->createQueryBuilder('t');
-        foreach ($filter->getFilterCriteria() as $field => $value) {
-            $qb->andWhere($qb->expr()->eq('t.' . $field, ':' . $field))
-                ->setParameter($field, $value);
-        }
-        $qb->leftJoin('t.projectUsers', 'pu');
-
-        return $qb->getQuery();
+        return $this->match($spec);
     }
 
     /**
@@ -123,28 +109,19 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
      */
     public function searchUser(string $search, int $limit): array
     {
-        $qb = $this->createQueryBuilder('u');
-        $this->andNotLocking($qb);
-
-        $qb->andWhere(
-            $qb->expr()->orX(
-                $qb->expr()->like('u.username', $search),
-                $qb->expr()->like('u.name', $search),
-                $qb->expr()->like('u.email', $search)
-            )
-        );
-        $qb->setMaxResults($limit);
-
-        return $qb->getQuery()->getResult();
+        return $this->match($searchSpec = Spec::andX(
+            new NotLockingSpec(),
+            Spec::orX(
+                Spec::like('username', $search),
+                Spec::like('name', $search),
+                Spec::like('email', $search)
+            ),
+            Spec::limit($limit)
+        ));
     }
 
-    public function findAllByUsername(array $usernames): array
+    public function findAllByUsername(array $usernameList): array
     {
-        $qb = $this->createQueryBuilder('u')
-            ->indexBy('u', 'u.username');
-
-        $qb->where($qb->expr()->in('u.username', $usernames));
-
-        return $qb->getQuery()->getResult();
+        return $this->match(Spec::in('username', $usernameList));
     }
 }

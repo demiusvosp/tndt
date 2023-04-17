@@ -16,6 +16,7 @@
         "doctrine/doctrine-migrations-bundle": "^3",
         "doctrine/orm": "^2",
         "erusev/parsedown": "^1.7",
+        "happyr/doctrine-specification": "^2.0",
         "happyr/entity-exists-validation-constraint": "^1.0",
         "kevinpapst/adminlte-bundle": "^3.0",
         "knplabs/knp-paginator-bundle": "^5.6",

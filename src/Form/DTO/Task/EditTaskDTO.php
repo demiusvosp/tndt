@@ -27,7 +27,7 @@ class EditTaskDTO implements InProjectInterface, HasClosedStatusInterface
      * @var int
      * @EntityExist(entity="App\Entity\User", property="username", message="task.assignTo.not_found")
      */
-    private string $assignedTo;
+    private ?string $assignedTo = null;
 
     /**
      * @var string
@@ -112,7 +112,7 @@ class EditTaskDTO implements InProjectInterface, HasClosedStatusInterface
     /**
      * @return string
      */
-    public function getAssignedTo(): string
+    public function getAssignedTo(): ?string
     {
         return $this->assignedTo;
     }

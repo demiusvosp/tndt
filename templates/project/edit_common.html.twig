@@ -23,7 +23,7 @@
         {% endblock  %}
         {% block box_body %}
             <div class="form-footer-buttons">
-            {% if is_granted('PERM_PROJECT_ARCHIVE') %}
+            {% if is_granted('PERM_PROJECT_ARCHIVE') and not project.isArchived() %}
                 <button
                         class="btn btn-secondary btn-danger need-confirm"
                         data-action="{{ path('project.archive', {'suffix':project.suffix}) }}"

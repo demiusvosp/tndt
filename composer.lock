@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9c2f9ba6c27310cd242e0dddd90fc18f",
+    "content-hash": "8f21741dce7269c686b6518f3910cd49",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -1737,6 +1737,71 @@
                 "wiki": "https://github.com/Atlantic18/DoctrineExtensions/tree/main/doc"
             },
             "time": "2023-02-20T19:24:07+00:00"
+        },
+        {
+            "name": "happyr/doctrine-specification",
+            "version": "v2.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Happyr/Doctrine-Specification.git",
+                "reference": "668dd792152bcced48e36bd7c3fde3c1fe333cc0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Happyr/Doctrine-Specification/zipball/668dd792152bcced48e36bd7c3fde3c1fe333cc0",
+                "reference": "668dd792152bcced48e36bd7c3fde3c1fe333cc0",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/orm": "~2.5",
+                "php": ">=7.2",
+                "symfony/polyfill-php80": "^1.20",
+                "symfony/property-access": "^4.0 || ^5.2 || ^6.0"
+            },
+            "require-dev": {
+                "phpspec/phpspec": "~6.3"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Happyr\\DoctrineSpecification\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Tobias Nyholm",
+                    "email": "tobias@happyr.com"
+                },
+                {
+                    "name": "Kacper Gunia",
+                    "email": "kacper@gunia.me"
+                },
+                {
+                    "name": "Peter Gribanov",
+                    "email": "info@peter-gribanov.ru"
+                }
+            ],
+            "description": "Specification Pattern for your Doctrine repositories",
+            "homepage": "http://developer.happyr.com/",
+            "keywords": [
+                "doctrine",
+                "repository",
+                "specification"
+            ],
+            "support": {
+                "issues": "https://github.com/Happyr/Doctrine-Specification/issues",
+                "source": "https://github.com/Happyr/Doctrine-Specification/tree/v2.0.2"
+            },
+            "time": "2022-01-19T15:25:49+00:00"
         },
         {
             "name": "happyr/entity-exists-validation-constraint",

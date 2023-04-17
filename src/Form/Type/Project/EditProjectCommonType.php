@@ -9,6 +9,7 @@ declare(strict_types=1);
 namespace App\Form\Type\Project;
 
 use App\Form\DTO\Project\EditProjectCommonDTO;
+use App\Form\Transformer\FontAwesomeIconTransformer;
 use App\Form\Type\Base\MdEditType;
 use App\Form\Type\User\UserSelectType;
 use Symfony\Component\Form\AbstractType;
@@ -21,6 +22,13 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class EditProjectCommonType extends AbstractType
 {
+    private FontAwesomeIconTransformer $iconTransformer;
+
+    public function __construct(FontAwesomeIconTransformer $iconTransformer)
+    {
+        $this->iconTransformer = $iconTransformer;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -45,17 +53,8 @@ class EditProjectCommonType extends AbstractType
                     'attr' => ['rows' => 10],
                 ]
             );
-        $builder->get('icon')->addViewTransformer(
-            new CallbackTransformer(
-                function ($normValue) {
 
-                    return $normValue;
-                },
-                function ($viewValue) {
-                    return preg_replace('/<\w+ class="([\w -]+)">\w*<\/\w+>/', '${1}', $viewValue);
-                }
-            )
-        );
+        $builder->get('icon')->addViewTransformer($this->iconTransformer);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

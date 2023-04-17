@@ -1,13 +1,15 @@
 {% set current_project = project_context.project %}
-{% if current_project and app.user and is_granted("PERM_TASK_CREATE") %}
-    <li>
-        <a href="{{ (current_project) ? path('task.project_create', {'suffix':current_project.suffix}) : path('task.global_create') }}">{{ 'Create_task'|trans }}</a>
-    </li>
-{% endif %}
-{% if current_project and app.user and is_granted("PERM_DOC_CREATE") %}
-    <li>
-        <a href="{{ (current_project) ? path('doc.project_create', {'suffix':current_project.suffix}) : path('doc.global_create') }}">{{ 'Create_doc'|trans }}</a>
-    </li>
+{% if current_project and not current_project.isArchived() and app.user %}
+    {% if is_granted("PERM_TASK_CREATE") %}
+        <li>
+            <a href="{{ (current_project) ? path('task.project_create', {'suffix':current_project.suffix}) : path('task.global_create') }}">{{ 'Create_task'|trans }}</a>
+        </li>
+    {% endif %}
+    {% if is_granted("PERM_DOC_CREATE") %}
+        <li>
+            <a href="{{ (current_project) ? path('doc.project_create', {'suffix':current_project.suffix}) : path('doc.global_create') }}">{{ 'Create_doc'|trans }}</a>
+        </li>
+    {% endif %}
 {% endif %}
 {% set projectMenu = projectMenu() %}
 {% if projectMenu is not null %}

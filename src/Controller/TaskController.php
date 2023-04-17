@@ -9,18 +9,18 @@ namespace App\Controller;
 use App\Entity\Project;
 use App\Event\AppEvents;
 use App\Event\TaskEvent;
+use App\Exception\DomainException;
 use App\Form\DTO\Task\CloseTaskDTO;
 use App\Form\DTO\Task\EditTaskDTO;
-use App\Form\DTO\Task\ListFilterDTO;
 use App\Form\DTO\Task\NewTaskDTO;
 use App\Form\Type\Task\CloseTaskForm;
 use App\Form\Type\Task\EditTaskType;
-use App\Form\Type\Task\ListFilterType;
 use App\Form\Type\Task\NewTaskType;
 use App\Repository\TaskRepository;
 use App\Service\Filler\TaskFiller;
 use App\Service\InProjectContext;
 use App\Service\TaskService;
+use App\Specification\InProjectSpec;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -59,23 +59,19 @@ class TaskController extends AbstractController
      */
     public function list(Request $request, Project $project, PaginatorInterface $paginator): Response
     {
-        $filterData = new ListFilterDTO($project->getSuffix());
-        $filterForm = $this->createForm(ListFilterType::class, $filterData);
-
-        $filterForm->handleRequest($request);
-        if ($filterForm->isSubmitted() && !$filterForm->isValid()) {
-            $this->addFlash('warning', 'filterForm.error');
-        }
-
+        $query = $this->taskRepository->getQueryBuilder(new InProjectSpec($project), 't');
         $tasks = $paginator->paginate(
-            $this->taskRepository->getQueryByFilter($filterData),
+            $query,
             $request->query->getInt('page', 1),
             self::TASK_PER_PAGE
         );
 
         return $this->render(
             'task/list.html.twig',
-            ['project' => $project, 'tasks' => $tasks, 'filterForm' => $filterForm->createView()]
+            [
+                'project' => $project,
+                'tasks' => $tasks,
+            ]
         );
     }
 
@@ -102,6 +98,9 @@ class TaskController extends AbstractController
      */
     public function create(Request $request, Project $project, TaskFiller $taskFiller): Response
     {
+        if ($project->isArchived()) {
+            throw new DomainException('Нельзя создавать задачи в архивных проектах');
+        }
         $formData = new NewTaskDTO($project->getSuffix());
         $form = $this->createForm(NewTaskType::class, $formData);
 

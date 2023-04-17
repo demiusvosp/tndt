@@ -174,6 +174,15 @@ class Doc implements NoInterface, CommentableInterface
     }
 
     /**
+     * @param string $docId - prj#123
+     * @return array [<string>, <int>]
+     */
+    public static function explodeDocId(string $docId): array
+    {
+        return explode(self::DOCID_SEPARATOR, $docId);
+    }
+
+    /**
      * @return string
      */
     public function getSuffix(): string

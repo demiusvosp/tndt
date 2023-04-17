@@ -10,40 +10,40 @@ namespace App\Repository;
 
 use App\Entity\Comment;
 use App\Entity\Contract\CommentableInterface;
+use App\Specification\Comment\ByOwnerSpec;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Happyr\DoctrineSpecification\Repository\EntitySpecificationRepositoryTrait;
+use Happyr\DoctrineSpecification\Spec;
 
 class CommentRepository extends ServiceEntityRepository
 {
+    use EntitySpecificationRepositoryTrait;
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Comment::class);
     }
 
     /**
-     * @param CommentableInterface $ownerObject
+     * @param CommentableInterface $owner
+     * @param array $order - [<field> => <direction>]
      * @return Comment[]
      */
-    public function getAllByOwner(CommentableInterface $ownerObject, array $order = []): array
+    public function getAllByOwner(CommentableInterface $owner, array $order = []): array
     {
-        $qb = $this->createQueryBuilder('c');
-        $qb->where($qb->expr()->andX(
-            $qb->expr()->eq('c.entity_type', ':type'),
-            $qb->expr()->eq('c.entity_id', ':id')
-        ));
-        $qb->setParameters([
-            'type' => get_class($ownerObject),
-            'id' => $ownerObject->getId()
-        ]);
+        $spec = Spec::andX(
+            new ByOwnerSpec($owner)
+        );
 
         if ($order) {
             foreach ($order as $orderField => $orderDir) {
-                $qb->addOrderBy('c.' . $orderField, $orderDir);
+                $spec->andX(Spec::orderBy($orderField, $orderDir));
             }
         } else {
-            $qb->addOrderBy('c.createdAt', 'ASC');
+            $spec->andX(Spec::orderBy('createdAt', 'ASC'));
         }
 
-        return $qb->getQuery()->getResult();
+        return $this->match($spec);
     }
 }

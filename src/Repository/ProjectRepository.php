@@ -10,16 +10,20 @@ namespace App\Repository;
 
 use App\Entity\Project;
 use App\Entity\User;
+use App\Specification\Project\VisibleByUserSpec;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
+use Happyr\DoctrineSpecification\Repository\EntitySpecificationRepositoryTrait;
+use Happyr\DoctrineSpecification\Result\AsArray;
+use Happyr\DoctrineSpecification\Spec;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 class ProjectRepository extends ServiceEntityRepository
 {
-    use ByFilterCriteriaQueryTrait;
+    use EntitySpecificationRepositoryTrait;
 
     public function __construct(ManagerRegistry $registry)
     {
@@ -38,38 +42,13 @@ class ProjectRepository extends ServiceEntityRepository
      */
     public function findSecurityAttributesBySuffix(string $suffix): array
     {
-        $qb = $this->createQueryBuilder('p');
-        $qb->select('p.isPublic')
-            ->where($qb->expr()->eq('p.suffix', ':suffix'))
-            ->setParameter('suffix', $suffix);
-
-        return $qb->getQuery()->getSingleResult(AbstractQuery::HYDRATE_ARRAY);
-    }
-
-    /**
-     * Дополнить условием видимости проекта
-     * @param QueryBuilder $qb
-     * @param User|UserInterface|null $user
-     */
-    public function addVisibilityCondition(QueryBuilder $qb, ?UserInterface $user = null): void
-    {
-        if($user) {
-            if ($user->getUsername() !== User::ROOT_USER) {
-                $qb->leftJoin(
-                    'p.projectUsers',
-                    'pu',
-                    Join::WITH,
-                    $qb->expr()->eq('pu.user', ':user')
-                );
-                $qb->setParameter('user', $user);
-                $qb->andWhere($qb->expr()->orX(
-                    'p.isPublic = true',
-                    $qb->expr()->isNotNull('pu.role')
-                ));
-            }
-        } else {
-            $qb->andWhere('p.isPublic = true');
-        }
+        return $this->matchSingleResult(
+            Spec::andX(
+                Spec::select('isPublic'),
+                Spec::eq('suffix', $suffix),
+            ),
+            new AsArray()
+        );
     }
 
     /**
@@ -80,12 +59,11 @@ class ProjectRepository extends ServiceEntityRepository
      */
     public function getPopularProjectsSnippets(int $limit = 5, ?UserInterface $user = null): array
     {
-        $qb = $this->createQueryBuilder('p');
-        $qb->where('p.isArchived = false')
-            ->orderBy('p.updatedAt', 'DESC')
-            ->setMaxResults($limit);
-        $this->addVisibilityCondition($qb, $user);
-
-        return $qb->getQuery()->getResult();
+        return $this->match(Spec::andX(
+            Spec::eq('isArchived', false),
+            new VisibleByUserSpec($user),
+            Spec::orderBy('updatedAt', 'DESC'),
+            Spec::limit($limit)
+        ));
     }
 }

@@ -1,4 +1,4 @@
-{% macro badge(user, link = true, short = true) %}
+{% macro badge(user, link = true, short = true, case = 'nominative') %}
     {% if user %}
         {% if link %}
             <a class="invisible_link" href="{{ path('user.index', {'username': user.username}) }}">
@@ -11,6 +11,8 @@
         {% if link %}
             </a>
         {% endif %}
+    {% else %}
+        <i>{{ _self.nobody(case) }}</i>
     {% endif %}
 {% endmacro %}
 

@@ -57,7 +57,11 @@ class NewTaskType extends AbstractType
             ->add(
                 'assignedTo',
                 UserSelectType::class,
-                ['label' => 'task.assignedTo.label', 'help' => 'task.assignedTo.help']
+                [
+                    'required' => false,
+                    'label' => 'task.assignedTo.label',
+                    'help' => 'task.assignedTo.help'
+                ]
             )
             ->add(
                 'description',

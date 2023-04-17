@@ -9,6 +9,7 @@ declare(strict_types=1);
 namespace App\Form\Type\Project;
 
 use App\Form\DTO\Project\NewProjectDTO;
+use App\Form\Transformer\FontAwesomeIconTransformer;
 use App\Form\Type\User\UserSelectType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -19,6 +20,13 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class NewProjectType extends AbstractType
 {
+    private FontAwesomeIconTransformer $iconTransformer;
+
+    public function __construct(FontAwesomeIconTransformer $iconTransformer)
+    {
+        $this->iconTransformer = $iconTransformer;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -58,6 +66,8 @@ class NewProjectType extends AbstractType
                     'attr' => ['rows' => 10],
                 ]
             );
+
+        $builder->get('icon')->addViewTransformer($this->iconTransformer);
     }
 
     public function configureOptions(OptionsResolver $resolver)

@@ -19,10 +19,10 @@
                 {% block box_body %}
                     <div class="btn-group-vertical" role="toolbar" aria-label="{{ 'ControlPanel'|trans }}">
                         <div class="btn-group-vertical" role="group" aria-label="{{ 'Common'|trans }}">
-                            {% if is_granted('PERM_TASK_CREATE') %}
+                            {% if is_granted('PERM_TASK_CREATE') and not project.isArchived() %}
                                 <a class="btn btn-default btn-secondary" href="{{ path('task.project_create', {'suffix':project.suffix}) }}">{{ 'Create_task'|trans }}</a>
                             {% endif %}
-                            {% if is_granted('PERM_DOC_CREATE') %}
+                            {% if is_granted('PERM_DOC_CREATE') and not project.isArchived() %}
                                 <a class="btn btn-default btn-secondary" href="{{ path('doc.project_create', {'suffix':project.suffix}) }}">{{ 'Create_doc'|trans }}</a>
                             {% endif %}
                         </div>

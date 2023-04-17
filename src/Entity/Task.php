@@ -201,6 +201,15 @@ class Task implements NoInterface, CommentableInterface, HasClosedStatusInterfac
     }
 
     /**
+     * @param string $taskId - prj-123
+     * @return array [<string>, <int>]
+     */
+    public static function explodeTaskId(string $taskId): array
+    {
+        return explode(self::TASKID_SEPARATOR, $taskId);
+    }
+
+    /**
      * Получить код проекта
      *
      * @return string

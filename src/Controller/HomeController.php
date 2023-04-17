@@ -32,22 +32,12 @@ class HomeController extends AbstractController
         DocRepository $docRepository,
         UserRepository $userRepository
     ): Response {
-        $involvedProjects = [];
-        /** @var User $user */
-        $user = $this->getUser();
-        if ($user) {
-            if ($user->hasRole(UserRolesEnum::ROLE_ROOT)) {
-                // null конечно не очень понятный признак отсутствия необходимости фильтровать по этому признаку,
-                //   а не только набору, стоит придумать что-то яснее
-                $involvedProjects = null;
-            } else {
-                $involvedProjects = $user->getProjectsIInvolve();
-            }
-        }
+        /** @var User $currentUser */
+        $currentUser = $this->getUser();
 
-        $projects = $projectRepository->getPopularProjectsSnippets(self::PROJECT_LENGTH + 1, $this->getUser());
-        $tasks = $taskRepository->getPopularTasks(self::TASK_LENGTH, $involvedProjects);
-        $docs = $docRepository->getPopularDocs(self::DOC_LENGTH, $involvedProjects);
+        $projects = $projectRepository->getPopularProjectsSnippets(self::PROJECT_LENGTH + 1, $currentUser);
+        $tasks = $taskRepository->getPopularTasks(self::TASK_LENGTH, $currentUser);
+        $docs = $docRepository->getPopularDocs(self::DOC_LENGTH, $currentUser);
         $users = $userRepository->getPopularUsers(self::USER_LENGTH);
 
         $hasMoreProjects = count($projects) > self::PROJECT_LENGTH;
@@ -71,7 +61,9 @@ class HomeController extends AbstractController
     {
         $about = file_get_contents($this->getParameter('kernel.project_dir') . '/README.md');
 
-        return $this->render('home/about.html.twig', ['about_text' => $about]);
+        return $this->render('home/about.html.twig', ['about_text' => $about])
+            ->setPublic()
+            ->setMaxAge(self::STATIC_PAGE_CACHE_TTL);
     }
 
     public function helpMd(): Response

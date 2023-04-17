@@ -9,14 +9,22 @@ declare(strict_types=1);
 namespace App\Repository;
 
 use App\Entity\Doc;
+use App\Entity\User;
+use App\Specification\Doc\ByDocIdSpec;
+use App\Specification\Doc\DefaultSortSpec;
+use App\Specification\Doc\NotArchivedSpec;
+use App\Specification\InProjectSpec;
+use App\Specification\Project\VisibleByUserSpec;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
+use Happyr\DoctrineSpecification\Exception\NoResultException;
+use Happyr\DoctrineSpecification\Repository\EntitySpecificationRepositoryTrait;
+use Happyr\DoctrineSpecification\Spec;
 
 
 class DocRepository extends ServiceEntityRepository implements NoEntityRepositoryInterface
 {
-    use ByFilterCriteriaQueryTrait;
+    use EntitySpecificationRepositoryTrait;
 
     public function __construct(ManagerRegistry $registry)
     {
@@ -25,9 +33,7 @@ class DocRepository extends ServiceEntityRepository implements NoEntityRepositor
 
     public function getByDocId(string $docId)
     {
-        [$suffix, $no] = explode(Doc::DOCID_SEPARATOR, $docId);
-
-        return $this->findOneBy(['suffix' => $suffix, 'no' => $no]);
+        return $this->matchSingleResult(new ByDocIdSpec($docId));
     }
 
     public function getBySlug(string $slug)
@@ -37,67 +43,34 @@ class DocRepository extends ServiceEntityRepository implements NoEntityRepositor
 
     public function getLastNo($suffix): int
     {
-        $qb = $this->createQueryBuilder('d');
-        $qb->select('d.no')
-            ->where($qb->expr()->eq('d.suffix', ':suffix'))
-            ->setParameter('suffix', $suffix)
-            ->orderBy('d.no', 'DESC')
-            ->setMaxResults(1);
-
         try {
-            return (int)$qb->getQuery()->getSingleScalarResult();
+            $result = $this->matchSingleResult(
+                Spec::andX(
+                    Spec::select('no'),
+                    new InProjectSpec($suffix),
+                    Spec::orderBy('no', 'DESC'),
+                    Spec::limit(1)
+                )
+            );
         } catch (NoResultException $e) {
             return 0;
         }
-    }
-
-    /**
-     * @param string $project
-     * @param int|null $limit
-     * @return Doc[]
-     */
-    public function getProjectsDocs(string $project, int $limit = null): array
-    {
-        $qb = $this->createQueryBuilder('d');
-        $qb->where($qb->expr()->neq('d.state', Doc::STATE_ARCHIVED));
-        $qb->andWhere($qb->expr()->eq('d.project', ':project'))
-            ->setParameter('project', $project);
-
-        $qb->addOrderBy('d.state', 'ASC');
-        $qb->addOrderBy('d.updatedAt', 'desc');
-        if ($limit) {
-            $qb->setMaxResults($limit);
-        }
-
-        return $qb->getQuery()->getResult();
+        return $result['no'] ?? 0;
     }
 
     /**
      * @param int $limit
-     * @param array|null $availableProjects - доступные проекты (null - доступны все (например для root))
+     * @param User|null $user
      * @return Doc[]
      */
-    public function getPopularDocs(int $limit, ?array $availableProjects = []): array
+    public function getPopularDocs(int $limit, ?User $user = null): array
     {
-        $qb = $this->createQueryBuilder('d');
-        $qb->where($qb->expr()->neq('d.state', Doc::STATE_ARCHIVED));
-
-        $qb->leftJoin('d.project', 'p');
-        if ($availableProjects !== null) {
-            if (count($availableProjects) > 0) {
-                $qb->andWhere($qb->expr()->orX(
-                    'p.isPublic = true',
-                    $qb->expr()->in('d.suffix', $availableProjects)
-                ));
-            } else {
-                $qb->andWhere('p.isPublic = true');
-            }
-        }
-        $qb->addOrderBy('d.state', 'ASC');
-        $qb->addOrderBy('d.updatedAt', 'desc');
-        $qb->setMaxResults($limit);
-
-        return $qb->getQuery()->getResult();
+        return $this->match(Spec::andX(
+            new NotArchivedSpec(),
+            Spec::leftJoin('project', 'p'),
+                new VisibleByUserSpec($user, 'project'),
+            new DefaultSortSpec(),
+            Spec::limit($limit)
+        ));
     }
-
 }
