@@ -33,6 +33,7 @@ class TaskService
         }
         $task->setStage($dto->getStage());
         $task->setIsClosed(true);
+        $task->setUpdatedAt(new \DateTime());
         $this->eventDispatcher->dispatch(new TaskEvent($task), AppEvents::TASK_CLOSE);
     }
 }
