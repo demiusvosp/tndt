@@ -79,3 +79,10 @@ services:
         class: 'App\Service\Twig\BadgesExtension'
         arguments:
             - !tagged_iterator app.badges_handler
+
+    App\Service\Twig\TimeExtension:
+        class: 'App\Service\Twig\TimeExtension'
+        arguments:
+            - '@time.datetime_formatter'
+            - '@translator.default'
+            - '@twig.extension.intl'
