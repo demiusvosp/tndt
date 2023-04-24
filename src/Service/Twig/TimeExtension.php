@@ -8,6 +8,7 @@ declare(strict_types=1);
 
 namespace App\Service\Twig;
 
+use DateTimeInterface;
 use Knp\Bundle\TimeBundle\DateTimeFormatter;
 use Knp\Bundle\TimeBundle\Twig\Extension\TimeExtension as BaseTimeExtension;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -52,23 +53,24 @@ class TimeExtension extends BaseTimeExtension
      */
     public function ago(Environment $env, $date = null, $html = true): string
     {
-        $string = $this->diff($date, null, $html);
+        if ($date === null) {
+            if ($html) {
+                return $this->formatHtml($this->translator->trans('time.never'), true);
+            }
+            return $this->translator->trans('time.never');
+        }
+
+        $string = $this->formatDiff($this->formatter->getDatetimeObject($date), new \DateTime());
         if($html) {
-            $string = sprintf(
-                '<span title="%s">%s</span>',
-                $this->intlExtension->formatDateTime($env, $date),
-                $string
-            );
+            if (!$string) {
+                $string = $this->formatHtml($this->translator->trans('time.empty'), true);
+            }
+            return $this->formatHtml($string, false, $this->intlExtension->formatDateTime($env, $date));
+        }
+        if (!$string) {
+            $string = $this->translator->trans('time.empty');
         }
         return $string;
-    }
-
-    public function diff($since = null, $to = null, $html = true): string
-    {
-        if ($since == null) {
-            return '<i>' . $this->translator->trans('never') . '</i>';
-        }
-        return parent::diff($since, $to);
     }
 
     /**
@@ -77,5 +79,59 @@ class TimeExtension extends BaseTimeExtension
     public function getName(): string
     {
         return 'app_time';
+    }
+
+    /**
+     * Добавляет html теги, для переводов никогда, сейчас, а так же всплывашку с полной датой
+     */
+    protected function formatHtml(string $date, bool $italic, ?string $tooltip = null): string
+    {
+        if ($italic) {
+            $tag = 'i';
+        } else {
+            $tag = 'span';
+        }
+        if ($tooltip) {
+            $tooltip = sprintf(' title="%s"', $tooltip);
+        }
+
+        return sprintf(
+            '<%s%s>%s</%s>',
+            $tag,
+            $tooltip,
+            $date,
+            $tag
+        );
+    }
+
+    /**
+     * Форматирует разницу во времени как месяц и 2 дня
+     */
+    protected function formatDiff(DateTimeInterface $from, DateTimeInterface $to): ?string
+    {
+        static $units = array(
+            'y' => 'year',
+            'm' => 'month',
+            'd' => 'day',
+            'h' => 'hour',
+            'i' => 'minute',
+            's' => 'second'
+        );
+
+        $diff = $to->diff($from);
+
+        $firstPart = '';
+        foreach ($units as $attribute => $unit) {
+            $count = $diff->$attribute;
+
+            if ($count === 1 && empty($firstPart)) { // месяц и
+                $firstPart = $this->translator->trans(sprintf('time.one_and.%s', $unit)) . ' ';
+
+            } elseif  ($count > 1 || ($count > 0 && !empty($firstPart))) { // 3 месяца либо месяц и 1 день либо месяц и 2 дня
+                return $firstPart . $this->formatter->getDiffMessage($count, (bool)$diff->invert, $unit);
+            }
+        }
+
+        return null;
     }
 }
