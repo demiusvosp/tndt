@@ -1,7 +1,7 @@
 dictionary_invalid_object {{ dictionary_type }}: Невозможно восстановить объект справочника {{ dictionary_type }} из {{ value }}, {{ dictionary_error }}
 dictionary_invalid_value {{ dictionary_type }}: Значение {{ value }} отсутствует в справочнике {{ dictionary_type }}
 not_unique_in_fields {{ not_unique_values }}: Элементы ({{ not_unique_values }}) встречаются несколько раз.
-not_unique_usernames {{ not_unique_values }}: Пользователи не могут иметь несолько ролей. ({{ not_unique_values }}) указанны несколько раз.
+not_unique_usernames {{ not_unique_values }}: Пользователи не могут иметь несколько ролей. ({{ not_unique_values }}) указанны несколько раз.
 doc:
   caption:
     to_long: Заголовок документа превышает {{ limit }}. В списке такие документы будет сложно различать, сформулируйте его более кратко.
@@ -11,11 +11,11 @@ doc:
     to_long: Текст документа превышает {{ limit }}, желательно разбить его на несколько документов
 project:
   pm:
-    not_found: Польователь, указанные как pm не найден
+    not_found: Пользователь, указанный как pm не найден
 task:
   assignTo:
     not_found: Указанный ответственный а задачу не найден
   caption:
     to_long: Заголовок задачи превышает {{ limit }}. В списке такие задачи будет сложно различать, сформулируйте его более кратко.
   description:
-    to_long: Описание задачи превышает {{ limit }}. Желательно разбить задачу на подзадачи, общее описнаие вынести в документ
+    to_long: Описание задачи превышает {{ limit }}. Желательно разбить задачу на подзадачи, общее описание вынести в документ
