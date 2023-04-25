@@ -51,26 +51,17 @@ class TimeExtension extends BaseTimeExtension
     /**
      * @throws RuntimeError
      */
-    public function ago(Environment $env, $date = null, $html = true): string
+    public function ago(Environment $env, $date = null): string
     {
-        if ($date === null) {
-            if ($html) {
-                return $this->formatHtml($this->translator->trans('time.never'), true);
-            }
-            return $this->translator->trans('time.never');
+        if ($date === null) {// нет времени выводим никогда
+            return $this->formatHtml($this->translator->trans('time.never'), true);
         }
 
         $string = $this->formatDiff($this->formatter->getDatetimeObject($date), new \DateTime());
-        if($html) {
-            if (!$string) {
-                $string = $this->formatHtml($this->translator->trans('time.empty'), true);
-            }
-            return $this->formatHtml($string, false, $this->intlExtension->formatDateTime($env, $date));
+        if (!$string) {// нет разницы во времени, выводим сейчас
+            $string = $this->formatHtml($this->translator->trans('time.empty'), true);
         }
-        if (!$string) {
-            $string = $this->translator->trans('time.empty');
-        }
-        return $string;
+        return $this->formatHtml($string, false, $this->intlExtension->formatDateTime($env, $date));
     }
 
     /**
