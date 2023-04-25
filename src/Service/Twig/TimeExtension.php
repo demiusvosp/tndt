@@ -58,10 +58,12 @@ class TimeExtension extends BaseTimeExtension
         }
 
         $string = $this->formatDiff($this->formatter->getDatetimeObject($date), new \DateTime());
+        $italic = false;
         if (!$string) {// нет разницы во времени, выводим сейчас
-            $string = $this->formatHtml($this->translator->trans('time.empty'), true);
+            $string = $this->translator->trans('time.empty');
+            $italic = true;
         }
-        return $this->formatHtml($string, false, $this->intlExtension->formatDateTime($env, $date));
+        return $this->formatHtml($string, $italic, $this->intlExtension->formatDateTime($env, $date));
     }
 
     /**
