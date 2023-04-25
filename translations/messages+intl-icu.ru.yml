@@ -134,7 +134,6 @@ menu:
     edit: Редактирование
   users: Пользователи
 MdHelp: Справка по md
-never: никогда
 Never_logined: Ни разу не входил
 nobody: >-
   {case, select,
@@ -254,6 +253,16 @@ task:
   updated:
     label: Обновлена
 Task_list: Список задач
+time:
+  empty: сейчас
+  never: никогда
+  one_and:
+    year: год и
+    month: месяц и
+    day: день и
+    hour: час и
+    minute: минуту и
+    second: секунду и
 To_actual: Отметить актуальным
 To_archive: Убрать в архив
 To_deprecated: Отметить устаревшим

@@ -133,7 +133,6 @@ menu:
     create: Создать задачу
     edit: Редактирование
   users: Пользователи
-never: никогда
 Never_logined: Ни разу не входил
 nobody: >-
   {case, select,
@@ -252,6 +251,16 @@ task:
   updated:
     label: Обновлена
 Task_list: Список задач
+time:
+  empty: now
+  never: never
+  one_and:
+    year: year and
+    month: month and
+    day: day and
+    hour: hour and
+    minute: minute and
+    second: second and
 To_actual: Отметить актуальным
 To_archive: Убрать в архив
 To_deprecated: Отметить устаревшим
