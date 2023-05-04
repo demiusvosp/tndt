@@ -19,6 +19,9 @@ class Kernel extends BaseKernel
     {
         parent::boot();
 
+        if (isset($_SERVER['TZ'])) {
+            date_default_timezone_set($_SERVER['TZ']);
+        }
         $this->configureDoctrine();
     }
 

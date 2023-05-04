@@ -1,4 +1,6 @@
 FROM php:7.4-fpm AS base
+LABEL maintainer="Dmitry demius Vospennikov"
+LABEL description="Task and Doc Tracker application backend part"
 
 WORKDIR /app
 
