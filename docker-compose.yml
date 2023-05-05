@@ -1,10 +1,14 @@
 version: '3.4'
-#Базовый набор сервисов в настройками готовыми для запуска без всего
+#Базовый набор сервисов с настройками готовыми для запуска без всего
 services:
   nginx:
-    image: 'nginx:alpine'
+    build:
+      context: ./
+      dockerfile: './docker/nginx.dockerfile'
     links:
       - php
+    environment:
+      TZ: Europe/Moscow
 
   php:
     build:
@@ -13,6 +17,7 @@ services:
     links:
       - mysql
     environment:
+      TZ: Europe/Moscow
       DATABASE_URL: "mysql://${DB_USER}:${DB_PASSWORD}@mysql:3306/${DB_NAME}"
 
   mysql:
