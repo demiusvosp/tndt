@@ -39,6 +39,7 @@ class EditUserDTO
     {
         $this->name = $user->getName();
         $this->email = $user->getEmail();
+        $this->locked = $user->isLocked();
         $this->password = '';
     }
 

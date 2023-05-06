@@ -23,7 +23,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class UserManagerController extends AbstractController
 {
@@ -37,6 +36,7 @@ class UserManagerController extends AbstractController
     }
 
     /**
+     * @IsGranted("PERM_USER_EDIT")
      * @param Request $request
      * @return Response
      */
@@ -57,7 +57,7 @@ class UserManagerController extends AbstractController
     }
 
     /**
-     * @IsGranted("PERM_USER_LIST")
+     * @IsGranted("PERM_USER_EDIT")
      * @param Request $request
      * @param PaginatorInterface $paginator
      * @return Response
