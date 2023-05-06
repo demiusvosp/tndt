@@ -136,7 +136,10 @@ menu:
   task:
     create: Создать задачу
     edit: Редактирование
-  users: Пользователи
+  user:
+    list: Users
+    management:
+      list: User management
 Never_logined: Ни разу не входил
 nobody: >-
   {case, select,

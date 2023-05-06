@@ -136,7 +136,10 @@ menu:
   task:
     create: Создать задачу
     edit: Редактирование
-  users: Пользователи
+  user:
+    list: Пользователи
+    management:
+      list: Управление пользователями
 MdHelp: Справка по md
 Never_logined: Ни разу не входил
 nobody: >-

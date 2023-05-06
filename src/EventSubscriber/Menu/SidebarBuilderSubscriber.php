@@ -169,7 +169,7 @@ class SidebarBuilderSubscriber implements EventSubscriberInterface
         if($this->isGranted(UserPermissionsEnum::PERM_USER_LIST)) {
             $event->addItem(new MenuItemModel(
                 'users',
-                'menu.users',
+                $this->security->isGranted(UserPermissionsEnum::PERM_USER_EDIT) ? 'menu.user.management.list' : 'menu.user.list',
                 $this->security->isGranted(UserPermissionsEnum::PERM_USER_EDIT) ? 'user.management.list' : 'user.list',
                 [],
                 'fa fa-users fa-fw'
