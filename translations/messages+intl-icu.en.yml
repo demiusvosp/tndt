@@ -26,9 +26,12 @@ breadcrumb:
     create: Новая...
     edit: Редактирование
   user:
-    create: Новый...
-    edit: Редактирование профиля
-    home: Пользователи
+    edit: Edit profile
+    home: Users
+  user.management:
+    create: New...
+    edit: Edit...
+    home: User management
 Close: Закрыть
 closed: закрыта
 comment:
@@ -271,7 +274,7 @@ user:
     label: Действия
   createdAt:
     label: Зарегистрирован
-  edit: Редактирование профиля
+  edit: User edit
   email:
     label: E-mail
     help: Опционален. По нему можно авторизовываться, для проектов где не приняты логины/ники
@@ -291,13 +294,13 @@ user:
     label: Подтверждение пароля
     help: Введите пароль повторно, чтобы исключить ошибку
   roles:
-    label: Роли пользователя
-  self_edit: Редактирование своего профиля
+    label: User roles
+  self_edit: Profile edit
   username:
-    label: username пользователя
-    help: Основной логин пользователя, которым он представляется системе и через который упоминается всюду. Изменить будет нельзя.
-Users: Пользователи
-User_list: Список польователей
+    label: username
+    help: Main user login, use for signing and link to user from everywhere. Can't change after create
+Users: Users
+User_list: User list
 Unarchive: Вернуть из архива
 Works:
   title: Работа над задачей

@@ -28,21 +28,18 @@ class BreadcrumbsBuilderSubscriber implements EventSubscriberInterface
     private Security $security;
     private TaskRepository $taskRepository;
     private DocRepository $docRepository;
-    private UserRepository $userRepository;
 
     public function __construct(
         ProjectContext $projectContext,
         Security $security,
         TaskRepository $taskRepository,
-        DocRepository  $docRepository,
-        UserRepository $userRepository
+        DocRepository  $docRepository
     )
     {
         $this->projectContext = $projectContext;
         $this->security = $security;
         $this->taskRepository = $taskRepository;
         $this->docRepository = $docRepository;
-        $this->userRepository = $userRepository;
     }
 
     public static function getSubscribedEvents(): array
@@ -178,6 +175,7 @@ class BreadcrumbsBuilderSubscriber implements EventSubscriberInterface
         }
 
         if ($route && preg_match('/^user./', $route)) {
+            $username = $request->get('username');
 
             $userMenu = new MenuItemModel(
                 'user.home',
@@ -186,27 +184,51 @@ class BreadcrumbsBuilderSubscriber implements EventSubscriberInterface
                 [],
                 'fa fa-users'
             );
-            if ($username = $request->get('username')) {
-                $user = $this->userRepository->findByUsername($username);
-                if ($user) {
-                    $currentUserMenu = new MenuItemModel(
-                        'user.index',
-                        $user->getUsername(),
-                        'user.index',
+            if ($username) {
+                $currentUserMenu = new MenuItemModel(
+                    'user.index',
+                    $username,
+                    'user.index',
+                    ['username' => $username],
+                    'fa fa-user'
+                );
+                $currentUserMenu->addChild(new MenuItemModel(
+                    'user.edit',
+                    'breadcrumb.user.edit',
+                    'user.edit',
+                ));
+                $userMenu->addChild($currentUserMenu);
+            }
+            $event->addItem($userMenu);
+
+            if (preg_match('/^user.management./', $route)) {
+                $userManagementMenu = new MenuItemModel(
+                    'user.management',
+                    'breadcrumb.user.management.home',
+                    'user.management.list',
+                    [],
+                    'fas fa-users-cog'
+                );
+                if ($username) {
+                    $userItemMenu = new MenuItemModel(
+                        'user.management.index',
+                        $username,
+                        'user.management.index',
                         ['username' => $username],
                         'fa fa-user'
                     );
-                    $currentUserMenu->addChild(new MenuItemModel(
-                        'user.edit',
-                        'breadcrumb.user.edit',
-                        'user.edit',
+                    $userItemMenu->addChild(new MenuItemModel(
+                        'user.management.edit',
+                        'breadcrumb.user.management.edit',
+                        'user.management.edit',
                         ['username' => $username],
+                        'fas fa-user-cog'
                     ));
-                    $userMenu->addChild($currentUserMenu);
+                    $userManagementMenu->addChild($userItemMenu);
                 }
-            }
 
-            $event->addItem($userMenu);
+                $event->addItem($userManagementMenu);
+            }
         }
 
         $event->addItem(new MenuItemModel(

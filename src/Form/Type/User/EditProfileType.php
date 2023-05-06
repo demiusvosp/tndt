@@ -26,7 +26,7 @@ class EditProfileType extends AbstractType
             ->add(
                 'name',
                 TextType::class,
-                ['disabled' => true, 'label' => 'user.name.label', 'help' => 'user.name.help']
+                ['required' => false, 'label' => 'user.name.label', 'help' => 'user.name.help']
             )
             ->add(
                 'email',
