@@ -34,11 +34,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-6">
-                                    {{ 'user.email.label'|trans }}: {% if app.user and app.user.name == user.name %}
-                                        {{ user.email }}
-                                    {% else %}
-                                        <i>{{ 'Hidden'|trans }}</i>
-                                    {% endif %}
+                                    {{ 'user.email.label'|trans }}: {{ user.email }}
                                 </div>
                             </div>
                         </div>
@@ -57,7 +53,6 @@
                 {% endblock %}
             {% endembed %}
         </div>
-        {% if app.user and app.user.name == user.name %}
         <div class="col-md-2">
             {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
                 {% block box_title %}
@@ -66,12 +61,11 @@
                 {% block box_body %}
                     <div class="btn-group-vertical" role="toolbar" aria-label="{{ 'ControlPanel'|trans }}">
                         <div class="btn-group-vertical" role="group">
-                            <a class="btn btn-default btn-secondary" href="{{ path('user.edit') }}">{{ 'Edit_user'|trans }}</a>
+                            <a class="btn btn-default btn-secondary" href="{{ path('user.management.edit', {'username': user.username}) }}">{{ 'Edit_user'|trans }}</a>
                         </div>
                     </div>
                 {% endblock %}
             {% endembed %}
         </div>
-        {% endif %}
     </div>
 {% endblock %}

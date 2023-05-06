@@ -9,24 +9,16 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Form\DTO\User\EditUserDTO;
-use App\Form\DTO\User\ListFilterDTO;
-use App\Form\DTO\User\NewUserDTO;
-use App\Form\Type\User\AdminEditProfileType;
+use App\Form\DTO\User\SelfEditUserDTO;
 use App\Form\Type\User\EditProfileType;
-use App\Form\Type\User\NewUserType;
 use App\Repository\UserRepository;
-use App\Security\UserPermissionsEnum;
-use App\Security\UserRolesEnum;
+use App\Service\Filler\UserFiller;
 use Happyr\DoctrineSpecification\Spec;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class UserController extends AbstractController
 {
@@ -40,16 +32,12 @@ class UserController extends AbstractController
     }
 
     /**
-     * @param Request $request
+     * @param string $username
      * @return Response
      */
-    public function index(Request $request): Response
+    public function index(string $username): Response
     {
-        if ($request->get('username')) {
-            $user = $this->userRepository->findByUsername($request->get('username'));
-        } else {
-            $user = $this->getUser();
-        }
+        $user = $this->userRepository->findByUsername($username);
         if (!$user) {
             throw $this->createNotFoundException('User not found');
         }
@@ -79,91 +67,32 @@ class UserController extends AbstractController
     }
 
     /**
-     * @IsGranted("PERM_USER_CREATE")
-     * @param Request $request
-     * @param UserPasswordEncoderInterface $passwordEncoder
-     * @return Response
-     */
-    public function create(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
-    {
-        $formData = new NewUserDTO();
-        $form = $this->createForm(NewUserType::class, $formData);
-
-        $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid()) {
-            $user = new User($formData->getUsername());
-            $formData->fillProfile($user);
-            $user->setPassword($passwordEncoder->encodePassword($user, $formData->getPassword()));
-
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($user);
-            $em->flush();
-            $this->addFlash('success', 'user.create.success');
-            return $this->redirectToRoute('user.index', ['username' => $user->getUsername()]);
-        }
-
-        return $this->render('user/create.html.twig', ['form' => $form->createView()]);
-    }
-
-    /**
      * @IsGranted("IS_AUTHENTICATED_FULLY")
      * @param Request $request
-     * @param AuthorizationCheckerInterface $authorizationChecker
-     * @param UserPasswordEncoderInterface $passwordEncoder
+     * @param UserFiller $userFiller
      * @return Response
      */
     public function edit(
         Request $request,
-        AuthorizationCheckerInterface $authorizationChecker,
-        UserPasswordEncoderInterface $passwordEncoder): Response
+        UserFiller $userFiller): Response
     {
-        if ($authorizationChecker->isGranted(UserPermissionsEnum::PERM_USER_EDIT)) {
-            $user = $this->userRepository->findByUsername($request->get('username'));
-        } else {
-            $user = $this->getUser();
-            if (!$user || $user->getUsername() !== $request->get('username')) {
-                throw new AccessDeniedException('User can edit only self profile');
-            }
-        }
-
-        if (!$user) {
-            throw $this->createNotFoundException('User not found');
-        }
-        $formData = new EditUserDTO($user);
-
-        if ($authorizationChecker->isGranted(UserRolesEnum::ROLE_ROOT)) {
-            $form = $this->createForm(AdminEditProfileType::class, $formData);
-            if ($user === $this->getUser()) {
-                // не дадим root поля для выстрела себе в ногу
-                $form->remove('locked');
-            }
-
-        } else {
-            $form = $this->createForm(EditProfileType::class, $formData);
-        }
+        /** @var User $user */
+        $user = $this->getUser();
+        $formData = new SelfEditUserDTO($user);
+        $form = $this->createForm(EditProfileType::class, $formData);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $formData->fillProfile($user);
-            if($authorizationChecker->isGranted(UserPermissionsEnum::PERM_USER_LOCK)
-                && $formData->getLocked() !== null
-            ) {
-                $user->setLocked((bool) $formData->getLocked());
-            }
-            if (!empty($formData->getPassword())) {
-                $this->addFlash('warning', 'user.edit.password_changed');
-                $user->setPassword($passwordEncoder->encodePassword($user, $formData->getPassword()));
-            }
+            $userFiller->fillFromSelfEditForm($formData, $user);
 
             $this->getDoctrine()->getManager()->flush();
-            $this->addFlash('success', ($user === $this->getUser())?'user.edit.success':'user.edit.success');
+            $this->addFlash('success', 'user.edit.success');
         }
 
         return $this->render(
             'user/edit.html.twig',
             [
                 'user' => $user,
-                'isSelf' =>  ($user === $this->getUser()),
                 'form' => $form->createView()
             ]
         );

@@ -1,1 +1,6 @@
 not_unique_in_fields {{ not_unique_values }}: The elements {{ not_unique_values }} occur several times
+user:
+  email:
+    incorrect: email not valid
+  password:
+    not_same: password and repeated not match

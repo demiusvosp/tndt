@@ -1,11 +1,11 @@
 {% extends 'one_block_layout.html.twig' %}
 
-{% block title %} {{ user.username }} - {{ (isSelf)?'user.edit'|trans:'user.self_edit'|trans }} {% endblock %}
+{% block title %} {{ user.username }} - {{ 'user.self_edit'|trans }} {% endblock %}
 {% block page_title%}{% endblock %}
 {% block page_subtitle %}{% endblock %}
 
 {% block box_title %}
-    {{ user.username }} - {{ (isSelf)?'user.edit'|trans:'user.self_edit'|trans }}
+    {{ user.username }} - {{ 'user.self_edit'|trans }}
 {% endblock %}
 {% block box_body %}
     {{ form_start(form) }}

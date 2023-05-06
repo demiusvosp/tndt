@@ -1,23 +1,18 @@
 <?php
 /**
  * User: demius
- * Date: 07.09.2021
- * Time: 20:04
+ * Date: 06.05.2023
+ * Time: 18:08
  */
 declare(strict_types=1);
 
 namespace App\Form\DTO\User;
 
+use App\Entity\User;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class NewUserDTO
+class SelfEditUserDTO
 {
-    /**
-     * @var string
-     * @Assert\Regex("/[\w\d\.-]+/")
-     */
-    private string $username;
-
     /**
      * @var string
      */
@@ -25,31 +20,21 @@ class NewUserDTO
 
     /**
      * @var string
-     * @Assert\Email(message="user.email.incorrect)
+     * @Assert\Email(message="user.email.incorrect")
      */
     private string $email = '';
 
     /**
-     * @var string
+     * @var string|null
      */
-    private string $password = '';
+    private ?string $password = '';
 
-    /**
-     * @return string
-     */
-    public function getUsername(): string
+    public function __construct(User $user)
     {
-        return $this->username;
-    }
-
-    /**
-     * @param string $username
-     * @return NewUserDTO
-     */
-    public function setUsername(string $username): NewUserDTO
-    {
-        $this->username = $username;
-        return $this;
+        $this->name = $user->getName();
+        $this->email = $user->getEmail();
+        $this->locked = $user->isLocked();
+        $this->password = '';
     }
 
     /**
@@ -62,9 +47,9 @@ class NewUserDTO
 
     /**
      * @param string|null $name
-     * @return NewUserDTO
+     * @return SelfEditUserDTO
      */
-    public function setName(?string $name): NewUserDTO
+    public function setName(?string $name): SelfEditUserDTO
     {
         $this->name = (string) $name;
         return $this;
@@ -80,9 +65,9 @@ class NewUserDTO
 
     /**
      * @param string|null $email
-     * @return NewUserDTO
+     * @return SelfEditUserDTO
      */
-    public function setEmail(?string $email): NewUserDTO
+    public function setEmail(?string $email): SelfEditUserDTO
     {
         $this->email = (string) $email;
         return $this;
@@ -98,12 +83,14 @@ class NewUserDTO
 
     /**
      * @param string|null $password
-     * @return NewUserDTO
+     * @return SelfEditUserDTO
      */
-    public function setPassword(string $password): NewUserDTO
+    public function setPassword(?string $password): SelfEditUserDTO
     {
-        $this->password = $password;
-
+        if (!empty($password)) {
+            $this->password = $password;
+        }
         return $this;
     }
+
 }

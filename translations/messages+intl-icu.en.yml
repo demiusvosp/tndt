@@ -26,9 +26,12 @@ breadcrumb:
     create: Новая...
     edit: Редактирование
   user:
-    create: Новый...
-    edit: Редактирование профиля
-    home: Пользователи
+    edit: Edit profile
+    home: Users
+  user.management:
+    create: New...
+    edit: Common
+    home: Management
 Close: Закрыть
 closed: закрыта
 comment:
@@ -114,6 +117,7 @@ doc:
 Edit: Редактировать
 Edit_project: Настроить проект
 Edit_user: Редактировать профиль
+Hidden: hidden
 Maintenance: Обслуживание
 menu:
   dashboard.about: О системе
@@ -132,7 +136,10 @@ menu:
   task:
     create: Создать задачу
     edit: Редактирование
-  users: Пользователи
+  user:
+    list: Users
+    management:
+      list: User management
 Never_logined: Ни разу не входил
 nobody: >-
   {case, select,
@@ -270,7 +277,7 @@ user:
     label: Действия
   createdAt:
     label: Зарегистрирован
-  edit: Редактирование профиля
+  edit: User edit
   email:
     label: E-mail
     help: Опционален. По нему можно авторизовываться, для проектов где не приняты логины/ники
@@ -280,6 +287,11 @@ user:
     label: Пользователь заблокирован
     short: заблокирован
     help: Заблокированый пользователь больше не сможет входить и совершать какие-либо действия. Если необходимо забрать доступ пользователя к проекту, оставив возможность быть посетителем, стоит исключить его и проекта, а не блокировать
+  management:
+    edit:
+      title: User manager
+      common: Common
+      permission: Permission
   name:
     label: Имя пользователя
     help: Опционален. Для проектов где приняты формальные имена
@@ -290,13 +302,13 @@ user:
     label: Подтверждение пароля
     help: Введите пароль повторно, чтобы исключить ошибку
   roles:
-    label: Роли пользователя
-  self_edit: Редактирование своего профиля
+    label: User roles
+  self_edit: Profile edit
   username:
-    label: username пользователя
-    help: Основной логин пользователя, которым он представляется системе и через который упоминается всюду. Изменить будет нельзя.
-Users: Пользователи
-User_list: Список польователей
+    label: username
+    help: Main user login, use for signing and link to user from everywhere. Can't change after create
+Users: Users
+User_list: User list
 Unarchive: Вернуть из архива
 Works:
   title: Работа над задачей

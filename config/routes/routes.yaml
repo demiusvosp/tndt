@@ -16,17 +16,28 @@ app.logout:
 
 #User
 user.list:
-    path: /user.managment/list
+    path: /user/list
     controller: App\Controller\UserController::list
-user.create:
-    path: /user.managment/create
-    controller: App\Controller\UserController::create
+user.edit:
+    path: /user/edit
+    controller: App\Controller\UserController::edit
 user.index:
     path: /user/{username<[\w\d\.-]+>}
     controller: App\Controller\UserController::index
-user.edit:
-    path: /user/{username<[\w\d\.-]+>}/edit
-    controller: App\Controller\UserController::edit
+
+#User.Manager
+user.management.list:
+    path: /user/managment/list
+    controller: App\Controller\UserManagerController::list
+user.management.create:
+    path: /user/managment/create
+    controller: App\Controller\UserManagerController::create
+user.management.index:
+    path: /user/managment/{username<[\w\d\.-]+>}
+    controller: App\Controller\UserManagerController::index
+user.management.edit:
+    path: /user/managment/{username<[\w\d\.-]+>}/edit
+    controller: App\Controller\UserManagerController::edit
 
 #Projects
 project.index:

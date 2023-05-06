@@ -23,7 +23,7 @@ class PublicProjectVoter implements VoterInterface, LoggerAwareInterface
 {
     private ProjectContext $projectContext;
     private ProjectSecurityRegistry $projectSecurityRegistry;
-    private LoggerInterface $logger;
+    private LoggerInterface $securityLogger;
 
     public function __construct(ProjectContext $projectContext, ProjectSecurityRegistry $projectSecurityRegistry)
     {
@@ -31,9 +31,9 @@ class PublicProjectVoter implements VoterInterface, LoggerAwareInterface
         $this->projectSecurityRegistry = $projectSecurityRegistry;
     }
 
-    public function setLogger(LoggerInterface $logger): void
+    public function setLogger(LoggerInterface $securityLogger): void
     {
-        $this->logger = $logger;
+        $this->securityLogger = $securityLogger;
     }
 
     public function vote(TokenInterface $token, $subject, array $attributes)
@@ -62,7 +62,7 @@ class PublicProjectVoter implements VoterInterface, LoggerAwareInterface
         $publicPermissions = UserPermissionsEnum::getPublicProjectGuestPermissions();
         foreach ($attributes as $attribute) {
             if (in_array($attribute, $publicPermissions, true)) {
-                $this->logger->debug(
+                $this->securityLogger->debug(
                     'Public project {project} grant permission {attribute}',
                     ['project' => $subject, 'attribute' => $attribute]);
                 return VoterInterface::ACCESS_GRANTED;

@@ -78,13 +78,12 @@ class ProjectController extends AbstractController
     /**
      * @InProjectContext
      * @IsGranted ("PERM_PROJECT_VIEW")
-     * @param Request $request
      * @param Project $project
      * @param TaskRepository $taskRepository
      * @param DocRepository $docRepository
      * @return Response
      */
-    public function index(Request $request, Project $project, TaskRepository $taskRepository, DocRepository $docRepository): Response
+    public function index(Project $project, TaskRepository $taskRepository, DocRepository $docRepository): Response
     {
         $tasks = $taskRepository->match(Spec::andX(
             new InProjectSpec($project),

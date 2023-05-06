@@ -12,6 +12,7 @@ use App\Repository\DocRepository;
 use App\Repository\TaskRepository;
 use App\Security\UserPermissionsEnum;
 use App\Service\ProjectContext;
+use InvalidArgumentException;
 use KevinPapst\AdminLTEBundle\Event\SidebarMenuEvent;
 use KevinPapst\AdminLTEBundle\Model\MenuItemModel;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -48,7 +49,11 @@ class SidebarBuilderSubscriber implements EventSubscriberInterface
 
     public function onSetupSidebar(SidebarMenuEvent $event): void
     {
-        $route = $event->getRequest()->get('_route');
+        $request = $event->getRequest();
+        if (!$request) {
+            throw new InvalidArgumentException('breadrumbs cannot be build without request');
+        }
+        $route = $request->get('_route');
         $currentProject = $this->projectContext->getProject();
 
         $event->addItem(new MenuItemModel(
@@ -76,7 +81,7 @@ class SidebarBuilderSubscriber implements EventSubscriberInterface
                 'fa fa-tasks fa-fw'
             ));
             if ($route && preg_match('/^task./', $route)) {
-                if ($taskId = $event->getRequest()->get('taskId')) {
+                if ($taskId = $request->get('taskId')) {
                     $currentTask = $this->taskRepository->findByTaskId($taskId);
                     if ($currentTask) {
                         $currentTaskMenu = new MenuItemModel(
@@ -117,7 +122,7 @@ class SidebarBuilderSubscriber implements EventSubscriberInterface
                 'far fa-copy fa-fw'
             ));
             if ($route && preg_match('/^doc./', $route)) {
-                if ($docId = $event->getRequest()->get('docId')) {
+                if ($docId = $request->get('docId')) {
                     $currentDoc = $this->docRepository->getByDocId($docId);
                     if ($currentDoc) {
                         $currentDocMenu = new MenuItemModel(
@@ -164,8 +169,8 @@ class SidebarBuilderSubscriber implements EventSubscriberInterface
         if($this->isGranted(UserPermissionsEnum::PERM_USER_LIST)) {
             $event->addItem(new MenuItemModel(
                 'users',
-                'menu.users',
-                'user.list',
+                $this->security->isGranted(UserPermissionsEnum::PERM_USER_EDIT) ? 'menu.user.management.list' : 'menu.user.list',
+                $this->security->isGranted(UserPermissionsEnum::PERM_USER_EDIT) ? 'user.management.list' : 'user.list',
                 [],
                 'fa fa-users fa-fw'
             ));

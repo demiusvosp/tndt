@@ -72,7 +72,7 @@ class UserRoleExtension extends AbstractExtension
             return sprintf(
                 '%s%s%s',
                 $html ? '<b>' : '',
-                strtoupper($this->translator->trans(UserRolesEnum::label($role))),
+                $this->translator->trans(UserRolesEnum::label($role)),
                 $html ? '</b>' : ''
             );
         }
@@ -80,7 +80,7 @@ class UserRoleExtension extends AbstractExtension
         [$projectRole, $projectSuffix] = UserRolesEnum::explodeSyntheticRole($role);
         if (empty($projectRole) || empty($projectSuffix)) {
             throw new \InvalidArgumentException("Невозможно интерпретировать роль $role. Роль должна или 
-                быть списке UserRolesEnum, или быть правильно составленной синтетической ролью PROLE_<NAME>_<PROJECT>");
+                быть в списке UserRolesEnum, или быть правильно составленной синтетической ролью PROLE_<NAME>_<PROJECT>");
         }
         if (! $this->security->isGranted(UserPermissionsEnum::PERM_PROJECT_VIEW, $projectSuffix)) {
             return '';
@@ -107,6 +107,9 @@ class UserRoleExtension extends AbstractExtension
         $labelListLength = 0;
         $labelList = [];
         foreach ($roles as $role) {
+            if ($role === UserRolesEnum::ROLE_USER) {
+                continue;
+            }
             $labelItem = $this->roleLabel($role, true);
             if (!empty($labelItem)) {
                 $labelList[] = $labelItem;
@@ -116,6 +119,9 @@ class UserRoleExtension extends AbstractExtension
                 array_pop($labelList);
                 break;
             }
+        }
+        if (count($labelList) === 0 ) {
+            $labelList[] = $this->roleLabel(UserRolesEnum::ROLE_USER);
         }
 
         return implode(', ', $labelList);
