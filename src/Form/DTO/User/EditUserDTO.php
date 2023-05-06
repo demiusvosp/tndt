@@ -9,7 +9,6 @@ declare(strict_types=1);
 namespace App\Form\DTO\User;
 
 use App\Entity\User;
-use Happyr\Validator\Constraint\EntityExist;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class EditUserDTO
@@ -21,7 +20,7 @@ class EditUserDTO
 
     /**
      * @var string
-     * @Assert\Email()
+     * @Assert\Email(message="user.email.incorrect")
      */
     private string $email = '';
 
@@ -41,12 +40,6 @@ class EditUserDTO
         $this->email = $user->getEmail();
         $this->locked = $user->isLocked();
         $this->password = '';
-    }
-
-    public function fillProfile(User $user): void
-    {
-        $user->setName($this->name);
-        $user->setEmail($this->email);
     }
 
     /**

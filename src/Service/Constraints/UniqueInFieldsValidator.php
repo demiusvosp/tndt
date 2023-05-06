@@ -36,6 +36,7 @@ class UniqueInFieldsValidator extends ConstraintValidator
         );
     }
 
+    /** @noinspection SlowArrayOperationsInLoopInspection */
     public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof UniqueInFields) {

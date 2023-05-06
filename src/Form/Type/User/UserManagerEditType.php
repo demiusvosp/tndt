@@ -8,8 +8,10 @@ declare(strict_types=1);
 
 namespace App\Form\Type\User;
 
+use App\Form\DTO\User\EditUserDTO;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class UserManagerEditType extends EditProfileType
 {
@@ -22,5 +24,10 @@ class UserManagerEditType extends EditProfileType
                 CheckboxType::class,
                 ['required' => false, 'label' => 'user.locked.label', 'help' => 'user.locked.help']
             );
+    }
+
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        $resolver->setDefault('data_class', EditUserDTO::class);
     }
 }

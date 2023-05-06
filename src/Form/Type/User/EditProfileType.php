@@ -8,10 +8,8 @@ declare(strict_types=1);
 
 namespace App\Form\Type\User;
 
-use App\Form\DTO\User\EditUserDTO;
+use App\Form\DTO\User\SelfEditUserDTO;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -39,6 +37,7 @@ class EditProfileType extends AbstractType
                 [
                     'type' => PasswordType::class,
                     'required' => false,
+                    'invalid_message' => 'user.password.not_same',
                     'first_name' => 'password',
                     'first_options' => ['label' => 'user.password.label', 'help' => 'user.password.help'],
                     'second_name' => 'passwordRepeat',
@@ -49,6 +48,6 @@ class EditProfileType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefault('data_class', EditUserDTO::class);
+        $resolver->setDefault('data_class', SelfEditUserDTO::class);
     }
 }
