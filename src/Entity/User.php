@@ -51,9 +51,9 @@ class User implements UserInterface, Serializable
     protected bool $locked = false;
 
     /**
-     * @ORM\Column(type="json")
+     * @ORM\Column(name="global_roles", type="json")
      */
-    protected array $roles = [];
+    protected array $globalRoles = [];
 
     /**
      * @var ProjectUser[]
@@ -172,9 +172,6 @@ class User implements UserInterface, Serializable
      */
     public function setLocked(bool $locked): User
     {
-        if($locked) {
-            $this->removeRole(UserRolesEnum::ROLE_USER);
-        }
         $this->locked = $locked;
         return $this;
     }
@@ -182,17 +179,30 @@ class User implements UserInterface, Serializable
     /**
      * @return array
      */
+    public function getGlobalRoles(): array
+    {
+        return $this->globalRoles;
+    }
+
+    /**
+     * @param array $globalRoles
+     */
+    public function setGlobalRoles(array $globalRoles): void
+    {
+        $this->globalRoles = $globalRoles;
+    }
+
+    /**
+     * @return array
+     */
     public function getRoles(): array
     {
-        // глобальные роли
-        $roles = $this->roles;
+        $roles = $this->globalRoles;
 
-// @TODO tndt-98 Удалить. Я так и не нашел этому внятного применения, а местами оно мешает
-//
-//        // общая роль любого зарегистрированного пользователя, если у него нет более специфичной роли
-//        if(count($roles) === 0) {
-//            $roles[] = UserRolesEnum::ROLE_USER;
-//        }
+        // общая роль любого зарегистрированного пользователя, если у него нет более специфичной роли
+        if(count($roles) === 0) {
+            $roles[] = UserRolesEnum::ROLE_USER;
+        }
 
         // роли в проектах
         foreach ($this->getProjectUsers() as $projectUser) {
@@ -208,23 +218,19 @@ class User implements UserInterface, Serializable
      */
     public function setRoles(array $roles): User
     {
-        // @TODO здесь вырезать рои проектов и переложить в user->projectUsers
-        $this->roles = $roles;
+        $globalRoles = [];
+        foreach ($roles as $role) {
+            if (!UserRolesEnum::isProjectRole($role)) {
+                $globalRoles[] = $role;
+            }
+        }
+
+        $this->globalRoles = $globalRoles;
         return $this;
     }
 
     /**
      * @param string $role
-     * @return $this
-     */
-    public function addRole(string $role): User
-    {
-        // @TODO вычленить роли projectUsers и не класть их в this->roles
-        $this->roles = array_unique(array_merge($this->roles, [$role]));
-        return $this;
-    }
-
-    /**
      * @param string|Project|null $project
      * @return bool
      */
@@ -240,7 +246,7 @@ class User implements UserInterface, Serializable
         }
         if($project === null) {
             // ищем глобальную роль
-            return in_array($role, $this->roles, true);
+            return in_array($role, $this->globalRoles, true);
         }
 
         if ($project instanceof Project) {
@@ -250,22 +256,14 @@ class User implements UserInterface, Serializable
         foreach ($this->getProjectUsers() as $projectUser) {
             $projectUser->getRole();
 
-            if ($projectUser->getProject()->getSuffix() === $project && $projectUser->getRole()->getValue() === $role) {
+            if ($projectUser->getProject()->getSuffix() === $project
+                && $projectUser->getRole()->getValue() === $role
+            ) {
                 return true;
             }
         }
 
         return false;
-    }
-
-    /**
-     * @param string $role
-     * @return $this
-     */
-    public function removeRole(string $role): User
-    {
-        $this->roles = array_diff($this->roles, [$role]);
-        return $this;
     }
 
     public function hasProject($project): bool
