@@ -8,6 +8,10 @@ declare(strict_types=1);
 
 namespace App\Service;
 
+use App\Dictionary\Fetcher;
+use App\Dictionary\Object\Task\StageTypesEnum;
+use App\Dictionary\Object\Task\TaskStage;
+use App\Dictionary\TypesEnum;
 use App\Entity\Task;
 use App\Entity\User;
 use App\Event\AppEvents;
@@ -18,12 +22,31 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 class TaskService
 {
     private CommentService $commentService;
+    private Fetcher $dictionaryFetcher;
     private EventDispatcherInterface $eventDispatcher;
 
-    public function __construct(CommentService $commentService, EventDispatcherInterface $eventDispatcher)
+    public function __construct(
+        CommentService $commentService,
+        Fetcher $dictionaryFetcher,
+        EventDispatcherInterface $eventDispatcher)
     {
         $this->commentService = $commentService;
+        $this->dictionaryFetcher = $dictionaryFetcher;
         $this->eventDispatcher = $eventDispatcher;
+    }
+
+    public function availableStages(Task $task, ?User $user): array
+    {
+        /** @var TaskStage $stagesDictionary */
+        $stagesDictionary = $this->dictionaryFetcher->getDictionary(TypesEnum::TASK_STAGE(), $task);
+
+        $items[StageTypesEnum::STAGE_ON_NORMAL] = $stagesDictionary->getItemsByTypes(
+            [StageTypesEnum::STAGE_ON_NORMAL()]
+        );
+        $items[StageTypesEnum::STAGE_ON_CLOSED] = $stagesDictionary->getItemsByTypes(
+            [StageTypesEnum::STAGE_ON_CLOSED()]
+        );
+        return $items;
     }
 
     public function close(CloseTaskDTO $dto, Task $task, User $whoClose): void

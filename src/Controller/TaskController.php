@@ -80,14 +80,20 @@ class TaskController extends AbstractController
      * @param Request $request
      * @return Response
      */
-    public function index(Request $request): Response
+    public function index(Request $request, TaskService $taskService): Response
     {
         $task = $this->taskRepository->findByTaskId($request->get('taskId'));
         if (!$task) {
             throw $this->createNotFoundException($this->translator->trans('task.not_found'));
         }
 
-        return $this->render('task/index.html.twig', ['task' => $task]);
+        return $this->render(
+            'task/index.html.twig',
+            [
+                'task' => $task,
+                'availableStages' => $taskService->availableStages($task),
+            ]
+        );
     }
 
     /**

@@ -93,6 +93,11 @@
                             <a class="btn btn-default btn-secondary" href="{{ path('task.edit', {'taskId':task.taskId}) }}">{{ 'Edit'|trans }}</a>
                         {% endif %}
                         {% if not task.isClosed and is_granted("PERM_TASK_CLOSE") %}
+                            {% for stage in availableStages['normal'] %}
+                                <a class="btn btn-default btn-secondary">{{ 'task.stage.change_to'|trans ~ ' "' ~ stage.description ~ '"' }}</a>
+                            {% endfor %}
+                        {% endif %}
+                        {% if not task.isClosed and is_granted("PERM_TASK_CLOSE") %}
                             <button
                                     class="btn btn-secondary btn-warning confirm-close"
                                     data-action="{{ path('task.close', {'taskId':task.taskId}) }}"

@@ -9,7 +9,7 @@ declare(strict_types=1);
 namespace App\Dictionary\Object\Task;
 
 use App\Dictionary\Object\Dictionary;
-use App\Dictionary\Object\DictionaryItem;
+use App\Exception\DictionaryException;
 
 class TaskStage extends Dictionary
 {
@@ -37,5 +37,28 @@ class TaskStage extends Dictionary
             return array_key_first($openItems);
         }
         return 0;
+    }
+
+    /**
+     * @param StageTypesEnum[] $types
+     * @return TaskStageItem[]
+     */
+    public function getItemsByTypes(array $types): array
+    {
+        return array_filter(
+            $this->items,
+            static function(TaskStageItem $item) use ($types) {
+                return in_array($item->getType(), $types);
+            }
+        );
+    }
+
+    public function getItem($value): TaskStageItem
+    {
+        $item = parent::getItem($value);
+        if (!$item instanceof TaskStageItem) {
+            throw new DictionaryException('Неизвестный элемент справочника ' . $value);
+        }
+        return $item;
     }
 }

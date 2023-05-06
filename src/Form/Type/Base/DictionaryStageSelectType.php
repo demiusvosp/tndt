@@ -9,7 +9,7 @@ declare(strict_types=1);
 namespace App\Form\Type\Base;
 
 use App\Dictionary\Object\Task\StageTypesEnum;
-use App\Dictionary\Object\Task\TaskStageItem;
+use App\Dictionary\Object\Task\TaskStage;
 use App\Dictionary\TypesEnum;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -34,37 +34,24 @@ class DictionaryStageSelectType extends DictionarySelectType
             'choices',
             function(Options $options) {
                 $choices = [];
+                /** @var TaskStage $dictionary */
                 $dictionary = $this->fetcher->getDictionary(
                     TypesEnum::TASK_STAGE(),
                     $this->projectContext->getProject()
                 );
 
-                $scenario = $options['scenario'] ?? self::SCENARIO_EDIT;
-                $allowedItems = array_filter(
-                    $dictionary->getItems(),
-                    static function (TaskStageItem $item) use ($scenario) {
-                        if ($scenario === self::SCENARIO_NEW
-                            && $item->getType()->equals(StageTypesEnum::STAGE_ON_OPEN())
-                        ) {
-                            return true;
-                        }
-                        if ($scenario === self::SCENARIO_EDIT
-                            && in_array(
-                                $item->getType()->getValue(),
-                                [StageTypesEnum::STAGE_ON_OPEN, StageTypesEnum::STAGE_ON_NORMAL],
-                                true
-                            )
-                        ) {
-                            return true;
-                        }
-                        if ($scenario === self::SCENARIO_CLOSE
-                            && $item->getType()->equals(StageTypesEnum::STAGE_ON_CLOSED())
-                        ) {
-                            return true;
-                        }
-                        return false;
-                    }
-                );
+                switch ($options['scenario'] ?? self::SCENARIO_EDIT) {
+                    case self::SCENARIO_NEW:
+                        $types = [StageTypesEnum::STAGE_ON_OPEN()];
+                        break;
+                    case self::SCENARIO_CLOSE:
+                        $types = [StageTypesEnum::STAGE_ON_CLOSED()];
+                        break;
+                    case self::SCENARIO_EDIT:
+                    default:
+                        $types = [StageTypesEnum::STAGE_ON_OPEN, StageTypesEnum::STAGE_ON_NORMAL];
+                }
+                $allowedItems = $dictionary->getItemsByTypes($types);
 
                 foreach ($allowedItems as $item) {
                     $choices[$item->getName()] = $item->getId();

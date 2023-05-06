@@ -81,6 +81,9 @@ task.edit:
 task.close:
     path: /p/{taskId<\w+\-\d+>}/close
     controller: App\Controller\TaskController::close
+task.change_stage:
+    path: /p/{taskId<\w+\-\d+>}/change_stage
+    controller: App\Controller\TaskController::changeStage
 
 #Docs
 doc.list:
