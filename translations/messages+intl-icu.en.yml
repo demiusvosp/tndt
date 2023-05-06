@@ -30,8 +30,8 @@ breadcrumb:
     home: Users
   user.management:
     create: New...
-    edit: Edit...
-    home: User management
+    edit: Common
+    home: Management
 Close: Закрыть
 closed: закрыта
 comment:
@@ -284,6 +284,11 @@ user:
     label: Пользователь заблокирован
     short: заблокирован
     help: Заблокированый пользователь больше не сможет входить и совершать какие-либо действия. Если необходимо забрать доступ пользователя к проекту, оставив возможность быть посетителем, стоит исключить его и проекта, а не блокировать
+  management:
+    edit:
+      title: User manager
+      common: Common
+      permission: Permission
   name:
     label: Имя пользователя
     help: Опционален. Для проектов где приняты формальные имена

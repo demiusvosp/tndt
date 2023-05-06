@@ -227,7 +227,7 @@ class BreadcrumbsBuilderSubscriber implements EventSubscriberInterface
                     $userManagementMenu->addChild($userItemMenu);
                 }
 
-                $event->addItem($userManagementMenu);
+                $userMenu->addChild($userManagementMenu);
             }
         }
 

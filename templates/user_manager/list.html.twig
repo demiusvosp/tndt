@@ -32,7 +32,7 @@
                                 </a></td>
                                 <td>{{ user.name }}</td>
                                 <td>{{ user.email }}</td>
-                                <td>{{ user.locked }}</td>
+                                <td>{{ user.locked ? 'user.locked.short'|trans }}</td>
                                 <td>{{ role_label_list(user.roles) }}</td>
                                 <td>{{ user.createdAt|ago }}</td>
                                 <td>{{ user.lastLogin|ago }}</td>

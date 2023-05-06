@@ -1,13 +1,8 @@
-{% extends 'one_block_layout.html.twig' %}
+{% extends 'user_manager/edit_base.html.twig' %}
 
-{% block title %} {{ user.username }} - {{ 'user.edit'|trans }} {% endblock %}
-{% block page_title%}{% endblock %}
-{% block page_subtitle %}{% endblock %}
+{% block edit_page_title%}{{ 'user.management.edit.common'|trans }}{% endblock %}
 
-{% block box_title %}
-    {{ user.username }} - {{ 'user.edit'|trans }}
-{% endblock %}
-{% block box_body %}
+{% block edit_page %}
     {{ form_start(form) }}
     {{ form_row(form.name) }}
     {{ form_row(form.email) }}
