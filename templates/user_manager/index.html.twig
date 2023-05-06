@@ -61,9 +61,7 @@
                 {% block box_body %}
                     <div class="btn-group-vertical" role="toolbar" aria-label="{{ 'ControlPanel'|trans }}">
                         <div class="btn-group-vertical" role="group">
-                            {% if user.name == app.user.name %}
-                                <a class="btn btn-default btn-secondary" href="{{ path('user.edit') }}">{{ 'Edit_user'|trans }}</a>
-                            {% endif %}
+                            <a class="btn btn-default btn-secondary" href="{{ path('user.management.edit', {'username': user.username}) }}">{{ 'Edit_user'|trans }}</a>
                         </div>
                     </div>
                 {% endblock %}

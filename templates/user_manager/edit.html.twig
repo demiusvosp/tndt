@@ -1,20 +1,18 @@
 {% extends 'one_block_layout.html.twig' %}
 
-{% block title %} {{ user.username }} - {{ 'user.self_edit'|trans }} {% endblock %}
+{% block title %} {{ user.username }} - 'user.edit'|trans }} {% endblock %}
 {% block page_title%}{% endblock %}
 {% block page_subtitle %}{% endblock %}
 
 {% block box_title %}
-    {{ user.username }} - {{ 'user.self_edit'|trans }}
+    {{ user.username }} - {{ 'user.edit'|trans }}
 {% endblock %}
 {% block box_body %}
     {{ form_start(form) }}
     {{ form_row(form.name) }}
     {{ form_row(form.email) }}
     {{ form_row(form.password) }}
-    {% if form.locked is defined %}
-        {{ form_row(form.locked) }}
-    {% endif %}
+    {{ form_row(form.locked) }}
 {% endblock %}
 
 {% block box_footer %}

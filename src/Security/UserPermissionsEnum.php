@@ -54,8 +54,6 @@ class UserPermissionsEnum extends UserRolesEnum
             // сейчас у нас нет выделенного менеджера юзеров или модератора, эти пермишены доступны только root
 //            self::ROLE_USER_MANAGER => [
 //                self::PERM_USER_CREATE,
-//                self::PERM_USER_LIST,
-//                self::PERM_USER_LOCK,
 //                self::PERM_USER_LOCK,
 //                self::PERM_PROJECT_CREATE
 //            ],
@@ -77,6 +75,9 @@ class UserPermissionsEnum extends UserRolesEnum
                 self::PERM_PROJECT_VIEW,
                 self::PERM_TASK_VIEW,
                 self::PERM_DOC_VIEW,
+            ],
+            self::ROLE_USER => [
+                self::PERM_USER_LIST
             ],
         ];
     }

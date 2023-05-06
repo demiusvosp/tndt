@@ -10,8 +10,11 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\DTO\User\EditUserDTO;
-use App\Form\Type\User\EditProfileType;
+use App\Form\DTO\User\NewUserDTO;
+use App\Form\Type\User\UserManagerEditType;
+use App\Form\Type\User\NewUserType;
 use App\Repository\UserRepository;
+use App\Security\UserPermissionsEnum;
 use Happyr\DoctrineSpecification\Spec;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -20,8 +23,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
-class UserController extends AbstractController
+class UserManagerController extends AbstractController
 {
     private const USER_PER_PAGE = 50;
 
@@ -47,7 +51,9 @@ class UserController extends AbstractController
             throw $this->createNotFoundException('User not found');
         }
 
-        return $this->render('user\index.html.twig', ['user' => $user, 'isSelf' => ($user === $this->getUser())]);
+        return $this->render(
+            'user_manager\index.html.twig',
+            ['user' => $user, 'isSelf' => ($user === $this->getUser())]);
     }
 
     /**
@@ -68,27 +74,64 @@ class UserController extends AbstractController
             self::USER_PER_PAGE
         );
 
-        return $this->render('user/list.html.twig', ['users' => $users]);
+        return $this->render('user_manager/list.html.twig', ['users' => $users]);
     }
 
     /**
-     * @IsGranted("IS_AUTHENTICATED_FULLY")
+     * @IsGranted("PERM_USER_CREATE")
      * @param Request $request
+     * @param UserPasswordEncoderInterface $passwordEncoder
+     * @return Response
+     */
+    public function create(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
+    {
+        $formData = new NewUserDTO();
+        $form = $this->createForm(NewUserType::class, $formData);
+
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()) {
+            $user = new User($formData->getUsername());
+            $formData->fillProfile($user);
+            $user->setPassword($passwordEncoder->encodePassword($user, $formData->getPassword()));
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($user);
+            $em->flush();
+            $this->addFlash('success', 'user.create.success');
+            return $this->redirectToRoute('user.index', ['username' => $user->getUsername()]);
+        }
+
+        return $this->render('user_manager/create.html.twig', ['form' => $form->createView()]);
+    }
+
+    /**
+     * @IsGranted("PERM_USER_EDIT")
+     * @param Request $request
+     * @param AuthorizationCheckerInterface $authorizationChecker
      * @param UserPasswordEncoderInterface $passwordEncoder
      * @return Response
      */
     public function edit(
         Request $request,
+        AuthorizationCheckerInterface $authorizationChecker,
         UserPasswordEncoderInterface $passwordEncoder): Response
     {
-        /** @var User $user */
-        $user = $this->getUser();
+        $user = $this->userRepository->findByUsername($request->get('username'));
+        if (!$user) {
+            throw $this->createNotFoundException('User not found');
+        }
+
         $formData = new EditUserDTO($user);
-        $form = $this->createForm(EditProfileType::class, $formData);
+        $form = $this->createForm(UserManagerEditType::class, $formData);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $formData->fillProfile($user);
+            if($authorizationChecker->isGranted(UserPermissionsEnum::PERM_USER_LOCK)
+                && $formData->getLocked() !== null
+            ) {
+                $user->setLocked((bool) $formData->getLocked());
+            }
             if (!empty($formData->getPassword())) {
                 $this->addFlash('warning', 'user.edit.password_changed');
                 $user->setPassword($passwordEncoder->encodePassword($user, $formData->getPassword()));
@@ -99,7 +142,7 @@ class UserController extends AbstractController
         }
 
         return $this->render(
-            'user/edit.html.twig',
+            'user_manager/edit.html.twig',
             [
                 'user' => $user,
                 'form' => $form->createView()
