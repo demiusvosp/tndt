@@ -11,29 +11,35 @@ namespace App\EventSubscriber\Menu;
 use App\Repository\DocRepository;
 use App\Repository\TaskRepository;
 use App\Repository\UserRepository;
+use App\Security\UserPermissionsEnum;
 use App\Service\ProjectContext;
+use InvalidArgumentException;
 use KevinPapst\AdminLTEBundle\Event\BreadcrumbMenuEvent;
 use KevinPapst\AdminLTEBundle\Event\SidebarMenuEvent;
 use KevinPapst\AdminLTEBundle\Model\MenuItemModel;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Security\Core\Security;
 
 class BreadcrumbsBuilderSubscriber implements EventSubscriberInterface
 {
     private const BREADCRUMB_ITEM_LENGTH = 40;
 
     private ProjectContext $projectContext;
+    private Security $security;
     private TaskRepository $taskRepository;
     private DocRepository $docRepository;
     private UserRepository $userRepository;
 
     public function __construct(
         ProjectContext $projectContext,
+        Security $security,
         TaskRepository $taskRepository,
         DocRepository  $docRepository,
         UserRepository $userRepository
     )
     {
         $this->projectContext = $projectContext;
+        $this->security = $security;
         $this->taskRepository = $taskRepository;
         $this->docRepository = $docRepository;
         $this->userRepository = $userRepository;
@@ -50,7 +56,11 @@ class BreadcrumbsBuilderSubscriber implements EventSubscriberInterface
     {
         //@TODO вытащить состав меню в конфигурацию (возможно даже с признаками логики)
 
-        $route = $event->getRequest()->get('_route');
+        $request = $event->getRequest();
+        if (!$request) {
+            throw new InvalidArgumentException('breadrumbs cannot be build without request');
+        }
+        $route = $request->get('_route');
         $currentProject = $this->projectContext->getProject();
 
         if ($currentProject) {
@@ -89,7 +99,7 @@ class BreadcrumbsBuilderSubscriber implements EventSubscriberInterface
                     ['suffix' => $currentProject->getSuffix()],
                     'fa fa-tasks'
                 );
-                if ($taskId = $event->getRequest()->get('taskId')) {
+                if ($taskId = $request->get('taskId')) {
                     $currentTask = $this->taskRepository->findByTaskId($taskId);
                     if ($currentTask) {
                         $currentTaskMenu = new MenuItemModel(
@@ -128,7 +138,7 @@ class BreadcrumbsBuilderSubscriber implements EventSubscriberInterface
                     'far fa-copy'
                 );
 
-                if ($docSlug = $event->getRequest()->get('slug')) {
+                if ($docSlug = $request->get('slug')) {
                     $currentDoc = $this->docRepository->getBySlug($docSlug);
                     if ($currentDoc) {
                         $currentDocMenu = new MenuItemModel(
@@ -168,14 +178,15 @@ class BreadcrumbsBuilderSubscriber implements EventSubscriberInterface
         }
 
         if ($route && preg_match('/^user./', $route)) {
+
             $userMenu = new MenuItemModel(
                 'user.home',
                 'breadcrumb.user.home',
-                'user.list',
+                $this->security->isGranted(UserPermissionsEnum::PERM_USER_LIST) ? 'user.list' : null,
                 [],
                 'fa fa-users'
             );
-            if ($username = $event->getRequest()->get('username')) {
+            if ($username = $request->get('username')) {
                 $user = $this->userRepository->findByUsername($username);
                 if ($user) {
                     $currentUserMenu = new MenuItemModel(

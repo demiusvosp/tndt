@@ -1,6 +1,6 @@
 {% extends 'base_layout.html.twig' %}
 
-{% block title %}TnDT {{ 'Administrate'|trans }} - {{ 'User_list'|trans }}{% endblock %}
+{% block title %}TnDT {{ 'User_list'|trans }}{% endblock %}
 {% block page_title %}  {% endblock %}
 {% block page_subtitle %}{% endblock %}
 
@@ -16,11 +16,11 @@
                 {% block box_body %}
                     <table class="table table-condensed">
                         <tr>
-                            <th>{{ knp_pagination_sortable(users, 'user.username.label'|trans, 't.username') }}</th>
-                            <th>{{ knp_pagination_sortable(users, 'user.name.label'|trans, 't.name') }}</th>
-                            <th>{{ knp_pagination_sortable(users, 'user.roles.label'|trans, 't.roles') }}</th>
-                            <th>{{ knp_pagination_sortable(users, 'user.createdAt.label'|trans, 't.createdAt') }}</th>
-                            <th>{{ knp_pagination_sortable(users, 'user.lastLogin.label'|trans, 't.lastLogin') }}</th>
+                            <th>{{ knp_pagination_sortable(users, 'user.username.label'|trans, 'root.username') }}</th>
+                            <th>{{ knp_pagination_sortable(users, 'user.name.label'|trans, 'root.name') }}</th>
+                            <th>{{ 'user.roles.label'|trans }}</th>
+                            <th>{{ knp_pagination_sortable(users, 'user.createdAt.label'|trans, 'root.createdAt') }}</th>
+                            <th>{{ knp_pagination_sortable(users, 'user.lastLogin.label'|trans, 'root.lastLogin') }}</th>
                         </tr>
                         {%  for user in users %}
                             <tr>
