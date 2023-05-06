@@ -63,6 +63,11 @@ services:
         tags:
             - { name: monolog.logger, channel: security }
 
+    App\Security\Voter\GlobalRolesVoter:
+        class: 'App\Security\Voter\GlobalRolesVoter'
+        tags:
+            - { name: monolog.logger, channel: security }
+
     App\Service\Badges\DocBadgesHandler:
         class: 'App\Service\Badges\DocBadgesHandler'
         tags: ['app.badges_handler']

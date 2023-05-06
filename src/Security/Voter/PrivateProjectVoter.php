@@ -26,7 +26,7 @@ class PrivateProjectVoter implements VoterInterface, LoggerAwareInterface
 {
     private HierarchyHelper $hierarchyHelper;
     private ProjectContext $projectContext;
-    private LoggerInterface $logger;
+    private LoggerInterface $securityLogger;
 
     public function __construct(
         HierarchyHelper $hierarchyHelper,
@@ -36,9 +36,9 @@ class PrivateProjectVoter implements VoterInterface, LoggerAwareInterface
         $this->projectContext = $projectContext;
     }
 
-    public function setLogger(LoggerInterface $logger): void
+    public function setLogger(LoggerInterface $securityLogger): void
     {
-        $this->logger = $logger;
+        $this->securityLogger = $securityLogger;
     }
 
     public function vote(TokenInterface $token, $subject, array $attributes): int
@@ -52,26 +52,26 @@ class PrivateProjectVoter implements VoterInterface, LoggerAwareInterface
         }
 
         if(!$subject) {
-            $this->logger->debug('Not given or current project - abstain');
+            $this->securityLogger->debug('Not given or current project - abstain');
             // способны обработать только web-страницы с переданным project
             return VoterInterface::ACCESS_ABSTAIN;
         }
 
         foreach ($token->getRoleNames() as $fullRoleName) {
             if (UserRolesEnum::isValid($fullRoleName)) {
-                $this->logger->debug('{role} is global role - skip', ['role' => $fullRoleName]);
+                $this->securityLogger->debug('{role} is global role - skip', ['role' => $fullRoleName]);
                 // это глобальная роль, пусть с ней RoleVoter разбирается
                 continue;
             }
             [$role, $roleProject] = UserRolesEnum::explodeSyntheticRole($fullRoleName);
             if (empty($role) || empty($roleProject)) {
-                $this->logger->debug('{role} is incorrect project role - skip', ['role' => $fullRoleName]);
+                $this->securityLogger->warning('{role} is incorrect project role - skip', ['role' => $fullRoleName]);
                 // это не роль в проекте
                 continue;
             }
 
             if ($roleProject !== $subject) {
-                $this->logger->debug(
+                $this->securityLogger->debug(
                     'It [{role} - {roleProject}] is not subject {subjectProject} project - skip',
                     ['role' => $role, 'roleProject' => $roleProject, 'subjectProject' => $subject]
                 );
@@ -79,20 +79,15 @@ class PrivateProjectVoter implements VoterInterface, LoggerAwareInterface
                 continue;
             }
             if (!UserRolesEnum::isValid($role)) {
-                $this->logger->debug('{role} is invalid self project role - critical error', ['role' => $role]);
+                $this->securityLogger->error('{role} is invalid self project role - critical error', ['role' => $role]);
                 // неизвестная роль
                 throw new \DomainException('Неизвестная роль ' . $role);
             }
 
             foreach ($attributes as $attribute) {
-                if (UserRolesEnum::isProjectRole($attribute)) {
-                    $this->logger->debug('Its check not project attribute - skip');
-                    // действия требующие root пусть RootVoter разбирает
-                    return VoterInterface::ACCESS_ABSTAIN;
-                }
-                if (UserPermissionsEnum::isValid($attribute)) {
+                if (UserPermissionsEnum::isValid($attribute) || UserRolesEnum::isProjectRole($attribute)) {
                     if ($this->hierarchyHelper->has($attribute, $role)) {
-                        $this->logger->debug(
+                        $this->securityLogger->debug(
                             'Project {project} use {role} by granted {attribute} - grant',
                             ['project' => $roleProject, 'attribute' => $attribute, 'role' => $role]
                         );
