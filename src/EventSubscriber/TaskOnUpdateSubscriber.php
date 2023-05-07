@@ -44,7 +44,7 @@ class TaskOnUpdateSubscriber implements EventSubscriberInterface
             return;
         }
         if (!$event->isBecomeClosed() && $event->getTask()->isClosed()) {
-            return;
+            return; // не стала закрытой, а была закрытой ранее
         }
 
         $event->getTask()->setUpdatedAt(new \DateTime());

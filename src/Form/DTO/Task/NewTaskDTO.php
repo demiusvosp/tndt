@@ -19,7 +19,7 @@ class NewTaskDTO implements WithProjectInterface
     private Project $project;
 
     /**
-     * @var string
+     * @var string|null
      * @EntityExist(entity="App\Entity\User", property="username", message="task.assignTo.not_found")
      */
     private ?string $assignedTo = null;
@@ -29,13 +29,13 @@ class NewTaskDTO implements WithProjectInterface
      * @Assert\NotBlank()
      * @Assert\Length(min=1, max=255, maxMessage="task.caption.to_long")
      */
-    private $caption = '';
+    private string $caption = '';
 
     /**
      * @var string
      * @Assert\Length(max=10000, maxMessage="task.description.to_long")
      */
-    private $description = '';
+    private string $description = '';
 
     /**
      * @var int
@@ -76,7 +76,7 @@ class NewTaskDTO implements WithProjectInterface
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getAssignedTo(): ?string
     {
@@ -84,10 +84,10 @@ class NewTaskDTO implements WithProjectInterface
     }
 
     /**
-     * @param string $assignedTo
+     * @param string|null $assignedTo
      * @return NewTaskDTO
      */
-    public function setAssignedTo(string $assignedTo): NewTaskDTO
+    public function setAssignedTo(?string $assignedTo): NewTaskDTO
     {
         $this->assignedTo = $assignedTo;
         return $this;
