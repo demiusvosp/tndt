@@ -17,12 +17,12 @@ class TaskEvent extends Event
     /**
      * @var bool стала закрытой. Некоторым обработчикам может быть важно задача закрыта в принципе, или в рамках этого действия её закрыли
      */
-    private bool $becomeClosed;
+    private bool $becameClosed;
 
-    public function __construct(Task $task, bool $becomeClosed)
+    public function __construct(Task $task, bool $becameClosed = false)
     {
         $this->task = $task;
-        $this->becomeClosed = $becomeClosed;
+        $this->becameClosed = $becameClosed;
     }
 
     /**
@@ -36,8 +36,8 @@ class TaskEvent extends Event
     /**
      * @return bool
      */
-    public function isBecomeClosed(): bool
+    public function isBecameClosed(): bool
     {
-        return $this->becomeClosed;
+        return $this->becameClosed;
     }
 }
