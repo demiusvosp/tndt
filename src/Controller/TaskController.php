@@ -6,9 +6,11 @@
  */
 namespace App\Controller;
 
+use App\Dictionary\Object\Task\StageTypesEnum;
 use App\Entity\Project;
 use App\Event\AppEvents;
 use App\Event\TaskEvent;
+use App\Exception\BadRequestException;
 use App\Exception\DomainException;
 use App\Form\DTO\Task\CloseTaskDTO;
 use App\Form\DTO\Task\EditTaskDTO;
@@ -27,6 +29,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
@@ -35,6 +38,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class TaskController extends AbstractController
 {
     private const TASK_PER_PAGE = 25;
+    private const CHANGE_STAGE_TOKEN = 'task-change-stage';
 
     private EventDispatcherInterface $eventDispatcher;
     private TranslatorInterface $translator;
@@ -80,18 +84,43 @@ class TaskController extends AbstractController
      * @param Request $request
      * @return Response
      */
-    public function index(Request $request, TaskService $taskService): Response
+    public function index(Request $request, TaskService $taskService, CsrfTokenManagerInterface $tokenManager): Response
     {
         $task = $this->taskRepository->findByTaskId($request->get('taskId'));
         if (!$task) {
             throw $this->createNotFoundException($this->translator->trans('task.not_found'));
         }
 
+        $edit = null;
+        if ($this->isGranted('PERM_TASK_EDIT')) {
+            $edit['action'] = $this->generateUrl('task.edit', ['taskId' => $task->getTaskId()]);
+        }
+        $editStages = [];
+        foreach ($taskService->availableStages($task, StageTypesEnum::STAGE_ON_NORMAL()) as $stage) {
+            $editStages[] = [
+                'label' => $stage->getDescription(),
+                'value' => $stage->getId()
+            ];
+        }
+        $stages = [
+            'action' => $this->generateUrl('task.change_stage', ['taskId' => $task->getTaskId()]),
+            'items' => $editStages,
+            'token' => $tokenManager->getToken(self::CHANGE_STAGE_TOKEN),
+        ];
+        $close = null;
+        if (!$task->isClosed() && $this->isGranted('PERM_TASK_CLOSE')) {
+            $close['action'] = $this->generateUrl('task.close', ['taskId' => $task->getTaskId()]);
+        }
+
         return $this->render(
             'task/index.html.twig',
             [
                 'task' => $task,
-                'availableStages' => $taskService->availableStages($task),
+                'controls' => [
+                    'edit' => $edit,
+                    'stages' => $stages,
+                    'close' => $close,
+                ],
             ]
         );
     }
@@ -99,6 +128,7 @@ class TaskController extends AbstractController
     /**
      * @IsGranted("PERM_TASK_CREATE")
      * @param Request $request
+     * @param Project $project
      * @param TaskFiller $taskFiller
      * @return Response
      */
@@ -182,6 +212,23 @@ class TaskController extends AbstractController
         }
 
         $this->addFlash('error', 'task.close.error');
+        return $this->redirectToRoute('task.index', ['taskId' => $task->getTaskId()]);
+    }
+
+    public function changeStage(Request $request, TaskService $taskService): Response
+    {
+        $task = $this->taskRepository->findByTaskId($request->get('taskId'));
+        if (!$task) {
+            throw $this->createNotFoundException($this->translator->trans('task.not_found'));
+        }
+        if (!$this->isCsrfTokenValid(self::CHANGE_STAGE_TOKEN, $request->request->get('_token'))) {
+            throw new BadRequestException();
+        }
+
+        $taskService->changeStage($task, $request->request->get('new_stage'));
+        $this->getDoctrine()->getManager()->flush();
+        $this->addFlash('success', 'task.change_stage.success');
+
         return $this->redirectToRoute('task.index', ['taskId' => $task->getTaskId()]);
     }
 }

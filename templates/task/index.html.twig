@@ -88,25 +88,35 @@
                     {{ 'ControlPanel'|trans }}
                 {% endblock  %}
                 {% block box_body %}
+                    <form action="{{ controls.stages.action }}" method="post">
                     <div class="btn-group-vertical" role="toolbar" aria-label="{{ 'ControlPanel'|trans }}">
-                        {% if is_granted("PERM_TASK_EDIT") %}
-                            <a class="btn btn-default btn-secondary" href="{{ path('task.edit', {'taskId':task.taskId}) }}">{{ 'Edit'|trans }}</a>
+                        {% if controls.edit %}
+                            <a class="btn btn-default btn-secondary" href="{{ controls.edit.action }}">{{ 'Edit'|trans }}</a>
                         {% endif %}
-                        {% if not task.isClosed and is_granted("PERM_TASK_CLOSE") %}
-                            {% for stage in availableStages['normal'] %}
-                                <a class="btn btn-default btn-secondary">{{ 'task.stage.change_to'|trans ~ ' "' ~ stage.description ~ '"' }}</a>
+                            {% for stage in controls.stages.items %}
+                                <button
+                                    class="btn btn-default btn-secondary"
+                                    type="submit"
+                                    name="new_stage"
+                                    value="{{ stage.value }}"
+                                >
+                                    {{ 'task.stage.change_to'|trans ~ ' "' ~ stage.label ~ '"' }}
+                                </button>
                             {% endfor %}
-                        {% endif %}
-                        {% if not task.isClosed and is_granted("PERM_TASK_CLOSE") %}
+                            <input type="hidden" name="_token" value="{{ controls.stages.token }}">
+                        {% if controls.close %}
                             <button
                                     class="btn btn-secondary btn-warning confirm-close"
-                                    data-action="{{ path('task.close', {'taskId':task.taskId}) }}"
+                                    data-action="{{ controls.close.action }}"
                             >
                                 {{ 'Close'|trans }}
                             </button>
-                            {{ mTask.close_task_modal(task) }}
                         {% endif %}
                     </div>
+                    </form>
+                    {% if controls.close %}
+                        {{ mTask.close_task_modal(task) }}
+                    {% endif %}
                 {% endblock %}
             {% endembed %}
             {% endif %}

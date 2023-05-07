@@ -80,9 +80,11 @@ task.edit:
     controller: App\Controller\TaskController::edit
 task.close:
     path: /p/{taskId<\w+\-\d+>}/close
+    methods: POST
     controller: App\Controller\TaskController::close
 task.change_stage:
     path: /p/{taskId<\w+\-\d+>}/change_stage
+    methods: POST
     controller: App\Controller\TaskController::changeStage
 
 #Docs

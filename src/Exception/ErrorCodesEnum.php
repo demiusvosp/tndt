@@ -25,6 +25,7 @@ class ErrorCodesEnum extends Enum
     public const DOMAIN_ERROR = 800;
     public const DICTIONARY_ERROR = 810;
     public const BAD_USER_ERROR = 820;
+    public const TASK_STAGE_ERROR = 830;
 
     public static function labels(): array
     {
@@ -37,7 +38,8 @@ class ErrorCodesEnum extends Enum
 
             self::DOMAIN_ERROR => 'domain_error',
             self::DICTIONARY_ERROR => 'dictionary_error',
-            self::BAD_USER_ERROR => 'bad_user'
+            self::BAD_USER_ERROR => 'bad_user',
+            self::TASK_STAGE_ERROR => 'task_stage_error',
         ];
     }
 
