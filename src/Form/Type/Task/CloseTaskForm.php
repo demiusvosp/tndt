@@ -25,7 +25,7 @@ class CloseTaskForm extends AbstractType
 {
     private TaskService $taskService;
 
-    public function __construct(Fetcher $dictionaryFetcher, TaskService $taskService)
+    public function __construct(TaskService $taskService)
     {
         $this->taskService = $taskService;
     }

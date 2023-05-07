@@ -52,7 +52,7 @@ class TaskFiller
 
     public function fillFromEditForm(EditTaskDTO $dto, Task $task): void
     {
-        if($dto->getProject() !== $task->getProject()) {
+        if($dto->getProject()->getSuffix() !== $task->getProject()->getSuffix()) {
             throw new DomainException('Нельзя поменять проект задачи. Для этого её надо конвертировать в другой проект.');
         }
 
