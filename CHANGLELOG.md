@@ -1,5 +1,19 @@
 # Changelog
 
+## [v0.2.2] - 2023-05-07
+
+### New feature
+- [tndt-25](http://tasks.demius.ru/p/tndt-25) - Гибкое описание времени
+- [tndt-89](http://tasks.demius.ru/p/tndt-89) - Переход с этапа на этап на странице задачи
+- [tndt-90](http://tasks.demius.ru/p/tndt-90) - Списки. номера задач/документов по правому краю
+### Refactoring
+- [tndt-96](http://tasks.demius.ru/p/tndt-96) - Добавить в проект Спецификации и перевести на них репозитории
+- [tndt-99](http://tasks.demius.ru/p/tndt-99) - Разделить UserController и пользовательский и менеджерский и tndt-98 Разобраться с User->getRoles()
+### Bugfixes
+- [tndt-83](http://tasks.demius.ru/p/tndt-83) - Закрытие задачи без комментария, не обновляет её дату
+- [tndt-98](http://tasks.demius.ru/p/tndt-98) - Разобраться с User->getRoles()
+- [tndt-106](http://tasks.demius.ru/p/tndt-106) - Временные зоны проекта. 
+
 ## [v0.2.1.1] - 2023-04-06
 
 ### Bugfixes
