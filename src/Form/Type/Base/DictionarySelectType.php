@@ -68,16 +68,22 @@ class DictionarySelectType extends AbstractType
             'choices',
             function(Options $options) {
                 $choices = [];
-                $dictionary = $this->fetcher->getDictionary(
-                    $options['dictionary'],
-                    $this->projectContext->getProject()
-                );
+                $items = $this->getItemsByDictionary($options['dictionary']);
 
-                foreach ($dictionary->getItems() as $item) {
+                foreach ($items as $item) {
                     $choices[$item->getName()] = $item->getId();
                 }
                 return $choices;
             }
         );
+    }
+
+    protected function getItemsByDictionary($dictionary): array
+    {
+        $dictionary = $this->fetcher->getDictionary(
+            $dictionary,
+            $this->projectContext->getProject()
+        );
+        return $dictionary->getItems();
     }
 }

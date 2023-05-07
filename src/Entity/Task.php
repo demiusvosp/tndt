@@ -202,7 +202,7 @@ class Task implements NoInterface, CommentableInterface, HasClosedStatusInterfac
 
     /**
      * @param string $taskId - prj-123
-     * @return array [<string>, <int>]
+     * @return array [<string ProjectSuffix>, <int TaskNo>]
      */
     public static function explodeTaskId(string $taskId): array
     {

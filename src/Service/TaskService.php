@@ -13,6 +13,7 @@ use App\Dictionary\Object\Task\StageTypesEnum;
 use App\Dictionary\Object\Task\TaskStage;
 use App\Dictionary\Object\Task\TaskStageItem;
 use App\Dictionary\TypesEnum;
+use App\Entity\Project;
 use App\Entity\Task;
 use App\Entity\User;
 use App\Event\AppEvents;
@@ -30,30 +31,49 @@ class TaskService
     public function __construct(
         CommentService $commentService,
         Fetcher $dictionaryFetcher,
-        EventDispatcherInterface $eventDispatcher)
-    {
+        EventDispatcherInterface $eventDispatcher
+    ) {
         $this->commentService = $commentService;
         $this->dictionaryFetcher = $dictionaryFetcher;
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    public function availableStages(Task $task, ?StageTypesEnum $onlyStage = null): array
+    /**
+     * С какими состояниями можно создать новую задачу
+     * @param Project $project
+     * @return array
+     */
+    public function availableStagesForNewTask(Project $project): array
     {
-        if (!$onlyStage) {
-            $onlyStage = StageTypesEnum::STAGE_ON_NORMAL();
+        /** @var TaskStage $stagesDictionary */
+        $stagesDictionary = $this->dictionaryFetcher->getDictionary(TypesEnum::TASK_STAGE(), $project);
+
+        return $stagesDictionary->getItemsByTypes([StageTypesEnum::STAGE_ON_OPEN()]);
+    }
+
+    /**
+     * В какие состояния можно перевести указанную задачу
+     * @param Task $task
+     * @param StageTypesEnum[] $onlyStageTypes - только указанные типы этапов (например только статусы закрытых задач)
+     * @param bool $allowSame - добавить этап на котором задача сейчас (например для селектов)
+     * @return array
+     */
+    public function availableStages(Task $task, array $onlyStageTypes = [], bool $allowSame = false): array
+    {
+        if (count($onlyStageTypes) === 0) {
+            $onlyStageTypes[] = StageTypesEnum::STAGE_ON_NORMAL();
         }
         /** @var TaskStage $stagesDictionary */
         $stagesDictionary = $this->dictionaryFetcher->getDictionary(TypesEnum::TASK_STAGE(), $task);
-
-        $stages = $stagesDictionary->getItemsByTypes([$onlyStage]);
+        $stages = $stagesDictionary->getItemsByTypes($onlyStageTypes);
         $stages = array_filter(
             $stages,
-            static function (TaskStageItem $stage) use ($task) {
-                if ($task->getStage() === $stage->getId()) {
-                    return false;
+            static function (TaskStageItem $stage) use ($task, $allowSame) {
+                if (!$allowSame && $task->getStage() === $stage->getId()) {
+                    return false; // не предлагаем этап в котором задача уже находится (но можно включить $allowSame)
                 }
-                if ($task->isClosed() && $stage->getType() !== StageTypesEnum::STAGE_ON_CLOSED()) {
-                    return false;
+                if ($task->isClosed() && !$stage->getType()->equals(StageTypesEnum::STAGE_ON_CLOSED())) {
+                    return false;// закрытым задачам не предлагаем открытые этапы (вновь открываться будет через отдельный метод)
                 }
                 return true;
             }
@@ -62,8 +82,17 @@ class TaskService
         return $stages;
     }
 
+    /**
+     * Перевести задачу в новое состояние
+     * @param Task $task
+     * @param int $newStageId
+     * @return void
+     */
     public function changeStage(Task $task, int $newStageId): void
     {
+        if ($task->getStage() === $newStageId) {
+            return; // состояние не изменилось
+        }
         /** @var TaskStage $stagesDictionary */
         $stagesDictionary = $this->dictionaryFetcher->getDictionary(TypesEnum::TASK_STAGE(), $task);
 
@@ -80,6 +109,13 @@ class TaskService
         $this->eventDispatcher->dispatch(new TaskEvent($task), AppEvents::TASK_CHANGE_STAGE);
     }
 
+    /**
+     * Закрыть задачу
+     * @param CloseTaskDTO $dto
+     * @param Task $task
+     * @param User $whoClose
+     * @return void
+     */
     public function close(CloseTaskDTO $dto, Task $task, User $whoClose): void
     {
         if (!empty($dto->getComment())) {

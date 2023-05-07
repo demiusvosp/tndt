@@ -9,18 +9,14 @@ declare(strict_types=1);
 namespace App\Form\DTO\Task;
 
 use App\Entity\Contract\InProjectInterface;
+use App\Entity\Project;
 use App\Service\Constraints\DictionaryValue;
 use Happyr\Validator\Constraint\EntityExist;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class NewTaskDTO implements InProjectInterface
+class NewTaskDTO implements WithProjectInterface, InProjectInterface
 {
-    /**
-     * @var string
-     * @Assert\NotBlank()
-     * @EntityExist(entity="App\Entity\Project", property="suffix")
-     */
-    private $project;
+    private Project $project;
 
     /**
      * @var string
@@ -66,32 +62,25 @@ class NewTaskDTO implements InProjectInterface
     private int $complexity = 0;
 
 
-    public function __construct(string $project)
+    public function __construct(Project $project)
     {
         $this->project = $project;
     }
 
+    /**
+     * @inheritDoc InProjectInterface
+     */
     public function getSuffix(): string
     {
-        return $this->project;
+        return $this->project->getSuffix();
     }
 
     /**
-     * @return string
+     * @inheritDoc WithProjectInterface
      */
-    public function getProject(): string
+    public function getProject(): Project
     {
         return $this->project;
-    }
-
-    /**
-     * @param string $project
-     * @return NewTaskDTO
-     */
-    public function setProject(string $project): NewTaskDTO
-    {
-        $this->project = $project;
-        return $this;
     }
 
     /**

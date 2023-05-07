@@ -18,23 +18,16 @@ use App\Repository\UserRepository;
 
 class TaskFiller
 {
-    private ProjectRepository $projectRepository;
     private UserRepository $userRepository;
 
-    public function __construct(ProjectRepository $projectRepository, UserRepository $userRepository)
+    public function __construct(UserRepository $userRepository)
     {
-        $this->projectRepository = $projectRepository;
         $this->userRepository = $userRepository;
     }
 
     public function createFromForm(NewTaskDTO $dto): Task
     {
-        $project = $this->projectRepository->findBySuffix($dto->getProject());
-        if (!$project) {
-            throw new DomainException('Не найден проект к которому относится задача');
-        }
-
-        $task = new Task($project);
+        $task = new Task($dto->getProject());
         $task->setCaption($dto->getCaption());
         $task->setDescription($dto->getDescription());
 
@@ -59,7 +52,7 @@ class TaskFiller
 
     public function fillFromEditForm(EditTaskDTO $dto, Task $task): void
     {
-        if($dto->getProject() !== $task->getProject()->getSuffix()) {
+        if($dto->getProject() !== $task->getProject()) {
             throw new DomainException('Нельзя поменять проект задачи. Для этого её надо конвертировать в другой проект.');
         }
 

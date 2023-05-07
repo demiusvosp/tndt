@@ -8,16 +8,14 @@ declare(strict_types=1);
 
 namespace App\Form\DTO\Task;
 
-use App\Entity\Contract\InProjectInterface;
+use App\Entity\Project;
+use App\Entity\Task;
 use App\Service\Constraints\DictionaryValue;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class CloseTaskDTO implements InProjectInterface
+class CloseTaskDTO implements WithProjectInterface
 {
-    /**
-     * @var string
-     */
-    private string $suffix;
+    private Task $task;
 
     /**
      * @var int
@@ -33,16 +31,24 @@ class CloseTaskDTO implements InProjectInterface
 
 
     /**
-     * @param string $projectSuffix - Суффикс проекта, в котором закрывается задача
+     * @param string $taskId
      */
-    public function __construct(string $projectSuffix)
+    public function __construct(Task $task)
     {
-        $this->suffix = $projectSuffix;
+        $this->task = $task;
     }
 
-    public function getSuffix(): string
+    /**
+     * @inheritDoc WithProjectInterface
+     */
+    public function getProject(): Project
     {
-        return $this->suffix;
+        return $this->task->getProject();
+    }
+
+    public function getTask(): Task
+    {
+        return $this->task;
     }
 
     /**

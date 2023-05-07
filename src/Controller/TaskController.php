@@ -96,9 +96,9 @@ class TaskController extends AbstractController
             $edit['action'] = $this->generateUrl('task.edit', ['taskId' => $task->getTaskId()]);
         }
         $editStages = [];
-        foreach ($taskService->availableStages($task, StageTypesEnum::STAGE_ON_NORMAL()) as $stage) {
+        foreach ($taskService->availableStages($task, [StageTypesEnum::STAGE_ON_NORMAL()]) as $stage) {
             $editStages[] = [
-                'label' => $stage->getDescription(),
+                'label' => $stage->getName(),
                 'value' => $stage->getId()
             ];
         }
@@ -137,7 +137,7 @@ class TaskController extends AbstractController
         if ($project->isArchived()) {
             throw new DomainException('Нельзя создавать задачи в архивных проектах');
         }
-        $formData = new NewTaskDTO($project->getSuffix());
+        $formData = new NewTaskDTO($project);
         $form = $this->createForm(NewTaskType::class, $formData);
 
         $form->handleRequest($request);
@@ -198,7 +198,7 @@ class TaskController extends AbstractController
         if (!$task) {
             throw $this->createNotFoundException($this->translator->trans('task.not_found'));
         }
-        $formData = new CloseTaskDTO($task->getSuffix());
+        $formData = new CloseTaskDTO($task);
         $form = $this->createForm(CloseTaskForm::class, $formData);
 
         $form->handleRequest($request);

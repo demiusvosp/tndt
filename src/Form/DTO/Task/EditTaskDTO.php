@@ -8,20 +8,16 @@ declare(strict_types=1);
 
 namespace App\Form\DTO\Task;
 
-use App\Entity\Contract\HasClosedStatusInterface;
 use App\Entity\Contract\InProjectInterface;
+use App\Entity\Project;
 use App\Entity\Task;
 use App\Service\Constraints\DictionaryValue;
 use Happyr\Validator\Constraint\EntityExist;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class EditTaskDTO implements InProjectInterface, HasClosedStatusInterface
+class EditTaskDTO implements WithProjectInterface, InProjectInterface
 {
-    /**
-     * @var string
-     * @Assert\NotBlank()
-     */
-    private string $project;
+    private Task $task;
 
     /**
      * @var int
@@ -74,39 +70,42 @@ class EditTaskDTO implements InProjectInterface, HasClosedStatusInterface
 
     public function __construct(Task $task)
     {
-        $this->project = $task->getSuffix();
+        // для логики
+        $this->task = $task;
+
+        // данные которые будут изменять
         $this->caption = $task->getCaption();
         $this->description = $task->getDescription();
         $this->assignedTo = $task->getAssignedTo() ? $task->getAssignedTo()->getUsername() : '';
 
         $this->stage = $task->getStage();
-        $this->isClosed = $task->isClosed();
         $this->type = $task->getType();
         $this->priority = $task->getPriority();
         $this->complexity = $task->getComplexity();
     }
 
+    /**
+     * @inheritDoc InProjectInterface
+     */
     public function getSuffix(): string
     {
-        return $this->project;
+        return $this->task->getSuffix();
     }
 
     /**
-     * @return string
+     * @inheritDoc WithProjectInterface
      */
-    public function getProject(): string
+    public function getProject(): Project
     {
-        return $this->project;
+        return $this->task->getProject();
     }
 
     /**
-     * @param string $project
-     * @return EditTaskDTO
+     * @return Task
      */
-    public function setProject(string $project): EditTaskDTO
+    public function getTask(): Task
     {
-        $this->project = $project;
-        return $this;
+        return $this->task;
     }
 
     /**
@@ -118,10 +117,10 @@ class EditTaskDTO implements InProjectInterface, HasClosedStatusInterface
     }
 
     /**
-     * @param string $assignedTo
+     * @param string|null $assignedTo
      * @return EditTaskDTO
      */
-    public function setAssignedTo(string $assignedTo): EditTaskDTO
+    public function setAssignedTo(?string $assignedTo): EditTaskDTO
     {
         $this->assignedTo = $assignedTo;
         return $this;
@@ -233,10 +232,5 @@ class EditTaskDTO implements InProjectInterface, HasClosedStatusInterface
     {
         $this->complexity = $complexity;
         return $this;
-    }
-
-    public function isClosed(): bool
-    {
-        return $this->isClosed;
     }
 }
