@@ -24,13 +24,6 @@ class ProjectContext
     private RequestStack $requestStack;
 
     /**
-     * @var array
-     * Кеш имен проектов по суффиксам.
-     * @TODO вынести в кеш, живущий между запросами
-     */
-    private array $projectNames = [];
-
-    /**
      * Текущий проект, имеющий смысл в пределах одного запроса
      * @var Project|null
      */
@@ -92,28 +85,4 @@ class ProjectContext
 
         return null;
     }
-
-    /**
-     * Если нам нужно только имя проекта, без целого объекта (вобще по логике это относится к репозиторию)
-     * @param string $projectSuffix
-     * @return string
-     */
-    public function getNameBySuffix(string $projectSuffix): string
-    {
-        if ($this->currentProject && $this->currentProject->getSuffix() === $projectSuffix) {
-            $this->projectNames[$projectSuffix] = $this->currentProject->getSuffix();
-        }
-
-        if (!isset($this->projectNames[$projectSuffix])) {
-            $qb = $this->projectRepository->createQueryBuilder('p');
-            $qb->select('p.name')
-                ->where($qb->expr()->eq('p.suffix', ':suffix'))
-                ->setParameter('suffix', $projectSuffix)
-                ->setMaxResults(1);
-
-            $this->projectNames[$projectSuffix] = $qb->getQuery()->getSingleScalarResult();
-        }
-        return $this->projectNames[$projectSuffix];
-    }
-
 }

@@ -9,10 +9,11 @@ declare(strict_types=1);
 namespace App\Form\Type\Task;
 
 use App\Dictionary\Fetcher;
+use App\Dictionary\Object\Task\StageTypesEnum;
 use App\Dictionary\TypesEnum;
-use App\Entity\Task;
 use App\Form\DTO\Task\CloseTaskDTO;
 use App\Form\Type\Base\DictionaryStageSelectType;
+use App\Service\TaskService;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -22,25 +23,16 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CloseTaskForm extends AbstractType
 {
-    private Fetcher $dictionaryFetcher;
+    private TaskService $taskService;
 
-    public function __construct(Fetcher $dictionaryFetcher)
+    public function __construct(TaskService $taskService)
     {
-        $this->dictionaryFetcher = $dictionaryFetcher;
+        $this->taskService = $taskService;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add(
-                'stage',
-                DictionaryStageSelectType::class,
-                [
-                    'required' => true,
-                    'label' => 'task.close.stage',
-                    'scenario' => DictionaryStageSelectType::SCENARIO_CLOSE
-                ]
-            )
             ->add(
                 'comment',
                 TextareaType::class,
@@ -55,9 +47,25 @@ class CloseTaskForm extends AbstractType
             FormEvents::PRE_SET_DATA,
             function (FormEvent $event) {
                 $entity = $event->getData();
-                $dictionaries = $this->dictionaryFetcher->getDictionariesByEntityClass(Task::class, $entity);
-                if ($dictionaries[TypesEnum::TASK_STAGE] && !$dictionaries[TypesEnum::TASK_STAGE]->isEnabled()) {
-                    $event->getForm()->remove('stage');
+                if (! $entity instanceof CloseTaskDTO) {
+                    throw new \InvalidArgumentException('CloseTaskForm with not CloseTaskDTO data');
+                }
+
+                $settings = $entity->getProject()->getTaskSettings();
+                $stage = $settings->getDictionaryByType(TypesEnum::TASK_STAGE());
+                if ($stage->isEnabled()) {
+                    $event->getForm()->add(
+                        'stage',
+                        DictionaryStageSelectType::class,
+                        [
+                            'required' => true,
+                            'label' => 'task.close.stage',
+                            'items' => $this->taskService->availableStages(
+                                $entity->getTask(),
+                                [StageTypesEnum::STAGE_ON_CLOSED()]
+                            )
+                        ]
+                    );
                 }
             }
         );

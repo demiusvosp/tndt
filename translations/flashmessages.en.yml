@@ -10,7 +10,7 @@ project:
   edit.success: Проект отредактирован
 task:
   change_stage:
-    success: Задача перешла на новый этап
+    success: Task passed to new stage
   create.success: Задача создана
   close.error: Не удалось закрыть задачу
   close.success: Задача закрыта

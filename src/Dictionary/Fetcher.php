@@ -11,6 +11,7 @@ namespace App\Dictionary;
 use App\Entity\Contract\InProjectInterface;
 use App\Dictionary\Object\Dictionary;
 use App\Dictionary\Object\DictionaryItem;
+use App\Entity\Contract\WithProjectInterface;
 use App\Entity\Project;
 use App\Exception\DictionaryException;
 use App\Repository\ProjectRepository;
@@ -45,6 +46,7 @@ class Fetcher
      * @param TypesEnum $dictionaryType
      * @param InProjectInterface $entity
      * @return DictionaryItem
+     * @throws DictionaryException
      */
     public function getDictionaryItem(TypesEnum $dictionaryType, InProjectInterface $entity): DictionaryItem
     {
@@ -61,6 +63,7 @@ class Fetcher
      * @param TypesEnum $dictionaryType
      * @param InProjectInterface|string|null $entity - null - текущий проект из сервиса ProjectContext
      * @return Dictionary
+     * @throws DictionaryException
      */
     public function getDictionary(TypesEnum $dictionaryType, $entity): Dictionary
     {
@@ -69,6 +72,9 @@ class Fetcher
             $object = $this->loadProject($entity);
         }
 
+        if ($entity instanceof WithProjectInterface) {
+            $entity = $entity->getProject();
+        }
         if ($entity instanceof Project) {
             $this->projects[$entity->getSuffix()] = $entity;
             $object = $entity;
@@ -104,6 +110,7 @@ class Fetcher
      * @param string $entityClass
      * @param InProjectInterface $entity
      * @return array
+     * @throws DictionaryException
      */
     public function getDictionariesByEntityClass(string $entityClass, InProjectInterface $entity): array
     {
@@ -120,6 +127,7 @@ class Fetcher
      * Получить элементы всех, связанных с объектом словарей.
      * @param InProjectInterface $entity
      * @return array
+     * @throws DictionaryException
      */
     public function getRelatedItems(InProjectInterface $entity): array
     {

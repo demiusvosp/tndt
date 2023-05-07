@@ -25,7 +25,7 @@ class ErrorController extends AbstractController
 
     public function __invoke(FlattenException $exception): Response
     {
-        $respone = new Response();
+        $response = new Response();
         $errorParams = [];
         if (ErrorCodesEnum::isValid($exception->getCode())) {
             // ошибки с собственными кодами
@@ -45,7 +45,7 @@ class ErrorController extends AbstractController
             $errorType = ErrorCodesEnum::COMMON();
             $errorCode = 500;
         }
-        $respone->setStatusCode($exception->getStatusCode());
+        $response->setStatusCode($exception->getStatusCode());
 
         $statusLabel = $this->translator->trans(
             $errorType->label(),
@@ -65,7 +65,7 @@ class ErrorController extends AbstractController
                 'status_label' => $statusLabel,
                 'status_description' => $statusDescription,
             ],
-            $respone
+            $response
         );
     }
 }

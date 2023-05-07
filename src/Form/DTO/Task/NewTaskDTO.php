@@ -8,22 +8,18 @@ declare(strict_types=1);
 
 namespace App\Form\DTO\Task;
 
-use App\Entity\Contract\InProjectInterface;
+use App\Entity\Contract\WithProjectInterface;
+use App\Entity\Project;
 use App\Service\Constraints\DictionaryValue;
 use Happyr\Validator\Constraint\EntityExist;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class NewTaskDTO implements InProjectInterface
+class NewTaskDTO implements WithProjectInterface
 {
-    /**
-     * @var string
-     * @Assert\NotBlank()
-     * @EntityExist(entity="App\Entity\Project", property="suffix")
-     */
-    private $project;
+    private Project $project;
 
     /**
-     * @var string
+     * @var string|null
      * @EntityExist(entity="App\Entity\User", property="username", message="task.assignTo.not_found")
      */
     private ?string $assignedTo = null;
@@ -33,13 +29,13 @@ class NewTaskDTO implements InProjectInterface
      * @Assert\NotBlank()
      * @Assert\Length(min=1, max=255, maxMessage="task.caption.to_long")
      */
-    private $caption = '';
+    private string $caption = '';
 
     /**
      * @var string
      * @Assert\Length(max=10000, maxMessage="task.description.to_long")
      */
-    private $description = '';
+    private string $description = '';
 
     /**
      * @var int
@@ -66,36 +62,21 @@ class NewTaskDTO implements InProjectInterface
     private int $complexity = 0;
 
 
-    public function __construct(string $project)
+    public function __construct(Project $project)
     {
         $this->project = $project;
     }
 
-    public function getSuffix(): string
+    /**
+     * @inheritDoc WithProjectInterface
+     */
+    public function getProject(): Project
     {
         return $this->project;
     }
 
     /**
-     * @return string
-     */
-    public function getProject(): string
-    {
-        return $this->project;
-    }
-
-    /**
-     * @param string $project
-     * @return NewTaskDTO
-     */
-    public function setProject(string $project): NewTaskDTO
-    {
-        $this->project = $project;
-        return $this;
-    }
-
-    /**
-     * @return string
+     * @return string|null
      */
     public function getAssignedTo(): ?string
     {
@@ -103,10 +84,10 @@ class NewTaskDTO implements InProjectInterface
     }
 
     /**
-     * @param string $assignedTo
+     * @param string|null $assignedTo
      * @return NewTaskDTO
      */
-    public function setAssignedTo(string $assignedTo): NewTaskDTO
+    public function setAssignedTo(?string $assignedTo): NewTaskDTO
     {
         $this->assignedTo = $assignedTo;
         return $this;

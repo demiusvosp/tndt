@@ -14,10 +14,15 @@ use Symfony\Contracts\EventDispatcher\Event;
 class TaskEvent extends Event
 {
     private Task $task;
+    /**
+     * @var bool стала закрытой. Некоторым обработчикам может быть важно задача закрыта в принципе, или в рамках этого действия её закрыли
+     */
+    private bool $becameClosed;
 
-    public function __construct(Task $task)
+    public function __construct(Task $task, bool $becameClosed = false)
     {
         $this->task = $task;
+        $this->becameClosed = $becameClosed;
     }
 
     /**
@@ -26,5 +31,13 @@ class TaskEvent extends Event
     public function getTask(): Task
     {
         return $this->task;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isBecameClosed(): bool
+    {
+        return $this->becameClosed;
     }
 }

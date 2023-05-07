@@ -57,6 +57,7 @@ class TypesEnum extends Enum
     }
 
     /**
+     * @deprecated это должен знать TaskSettings а не глобальные TypesEnum
      * @return string[][] - [<type> => [<getSubobjectMethod>, ...]
      */
     public static function sources(): array

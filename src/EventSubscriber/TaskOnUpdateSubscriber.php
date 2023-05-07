@@ -33,6 +33,7 @@ class TaskOnUpdateSubscriber implements EventSubscriberInterface
 //            AppEvents::TASK_OPEN => ['onTaskOpen', 0], @TODO in [tndt-57]
             AppEvents::TASK_EDIT => ['onTaskChange', 0],
             AppEvents::TASK_CLOSE => ['onTaskChange', 0],
+            AppEvents::TASK_CHANGE_STAGE => ['onTaskChange', 0],
             AppEvents::COMMENT_ADD => ['onCommentAdd', 0],
         ];
     }
@@ -42,8 +43,8 @@ class TaskOnUpdateSubscriber implements EventSubscriberInterface
         if ($this->isServiceUser()) {
             return;
         }
-        if ($event->getTask()->isClosed()) {
-            return;
+        if (!$event->isBecameClosed() && $event->getTask()->isClosed()) {
+            return; // не стала закрытой, а была закрытой ранее
         }
 
         $event->getTask()->setUpdatedAt(new \DateTime());

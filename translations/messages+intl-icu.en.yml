@@ -250,8 +250,9 @@ task:
     help: Проект, к которому будет прикреплена задача.
   show_closed: Показывать закрытые
   stage:
-    label: Этап
-    help: Этап выполнения задачи
+    label: Stage
+    help: Stage of task working
+    change_to: Change to
   type:
     label: Тип
     help: Категория к которой относится задача (задача, ошибка, рефакторинг и т.д.)

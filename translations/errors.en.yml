@@ -3,8 +3,8 @@ Error_page:
   reason: Код ошибки
   message: Описание
 bad_request:
-  label: Неверный запрос
-  description: В запросе были переданы некорректные данные
+  label: Bad request
+  description: Request with incorrect data
 bad_user:
   label: Некорректный пользователь
   description: Назначаемый пользователь не найден, либо не имеет доступа. {message}
@@ -15,8 +15,8 @@ dictionary_error:
   label: Ошибка при работе со справочниками
   description: При работе со справочниками произошла ошибка. {message}
 domain_error:
-  label: Логическая ошибка
-  description: Действие некорректно. {message}
+  label: Logic error
+  description: Action wit incorrect logic. {message}
 forbidden:
   label: Доступ запрещен
   description: Доступ к данному ресурсу запрещен, если вам необходим доступ обратитесь за ним к администратору или менеджеру проекта
@@ -27,5 +27,5 @@ not_in_project_context:
   label: Не найден проект
   description: Действие или страница возможна только в контексте проекта, но указанный проект не найден
 task_stage_error:
-  label: Ошибка при работе с жизненным циклом задачи
-  description: При перемещении задачи по её жизненному циклу произошла ошибка. {message}
+  label: Error when working with task lifecycle
+  description: When moving a task through its lifecycle, an error occurred. {message}

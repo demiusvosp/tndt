@@ -11,6 +11,7 @@ namespace App\Service\Constraints;
 use App\Dictionary\Fetcher;
 use App\Dictionary\TypesEnum;
 use App\Entity\Contract\InProjectInterface;
+use App\Entity\Contract\WithProjectInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
@@ -39,7 +40,7 @@ class DictionaryValueValidator extends ConstraintValidator
         if (null === $object = $this->context->getObject()) {
             return;
         }
-        if (!$object instanceof InProjectInterface) {
+        if (!$object instanceof InProjectInterface && !$object instanceof WithProjectInterface) {
             throw new ConstraintDefinitionException(
                 'Валидация справочника возможна только для объектов, принадлежащих проекту'
             );

@@ -18,7 +18,7 @@ class EditTaskType extends NewTaskType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $this->buildCommonFields($builder);
-        $this->buildDictionaryFields($builder, DictionaryStageSelectType::SCENARIO_EDIT);
+        $this->buildDictionaryFields($builder);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

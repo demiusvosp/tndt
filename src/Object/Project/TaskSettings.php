@@ -8,7 +8,9 @@ declare(strict_types=1);
 
 namespace App\Object\Project;
 
+use App\Dictionary\Object\Dictionary;
 use App\Dictionary\Object\Task\TaskStage;
+use App\Dictionary\TypesEnum;
 use App\Object\JlobObjectInterface;
 use App\Dictionary\Object\Task\TaskComplexity;
 use App\Dictionary\Object\Task\TaskPriority;
@@ -124,5 +126,25 @@ class TaskSettings implements JlobObjectInterface
     {
         $this->complexity = $complexity;
         return $this;
+    }
+
+    /**
+     * @param TypesEnum $type
+     * @return Dictionary
+     */
+    public function getDictionaryByType(TypesEnum $type): Dictionary
+    {
+        switch ($type) {
+            case TypesEnum::TASK_TYPE():
+                return $this->types;
+            case TypesEnum::TASK_STAGE():
+                return $this->stages;
+            case TypesEnum::TASK_PRIORITY():
+                return $this->priority;
+            case TypesEnum::TASK_COMPLEXITY():
+                return $this->complexity;
+            default:
+                throw new \InvalidArgumentException('Unknow dictionaryType');
+        }
     }
 }

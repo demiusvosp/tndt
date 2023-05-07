@@ -9,16 +9,19 @@ declare(strict_types=1);
 namespace App\Form\Type\Task;
 
 use App\Dictionary\Fetcher;
+use App\Dictionary\Object\Task\StageTypesEnum;
 use App\Dictionary\TypesEnum;
-use App\Entity\Contract\HasClosedStatusInterface;
-use App\Entity\Task;
+use App\Entity\Contract\WithProjectInterface;
+use App\Form\DTO\Task\EditTaskDTO;
 use App\Form\DTO\Task\NewTaskDTO;
 use App\Form\Type\Base\DictionarySelectType;
 use App\Form\Type\Base\DictionaryStageSelectType;
 use App\Form\Type\Base\MdEditType;
 use App\Form\Type\User\UserSelectType;
+use App\Service\ProjectContext;
+use App\Service\TaskService;
+use InvalidArgumentException;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -28,23 +31,26 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class NewTaskType extends AbstractType
 {
     protected Fetcher $dictionaryFetcher;
+    protected TaskService $taskService;
+    protected ProjectContext $projectContext;
 
-    public function __construct(Fetcher $dictionaryFetcher)
+    public function __construct(Fetcher $dictionaryFetcher, TaskService $taskService, ProjectContext $projectContext)
     {
         $this->dictionaryFetcher = $dictionaryFetcher;
+        $this->taskService = $taskService;
+        $this->projectContext = $projectContext;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $this->buildCommonFields($builder);
-        $this->buildDictionaryFields($builder, DictionaryStageSelectType::SCENARIO_NEW);
+        $this->buildDictionaryFields($builder);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefault('data_class', NewTaskDTO::class);
     }
-
 
     protected function buildCommonFields(FormBuilderInterface $builder): void
     {
@@ -76,78 +82,85 @@ class NewTaskType extends AbstractType
             );
     }
 
-    protected function buildDictionaryFields(FormBuilderInterface $builder, string $scenario): void
+    protected function buildDictionaryFields(FormBuilderInterface $builder): void
     {
-        $builder
-            ->add(
-                'stage',
-                DictionaryStageSelectType::class,
-                [
-                    'label' => 'task.stage.label',
-                    'help' => 'task.stage.help',
-                    'scenario' => $scenario,
-                ]
-            )
-            ->add(
-                'type',
-                DictionarySelectType::class,
-                [
-                    'label' => 'task.type.label',
-                    'help' => 'task.type.help',
-                    'dictionary' => TypesEnum::TASK_TYPE()
-                ]
-            )
-            ->add(
-                'priority',
-                DictionarySelectType::class,
-                [
-                    'label' => 'task.priority.label',
-                    'help' => 'task.priority.help',
-                    'dictionary' => TypesEnum::TASK_PRIORITY()
-                ]
-            )
-            ->add(
-                'complexity',
-                DictionarySelectType::class,
-                [
-                    'label' => 'task.complexity.label',
-                    'help' => 'task.complexity.help',
-                    'dictionary' => TypesEnum::TASK_COMPLEXITY()
-                ]
-            );
-
         $builder->addEventListener(
             FormEvents::PRE_SET_DATA,
             function (FormEvent $event) {
-                $entity = $event->getData();
-                $dictionaries = $this->dictionaryFetcher->getDictionariesByEntityClass(Task::class, $entity);
-                if ($dictionaries[TypesEnum::TASK_STAGE]) {
-                    if (!$dictionaries[TypesEnum::TASK_STAGE]->isEnabled()) {
-                        $event->getForm()->remove('stage');
-                    } elseif ($entity instanceof HasClosedStatusInterface && $entity->isClosed()) {
-                        // так как опции уже добавленных контролов менять нельзя, пересоздаем контрол выбора этапа
-                        // с новыми данными
-                        $stageTypeConfig = $event->getForm()->get('stage')->getConfig()->getOptions();
-                        unset($stageTypeConfig['choices']);
-                        $stageTypeConfig['scenario'] = DictionaryStageSelectType::SCENARIO_CLOSE;
+                $data = $event->getData();
+                if (!$data instanceof WithProjectInterface) {
+                    throw new \InvalidArgumentException('Data DTO with this form must be implement WithProjectInterface');
+                }
+                $settings = $data->getProject()->getTaskSettings();
 
-                        $event->getForm()->remove('stage');
-                        $event->getForm()->add(
-                            'stage',
-                            DictionaryStageSelectType::class,
-                            $stageTypeConfig
-                        );
+                if ($settings->getDictionaryByType(TypesEnum::TASK_STAGE())->isEnabled()) {
+                    if ($data instanceof NewTaskDTO) {
+                        $items = $this->taskService->availableStagesForNewTask($data->getProject());
+
+                    } elseif ($data instanceof EditTaskDTO) {
+                        if (!$data->getTask()->isClosed()) {
+                            $items = $this->taskService->availableStages(
+                                $data->getTask(),
+                                [
+                                    StageTypesEnum::STAGE_ON_OPEN(),
+                                    StageTypesEnum::STAGE_ON_NORMAL(),
+                                ],
+                                true
+                            );
+                        } else {
+                            $items = $this->taskService->availableStages(
+                                $data->getTask(),
+                                [StageTypesEnum::STAGE_ON_CLOSED()],
+                                true
+                            );
+                        }
+                    } else {
+                        throw new InvalidArgumentException('Unknown dto class');
                     }
 
-                    if (!$dictionaries[TypesEnum::TASK_TYPE]->isEnabled()) {
-                        $event->getForm()->remove('type');
-                    }
-                    if (!$dictionaries[TypesEnum::TASK_PRIORITY]->isEnabled()) {
-                        $event->getForm()->remove('priority');
-                    }
-                    if (!$dictionaries[TypesEnum::TASK_COMPLEXITY]->isEnabled()) {
-                        $event->getForm()->remove('complexity');
-                    }
+                    $event->getForm()->add(
+                        'stage',
+                        DictionaryStageSelectType::class,
+                        [
+                            'label' => 'task.stage.label',
+                            'help' => 'task.stage.help',
+                            'items' => $items,
+                        ]
+                    );
+                }
+
+                if ($settings->getDictionaryByType(TypesEnum::TASK_TYPE())->isEnabled()) {
+                    $event->getForm()->add(
+                        'type',
+                        DictionarySelectType::class,
+                        [
+                            'label' => 'task.type.label',
+                            'help' => 'task.type.help',
+                            'dictionary' => TypesEnum::TASK_TYPE()
+                        ]
+                    );
+                }
+                if ($settings->getDictionaryByType(TypesEnum::TASK_PRIORITY())->isEnabled()) {
+                    $event->getForm()->add(
+                        'priority',
+                        DictionarySelectType::class,
+                        [
+                            'label' => 'task.priority.label',
+                            'help' => 'task.priority.help',
+                            'dictionary' => TypesEnum::TASK_PRIORITY()
+                        ]
+                    );
+                }
+                if ($settings->getDictionaryByType(TypesEnum::TASK_COMPLEXITY())->isEnabled()) {
+                    $event->getForm()->add(
+                        'complexity',
+                        DictionarySelectType::class,
+                        [
+                            'label' => 'task.complexity.label',
+                            'help' => 'task.complexity.help',
+                            'dictionary' => TypesEnum::TASK_COMPLEXITY()
+                        ]
+                    );
                 }
             }
         );
