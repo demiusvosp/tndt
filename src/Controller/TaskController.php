@@ -151,7 +151,7 @@ class TaskController extends AbstractController
             $em = $this->getDoctrine()->getManager();
 
             $task = $taskFiller->createFromForm($formData);
-            $this->eventDispatcher->dispatch(new TaskEvent($task), AppEvents::TASK_OPEN);
+            $this->eventDispatcher->dispatch(new TaskEvent($task, false), AppEvents::TASK_OPEN);
             $em->persist($task);
             $em->flush();
 
@@ -180,7 +180,7 @@ class TaskController extends AbstractController
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()) {
             $taskFiller->fillFromEditForm($formData, $task);
-            $this->eventDispatcher->dispatch(new TaskEvent($task), AppEvents::TASK_EDIT);
+            $this->eventDispatcher->dispatch(new TaskEvent($task, false), AppEvents::TASK_EDIT);
 
             $em = $this->getDoctrine()->getManager();
             $em->flush();

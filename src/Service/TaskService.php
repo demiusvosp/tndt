@@ -97,6 +97,7 @@ class TaskService
         if ($task->getStage() === $newStageId) {
             return; // состояние не изменилось
         }
+        $becameClosed = $task->isClosed();
         /** @var TaskStage $stagesDictionary */
         $stagesDictionary = $this->dictionaryFetcher->getDictionary(TypesEnum::TASK_STAGE(), $task);
 
@@ -109,8 +110,7 @@ class TaskService
         if ($newStage->getType()->equals(StageTypesEnum::STAGE_ON_CLOSED())) {
             $task->setIsClosed($newStage->getType()->equals(StageTypesEnum::STAGE_ON_CLOSED()));
         }
-        $task->setUpdatedAt(new \DateTime());
-        $this->eventDispatcher->dispatch(new TaskEvent($task), AppEvents::TASK_CHANGE_STAGE);
+        $this->eventDispatcher->dispatch(new TaskEvent($task, $becameClosed), AppEvents::TASK_CHANGE_STAGE);
     }
 
     /**
@@ -122,12 +122,12 @@ class TaskService
      */
     public function close(CloseTaskDTO $dto, Task $task, User $whoClose): void
     {
+        $becameClosed = $task->isClosed();
         if (!empty($dto->getComment())) {
             $this->commentService->applyCommentFromString($task, $dto->getComment(), $whoClose);
         }
         $task->setStage($dto->getStage());
         $task->setIsClosed(true);
-        $task->setUpdatedAt(new \DateTime());
-        $this->eventDispatcher->dispatch(new TaskEvent($task), AppEvents::TASK_CLOSE);
+        $this->eventDispatcher->dispatch(new TaskEvent($task, $becameClosed), AppEvents::TASK_CLOSE);
     }
 }
