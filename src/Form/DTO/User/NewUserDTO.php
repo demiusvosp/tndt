@@ -25,7 +25,7 @@ class NewUserDTO
 
     /**
      * @var string
-     * @Assert\Email(message="user.email.incorrect)
+     * @Assert\Email(message="user.email.incorrect")
      */
     private string $email = '';
 

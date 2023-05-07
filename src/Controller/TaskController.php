@@ -8,6 +8,7 @@ namespace App\Controller;
 
 use App\Dictionary\Object\Task\StageTypesEnum;
 use App\Entity\Project;
+use App\Entity\User;
 use App\Event\AppEvents;
 use App\Event\TaskEvent;
 use App\Exception\BadRequestException;
@@ -137,7 +138,12 @@ class TaskController extends AbstractController
         if ($project->isArchived()) {
             throw new DomainException('Нельзя создавать задачи в архивных проектах');
         }
+        /** @var User $user */
+        $user = $this->getUser();
         $formData = new NewTaskDTO($project);
+        if ($project->hasUserInProject($user)) {
+            $formData->setAssignedTo($user->getUsername());
+        }
         $form = $this->createForm(NewTaskType::class, $formData);
 
         $form->handleRequest($request);
