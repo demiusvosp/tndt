@@ -5,7 +5,7 @@
  * Time: 14:43
  */
 
-namespace App\Form\DTO\Task;
+namespace App\Entity\Contract;
 
 use App\Entity\Project;
 

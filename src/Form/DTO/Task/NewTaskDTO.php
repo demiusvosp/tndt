@@ -8,13 +8,13 @@ declare(strict_types=1);
 
 namespace App\Form\DTO\Task;
 
-use App\Entity\Contract\InProjectInterface;
+use App\Entity\Contract\WithProjectInterface;
 use App\Entity\Project;
 use App\Service\Constraints\DictionaryValue;
 use Happyr\Validator\Constraint\EntityExist;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class NewTaskDTO implements WithProjectInterface, InProjectInterface
+class NewTaskDTO implements WithProjectInterface
 {
     private Project $project;
 
@@ -65,14 +65,6 @@ class NewTaskDTO implements WithProjectInterface, InProjectInterface
     public function __construct(Project $project)
     {
         $this->project = $project;
-    }
-
-    /**
-     * @inheritDoc InProjectInterface
-     */
-    public function getSuffix(): string
-    {
-        return $this->project->getSuffix();
     }
 
     /**

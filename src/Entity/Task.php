@@ -384,10 +384,10 @@ class Task implements NoInterface, CommentableInterface, HasClosedStatusInterfac
     }
 
     /**
-     * @param User $assignedTo
+     * @param User|null $assignedTo
      * @return Task
      */
-    public function setAssignedTo(User $assignedTo): Task
+    public function setAssignedTo(?User $assignedTo): Task
     {
         $this->assignedTo = $assignedTo;
         return $this;

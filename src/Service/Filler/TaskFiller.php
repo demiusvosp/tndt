@@ -65,13 +65,18 @@ class TaskFiller
         $task->setComplexity($dto->getComplexity());
 
         $oldAssignedUser = $task->getAssignedTo() ? $task->getAssignedTo()->getUsername() : null;
-        if ($dto->getAssignedTo() && $dto->getAssignedTo() !== $oldAssignedUser) {
-            $newAssignedUser = $this->userRepository->find($dto->getAssignedTo());
-            if (!$newAssignedUser) {
-                throw new BadUserException('Выбранный пользователь не найден');
-            }
-            if (!$newAssignedUser->hasProject($task->getProject())) {
-                throw new BadUserException('Пользователь не относится к указанному проекту');
+        if ($dto->getAssignedTo() !== $oldAssignedUser) {
+            if ($dto->getAssignedTo()) {
+                $newAssignedUser = $this->userRepository->find($dto->getAssignedTo());
+                if (!$newAssignedUser) {
+                    throw new BadUserException('Выбранный пользователь не найден');
+                }
+                if (!$newAssignedUser->hasProject($task->getProject())) {
+                    throw new BadUserException('Пользователь не относится к указанному проекту');
+                }
+            } else {
+                // разрешаем бросать задачу без ответственного
+                $newAssignedUser = null;
             }
             $task->setAssignedTo($newAssignedUser);
         }

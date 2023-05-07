@@ -8,14 +8,14 @@ declare(strict_types=1);
 
 namespace App\Form\DTO\Task;
 
-use App\Entity\Contract\InProjectInterface;
+use App\Entity\Contract\WithProjectInterface;
 use App\Entity\Project;
 use App\Entity\Task;
 use App\Service\Constraints\DictionaryValue;
 use Happyr\Validator\Constraint\EntityExist;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class EditTaskDTO implements WithProjectInterface, InProjectInterface
+class EditTaskDTO implements WithProjectInterface
 {
     private Task $task;
 
@@ -82,14 +82,6 @@ class EditTaskDTO implements WithProjectInterface, InProjectInterface
         $this->type = $task->getType();
         $this->priority = $task->getPriority();
         $this->complexity = $task->getComplexity();
-    }
-
-    /**
-     * @inheritDoc InProjectInterface
-     */
-    public function getSuffix(): string
-    {
-        return $this->task->getSuffix();
     }
 
     /**

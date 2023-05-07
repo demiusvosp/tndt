@@ -69,8 +69,12 @@ class TaskService
         $stages = array_filter(
             $stages,
             static function (TaskStageItem $stage) use ($task, $allowSame) {
-                if (!$allowSame && $task->getStage() === $stage->getId()) {
-                    return false; // не предлагаем этап в котором задача уже находится (но можно включить $allowSame)
+                if ($task->getStage() === $stage->getId()) {
+                    // задача уже на этом этапе
+                    return $allowSame; // если мы такие этапы включаем то всегда, если нет, то выбрасываем
+                }
+                if (!$task->getAssignedTo() && $stage->getType()->equals(StageTypesEnum::STAGE_ON_NORMAL())) {
+                    return false;// никому не назначенные задачи нельзя взять в работу
                 }
                 if ($task->isClosed() && !$stage->getType()->equals(StageTypesEnum::STAGE_ON_CLOSED())) {
                     return false;// закрытым задачам не предлагаем открытые этапы (вновь открываться будет через отдельный метод)

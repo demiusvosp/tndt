@@ -11,6 +11,7 @@ namespace App\Dictionary;
 use App\Entity\Contract\InProjectInterface;
 use App\Dictionary\Object\Dictionary;
 use App\Dictionary\Object\DictionaryItem;
+use App\Entity\Contract\WithProjectInterface;
 use App\Entity\Project;
 use App\Exception\DictionaryException;
 use App\Repository\ProjectRepository;
@@ -71,6 +72,9 @@ class Fetcher
             $object = $this->loadProject($entity);
         }
 
+        if ($entity instanceof WithProjectInterface) {
+            $entity = $entity->getProject();
+        }
         if ($entity instanceof Project) {
             $this->projects[$entity->getSuffix()] = $entity;
             $object = $entity;

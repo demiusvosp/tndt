@@ -8,6 +8,7 @@ declare(strict_types=1);
 
 namespace App\Form\DTO\Task;
 
+use App\Entity\Contract\WithProjectInterface;
 use App\Entity\Project;
 use App\Entity\Task;
 use App\Service\Constraints\DictionaryValue;
