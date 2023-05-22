@@ -28,10 +28,13 @@ class TaskSettingsType extends JsonType
 
     public function convertToDatabaseValue($value, AbstractPlatform $platform)
     {
+        if ($value === null) {
+            $value = new TaskSettings();
+        }
         return parent::convertToDatabaseValue($value, $platform);
     }
 
-    public function convertToPHPValue($value, AbstractPlatform $platform)
+    public function convertToPHPValue($value, AbstractPlatform $platform): TaskSettings
     {
         $value = parent::convertToPHPValue($value, $platform);
         return new TaskSettings($value);

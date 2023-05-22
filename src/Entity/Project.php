@@ -106,7 +106,6 @@ class Project implements InProjectInterface
     {
         $this->suffix = $suffix;
         $this->projectUsers = new ArrayCollection();
-        $this->getTaskSettings();
     }
 
     public function __toString(): string
@@ -332,9 +331,6 @@ class Project implements InProjectInterface
      */
     public function getTaskSettings(): TaskSettings
     {
-        if (!$this->taskSettings instanceof TaskSettings) {
-            $this->taskSettings = new TaskSettings($this->taskSettings ?? []);
-        }
         return $this->taskSettings;
     }
 
