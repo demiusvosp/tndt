@@ -7,10 +7,12 @@
 
 namespace App\Service\Doctrine\Type;
 
+use App\Object\Project\TaskSettings;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
+use Doctrine\DBAL\Types\JsonType;
 use Doctrine\DBAL\Types\Type;
 
-class TaskSettingsType extends Type
+class TaskSettingsType extends JsonType
 {
     private const TYPE_NAME = 'taskSettings';
 
@@ -26,11 +28,12 @@ class TaskSettingsType extends Type
 
     public function convertToDatabaseValue($value, AbstractPlatform $platform)
     {
-        return $value;
+        return parent::convertToDatabaseValue($value, $platform);
     }
 
     public function convertToPHPValue($value, AbstractPlatform $platform)
     {
-        return $value;
+        $value = parent::convertToPHPValue($value, $platform);
+        return new TaskSettings($value);
     }
 }
