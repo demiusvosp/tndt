@@ -2,6 +2,9 @@
 
 namespace App;
 
+use App\Service\Doctrine\Type\TaskSettingsType;
+use Doctrine\DBAL\Exception;
+use Doctrine\DBAL\Types\Type;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\Config\Resource\FileResource;
@@ -15,6 +18,9 @@ class Kernel extends BaseKernel
 
     private const CONFIG_EXTS = '.{php,xml,yaml,yml}';
 
+    /**
+     * @throws Exception
+     */
     public function boot(): void
     {
         parent::boot();
@@ -61,8 +67,11 @@ class Kernel extends BaseKernel
         $routes->import($confDir.'/{routes}'.self::CONFIG_EXTS, '/', 'glob');
     }
 
+    /**
+     * @throws Exception
+     */
     private function configureDoctrine(): void
     {
-
+        Type::addType('taskSettings', TaskSettingsType::class);
     }
 }

@@ -97,10 +97,10 @@ class Project implements InProjectInterface
     private string $description = '';
 
     /**
-     * @var TaskSettings|array
-     * @ORM\Column (type="json")
+     * @var TaskSettings
+     * @ORM\Column (type="taskSettings")
      */
-    private $taskSettings = [];
+    private TaskSettings $taskSettings;
 
     public function __construct(string $suffix)
     {
