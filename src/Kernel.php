@@ -28,7 +28,6 @@ class Kernel extends BaseKernel
         if (isset($_SERVER['TZ'])) {
             date_default_timezone_set($_SERVER['TZ']);
         }
-        $this->configureDoctrine();
     }
 
     public function registerBundles(): iterable
@@ -67,11 +66,4 @@ class Kernel extends BaseKernel
         $routes->import($confDir.'/{routes}'.self::CONFIG_EXTS, '/', 'glob');
     }
 
-    /**
-     * @throws Exception
-     */
-    private function configureDoctrine(): void
-    {
-        Type::addType('taskSettings', TaskSettingsType::class);
-    }
 }

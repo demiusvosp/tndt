@@ -7,6 +7,10 @@
 
 namespace App\Service\Doctrine\Type;
 
+use App\Dictionary\Object\Task\TaskComplexity;
+use App\Dictionary\Object\Task\TaskPriority;
+use App\Dictionary\Object\Task\TaskStage;
+use App\Dictionary\Object\Task\TaskType;
 use App\Object\Project\TaskSettings;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\JsonType;
@@ -16,11 +20,6 @@ class TaskSettingsType extends JsonType
 {
     private const TYPE_NAME = 'taskSettings';
 
-    public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
-    {
-        return $platform->getJsonTypeDeclarationSQL($column);
-    }
-
     public function getName(): string
     {
         return self::TYPE_NAME;
@@ -29,7 +28,7 @@ class TaskSettingsType extends JsonType
     public function convertToDatabaseValue($value, AbstractPlatform $platform)
     {
         if ($value === null) {
-            $value = new TaskSettings();
+            $value = new TaskSettings(null, null, null, null);
         }
         return parent::convertToDatabaseValue($value, $platform);
     }
@@ -37,6 +36,11 @@ class TaskSettingsType extends JsonType
     public function convertToPHPValue($value, AbstractPlatform $platform): TaskSettings
     {
         $value = parent::convertToPHPValue($value, $platform);
-        return new TaskSettings($value);
+        return new TaskSettings(
+            new TaskType($value['types'] ?? []),
+            new TaskStage($value['stages'] ?? []),
+            new TaskPriority($value['priority'] ?? []),
+            new TaskComplexity($value['complexity'] ?? [])
+        );
     }
 }
