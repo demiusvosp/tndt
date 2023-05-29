@@ -54,7 +54,6 @@ init:
 	docker-compose exec php composer install # пока мы используем dev контейнер все ок, но в будущем для этого надо готовить отдельный контейнер с композером, git и yarn
 	docker-compose exec php bin/console doctrine:schema:create -vv
 	docker-compose exec php bin/console doctrine:migrations:migrate --allow-no-migration -n -vv
-	docker-compose exec php bin/console doctrine:fixtures:load --group=install -n -vv
 
 tests:
 ifeq ($(type), behat)
