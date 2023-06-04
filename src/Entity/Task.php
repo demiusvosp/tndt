@@ -10,6 +10,7 @@ namespace App\Entity;
 use App\Entity\Contract\CommentableInterface;
 use App\Entity\Contract\HasClosedStatusInterface;
 use App\Entity\Contract\NoInterface;
+use App\Entity\Contract\WithProjectInterface;
 use App\Service\Constraints\DictionaryValue;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
@@ -33,7 +34,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     }
  * )
  */
-class Task implements NoInterface, CommentableInterface, HasClosedStatusInterface
+class Task implements NoInterface, WithProjectInterface, CommentableInterface, HasClosedStatusInterface
 {
     public const TASKID_SEPARATOR = '-';
 

@@ -8,6 +8,7 @@
 namespace App\Entity;
 
 use App\Entity\Contract\InProjectInterface;
+use App\Exception\DomainException;
 use App\Object\Project\TaskSettings;
 use App\Security\UserRolesEnum;
 use DateTime;
@@ -65,7 +66,6 @@ class Project implements InProjectInterface
     /**
      * @var DateTime
      * @ORM\Column(type="datetime")
-     * @Gedmo\Timestampable(on="update")
      */
     private DateTime $updatedAt;
 
@@ -173,6 +173,14 @@ class Project implements InProjectInterface
     public function getUpdatedAt(): DateTime
     {
         return $this->updatedAt;
+    }
+
+    /**
+     * @param DateTime $updatedAt
+     */
+    public function setUpdatedAt(DateTime $updatedAt): void
+    {
+        $this->updatedAt = $updatedAt;
     }
 
     /**
