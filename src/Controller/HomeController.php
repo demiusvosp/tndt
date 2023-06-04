@@ -36,13 +36,18 @@ class HomeController extends AbstractController
         $currentUser = $this->getUser();
 
         $projects = $projectRepository->getPopularProjectsSnippets(self::PROJECT_LENGTH + 1, $currentUser);
-        $tasks = $taskRepository->getPopularTasks(self::TASK_LENGTH, $currentUser);
-        $docs = $docRepository->getPopularDocs(self::DOC_LENGTH, $currentUser);
-        $users = $userRepository->getPopularUsers(self::USER_LENGTH);
+        $tasks = $docs = $users = $hasMoreProjects = null;
+        if (count($projects) > 0) {
+            $tasks = $taskRepository->getPopularTasks(self::TASK_LENGTH, $currentUser);
+            $docs = $docRepository->getPopularDocs(self::DOC_LENGTH, $currentUser);
+            if ($currentUser) {
+                $users = $userRepository->getPopularUsers(self::USER_LENGTH);
+            }
 
-        $hasMoreProjects = count($projects) > self::PROJECT_LENGTH;
-        if ($hasMoreProjects) {
-             $projects = array_splice($projects, 0, self::PROJECT_LENGTH);
+            $hasMoreProjects = count($projects) > self::PROJECT_LENGTH;
+            if ($hasMoreProjects) {
+                $projects = array_splice($projects, 0, self::PROJECT_LENGTH);
+            }
         }
 
         return $this->render(
