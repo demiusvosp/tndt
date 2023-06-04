@@ -2,9 +2,7 @@
 
 namespace App;
 
-use App\Service\Doctrine\Type\TaskSettingsType;
 use Doctrine\DBAL\Exception;
-use Doctrine\DBAL\Types\Type;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\Config\Resource\FileResource;
