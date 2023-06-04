@@ -10,6 +10,8 @@ namespace App\Event;
 
 class AppEvents
 {
+    public const PROJECT_ARCHIVE = 'app.project.archive';
+
     public const TASK_OPEN = 'app.task.open';
     public const TASK_EDIT = 'app.task.edit';
     public const TASK_CLOSE = 'app.task.close';

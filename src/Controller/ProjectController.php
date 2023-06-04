@@ -25,11 +25,14 @@ use App\Repository\ProjectRepository;
 use App\Repository\TaskRepository;
 use App\Service\Filler\ProjectFiller;
 use App\Service\InProjectContext;
+use App\Service\ProjectService;
 use App\Service\SpecBuilder\ProjectListFilterApplier;
 use App\Specification\Doc\DefaultSortSpec as DocDefaultSortSpec;
 use App\Specification\Doc\NotArchivedSpec;
 use App\Specification\InProjectSpec;
 use App\Specification\Project\VisibleByUserSpec;
+use Doctrine\ORM\Exception\ORMException;
+use Doctrine\ORM\OptimisticLockException;
 use Happyr\DoctrineSpecification\Spec;
 use InvalidArgumentException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -90,12 +93,15 @@ class ProjectController extends AbstractController
             Spec::orderBy('updatedAt', 'DESC'),
             Spec::limit(self::TASK_BLOCK_LIMIT)
         ));
-        $docs = $docRepository->match(Spec::andX(
-            new NotArchivedSpec(),
+        $docSpec = Spec::andX(
             new InProjectSpec($project),
             new DocDefaultSortSpec(),
             Spec::limit(self::DOC_BLOCK_LIMIT)
-        ));
+        );
+        if (!$project->isArchived()) {
+            $docSpec->andX(new NotArchivedSpec());
+        }
+        $docs = $docRepository->match($docSpec);
 
         return $this->render(
             'project/index.html.twig',
@@ -209,17 +215,15 @@ class ProjectController extends AbstractController
     /**
      * @InProjectContext
      * @IsGranted("PERM_PROJECT_ARCHIVE")
-     * @param Request $request
      * @param Project $project
+     * @param ProjectService $projectService
      * @return Response
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
-    public function archive(Request $request, Project $project): Response
+    public function archive(Project $project, ProjectService $projectService): Response
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $project->doArchive();
-        $em->persist($project);
-        $em->flush();
+        $projectService->archiveProject($project);
         $this->addFlash('warning', 'project.archive.success');
 
         return $this->redirectToRoute('project.list');

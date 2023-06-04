@@ -191,14 +191,10 @@ class Project implements InProjectInterface
         return $this->isArchived;
     }
 
-    /**
-     * Отправить проект в архив
-     */
-    public function doArchive(): void
+    public function setIsArchived(bool $isArchived): Project
     {
-        $this->isArchived = true;
-        $this->isPublic = false;
-        //@TODO послать событие закрытия проекта, чтобы все могли проверить
+        $this->isArchived = $isArchived;
+        return $this;
     }
 
     /**
