@@ -17,6 +17,7 @@ use App\Form\DTO\Project\EditProjectCommonDTO;
 use App\Form\DTO\Project\EditProjectPermissionsDTO;
 use App\Form\DTO\Project\EditTaskSettingsDTO;
 use App\Form\DTO\Project\NewProjectDTO;
+use App\Object\Project\TaskSettings;
 use App\Repository\UserRepository;
 use App\Security\UserRolesEnum;
 use \InvalidArgumentException;
@@ -121,6 +122,8 @@ class ProjectFiller
         $currentSetting->getComplexity()->merge(
             $this->stringToDictionary(TypesEnum::TASK_COMPLEXITY(), $dto->getComplexity())
         );
+        // необходимо доктрине, иначе она не понимает, что объект изменился
+        $project->setTaskSettings(clone $currentSetting);
     }
 
     /**

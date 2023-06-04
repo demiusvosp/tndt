@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Doctrine\DBAL\Exception;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\Config\Resource\FileResource;
@@ -15,6 +16,9 @@ class Kernel extends BaseKernel
 
     private const CONFIG_EXTS = '.{php,xml,yaml,yml}';
 
+    /**
+     * @throws Exception
+     */
     public function boot(): void
     {
         parent::boot();
@@ -22,7 +26,6 @@ class Kernel extends BaseKernel
         if (isset($_SERVER['TZ'])) {
             date_default_timezone_set($_SERVER['TZ']);
         }
-        $this->configureDoctrine();
     }
 
     public function registerBundles(): iterable
@@ -61,8 +64,4 @@ class Kernel extends BaseKernel
         $routes->import($confDir.'/{routes}'.self::CONFIG_EXTS, '/', 'glob');
     }
 
-    private function configureDoctrine(): void
-    {
-
-    }
 }

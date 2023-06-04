@@ -218,6 +218,7 @@ class ProjectController extends AbstractController
         $em = $this->getDoctrine()->getManager();
 
         $project->doArchive();
+        $em->persist($project);
         $em->flush();
         $this->addFlash('warning', 'project.archive.success');
 

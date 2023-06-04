@@ -11,12 +11,12 @@ namespace App\Object\Project;
 use App\Dictionary\Object\Dictionary;
 use App\Dictionary\Object\Task\TaskStage;
 use App\Dictionary\TypesEnum;
-use App\Object\JlobObjectInterface;
 use App\Dictionary\Object\Task\TaskComplexity;
 use App\Dictionary\Object\Task\TaskPriority;
 use App\Dictionary\Object\Task\TaskType;
+use JsonSerializable;
 
-class TaskSettings implements JlobObjectInterface
+class TaskSettings implements JsonSerializable
 {
     /**
      * @var TaskType
@@ -38,12 +38,16 @@ class TaskSettings implements JlobObjectInterface
      */
     private TaskComplexity $complexity;
 
-    public function __construct(array $arg = [])
-    {
-        $this->types = new TaskType($arg['types'] ?? []);
-        $this->stages = new TaskStage($arg['stages'] ?? []);
-        $this->priority = new TaskPriority($arg['priority'] ?? []);
-        $this->complexity = new TaskComplexity($arg['complexity'] ?? []);
+    public function __construct(
+        TaskType $types,
+        TaskStage $stages,
+        TaskPriority $priority,
+        TaskComplexity $complexity
+    ) {
+        $this->types = $types;
+        $this->stages = $stages;
+        $this->priority = $priority;
+        $this->complexity = $complexity;
     }
 
     public function jsonSerialize(): array
@@ -144,7 +148,7 @@ class TaskSettings implements JlobObjectInterface
             case TypesEnum::TASK_COMPLEXITY():
                 return $this->complexity;
             default:
-                throw new \InvalidArgumentException('Unknow dictionaryType');
+                throw new \InvalidArgumentException('Unknown dictionaryType');
         }
     }
 }

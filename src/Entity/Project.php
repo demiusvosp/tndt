@@ -97,16 +97,15 @@ class Project implements InProjectInterface
     private string $description = '';
 
     /**
-     * @var TaskSettings|array
-     * @ORM\Column (type="json")
+     * @var TaskSettings
+     * @ORM\Column (type="taskSettings")
      */
-    private $taskSettings = [];
+    private TaskSettings $taskSettings;
 
     public function __construct(string $suffix)
     {
         $this->suffix = $suffix;
         $this->projectUsers = new ArrayCollection();
-        $this->getTaskSettings();
     }
 
     public function __toString(): string
@@ -332,9 +331,6 @@ class Project implements InProjectInterface
      */
     public function getTaskSettings(): TaskSettings
     {
-        if (!$this->taskSettings instanceof TaskSettings) {
-            $this->taskSettings = new TaskSettings($this->taskSettings ?? []);
-        }
         return $this->taskSettings;
     }
 
