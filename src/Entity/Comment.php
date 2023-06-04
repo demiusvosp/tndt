@@ -9,6 +9,7 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Entity\Contract\CommentableInterface;
+use App\Object\CommentOwnerTypesEnum;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -50,7 +51,6 @@ class Comment
     /**
      * @var DateTime
      * @ORM\Column(type="datetime")
-     * @Gedmo\Timestampable(on="create")
      */
     private DateTime $createdAt;
 
@@ -72,8 +72,9 @@ class Comment
 
     public function __construct(CommentableInterface $commentableEntity)
     {
-        $this->entity_type = get_class($commentableEntity);
+        $this->entity_type = CommentOwnerTypesEnum::typeByOwner($commentableEntity);
         $this->entity_id = $commentableEntity->getId();
+        $this->createdAt = new \DateTime();
         $this->ownerEntity = $commentableEntity;
     }
 
@@ -127,10 +128,6 @@ class Comment
     {
         $this->message = $message;
         return $this;
-    }
-
-    public function setTest($author, $date) {
-        $this->author = $author; $this->createdAt = new DateTime($date);
     }
 
     /**
