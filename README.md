@@ -44,6 +44,9 @@ INSTALLATION
 4. `make build_front`
 5. check write permission for ./var directory
 
+UPDATE
+------------
+
 Особенности обслуживания системы
 -------
 
@@ -60,6 +63,10 @@ INSTALLATION
 вызывать команды от того же пользователя системы, под которым работает php-fpm, либо после вызова этих команд делать 
 `chown www-data:www-data -R ./var/`
 
+### Миграции базы данных
+`make back_exec "bin/console doctrine:migration:execute 'App\\Migrations\\Version20230529175045' --up|--down"` - накатить конкретную миграцию
+
+`make back_exec "bin/console doctrine:migration:migrate prev"` - откатить последнюю миграцию
 
 TESTING
 -------
