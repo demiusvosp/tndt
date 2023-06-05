@@ -17,7 +17,7 @@ class ProjectOnUpdateSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            AppEvents::PROJECT_EDIT_SETTINGS => 'onUpdateProject',
+            // AppEvents::PROJECT_EDIT_SETTINGS => 'onUpdateProject', настройка проекта не является работой над ним
             AppEvents::PROJECT_ARCHIVE => 'onUpdateProject',
 
             AppEvents::TASK_OPEN => 'onUpdateProject',
