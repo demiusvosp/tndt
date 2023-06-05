@@ -47,12 +47,11 @@ class ProjectController extends AbstractController
     private const TASK_BLOCK_LIMIT = 15;
     private const DOC_BLOCK_LIMIT = 15;
 
-    private ProjectFiller $projectFiller;
+    private ProjectService $projectService;
 
-
-    public function __construct(ProjectFiller $projectFiller)
+    public function __construct(ProjectService $projectService)
     {
-        $this->projectFiller = $projectFiller;
+        $this->projectService = $projectService;
     }
 
     public function list(Request $request, ProjectRepository $projectRepository, ProjectListFilterApplier $listFilterApplier): Response
@@ -121,11 +120,7 @@ class ProjectController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $project = $this->projectFiller->createProjectByForm($formData);
-
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($project);
-            $em->flush();
+            $project = $this->projectService->createProject($formData);
             $this->addFlash('success', 'project.create.success');
             return $this->redirectToRoute('project.index', ['suffix' => $project->getSuffix()]);
         }
@@ -147,9 +142,7 @@ class ProjectController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $this->projectFiller->fillCommonSetting($formData, $project);
-            $em->flush();
+            $this->projectService->editCommonSetting($formData, $project);
             $this->addFlash('success', 'project.edit.success');
         }
 
@@ -171,7 +164,7 @@ class ProjectController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid()) {
             try {
-                $this->projectFiller->fillPermissionsSetting($formData, $project);
+                $this->projectService->editPermissions($formData, $project);
             } catch (InvalidArgumentException $e) {
                 $form->addError(new FormError($e->getMessage()));
             }
@@ -198,12 +191,10 @@ class ProjectController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             try {
-                $this->projectFiller->fillTaskSettings($formData, $project);
+                $this->projectService->editTaskSettings($formData, $project);
             } catch (DictionaryException $e) {
                 $form->addError(new FormError($e->getMessage()));
             }
-            $em = $this->getDoctrine()->getManager();
-            $em->flush();
         }
 
         return $this->render(

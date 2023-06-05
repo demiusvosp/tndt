@@ -12,8 +12,15 @@ use App\Entity\Project;
 use App\Entity\Task;
 use App\Event\AppEvents;
 use App\Event\ProjectEvent;
+use App\Exception\DictionaryException;
+use App\Form\DTO\Project\EditProjectCommonDTO;
+use App\Form\DTO\Project\EditProjectPermissionsDTO;
+use App\Form\DTO\Project\EditTaskSettingsDTO;
+use App\Form\DTO\Project\NewProjectDTO;
+use App\Form\Type\Project\EditProjectTaskSettingsType;
 use App\Repository\DocRepository;
 use App\Repository\TaskRepository;
+use App\Service\Filler\ProjectFiller;
 use App\Specification\InProjectSpec;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -23,18 +30,73 @@ class ProjectService
     private EntityManagerInterface $entityManager;
     private TaskRepository $taskRepository;
     private DocRepository $docRepository;
+    private ProjectFiller $projectFiller;
     private EventDispatcherInterface $eventDispatcher;
 
     public function __construct(
         EntityManagerInterface $entityManager,
         TaskRepository $taskRepository,
         DocRepository $docRepository,
+        ProjectFiller $projectFiller,
         EventDispatcherInterface $eventDispatcher)
     {
         $this->entityManager = $entityManager;
         $this->taskRepository = $taskRepository;
         $this->docRepository = $docRepository;
+        $this->projectFiller = $projectFiller;
         $this->eventDispatcher = $eventDispatcher;
+    }
+
+    /**
+     * @param NewProjectDTO $request
+     * @return Project
+     */
+    public function createProject(NewProjectDTO $request): Project
+    {
+        $project = $this->projectFiller->createProjectByForm($request);
+        $this->entityManager->persist($project);
+
+        $this->eventDispatcher->dispatch(new ProjectEvent($project), AppEvents::PROJECT_CREATE);
+        $this->entityManager->flush();
+        return $project;
+    }
+
+    /**
+     * @param EditProjectCommonDTO $request
+     * @param Project $project
+     * @return Project
+     */
+    public function editCommonSetting(EditProjectCommonDTO $request, Project $project): Project
+    {
+        $this->projectFiller->fillCommonSetting($request, $project);
+
+        $this->eventDispatcher->dispatch(new ProjectEvent($project), AppEvents::PROJECT_EDIT_SETTINGS);
+        $this->entityManager->flush();
+        return $project;
+    }
+
+    /**
+     * @param EditTaskSettingsDTO $request
+     * @param Project $project
+     * @return Project
+     * @throws DictionaryException
+     */
+    public function editTaskSettings(EditTaskSettingsDTO $request, Project $project): Project
+    {
+        $this->projectFiller->fillTaskSettings($request, $project);
+
+        $this->eventDispatcher->dispatch(new ProjectEvent($project), AppEvents::PROJECT_EDIT_SETTINGS);
+        $this->entityManager->flush();
+        return $project;
+    }
+
+    public function editPermissions(EditProjectPermissionsDTO $request, Project $project): Project
+    {
+        $this->projectFiller->fillPermissionsSetting($request, $project);
+
+        $this->eventDispatcher->dispatch(new ProjectEvent($project), AppEvents::PROJECT_EDIT_SETTINGS);
+        $this->entityManager->flush();
+        return $project;
     }
 
     /**

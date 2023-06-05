@@ -10,6 +10,8 @@ namespace App\Event;
 
 class AppEvents
 {
+    public const PROJECT_CREATE = 'app.project.create';
+    public const PROJECT_EDIT_SETTINGS = 'app.project.edit_settings';
     public const PROJECT_ARCHIVE = 'app.project.archive';
 
     public const TASK_OPEN = 'app.task.open';

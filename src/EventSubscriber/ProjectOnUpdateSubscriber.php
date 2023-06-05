@@ -14,9 +14,12 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class ProjectOnUpdateSubscriber implements EventSubscriberInterface
 {
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
+            AppEvents::PROJECT_EDIT_SETTINGS => 'onUpdateProject',
+            AppEvents::PROJECT_ARCHIVE => 'onUpdateProject',
+
             AppEvents::TASK_OPEN => 'onUpdateProject',
             AppEvents::TASK_EDIT => 'onUpdateProject',
             AppEvents::TASK_CHANGE_STAGE => 'onUpdateProject',
@@ -30,7 +33,7 @@ class ProjectOnUpdateSubscriber implements EventSubscriberInterface
         ];
     }
 
-    public function onUpdateProject(InProjectEvent $event)
+    public function onUpdateProject(InProjectEvent $event): void
     {
         $project = $event->getProject();
         $project->setUpdatedAt(new \DateTime());
