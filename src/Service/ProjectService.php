@@ -17,7 +17,6 @@ use App\Form\DTO\Project\EditProjectCommonDTO;
 use App\Form\DTO\Project\EditProjectPermissionsDTO;
 use App\Form\DTO\Project\EditTaskSettingsDTO;
 use App\Form\DTO\Project\NewProjectDTO;
-use App\Form\Type\Project\EditProjectTaskSettingsType;
 use App\Repository\DocRepository;
 use App\Repository\TaskRepository;
 use App\Service\Filler\ProjectFiller;
@@ -102,8 +101,6 @@ class ProjectService
     /**
      * @param Project $project
      * @return void
-     * @throws \Doctrine\ORM\Exception\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function archiveProject(Project $project): void
     {

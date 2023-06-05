@@ -8,7 +8,6 @@
 namespace App\EventSubscriber;
 
 use App\Event\AppEvents;
-use App\Event\CommentEvent;
 use App\Event\InProjectEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 

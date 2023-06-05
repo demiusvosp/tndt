@@ -23,7 +23,6 @@ use App\Form\Type\Project\NewProjectType;
 use App\Repository\DocRepository;
 use App\Repository\ProjectRepository;
 use App\Repository\TaskRepository;
-use App\Service\Filler\ProjectFiller;
 use App\Service\InProjectContext;
 use App\Service\ProjectService;
 use App\Service\SpecBuilder\ProjectListFilterApplier;
@@ -31,8 +30,6 @@ use App\Specification\Doc\DefaultSortSpec as DocDefaultSortSpec;
 use App\Specification\Doc\NotArchivedSpec;
 use App\Specification\InProjectSpec;
 use App\Specification\Project\VisibleByUserSpec;
-use Doctrine\ORM\Exception\ORMException;
-use Doctrine\ORM\OptimisticLockException;
 use Happyr\DoctrineSpecification\Spec;
 use InvalidArgumentException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -209,8 +206,6 @@ class ProjectController extends AbstractController
      * @param Project $project
      * @param ProjectService $projectService
      * @return Response
-     * @throws ORMException
-     * @throws OptimisticLockException
      */
     public function archive(Project $project, ProjectService $projectService): Response
     {
