@@ -38,7 +38,7 @@ class TaskOnUpdateSubscriber implements EventSubscriberInterface
         ];
     }
 
-    public function onTaskChange(TaskEvent $event)
+    public function onTaskChange(TaskEvent $event): void
     {
         if ($this->isServiceUser()) {
             return;

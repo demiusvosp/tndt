@@ -63,7 +63,6 @@ class Doc implements NoInterface, WithProjectInterface, CommentableInterface
     /**
      * @var DateTime
      * @ORM\Column(type="datetime")
-     * @Gedmo\Timestampable(on="create")
      */
     private DateTime $createdAt;
 

@@ -25,7 +25,8 @@ class DocService
 
     public function changeState(Doc $doc, int $newState): void
     {
+        $isBecameArchived = $doc->isArchived();
         $doc->setState($newState);
-        $this->eventDispatcher->dispatch(new DocEvent($doc), AppEvents::DOC_CHANGE_STATE);
+        $this->eventDispatcher->dispatch(new DocEvent($doc, $isBecameArchived), AppEvents::DOC_CHANGE_STATE);
     }
 }

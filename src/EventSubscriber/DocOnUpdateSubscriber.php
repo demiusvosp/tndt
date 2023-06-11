@@ -42,8 +42,8 @@ class DocOnUpdateSubscriber implements EventSubscriberInterface
         if ($this->isServiceUser()) {
             return;
         }
-        if ($event->getDoc()->isArchived()) {
-            return;
+        if (!$event->isBecameArchived() && $event->getDoc()->isArchived()) {
+            return; // документ был архивным, поэтому дату меня не нужно
         }
 
         $doc = $event->getDoc();
