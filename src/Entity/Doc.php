@@ -10,6 +10,7 @@ namespace App\Entity;
 
 use App\Entity\Contract\CommentableInterface;
 use App\Entity\Contract\NoInterface;
+use App\Entity\Contract\WithProjectInterface;
 use App\Exception\BadRequestException;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
@@ -21,7 +22,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Entity(repositoryClass="App\Repository\DocRepository")
  */
-class Doc implements NoInterface, CommentableInterface
+class Doc implements NoInterface, WithProjectInterface, CommentableInterface
 {
     public const DOCID_SEPARATOR = '#';
 

@@ -23,8 +23,8 @@ use App\Form\Type\Project\NewProjectType;
 use App\Repository\DocRepository;
 use App\Repository\ProjectRepository;
 use App\Repository\TaskRepository;
-use App\Service\Filler\ProjectFiller;
 use App\Service\InProjectContext;
+use App\Service\ProjectService;
 use App\Service\SpecBuilder\ProjectListFilterApplier;
 use App\Specification\Doc\DefaultSortSpec as DocDefaultSortSpec;
 use App\Specification\Doc\NotArchivedSpec;
@@ -44,12 +44,11 @@ class ProjectController extends AbstractController
     private const TASK_BLOCK_LIMIT = 15;
     private const DOC_BLOCK_LIMIT = 15;
 
-    private ProjectFiller $projectFiller;
+    private ProjectService $projectService;
 
-
-    public function __construct(ProjectFiller $projectFiller)
+    public function __construct(ProjectService $projectService)
     {
-        $this->projectFiller = $projectFiller;
+        $this->projectService = $projectService;
     }
 
     public function list(Request $request, ProjectRepository $projectRepository, ProjectListFilterApplier $listFilterApplier): Response
@@ -90,12 +89,15 @@ class ProjectController extends AbstractController
             Spec::orderBy('updatedAt', 'DESC'),
             Spec::limit(self::TASK_BLOCK_LIMIT)
         ));
-        $docs = $docRepository->match(Spec::andX(
-            new NotArchivedSpec(),
+        $docSpec = Spec::andX(
             new InProjectSpec($project),
             new DocDefaultSortSpec(),
             Spec::limit(self::DOC_BLOCK_LIMIT)
-        ));
+        );
+        if (!$project->isArchived()) {
+            $docSpec->andX(new NotArchivedSpec());
+        }
+        $docs = $docRepository->match($docSpec);
 
         return $this->render(
             'project/index.html.twig',
@@ -115,11 +117,7 @@ class ProjectController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $project = $this->projectFiller->createProjectByForm($formData);
-
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($project);
-            $em->flush();
+            $project = $this->projectService->createProject($formData);
             $this->addFlash('success', 'project.create.success');
             return $this->redirectToRoute('project.index', ['suffix' => $project->getSuffix()]);
         }
@@ -141,9 +139,7 @@ class ProjectController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $this->projectFiller->fillCommonSetting($formData, $project);
-            $em->flush();
+            $this->projectService->editCommonSetting($formData, $project);
             $this->addFlash('success', 'project.edit.success');
         }
 
@@ -165,7 +161,7 @@ class ProjectController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid()) {
             try {
-                $this->projectFiller->fillPermissionsSetting($formData, $project);
+                $this->projectService->editPermissions($formData, $project);
             } catch (InvalidArgumentException $e) {
                 $form->addError(new FormError($e->getMessage()));
             }
@@ -192,12 +188,10 @@ class ProjectController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             try {
-                $this->projectFiller->fillTaskSettings($formData, $project);
+                $this->projectService->editTaskSettings($formData, $project);
             } catch (DictionaryException $e) {
                 $form->addError(new FormError($e->getMessage()));
             }
-            $em = $this->getDoctrine()->getManager();
-            $em->flush();
         }
 
         return $this->render(
@@ -209,17 +203,13 @@ class ProjectController extends AbstractController
     /**
      * @InProjectContext
      * @IsGranted("PERM_PROJECT_ARCHIVE")
-     * @param Request $request
      * @param Project $project
+     * @param ProjectService $projectService
      * @return Response
      */
-    public function archive(Request $request, Project $project): Response
+    public function archive(Project $project, ProjectService $projectService): Response
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $project->doArchive();
-        $em->persist($project);
-        $em->flush();
+        $projectService->archiveProject($project);
         $this->addFlash('warning', 'project.archive.success');
 
         return $this->redirectToRoute('project.list');

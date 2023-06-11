@@ -104,7 +104,8 @@ class ProjectFiller
     /**
      * @param EditTaskSettingsDTO $dto
      * @param Project $project
-     * @throws InvalidArgumentException
+     * @return void
+     * @throws DictionaryException
      */
     public function fillTaskSettings(EditTaskSettingsDTO $dto, Project $project): void
     {
@@ -130,7 +131,6 @@ class ProjectFiller
      * @param TypesEnum $dictionaryType
      * @param string $string
      * @return Dictionary
-     * @throws InvalidArgumentException
      * @throws DictionaryException
      */
     private function stringToDictionary(TypesEnum $dictionaryType, string $string): Dictionary
@@ -141,9 +141,9 @@ class ProjectFiller
             return $dictionaryType->createDictionary($array);
 
         } catch (JsonException $e) {
-            throw new DictionaryException('Не удалось десериализовать справочник ' . $dictionaryType->getLabel());
+            throw new DictionaryException('Не удалось десериализовать справочник ' . $dictionaryType->getLabel(), $e);
         } catch (DictionaryException $e) {
-            throw new DictionaryException('Справочник ' . $dictionaryType->getLabel() . ', ' . $e->getMessage());
+            throw new DictionaryException('Справочник ' . $dictionaryType->getLabel() . ', ' . $e->getMessage(), $e);
         }
     }
 }

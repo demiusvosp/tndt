@@ -7,6 +7,10 @@
  */
 namespace App\Entity;
 
+use App\Dictionary\Object\Task\TaskComplexity;
+use App\Dictionary\Object\Task\TaskPriority;
+use App\Dictionary\Object\Task\TaskStage;
+use App\Dictionary\Object\Task\TaskType;
 use App\Entity\Contract\InProjectInterface;
 use App\Object\Project\TaskSettings;
 use App\Security\UserRolesEnum;
@@ -14,7 +18,6 @@ use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -58,14 +61,12 @@ class Project implements InProjectInterface
     /**
      * @var DateTime
      * @ORM\Column(type="datetime")
-     * @Gedmo\Timestampable(on="create")
      */
     private DateTime $createdAt;
 
     /**
      * @var DateTime
      * @ORM\Column(type="datetime")
-     * @Gedmo\Timestampable(on="update")
      */
     private DateTime $updatedAt;
 
@@ -105,7 +106,14 @@ class Project implements InProjectInterface
     public function __construct(string $suffix)
     {
         $this->suffix = $suffix;
+        $this->createdAt = $this->updatedAt =  new DateTime();
         $this->projectUsers = new ArrayCollection();
+        $this->taskSettings = new TaskSettings(
+            new TaskType(),
+            new TaskStage(),
+            new TaskPriority(),
+            new TaskComplexity()
+        );
     }
 
     public function __toString(): string
@@ -176,6 +184,14 @@ class Project implements InProjectInterface
     }
 
     /**
+     * @param DateTime $updatedAt
+     */
+    public function setUpdatedAt(DateTime $updatedAt): void
+    {
+        $this->updatedAt = $updatedAt;
+    }
+
+    /**
      * @return bool
      */
     public function isArchived(): bool
@@ -183,14 +199,10 @@ class Project implements InProjectInterface
         return $this->isArchived;
     }
 
-    /**
-     * Отправить проект в архив
-     */
-    public function doArchive(): void
+    public function setIsArchived(bool $isArchived): Project
     {
-        $this->isArchived = true;
-        $this->isPublic = false;
-        //@TODO послать событие закрытия проекта, чтобы все могли проверить
+        $this->isArchived = $isArchived;
+        return $this;
     }
 
     /**

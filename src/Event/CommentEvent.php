@@ -9,9 +9,11 @@ declare(strict_types=1);
 namespace App\Event;
 
 use App\Entity\Comment;
-use Symfony\Contracts\EventDispatcher\Event;
+use App\Entity\Contract\WithProjectInterface;
+use App\Entity\Project;
+use App\Exception\DomainException;
 
-class CommentEvent extends Event
+class CommentEvent extends InProjectEvent
 {
     private $comment;
 
@@ -25,5 +27,15 @@ class CommentEvent extends Event
     public function getComment(): Comment
     {
         return $this->comment;
+    }
+
+    public function getProject(): Project
+    {
+        $owner = $this->comment->getOwnerEntity();
+        if (!$owner instanceof WithProjectInterface) {
+            throw new DomainException('Comment in not project\'s entity. Need to update CommentEvent');
+        }
+
+        return $owner->getProject();
     }
 }

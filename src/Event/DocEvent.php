@@ -9,9 +9,10 @@ declare(strict_types=1);
 namespace App\Event;
 
 use App\Entity\Doc;
+use App\Entity\Project;
 use Symfony\Contracts\EventDispatcher\Event;
 
-class DocEvent extends Event
+class DocEvent extends InProjectEvent
 {
     private Doc $doc;
 
@@ -26,5 +27,10 @@ class DocEvent extends Event
     public function getDoc(): Doc
     {
         return $this->doc;
+    }
+
+    public function getProject(): Project
+    {
+        return $this->doc->getProject();
     }
 }

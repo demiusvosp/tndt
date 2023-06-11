@@ -8,10 +8,10 @@ declare(strict_types=1);
 
 namespace App\Event;
 
+use App\Entity\Project;
 use App\Entity\Task;
-use Symfony\Contracts\EventDispatcher\Event;
 
-class TaskEvent extends Event
+class TaskEvent extends InProjectEvent
 {
     private Task $task;
     /**
@@ -39,5 +39,10 @@ class TaskEvent extends Event
     public function isBecameClosed(): bool
     {
         return $this->becameClosed;
+    }
+
+    public function getProject(): Project
+    {
+        return $this->task->getProject();
     }
 }
