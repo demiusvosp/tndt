@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection NullPointerExceptionInspection */
 
 namespace App\Command;
 
@@ -17,7 +17,7 @@ use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 class DictionaryFillCommand extends Command
 {
     protected static $defaultName = 'app:dictionary:fill';
-    protected static string $defaultDescription = 'Fill dictionary default value to all related entity';
+    protected static $defaultDescription = 'Fill dictionary default value to all related entity';
 
     private EntityManagerInterface $entityManager;
     private Fetcher $dictionaryFetcher;
