@@ -20,21 +20,22 @@ use App\Event\AppEvents;
 use App\Event\TaskEvent;
 use App\Exception\TaskStageException;
 use App\Form\DTO\Task\CloseTaskDTO;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class TaskStagesService
 {
-    private CommentService $commentService;
     private Fetcher $dictionaryFetcher;
+    private EntityManagerInterface $entityManager;
     private EventDispatcherInterface $eventDispatcher;
 
     public function __construct(
-        CommentService $commentService,
         Fetcher $dictionaryFetcher,
+        EntityManagerInterface $entityManager,
         EventDispatcherInterface $eventDispatcher
     ) {
-        $this->commentService = $commentService;
         $this->dictionaryFetcher = $dictionaryFetcher;
+        $this->entityManager = $entityManager;
         $this->eventDispatcher = $eventDispatcher;
     }
 
@@ -117,22 +118,6 @@ class TaskStagesService
         }
 
         $this->eventDispatcher->dispatch(new TaskEvent($task, $becameClosed), AppEvents::TASK_CHANGE_STAGE);
-    }
-
-    /**
-     * Закрыть задачу
-     * @param CloseTaskDTO $dto
-     * @param Task $task
-     * @param User $whoClose
-     * @return void
-     */
-    public function close(CloseTaskDTO $dto, Task $task, User $whoClose): void
-    {
-        if (!empty($dto->getComment())) {
-            $this->commentService->applyCommentFromString($task, $dto->getComment(), $whoClose);
-        }
-        $task->setStage($dto->getStage());
-        $task->setIsClosed(true);
-        $this->eventDispatcher->dispatch(new TaskEvent($task, true), AppEvents::TASK_CLOSE);
+        $this->entityManager->flush();
     }
 }

@@ -22,6 +22,7 @@ use App\Form\Type\Task\NewTaskType;
 use App\Repository\TaskRepository;
 use App\Service\Filler\TaskFiller;
 use App\Service\InProjectContext;
+use App\Service\TaskService;
 use App\Service\TaskStagesService;
 use App\Specification\InProjectSpec;
 use Knp\Component\Pager\PaginatorInterface;
@@ -41,18 +42,21 @@ class TaskController extends AbstractController
     private const TASK_PER_PAGE = 25;
     private const CHANGE_STAGE_TOKEN = 'task-change-stage';
 
-    private EventDispatcherInterface $eventDispatcher;
     private TranslatorInterface $translator;
     private TaskRepository $taskRepository;
+    private TaskService $taskService;
+    private TaskStagesService $taskStagesService;
 
     public function __construct(
-        EventDispatcherInterface $eventDispatcher,
         TranslatorInterface $translator,
-        TaskRepository      $taskRepository
+        TaskRepository $taskRepository,
+        TaskService $taskService,
+        TaskStagesService $taskStagesService
     ) {
-        $this->eventDispatcher = $eventDispatcher;
         $this->translator = $translator;
         $this->taskRepository = $taskRepository;
+        $this->taskService = $taskService;
+        $this->taskStagesService = $taskStagesService;
     }
 
     /**
@@ -130,10 +134,9 @@ class TaskController extends AbstractController
      * @IsGranted("PERM_TASK_CREATE")
      * @param Request $request
      * @param Project $project
-     * @param TaskFiller $taskFiller
      * @return Response
      */
-    public function create(Request $request, Project $project, TaskFiller $taskFiller): Response
+    public function create(Request $request, Project $project): Response
     {
         if ($project->isArchived()) {
             throw new DomainException('Нельзя создавать задачи в архивных проектах');
@@ -148,12 +151,7 @@ class TaskController extends AbstractController
 
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-
-            $task = $taskFiller->createFromForm($formData);
-            $this->eventDispatcher->dispatch(new TaskEvent($task), AppEvents::TASK_OPEN);
-            $em->persist($task);
-            $em->flush();
+            $task = $this->taskService->open($formData);
 
             $this->addFlash('success', 'task.create.success');
             return $this->redirectToRoute('task.index', ['taskId' => $task->getTaskId()]);
@@ -165,10 +163,9 @@ class TaskController extends AbstractController
     /**
      * @IsGranted ("PERM_TASK_EDIT")
      * @param Request $request
-     * @param TaskFiller $taskFiller
      * @return Response
      */
-    public function edit(Request $request, TaskFiller $taskFiller): Response
+    public function edit(Request $request): Response
     {
         $task = $this->taskRepository->findByTaskId($request->get('taskId'));
         if (!$task) {
@@ -179,11 +176,7 @@ class TaskController extends AbstractController
 
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()) {
-            $taskFiller->fillFromEditForm($formData, $task);
-            $this->eventDispatcher->dispatch(new TaskEvent($task), AppEvents::TASK_EDIT);
-
-            $em = $this->getDoctrine()->getManager();
-            $em->flush();
+            $this->taskService->edit($formData, $task);
 
             $this->addFlash('success', 'task.edit.success');
             return $this->redirectToRoute('task.index', ['taskId' => $task->getTaskId()]);
@@ -195,10 +188,9 @@ class TaskController extends AbstractController
     /**
      * @IsGranted ("PERM_TASK_CLOSE")
      * @param Request $request
-     * @param TaskStagesService $taskService
      * @return Response
      */
-    public function close(Request $request, TaskStagesService $taskService): Response
+    public function close(Request $request): Response
     {
         $task = $this->taskRepository->findByTaskId($request->get('taskId'));
         if (!$task) {
@@ -210,9 +202,8 @@ class TaskController extends AbstractController
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()) {
             /** @noinspection PhpParamsInspection */
-            $taskService->close($formData, $task, $this->getUser());
+            $this->taskService->close($formData, $task, $this->getUser());
 
-            $this->getDoctrine()->getManager()->flush();
             $this->addFlash('warning', 'task.close.success');
             return $this->redirectToRoute('task.list', ['suffix' => $task->getSuffix()]);
         }
@@ -224,10 +215,9 @@ class TaskController extends AbstractController
     /**
      * @IsGranted("PERM_TASK_EDIT")
      * @param Request $request
-     * @param TaskStagesService $taskService
      * @return Response
      */
-    public function changeStage(Request $request, TaskStagesService $taskService): Response
+    public function changeStage(Request $request): Response
     {
         $task = $this->taskRepository->findByTaskId($request->get('taskId'));
         if (!$task) {
@@ -237,8 +227,7 @@ class TaskController extends AbstractController
             throw new BadRequestException();
         }
 
-        $taskService->changeStage($task, $request->request->get('new_stage'));
-        $this->getDoctrine()->getManager()->flush();
+        $this->taskStagesService->changeStage($task, $request->request->get('new_stage'));
         $this->addFlash('success', 'task.change_stage.success');
 
         return $this->redirectToRoute('task.index', ['taskId' => $task->getTaskId()]);

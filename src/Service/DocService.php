@@ -12,12 +12,11 @@ use App\Entity\Doc;
 use App\Entity\User;
 use App\Event\AppEvents;
 use App\Event\DocEvent;
-use App\Exception\BadRequestException;
 use App\Form\DTO\Doc\EditDocDTO;
 use App\Form\DTO\Doc\NewDocDTO;
 use App\Service\Filler\DocFiller;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class DocService
 {

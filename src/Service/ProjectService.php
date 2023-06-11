@@ -22,7 +22,7 @@ use App\Repository\TaskRepository;
 use App\Service\Filler\ProjectFiller;
 use App\Specification\InProjectSpec;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class ProjectService
 {
