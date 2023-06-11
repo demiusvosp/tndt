@@ -60,7 +60,7 @@ class DocService
 
     public function changeState(Doc $doc, int $newState): void
     {
-        $isBecameArchived = $doc->isArchived();
+        $isBecameArchived = !$doc->isArchived() && $newState===Doc::STATE_ARCHIVED;
         $doc->setState($newState);
         $this->eventDispatcher->dispatch(new DocEvent($doc, $isBecameArchived), AppEvents::DOC_CHANGE_STATE);
         $this->entityManager->flush();
