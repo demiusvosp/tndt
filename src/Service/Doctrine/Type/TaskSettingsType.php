@@ -14,7 +14,6 @@ use App\Dictionary\Object\Task\TaskType;
 use App\Object\Project\TaskSettings;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\JsonType;
-use Doctrine\DBAL\Types\Type;
 
 class TaskSettingsType extends JsonType
 {
@@ -27,9 +26,6 @@ class TaskSettingsType extends JsonType
 
     public function convertToDatabaseValue($value, AbstractPlatform $platform)
     {
-        if ($value === null) {
-            $value = new TaskSettings(null, null, null, null);
-        }
         return parent::convertToDatabaseValue($value, $platform);
     }
 
