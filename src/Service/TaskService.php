@@ -41,9 +41,10 @@ class TaskService
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    public function open(NewTaskDTO $request): Task
+    public function open(NewTaskDTO $request, User $author): Task
     {
         $task = $this->taskFiller->createFromForm($request);
+        $task->setCreatedBy($author);
         $this->entityManager->persist($task);
 
         $this->eventDispatcher->dispatch(new TaskEvent($task), AppEvents::TASK_OPEN);

@@ -9,8 +9,6 @@ namespace App\Controller;
 use App\Dictionary\Object\Task\StageTypesEnum;
 use App\Entity\Project;
 use App\Entity\User;
-use App\Event\AppEvents;
-use App\Event\TaskEvent;
 use App\Exception\BadRequestException;
 use App\Exception\DomainException;
 use App\Form\DTO\Task\CloseTaskDTO;
@@ -20,7 +18,6 @@ use App\Form\Type\Task\CloseTaskForm;
 use App\Form\Type\Task\EditTaskType;
 use App\Form\Type\Task\NewTaskType;
 use App\Repository\TaskRepository;
-use App\Service\Filler\TaskFiller;
 use App\Service\InProjectContext;
 use App\Service\TaskService;
 use App\Service\TaskStagesService;
@@ -28,7 +25,6 @@ use App\Specification\InProjectSpec;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
@@ -151,7 +147,8 @@ class TaskController extends AbstractController
 
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()) {
-            $task = $this->taskService->open($formData);
+            /** @noinspection PhpParamsInspection */
+            $task = $this->taskService->open($formData, $this->getUser());
 
             $this->addFlash('success', 'task.create.success');
             return $this->redirectToRoute('task.index', ['taskId' => $task->getTaskId()]);

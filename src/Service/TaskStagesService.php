@@ -15,11 +15,9 @@ use App\Dictionary\Object\Task\TaskStageItem;
 use App\Dictionary\TypesEnum;
 use App\Entity\Project;
 use App\Entity\Task;
-use App\Entity\User;
 use App\Event\AppEvents;
 use App\Event\TaskEvent;
 use App\Exception\TaskStageException;
-use App\Form\DTO\Task\CloseTaskDTO;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
