@@ -19,7 +19,7 @@ use App\Form\Type\Base\DictionaryStageSelectType;
 use App\Form\Type\Base\MdEditType;
 use App\Form\Type\User\UserSelectType;
 use App\Service\ProjectContext;
-use App\Service\TaskService;
+use App\Service\TaskStagesService;
 use InvalidArgumentException;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -31,10 +31,10 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class NewTaskType extends AbstractType
 {
     protected Fetcher $dictionaryFetcher;
-    protected TaskService $taskService;
+    protected TaskStagesService $taskService;
     protected ProjectContext $projectContext;
 
-    public function __construct(Fetcher $dictionaryFetcher, TaskService $taskService, ProjectContext $projectContext)
+    public function __construct(Fetcher $dictionaryFetcher, TaskStagesService $taskService, ProjectContext $projectContext)
     {
         $this->dictionaryFetcher = $dictionaryFetcher;
         $this->taskService = $taskService;

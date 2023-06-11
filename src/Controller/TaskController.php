@@ -22,7 +22,7 @@ use App\Form\Type\Task\NewTaskType;
 use App\Repository\TaskRepository;
 use App\Service\Filler\TaskFiller;
 use App\Service\InProjectContext;
-use App\Service\TaskService;
+use App\Service\TaskStagesService;
 use App\Specification\InProjectSpec;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -85,7 +85,7 @@ class TaskController extends AbstractController
      * @param Request $request
      * @return Response
      */
-    public function index(Request $request, TaskService $taskService, CsrfTokenManagerInterface $tokenManager): Response
+    public function index(Request $request, TaskStagesService $taskService, CsrfTokenManagerInterface $tokenManager): Response
     {
         $task = $this->taskRepository->findByTaskId($request->get('taskId'));
         if (!$task) {
@@ -195,10 +195,10 @@ class TaskController extends AbstractController
     /**
      * @IsGranted ("PERM_TASK_CLOSE")
      * @param Request $request
-     * @param TaskService $taskService
+     * @param TaskStagesService $taskService
      * @return Response
      */
-    public function close(Request $request, TaskService $taskService): Response
+    public function close(Request $request, TaskStagesService $taskService): Response
     {
         $task = $this->taskRepository->findByTaskId($request->get('taskId'));
         if (!$task) {
@@ -224,10 +224,10 @@ class TaskController extends AbstractController
     /**
      * @IsGranted("PERM_TASK_EDIT")
      * @param Request $request
-     * @param TaskService $taskService
+     * @param TaskStagesService $taskService
      * @return Response
      */
-    public function changeStage(Request $request, TaskService $taskService): Response
+    public function changeStage(Request $request, TaskStagesService $taskService): Response
     {
         $task = $this->taskRepository->findByTaskId($request->get('taskId'));
         if (!$task) {

@@ -22,7 +22,7 @@ use App\Exception\TaskStageException;
 use App\Form\DTO\Task\CloseTaskDTO;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class TaskService
+class TaskStagesService
 {
     private CommentService $commentService;
     private Fetcher $dictionaryFetcher;
