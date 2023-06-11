@@ -67,12 +67,11 @@ class Doc implements NoInterface, WithProjectInterface, CommentableInterface
     private DateTime $createdAt;
 
     /**
-     * @var User
+     * @var User|null
      * @ORM\ManyToOne (targetEntity="User")
      * @ORM\JoinColumn (name="created_by", referencedColumnName="username", nullable=true)
-     * @Gedmo\Blameable (on="create")
      */
-    private User $createdBy;
+    private ?User $createdBy;
 
     /**
      * @var DateTime
@@ -134,6 +133,7 @@ class Doc implements NoInterface, WithProjectInterface, CommentableInterface
     {
         $this->setProject($project);
         $this->createdAt = $this->updatedAt = new DateTime();
+        $this->createdBy = $this->updatedBy = null;
         $this->state = self::STATE_NORMAL;
     }
 
@@ -228,11 +228,27 @@ class Doc implements NoInterface, WithProjectInterface, CommentableInterface
     }
 
     /**
-     * @return User
+     * @param DateTime $createdAt
      */
-    public function getCreatedBy(): User
+    public function setCreatedAt(DateTime $createdAt): void
+    {
+        $this->createdAt = $createdAt;
+    }
+
+    /**
+     * @return User|null
+     */
+    public function getCreatedBy(): ?User
     {
         return $this->createdBy;
+    }
+
+    /**
+     * @param User $createdBy
+     */
+    public function setCreatedBy(User $createdBy): void
+    {
+        $this->createdBy = $createdBy;
     }
 
     /**

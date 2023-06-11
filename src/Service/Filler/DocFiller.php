@@ -18,12 +18,10 @@ use App\Service\DocService;
 class DocFiller
 {
     private ProjectRepository $projectRepository;
-    private DocService $docService;
 
-    public function __construct(ProjectRepository $projectRepository, DocService $docService)
+    public function __construct(ProjectRepository $projectRepository)
     {
         $this->projectRepository = $projectRepository;
-        $this->docService = $docService;
     }
 
     public function createFromForm(NewDocDTO $dto): Doc
@@ -46,8 +44,5 @@ class DocFiller
         $doc->setCaption($dto->getCaption());
         $doc->setAbstract($dto->getAbstract());
         $doc->setBody($dto->getBody());
-        if ($doc->getState() !== $dto->getState()) {
-            $this->docService->changeState($doc, $dto->getState());
-        }
     }
 }

@@ -30,7 +30,6 @@ class DocOnUpdateSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-//            AppEvents::DOC_CREATE => ['onDocCreate', 0], @TODO in [tndt-57]
             AppEvents::DOC_EDIT => ['onDocChange', 0],
             AppEvents::DOC_CHANGE_STATE => ['onDocChange', 0],
             AppEvents::COMMENT_ADD => ['onCommentAdd', 0],

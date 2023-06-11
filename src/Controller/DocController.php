@@ -10,8 +10,6 @@ namespace App\Controller;
 
 use App\Entity\Doc;
 use App\Entity\Project;
-use App\Event\AppEvents;
-use App\Event\DocEvent;
 use App\Exception\DomainException;
 use App\Form\DTO\Doc\EditDocDTO;
 use App\Form\DTO\Doc\NewDocDTO;
@@ -38,15 +36,18 @@ class DocController extends AbstractController
     private const DOC_PER_PAGE = 25;
 
     private DocRepository $docRepository;
+    private DocService  $docService;
     private EventDispatcherInterface $eventDispatcher;
     private TranslatorInterface $translator;
 
     public function __construct(
-        DocRepository       $docRepository,
+        DocRepository  $docRepository,
+        DocService $docService,
         EventDispatcherInterface $eventDispatcher,
         TranslatorInterface $translator
     ) {
         $this->docRepository = $docRepository;
+        $this->docService = $docService;
         $this->eventDispatcher = $eventDispatcher;
         $this->translator = $translator;
     }
@@ -96,24 +97,19 @@ class DocController extends AbstractController
      * @param DocFiller $docFiller
      * @return Response
      */
-    public function create(Request $request, Project $project, DocFiller $docFiller): Response
+    public function create(Request $request, Project $project): Response
     {
         if ($project->isArchived()) {
             throw new DomainException('Нельзя создавать документы в архивных проектах');
         }
-        $formData = new NewDocDTO();
-        $formData->setProject($project->getSuffix());
+        $formData = new NewDocDTO($project->getSuffix());
 
         $form = $this->createForm(NewDocType::class, $formData);
 
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()) {
-            $doc = $docFiller->createFromForm($formData);
-
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($doc);
-            $this->eventDispatcher->dispatch(new DocEvent($doc), AppEvents::DOC_CREATE);
-            $em->flush();
+            /** @noinspection PhpParamsInspection */
+            $doc = $this->docService->createDoc($formData, $this->getUser());
 
             $this->addFlash('success', 'doc.create.success');
             return $this->redirectToRoute('doc.index', $doc->getUrlParams());
@@ -129,7 +125,7 @@ class DocController extends AbstractController
      * @param DocFiller $docFiller
      * @return Response
      */
-    public function edit(Request $request, Project $project, DocFiller $docFiller): Response
+    public function edit(Request $request, Project $project): Response
     {
         $doc = $this->docRepository->getBySlug($request->get('slug'));
         if (!$doc || $doc->getSuffix() !== $project->getSuffix()) {
@@ -142,11 +138,7 @@ class DocController extends AbstractController
 
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()) {
-            $docFiller->fillFromEditForm($formData, $doc);
-            $this->eventDispatcher->dispatch(new DocEvent($doc), AppEvents::DOC_EDIT);
-
-            $em = $this->getDoctrine()->getManager();
-            $em->flush();
+            $this->docService->editDoc($formData, $doc);
 
             $this->addFlash('success', 'doc.edit.success');
             return $this->redirectToRoute('doc.index', $doc->getUrlParams());
@@ -163,16 +155,14 @@ class DocController extends AbstractController
      * @param DocService $docService
      * @return Response
      */
-    public function changeState(string $slug, int $state, Project $project, DocService $docService): Response
+    public function changeState(string $slug, int $state, Project $project): Response
     {
-        $em = $this->getDoctrine()->getManager();
         $doc = $this->docRepository->getBySlug($slug);
         if (!$doc || $doc->getSuffix() !== $project->getSuffix()) {
             throw $this->createNotFoundException($this->translator->trans('doc.not_found'));
         }
 
-        $docService->changeState($doc, $state);
-        $em->flush();
+        $this->docService->changeState($doc, $state);
 
         $messages = [
             Doc::STATE_NORMAL => 'doc.actualized',
