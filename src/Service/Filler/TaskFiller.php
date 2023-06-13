@@ -9,6 +9,7 @@ declare(strict_types=1);
 namespace App\Service\Filler;
 
 use App\Entity\Task;
+use App\Entity\User;
 use App\Exception\BadUserException;
 use App\Exception\DomainException;
 use App\Form\DTO\Task\EditTaskDTO;
@@ -25,9 +26,9 @@ class TaskFiller
         $this->userRepository = $userRepository;
     }
 
-    public function createFromForm(NewTaskDTO $dto): Task
+    public function createFromForm(NewTaskDTO $dto, ?User $author = null): Task
     {
-        $task = new Task($dto->getProject());
+        $task = new Task($dto->getProject(), $author);
         $task->setCaption($dto->getCaption());
         $task->setDescription($dto->getDescription());
 

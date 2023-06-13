@@ -41,6 +41,10 @@ class NewDocDTO
      */
     private string $body = '';
 
+    public function __construct(string $project)
+    {
+        $this->project = $project;
+    }
 
     /**
      * @return string
@@ -48,16 +52,6 @@ class NewDocDTO
     public function getProject(): string
     {
         return $this->project;
-    }
-
-    /**
-     * @param string $project
-     * @return NewDocDTO
-     */
-    public function setProject(string $project): NewDocDTO
-    {
-        $this->project = $project;
-        return $this;
     }
 
     /**
