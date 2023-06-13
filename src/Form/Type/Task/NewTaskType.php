@@ -30,14 +30,13 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class NewTaskType extends AbstractType
 {
-    protected Fetcher $dictionaryFetcher;
-    protected TaskStagesService $taskService;
+
+    protected TaskStagesService $taskStagesService;
     protected ProjectContext $projectContext;
 
-    public function __construct(Fetcher $dictionaryFetcher, TaskStagesService $taskService, ProjectContext $projectContext)
+    public function __construct(TaskStagesService $taskService, ProjectContext $projectContext)
     {
-        $this->dictionaryFetcher = $dictionaryFetcher;
-        $this->taskService = $taskService;
+        $this->taskStagesService = $taskService;
         $this->projectContext = $projectContext;
     }
 
@@ -89,17 +88,17 @@ class NewTaskType extends AbstractType
             function (FormEvent $event) {
                 $data = $event->getData();
                 if (!$data instanceof WithProjectInterface) {
-                    throw new \InvalidArgumentException('Data DTO with this form must be implement WithProjectInterface');
+                    throw new InvalidArgumentException('Data DTO with this form must be implement WithProjectInterface');
                 }
                 $settings = $data->getProject()->getTaskSettings();
 
                 if ($settings->getDictionaryByType(TypesEnum::TASK_STAGE())->isEnabled()) {
                     if ($data instanceof NewTaskDTO) {
-                        $items = $this->taskService->availableStagesForNewTask($data->getProject());
+                        $items = $this->taskStagesService->availableStagesForNewTask($data->getProject());
 
                     } elseif ($data instanceof EditTaskDTO) {
                         if (!$data->getTask()->isClosed()) {
-                            $items = $this->taskService->availableStages(
+                            $items = $this->taskStagesService->availableStages(
                                 $data->getTask(),
                                 [
                                     StageTypesEnum::STAGE_ON_OPEN(),
@@ -108,7 +107,7 @@ class NewTaskType extends AbstractType
                                 true
                             );
                         } else {
-                            $items = $this->taskService->availableStages(
+                            $items = $this->taskStagesService->availableStages(
                                 $data->getTask(),
                                 [StageTypesEnum::STAGE_ON_CLOSED()],
                                 true

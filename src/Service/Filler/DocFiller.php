@@ -9,6 +9,7 @@ declare(strict_types=1);
 namespace App\Service\Filler;
 
 use App\Entity\Doc;
+use App\Entity\User;
 use App\Exception\DomainException;
 use App\Form\DTO\Doc\EditDocDTO;
 use App\Form\DTO\Doc\NewDocDTO;
@@ -24,14 +25,14 @@ class DocFiller
         $this->projectRepository = $projectRepository;
     }
 
-    public function createFromForm(NewDocDTO $dto): Doc
+    public function createFromForm(NewDocDTO $dto, ?User $author = null): Doc
     {
         $project = $this->projectRepository->find($dto->getProject());
         if (!$project) {
             throw new DomainException('Не найден проект к которому относится документ');
         }
 
-        $doc = new Doc($project);
+        $doc = new Doc($project, $author);
         $doc->setCaption($dto->getCaption());
         $doc->setAbstract($dto->getAbstract());
         $doc->setBody($dto->getBody());

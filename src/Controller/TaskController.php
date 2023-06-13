@@ -85,7 +85,7 @@ class TaskController extends AbstractController
      * @param Request $request
      * @return Response
      */
-    public function index(Request $request, TaskStagesService $taskService, CsrfTokenManagerInterface $tokenManager): Response
+    public function index(Request $request, CsrfTokenManagerInterface $tokenManager): Response
     {
         $task = $this->taskRepository->findByTaskId($request->get('taskId'));
         if (!$task) {
@@ -97,7 +97,7 @@ class TaskController extends AbstractController
             $edit['action'] = $this->generateUrl('task.edit', ['taskId' => $task->getTaskId()]);
         }
         $editStages = [];
-        foreach ($taskService->availableStages($task, [StageTypesEnum::STAGE_ON_NORMAL()]) as $stage) {
+        foreach ($this->taskStagesService->availableStages($task, [StageTypesEnum::STAGE_ON_NORMAL()]) as $stage) {
             $editStages[] = [
                 'label' => $stage->getName(),
                 'value' => $stage->getId()

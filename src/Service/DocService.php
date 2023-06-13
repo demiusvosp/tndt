@@ -36,8 +36,7 @@ class DocService
 
     public function createDoc(NewDocDTO $request, User $author): Doc
     {
-        $doc = $this->docFiller->createFromForm($request);
-        $doc->setCreatedBy($author);
+        $doc = $this->docFiller->createFromForm($request, $author);
         $this->entityManager->persist($doc);
 
         $this->eventDispatcher->dispatch(new DocEvent($doc), AppEvents::DOC_CREATE);

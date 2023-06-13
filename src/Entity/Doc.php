@@ -129,11 +129,12 @@ class Doc implements NoInterface, WithProjectInterface, CommentableInterface
     /**
      * @param Project $project
      */
-    public function __construct(Project $project)
+    public function __construct(Project $project, ?User $author = null)
     {
         $this->setProject($project);
         $this->createdAt = $this->updatedAt = new DateTime();
-        $this->createdBy = $this->updatedBy = null;
+        $this->createdBy = $author;
+        $this->updatedBy = null;
         $this->state = self::STATE_NORMAL;
     }
 

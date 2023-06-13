@@ -143,7 +143,7 @@ class Task implements NoInterface, WithProjectInterface, CommentableInterface, H
     /**
      * @param string|Project $project - Project or project suffix
      */
-    public function __construct($project)
+    public function __construct($project, ?User $author = null)
     {
         if($project instanceof Project) {
             $this->setProject($project);
@@ -151,7 +151,8 @@ class Task implements NoInterface, WithProjectInterface, CommentableInterface, H
             $this->suffix = $project;
         }
         $this->createdAt = $this->updatedAt = new DateTime();
-        $this->createdBy = $this->assignedTo = null;
+        $this->createdBy = $author;
+        $this->assignedTo = null;
     }
 
     public function __toString(): string

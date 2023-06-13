@@ -23,11 +23,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CloseTaskForm extends AbstractType
 {
-    private TaskStagesService $taskService;
+    private TaskStagesService $taskStagesService;
 
-    public function __construct(TaskStagesService $taskService)
+    public function __construct(TaskStagesService $taskStagesService)
     {
-        $this->taskService = $taskService;
+        $this->taskStagesService = $taskStagesService;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -60,7 +60,7 @@ class CloseTaskForm extends AbstractType
                         [
                             'required' => true,
                             'label' => 'task.close.stage',
-                            'items' => $this->taskService->availableStages(
+                            'items' => $this->taskStagesService->availableStages(
                                 $entity->getTask(),
                                 [StageTypesEnum::STAGE_ON_CLOSED()]
                             )

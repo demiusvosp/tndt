@@ -16,7 +16,7 @@ class DocEvent extends InProjectEvent
 {
     private Doc $doc;
     /**
-     * @var bool документ был арзивным ранее, а не стал таковым
+     * @var bool Документ был архивным ранее, а не стал таковым
      */
     private bool $isBecameArchived;
 

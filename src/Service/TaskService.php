@@ -1,9 +1,10 @@
 <?php
 /**
  * User: demius
- * Date: 11.06.2023
- * Time: 21:20
+ * Date: 14.12.2021
+ * Time: 23:02
  */
+declare(strict_types=1);
 
 namespace App\Service;
 
@@ -43,8 +44,7 @@ class TaskService
 
     public function open(NewTaskDTO $request, User $author): Task
     {
-        $task = $this->taskFiller->createFromForm($request);
-        $task->setCreatedBy($author);
+        $task = $this->taskFiller->createFromForm($request, $author);
         $this->entityManager->persist($task);
 
         $this->eventDispatcher->dispatch(new TaskEvent($task), AppEvents::TASK_OPEN);
