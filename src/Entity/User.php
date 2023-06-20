@@ -10,6 +10,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Serializable;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -17,7 +18,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @ORM\Table(name="app_user")
  */
-class User implements UserInterface, Serializable
+class User implements UserInterface, PasswordAuthenticatedUserInterface, Serializable
 {
     public const ROOT_USER = 'root';
 
@@ -91,6 +92,11 @@ class User implements UserInterface, Serializable
     public function getUsername(): string
     {
         return $this->username;
+    }
+
+    public function getUserIdentifier(): string
+    {
+        return $this->getUsername();
     }
 
     /**
@@ -337,7 +343,7 @@ class User implements UserInterface, Serializable
 
     // UserInterface implements
 
-    public function getSalt()
+    public function getSalt(): ?string
     {
         return '';
     }

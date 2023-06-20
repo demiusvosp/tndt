@@ -12,18 +12,18 @@ use App\Form\DTO\User\EditUserDTO;
 use App\Form\DTO\User\NewUserDTO;
 use App\Form\DTO\User\SelfEditUserDTO;
 use App\Security\UserPermissionsEnum;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\Security;
 
 class UserFiller
 {
     private Security $security;
-    private UserPasswordEncoderInterface $passwordEncoder;
+    private UserPasswordHasherInterface $passwordHasher;
 
-    public function __construct(Security $security, UserPasswordEncoderInterface $passwordEncoder)
+    public function __construct(Security $security, UserPasswordHasherInterface $passwordEncoder)
     {
         $this->security = $security;
-        $this->passwordEncoder = $passwordEncoder;
+        $this->passwordHasher = $passwordEncoder;
     }
 
     public function createFromForm(NewUserDTO $dto): User
@@ -33,7 +33,7 @@ class UserFiller
         $user->setEmail($dto->getEmail());
         $user->setGlobalRoles(['ROLE_USER']);
         $user->setLocked(false);
-        $user->setPassword($this->passwordEncoder->encodePassword($user, $dto->getPassword()));
+        $user->setPassword($this->passwordHasher->hashPassword($user, $dto->getPassword()));
 
         return $user;
     }
@@ -46,7 +46,7 @@ class UserFiller
             $user->setLocked($dto->getLocked());
         }
         if (!empty($dto->getPassword())) {
-            $user->setPassword($this->passwordEncoder->encodePassword($user, $dto->getPassword()));
+            $user->setPassword($this->passwordHasher->hashPassword($user, $dto->getPassword()));
         }
     }
 
@@ -55,7 +55,7 @@ class UserFiller
         $user->setName($dto->getName());
         $user->setEmail($dto->getEmail());
         if (!empty($dto->getPassword())) {
-            $user->setPassword($this->passwordEncoder->encodePassword($user, $dto->getPassword()));
+            $user->setPassword($this->passwordHasher->hashPassword($user, $dto->getPassword()));
         }
     }
 }

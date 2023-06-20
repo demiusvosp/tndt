@@ -10,7 +10,6 @@ use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
  * Auto-generated Migration: Please modify to your needs!
@@ -33,12 +32,15 @@ final class Version20211104170351_CreateRootUser extends AbstractMigration imple
         $checkRoot = $this->connection->executeQuery('SELECT id FROM tndt.app_user WHERE app_user.username = "root";');
 
         if (($existRoot = $checkRoot->fetchOne()) === false) {
-            $passwordEncoder = $this->container->get('security.password_encoder');
+            $passwordHasher = $this->container->get('security.user_password_hasher');
             $root = new User('root');
 
             $this->addSql('INSERT INTO tndt.app_user (id, username, name,  email, roles, password, locked, created_at) 
                 VALUES (1, "root", "root", "", :roles, :password, false, NOW())',
-                ['roles' => json_encode([UserRolesEnum::ROLE_ROOT]), 'password' => $passwordEncoder->encodePassword($root, 'root')]
+                [
+                    'roles' => json_encode([UserRolesEnum::ROLE_ROOT]),
+                    'password' => $passwordHasher->hashPassword($root, 'root')
+                ]
             );
 
         } else {
