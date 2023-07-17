@@ -31,6 +31,7 @@
         "symfony/form": "5.4.*",
         "symfony/framework-bundle": "5.4.*",
         "symfony/monolog-bundle": "^3.4",
+        "symfony/rate-limiter": "^5.4",
         "symfony/security-bundle": "5.4.*",
         "symfony/security-core": "5.4.*",
         "symfony/security-csrf": "5.4.*",

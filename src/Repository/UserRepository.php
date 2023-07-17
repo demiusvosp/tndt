@@ -52,9 +52,9 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
      * @param string $usernameOrEmail
      * @return UserInterface|null
      */
-    public function loadUserByUsername($usernameOrEmail)
+    public function loadUserByIdentifier(string $identifier): ?UserInterface
     {
-        $loginCriteria = Spec::eq('username', $usernameOrEmail);
+        $loginCriteria = Spec::eq('username', $identifier);
 
         /*
          * так как в наших user case важнее возможность ставить нескольким пользователям одинаковый email, а
@@ -70,6 +70,16 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             new NotLockingSpec(),
             $loginCriteria
         ));
+    }
+
+    /**
+     * @deprecated  remove after update to v0.4 and update symfony to 6.4
+     * @param string $username
+     * @return UserInterface|null
+     */
+    public function loadUserByUsername(string $username): ?UserInterface
+    {
+        return $this->loadUserByIdentifier($username);
     }
 
     /**

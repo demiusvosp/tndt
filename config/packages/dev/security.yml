@@ -1,5 +1,2 @@
 security:
-  encoders:
-    App\Entity\User:
-      algorithm: auto
-      cost: 4
+
