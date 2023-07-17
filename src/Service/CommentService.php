@@ -67,7 +67,7 @@ class CommentService
             }
         }
 
-        $request = $this->requestStack->getMasterRequest();
+        $request = $this->requestStack->getMainRequest();
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $this->applyCommentFromString($commentableObject, $form->getData()['message'], $author);
