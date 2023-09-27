@@ -22,9 +22,6 @@ use App\Service\ProjectContext;
  */
 class Fetcher
 {
-    /**
-     * @var array
-     */
     private array $projects = [];
 
     private ProjectRepository $projectRepository;
