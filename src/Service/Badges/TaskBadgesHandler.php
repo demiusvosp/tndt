@@ -9,9 +9,9 @@ declare(strict_types=1);
 namespace App\Service\Badges;
 
 use App\Dictionary\Fetcher;
-use App\Dictionary\Object\Task\StageTypesEnum;
 use App\Dictionary\Object\Task\TaskStageItem;
 use App\Entity\Task;
+use App\Exception\DictionaryException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class TaskBadgesHandler implements BadgeHandlerInterface
@@ -46,7 +46,15 @@ class TaskBadgesHandler implements BadgeHandlerInterface
         }
 
         $badges = [];
-        $dictionaryItems = $this->dictionaryFetcher->getRelatedItems($task);
+        try {
+            $dictionaryItems = $this->dictionaryFetcher->getRelatedItems($task);
+        } catch (DictionaryException $e) {
+            return [new BadgeDTO(
+                $this->translator->trans('dictionaries.error.name'),
+                BadgeEnum::WARNING(),
+                $this->translator->trans('dictionaries.error.description')
+            )];
+        }
 
         foreach ($dictionaryItems as $type => $item) {
             if (in_array($type, $excepts, true)) {

@@ -58,6 +58,9 @@ dictionaries:
   not_set:
     name: не назначен
     description: ''
+  error:
+    name: некорректный
+    description: 'Некорректный элемент справочника'
   task_types:
     label: Типы задач
     help: 'Разделение задач по типам, например: Ошибка, Задача, Рефакторинг'

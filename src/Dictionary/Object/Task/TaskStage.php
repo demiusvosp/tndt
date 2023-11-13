@@ -57,7 +57,7 @@ class TaskStage extends Dictionary
     {
         $item = parent::getItem($value);
         if (!$item instanceof TaskStageItem) {
-            throw new DictionaryException('Неизвестный элемент справочника ' . $value);
+            throw new DictionaryException('Элемент справочника ' . $value . ' не найден среди этапов задачи');
         }
         return $item;
     }

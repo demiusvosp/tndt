@@ -56,18 +56,21 @@ CreatedAt: Создана
 dashboard: Обзор
 dictionaries:
   not_set:
-    name: не назначен
-    description: ''
+    name: not set
+    description: 'Dictionary not set'
+  error:
+    name: incorrect
+    description: 'Not correct dictionary value'
   task_types:
-    label: Типы задач
-    help: 'Разделение задач по типам, например: Ошибка, Задача, Рефакторинг'
+    label: Task types
+    help: 'Separate tasks by types eg: Error, Task, Refactoring, Research'
   task_stages:
-    label: Этапы задач
-    help: 'Разделение по этапам реализации, например: Новая, В работе, На ревью, Тестируется, Готова, Закрыта без выполнения'
+    label: Task stages
+    help: 'Separate tasks by workflow stages eg: New, Working, Testing, Done, Not realized'
     types:
-      open: Новая задача
-      normal: В процессе
-      closed: Закрытая задача
+      open: New task
+      normal: In process
+      closed: Closed task
   task_priority:
     label: Приоритетность (важность) задач
     help: 'Разделение задач по приоритету, важности реализации, например: Немедленно, В первую очередь, Обычная, Маловажная, Если останется время'

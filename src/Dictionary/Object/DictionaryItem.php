@@ -79,6 +79,11 @@ class DictionaryItem implements JlobObjectInterface
         return $this;
     }
 
+    public function isSet(): bool
+    {
+        return $this->id !== 0;
+    }
+
     /**
      * @return string
      */
