@@ -24,10 +24,10 @@ class DictionaryFillCommand extends Command
     private PropertyAccessorInterface $propertyAccessor;
 
     public function __construct(
-        string $name = null,
         EntityManagerInterface $entityManager,
         Fetcher $dictionaryFetcher,
-        PropertyAccessorInterface $propertyAccessor
+        PropertyAccessorInterface $propertyAccessor,
+        string $name = null
     ) {
         parent::__construct($name);
         $this->dictionaryFetcher = $dictionaryFetcher;

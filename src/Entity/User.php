@@ -9,7 +9,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Serializable;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -18,7 +17,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @ORM\Table(name="app_user")
  */
-class User implements UserInterface, PasswordAuthenticatedUserInterface, Serializable
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     public const ROOT_USER = 'root';
 
@@ -351,25 +350,5 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Seriali
     public function eraseCredentials()
     {
         // TODO: Implement eraseCredentials() method.
-    }
-
-    // Serialize interface implements
-
-    public function serialize()
-    {
-        return serialize(array(
-            $this->username,
-            $this->password,
-            $this->locked
-        ));
-    }
-
-    public function unserialize($data)
-    {
-        [
-            $this->username,
-            $this->password,
-            $this->locked,
-        ] = unserialize($data, array('allowed_classes' => false));
     }
 }
