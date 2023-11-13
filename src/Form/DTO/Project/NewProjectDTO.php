@@ -8,54 +8,33 @@ declare(strict_types=1);
 
 namespace App\Form\DTO\Project;
 
-use App\Entity\Project;
 use Happyr\Validator\Constraint\EntityExist;
 use Symfony\Component\Validator\Constraints as Assert;
+use App\Entity\User;
 
 class NewProjectDTO
 {
-    /**
-     * @var string|null
-     * @Assert\NotBlank
-     * @Assert\Length(min=1, max=8)
-     * @Assert\Regex("/^\w+$/")
-     */
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 1, max: 8)]
+    #[Assert\Regex("/^\w+$/")]
     private ?string $suffix = '';
 
-    /**
-     * @var string|null
-     * @Assert\NotBlank()
-     * @Assert\Length(min=1, max=255)
-     */
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 1, max: 255)]
     private ?string $name = '';
 
-    /**
-     * @var string|null
-     */
     private ?string $icon = '';
 
-    /**
-     * @var int
-     * @Assert\NotBlank
-     * @EntityExist(entity="App\Entity\User", property="username")
-     */
+    #[Assert\NotBlank]
+    #[EntityExist(entity: User::class, property: "username")]
     private string $pm;
 
-    /**
-     * @var bool
-     */
     private ?bool $isPublic = true;
 
-    /**
-     * @var string|null
-     * @Assert\Length(max=1000)
-     */
+    #[Assert\Length(max: 1000)]
     private ?string $description;
 
 
-    /**
-     * @return string
-     */
     public function getSuffix(): ?string
     {
         return $this->suffix;

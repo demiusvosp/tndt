@@ -15,8 +15,8 @@ use Symfony\Component\Validator\Constraints\AbstractComparison;
  * коллекциями и их может быть много
  *
  * @Annotation
- * @Target({"PROPERTY", "METHOD", "ANNOTATION"})
  */
+#[\Attribute(\Attribute::TARGET_PROPERTY)]
 class UniqueInFields extends AbstractComparison
 {
     public $message = 'not_unique_in_fields {{ not_unique_values }}';

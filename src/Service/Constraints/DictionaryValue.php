@@ -12,8 +12,8 @@ use Symfony\Component\Validator\Constraint;
 
 /**
  * @Annotation
- * @Target({"PROPERTY", "METHOD", "ANNOTATION"})
  */
+#[\Attribute(\Attribute::TARGET_PROPERTY)]
 class DictionaryValue extends Constraint
 {
     public string $type;

@@ -14,25 +14,19 @@ use App\Service\Constraints\UniqueInFields;
 use Doctrine\Common\Collections\ArrayCollection;
 use Happyr\Validator\Constraint\EntityExist;
 use Symfony\Component\Validator\Constraints as Assert;
+use App\Entity\User;
 
 class EditProjectPermissionsDTO
 {
-    /**
-     * @var bool
-     */
     private ?bool $isPublic;
 
-    /**
-     * @var string
-     * @Assert\NotBlank
-     * @EntityExist(entity="App\Entity\User", property="username", message="project.pm.not_found")
-     * @UniqueInFields(propertyPath={"staff", "visitors"}, message="not_unique_usernames {{ not_unique_values }}")
-     */
+    #[Assert\NotBlank]
+    #[UniqueInFields(propertyPath: ["staff", "visitors"], message: "not_unique_usernames {{ not_unique_values }}")]
+    #[EntityExist(entity: User::class, property: "username", message: "project.pm.not_found")]
     private string $pm;
 
     /**
      * @var array - массив username работиков
-     *
      */
     private array $staff;
 

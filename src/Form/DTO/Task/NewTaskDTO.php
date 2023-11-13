@@ -13,52 +13,32 @@ use App\Entity\Project;
 use App\Service\Constraints\DictionaryValue;
 use Happyr\Validator\Constraint\EntityExist;
 use Symfony\Component\Validator\Constraints as Assert;
+use App\Entity\User;
 
 class NewTaskDTO implements WithProjectInterface
 {
     private Project $project;
 
-    /**
-     * @var string|null
-     * @EntityExist(entity="App\Entity\User", property="username", message="task.assignTo.not_found")
-     */
+    #[EntityExist(entity: User::class, property: "username", message: "task.assignTo.not_found")]
     private ?string $assignedTo = null;
 
-    /**
-     * @var string
-     * @Assert\NotBlank()
-     * @Assert\Length(min=1, max=255, maxMessage="task.caption.to_long")
-     */
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 1, max: 255, maxMessage: "task.caption.to_long")]
     private string $caption = '';
 
-    /**
-     * @var string
-     * @Assert\Length(max=10000, maxMessage="task.description.to_long")
-     */
+    #[Assert\Length(max: 10000, maxMessage: "task.description.to_long")]
     private string $description = '';
 
-    /**
-     * @var int
-     * @DictionaryValue("task.type")
-     */
+    #[DictionaryValue("task.type")]
     private int $type = 0;
 
-    /**
-     * @var int
-     * @DictionaryValue("task.stage")
-     */
+    #[DictionaryValue("task.stage")]
     private int $stage = 0;
 
-    /**
-     * @var int
-     * @DictionaryValue("task.priority")
-     */
+    #[DictionaryValue("task.priority")]
     private int $priority = 0;
 
-    /**
-     * @var int
-     * @DictionaryValue("task.complexity")
-     */
+    #[DictionaryValue("task.complexity")]
     private int $complexity = 0;
 
 
