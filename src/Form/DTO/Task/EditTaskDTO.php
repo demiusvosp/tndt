@@ -36,11 +36,6 @@ class EditTaskDTO implements WithProjectInterface
     #[DictionaryValue("task.stage")]
     private int $stage;
 
-    /**
-     * закрыта ли задача.
-     */
-    private bool $isClosed;
-
     #[DictionaryValue("task.priority")]
     private int $priority;
 

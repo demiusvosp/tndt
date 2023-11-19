@@ -61,7 +61,6 @@ class TaskFiller
         $task->setDescription($dto->getDescription());
 
         $task->setType($dto->getType());
-        $task->setStage($dto->getStage());
         $task->setPriority($dto->getPriority());
         $task->setComplexity($dto->getComplexity());
 
