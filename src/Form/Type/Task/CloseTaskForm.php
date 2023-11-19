@@ -13,7 +13,7 @@ use App\Dictionary\Object\Task\StageTypesEnum;
 use App\Dictionary\TypesEnum;
 use App\Form\DTO\Task\CloseTaskDTO;
 use App\Form\Type\Base\DictionaryStageSelectType;
-use App\Service\TaskService;
+use App\Service\TaskStagesService;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -23,11 +23,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CloseTaskForm extends AbstractType
 {
-    private TaskService $taskService;
+    private TaskStagesService $taskStagesService;
 
-    public function __construct(TaskService $taskService)
+    public function __construct(TaskStagesService $taskStagesService)
     {
-        $this->taskService = $taskService;
+        $this->taskStagesService = $taskStagesService;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -60,7 +60,7 @@ class CloseTaskForm extends AbstractType
                         [
                             'required' => true,
                             'label' => 'task.close.stage',
-                            'items' => $this->taskService->availableStages(
+                            'items' => $this->taskStagesService->availableStages(
                                 $entity->getTask(),
                                 [StageTypesEnum::STAGE_ON_CLOSED()]
                             )

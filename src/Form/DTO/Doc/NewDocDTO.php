@@ -28,20 +28,14 @@ class NewDocDTO
     #[Assert\Length(max: 50000, maxMessage: "doc.body.to_long")]
     private string $body = '';
 
+    public function __construct(string $project)
+    {
+        $this->project = $project;
+    }
 
     public function getProject(): string
     {
         return $this->project;
-    }
-
-    /**
-     * @param string $project
-     * @return NewDocDTO
-     */
-    public function setProject(string $project): NewDocDTO
-    {
-        $this->project = $project;
-        return $this;
     }
 
     /**

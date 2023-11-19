@@ -15,7 +15,6 @@ use App\Service\Constraints\DictionaryValue;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use DomainException;
-use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /*
@@ -68,17 +67,15 @@ class Task implements NoInterface, WithProjectInterface, CommentableInterface, H
     /**
      * @var DateTime
      * @ORM\Column(type="datetime")
-     * @Gedmo\Timestampable(on="create")
      */
     private DateTime $createdAt;
 
     /**
-     * @var User
+     * @var User|null
      * @ORM\ManyToOne (targetEntity="User")
      * @ORM\JoinColumn (name="created_by", referencedColumnName="username", nullable=true)
-     * @Gedmo\Blameable (on="create")
      */
-    private User $createdBy;
+    private ?User $createdBy;
 
     /**
      * @var DateTime
@@ -91,7 +88,6 @@ class Task implements NoInterface, WithProjectInterface, CommentableInterface, H
      * @var User|null
      * @ORM\ManyToOne (targetEntity="User")
      * @ORM\JoinColumn (name="assigned_to", referencedColumnName="username", nullable=true)
-     * Автоматически обновляется через OnUpdateTaskManager
      */
     private ?User $assignedTo = null;
 
@@ -147,7 +143,7 @@ class Task implements NoInterface, WithProjectInterface, CommentableInterface, H
     /**
      * @param string|Project $project - Project or project suffix
      */
-    public function __construct($project)
+    public function __construct($project, ?User $author = null)
     {
         if($project instanceof Project) {
             $this->setProject($project);
@@ -155,6 +151,8 @@ class Task implements NoInterface, WithProjectInterface, CommentableInterface, H
             $this->suffix = $project;
         }
         $this->createdAt = $this->updatedAt = new DateTime();
+        $this->createdBy = $author;
+        $this->assignedTo = null;
     }
 
     public function __toString(): string
@@ -359,9 +357,9 @@ class Task implements NoInterface, WithProjectInterface, CommentableInterface, H
     }
 
     /**
-     * @return User
+     * @return User|null
      */
-    public function getCreatedBy(): User
+    public function getCreatedBy(): ?User
     {
         return $this->createdBy;
     }

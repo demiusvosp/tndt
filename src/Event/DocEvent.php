@@ -15,10 +15,15 @@ use Symfony\Contracts\EventDispatcher\Event;
 class DocEvent extends InProjectEvent
 {
     private Doc $doc;
+    /**
+     * @var bool Документ был архивным ранее, а не стал таковым
+     */
+    private bool $isBecameArchived;
 
-    public function __construct(Doc $doc)
+    public function __construct(Doc $doc, bool $isBecameArchived = false)
     {
         $this->doc = $doc;
+        $this->isBecameArchived = $isBecameArchived;
     }
 
     /**
@@ -32,5 +37,10 @@ class DocEvent extends InProjectEvent
     public function getProject(): Project
     {
         return $this->doc->getProject();
+    }
+
+    public function isBecameArchived(): bool
+    {
+        return $this->isBecameArchived;
     }
 }

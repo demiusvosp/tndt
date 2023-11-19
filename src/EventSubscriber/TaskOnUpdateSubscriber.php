@@ -30,7 +30,6 @@ class TaskOnUpdateSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-//            AppEvents::TASK_OPEN => ['onTaskOpen', 0], @TODO in [tndt-57]
             AppEvents::TASK_EDIT => ['onTaskChange', 0],
             AppEvents::TASK_CLOSE => ['onTaskChange', 0],
             AppEvents::TASK_CHANGE_STAGE => ['onTaskChange', 0],
@@ -38,7 +37,7 @@ class TaskOnUpdateSubscriber implements EventSubscriberInterface
         ];
     }
 
-    public function onTaskChange(TaskEvent $event)
+    public function onTaskChange(TaskEvent $event): void
     {
         if ($this->isServiceUser()) {
             return;

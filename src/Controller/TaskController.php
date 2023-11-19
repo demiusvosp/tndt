@@ -9,8 +9,6 @@ namespace App\Controller;
 use App\Dictionary\Object\Task\StageTypesEnum;
 use App\Entity\Project;
 use App\Entity\User;
-use App\Event\AppEvents;
-use App\Event\TaskEvent;
 use App\Exception\BadRequestException;
 use App\Exception\DomainException;
 use App\Form\DTO\Task\CloseTaskDTO;
@@ -20,14 +18,13 @@ use App\Form\Type\Task\CloseTaskForm;
 use App\Form\Type\Task\EditTaskType;
 use App\Form\Type\Task\NewTaskType;
 use App\Repository\TaskRepository;
-use App\Service\Filler\TaskFiller;
 use App\Service\InProjectContext;
 use App\Service\TaskService;
+use App\Service\TaskStagesService;
 use App\Specification\InProjectSpec;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
@@ -41,18 +38,21 @@ class TaskController extends AbstractController
     private const TASK_PER_PAGE = 25;
     private const CHANGE_STAGE_TOKEN = 'task-change-stage';
 
-    private EventDispatcherInterface $eventDispatcher;
     private TranslatorInterface $translator;
     private TaskRepository $taskRepository;
+    private TaskService $taskService;
+    private TaskStagesService $taskStagesService;
 
     public function __construct(
-        EventDispatcherInterface $eventDispatcher,
         TranslatorInterface $translator,
-        TaskRepository      $taskRepository
+        TaskRepository $taskRepository,
+        TaskService $taskService,
+        TaskStagesService $taskStagesService
     ) {
-        $this->eventDispatcher = $eventDispatcher;
         $this->translator = $translator;
         $this->taskRepository = $taskRepository;
+        $this->taskService = $taskService;
+        $this->taskStagesService = $taskStagesService;
     }
 
     /**
@@ -85,7 +85,7 @@ class TaskController extends AbstractController
      * @param Request $request
      * @return Response
      */
-    public function index(Request $request, TaskService $taskService, CsrfTokenManagerInterface $tokenManager): Response
+    public function index(Request $request, CsrfTokenManagerInterface $tokenManager): Response
     {
         $task = $this->taskRepository->findByTaskId($request->get('taskId'));
         if (!$task) {
@@ -97,7 +97,7 @@ class TaskController extends AbstractController
             $edit['action'] = $this->generateUrl('task.edit', ['taskId' => $task->getTaskId()]);
         }
         $editStages = [];
-        foreach ($taskService->availableStages($task, [StageTypesEnum::STAGE_ON_NORMAL()]) as $stage) {
+        foreach ($this->taskStagesService->availableStages($task, [StageTypesEnum::STAGE_ON_NORMAL()]) as $stage) {
             $editStages[] = [
                 'label' => $stage->getName(),
                 'value' => $stage->getId()
@@ -130,10 +130,9 @@ class TaskController extends AbstractController
      * @IsGranted("PERM_TASK_CREATE")
      * @param Request $request
      * @param Project $project
-     * @param TaskService $taskService
      * @return Response
      */
-    public function create(Request $request, Project $project, TaskService $taskService): Response
+    public function create(Request $request, Project $project): Response
     {
         if ($project->isArchived()) {
             throw new DomainException('Нельзя создавать задачи в архивных проектах');
@@ -148,7 +147,8 @@ class TaskController extends AbstractController
 
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()) {
-            $task = $taskService->open($formData);
+            /** @noinspection PhpParamsInspection */
+            $task = $this->taskService->open($formData, $this->getUser());
 
             $this->addFlash('success', 'task.create.success');
             return $this->redirectToRoute('task.index', ['taskId' => $task->getTaskId()]);
@@ -160,10 +160,9 @@ class TaskController extends AbstractController
     /**
      * @IsGranted ("PERM_TASK_EDIT")
      * @param Request $request
-     * @param TaskService $taskService
      * @return Response
      */
-    public function edit(Request $request, TaskService $taskService): Response
+    public function edit(Request $request): Response
     {
         $task = $this->taskRepository->findByTaskId($request->get('taskId'));
         if (!$task) {
@@ -174,7 +173,7 @@ class TaskController extends AbstractController
 
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()) {
-            $taskService->edit($formData, $task);
+            $this->taskService->edit($formData, $task);
 
             $this->addFlash('success', 'task.edit.success');
             return $this->redirectToRoute('task.index', ['taskId' => $task->getTaskId()]);
@@ -186,10 +185,9 @@ class TaskController extends AbstractController
     /**
      * @IsGranted ("PERM_TASK_CLOSE")
      * @param Request $request
-     * @param TaskService $taskService
      * @return Response
      */
-    public function close(Request $request, TaskService $taskService): Response
+    public function close(Request $request): Response
     {
         $task = $this->taskRepository->findByTaskId($request->get('taskId'));
         if (!$task) {
@@ -201,7 +199,7 @@ class TaskController extends AbstractController
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()) {
             /** @noinspection PhpParamsInspection */
-            $taskService->close($formData, $task, $this->getUser());
+            $this->taskService->close($formData, $task, $this->getUser());
 
             $this->addFlash('warning', 'task.close.success');
             return $this->redirectToRoute('task.list', ['suffix' => $task->getSuffix()]);
@@ -214,10 +212,9 @@ class TaskController extends AbstractController
     /**
      * @IsGranted("PERM_TASK_EDIT")
      * @param Request $request
-     * @param TaskService $taskService
      * @return Response
      */
-    public function changeStage(Request $request, TaskService $taskService): Response
+    public function changeStage(Request $request): Response
     {
         $task = $this->taskRepository->findByTaskId($request->get('taskId'));
         if (!$task) {
@@ -227,7 +224,7 @@ class TaskController extends AbstractController
             throw new BadRequestException();
         }
 
-        $taskService->changeStage($task, $request->request->get('new_stage'));
+        $this->taskStagesService->changeStage($task, $request->request->get('new_stage'));
         $this->addFlash('success', 'task.change_stage.success');
 
         return $this->redirectToRoute('task.index', ['taskId' => $task->getTaskId()]);
