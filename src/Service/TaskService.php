@@ -20,21 +20,31 @@ use App\Event\AppEvents;
 use App\Event\TaskEvent;
 use App\Exception\TaskStageException;
 use App\Form\DTO\Task\CloseTaskDTO;
+use App\Form\DTO\Task\EditTaskDTO;
+use App\Form\DTO\Task\NewTaskDTO;
+use App\Service\Filler\TaskFiller;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class TaskService
 {
+    private TaskFiller $taskFiller;
     private CommentService $commentService;
     private Fetcher $dictionaryFetcher;
+    private EntityManagerInterface $entityManager;
     private EventDispatcherInterface $eventDispatcher;
 
     public function __construct(
+        TaskFiller $taskFiller,
         CommentService $commentService,
         Fetcher $dictionaryFetcher,
+        EntityManagerInterface $entityManager,
         EventDispatcherInterface $eventDispatcher
     ) {
+        $this->taskFiller = $taskFiller;
         $this->commentService = $commentService;
         $this->dictionaryFetcher = $dictionaryFetcher;
+        $this->entityManager = $entityManager;
         $this->eventDispatcher = $eventDispatcher;
     }
 
@@ -87,6 +97,34 @@ class TaskService
     }
 
     /**
+     * @param NewTaskDTO $newTaskDTO
+     * @return Task
+     */
+    public function open(NewTaskDTO $newTaskDTO): Task
+    {
+        $task = $this->taskFiller->createFromForm($newTaskDTO);
+        $this->eventDispatcher->dispatch(new TaskEvent($task), AppEvents::TASK_OPEN);
+        $this->entityManager->persist($task);
+        $this->entityManager->flush();
+
+        return $task;
+    }
+
+    /**
+     * @param EditTaskDTO $editTaskDTO
+     * @param Task $task
+     * @return Task
+     */
+    public function edit(EditTaskDTO $editTaskDTO, Task $task): Task
+    {
+        $this->taskFiller->fillFromEditForm($editTaskDTO, $task);
+        $this->eventDispatcher->dispatch(new TaskEvent($task), AppEvents::TASK_EDIT);
+
+        $this->entityManager->flush();
+        return $task;
+    }
+
+    /**
      * Перевести задачу в новое состояние
      * @param Task $task
      * @param int $newStageId
@@ -117,6 +155,7 @@ class TaskService
         }
 
         $this->eventDispatcher->dispatch(new TaskEvent($task, $becameClosed), AppEvents::TASK_CHANGE_STAGE);
+        $this->entityManager->flush();
     }
 
     /**
@@ -134,5 +173,6 @@ class TaskService
         $task->setStage($dto->getStage());
         $task->setIsClosed(true);
         $this->eventDispatcher->dispatch(new TaskEvent($task, true), AppEvents::TASK_CLOSE);
+        $this->entityManager->flush();
     }
 }

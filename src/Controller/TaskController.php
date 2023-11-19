@@ -130,10 +130,10 @@ class TaskController extends AbstractController
      * @IsGranted("PERM_TASK_CREATE")
      * @param Request $request
      * @param Project $project
-     * @param TaskFiller $taskFiller
+     * @param TaskService $taskService
      * @return Response
      */
-    public function create(Request $request, Project $project, TaskFiller $taskFiller): Response
+    public function create(Request $request, Project $project, TaskService $taskService): Response
     {
         if ($project->isArchived()) {
             throw new DomainException('Нельзя создавать задачи в архивных проектах');
@@ -148,12 +148,7 @@ class TaskController extends AbstractController
 
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-
-            $task = $taskFiller->createFromForm($formData);
-            $this->eventDispatcher->dispatch(new TaskEvent($task), AppEvents::TASK_OPEN);
-            $em->persist($task);
-            $em->flush();
+            $task = $taskService->open($formData);
 
             $this->addFlash('success', 'task.create.success');
             return $this->redirectToRoute('task.index', ['taskId' => $task->getTaskId()]);
@@ -165,10 +160,10 @@ class TaskController extends AbstractController
     /**
      * @IsGranted ("PERM_TASK_EDIT")
      * @param Request $request
-     * @param TaskFiller $taskFiller
+     * @param TaskService $taskService
      * @return Response
      */
-    public function edit(Request $request, TaskFiller $taskFiller): Response
+    public function edit(Request $request, TaskService $taskService): Response
     {
         $task = $this->taskRepository->findByTaskId($request->get('taskId'));
         if (!$task) {
@@ -179,11 +174,7 @@ class TaskController extends AbstractController
 
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()) {
-            $taskFiller->fillFromEditForm($formData, $task);
-            $this->eventDispatcher->dispatch(new TaskEvent($task), AppEvents::TASK_EDIT);
-
-            $em = $this->getDoctrine()->getManager();
-            $em->flush();
+            $taskService->edit($formData, $task);
 
             $this->addFlash('success', 'task.edit.success');
             return $this->redirectToRoute('task.index', ['taskId' => $task->getTaskId()]);
@@ -212,7 +203,6 @@ class TaskController extends AbstractController
             /** @noinspection PhpParamsInspection */
             $taskService->close($formData, $task, $this->getUser());
 
-            $this->getDoctrine()->getManager()->flush();
             $this->addFlash('warning', 'task.close.success');
             return $this->redirectToRoute('task.list', ['suffix' => $task->getSuffix()]);
         }
@@ -238,7 +228,6 @@ class TaskController extends AbstractController
         }
 
         $taskService->changeStage($task, $request->request->get('new_stage'));
-        $this->getDoctrine()->getManager()->flush();
         $this->addFlash('success', 'task.change_stage.success');
 
         return $this->redirectToRoute('task.index', ['taskId' => $task->getTaskId()]);
