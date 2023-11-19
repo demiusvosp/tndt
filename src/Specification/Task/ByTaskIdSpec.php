@@ -10,6 +10,7 @@ namespace App\Specification\Task;
 use App\Entity\Task;
 use Happyr\DoctrineSpecification\Spec;
 use Happyr\DoctrineSpecification\Specification\BaseSpecification;
+use Happyr\DoctrineSpecification\Specification\Specification;
 
 class ByTaskIdSpec extends BaseSpecification
 {
@@ -22,7 +23,7 @@ class ByTaskIdSpec extends BaseSpecification
         parent::__construct($context);
     }
 
-    protected function getSpec()
+    protected function getSpec(): Specification
     {
         return Spec::andX(
             Spec::eq('suffix', $this->suffix),

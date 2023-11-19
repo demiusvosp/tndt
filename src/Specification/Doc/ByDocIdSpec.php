@@ -10,6 +10,7 @@ namespace App\Specification\Doc;
 use App\Entity\Doc;
 use Happyr\DoctrineSpecification\Spec;
 use Happyr\DoctrineSpecification\Specification\BaseSpecification;
+use Happyr\DoctrineSpecification\Specification\Specification;
 
 class ByDocIdSpec extends BaseSpecification
 {
@@ -22,7 +23,7 @@ class ByDocIdSpec extends BaseSpecification
         parent::__construct($context);
     }
 
-    protected function getSpec()
+    protected function getSpec(): Specification
     {
         return Spec::andX(
             Spec::eq('suffix', $this->suffix),

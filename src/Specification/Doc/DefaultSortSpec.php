@@ -9,10 +9,11 @@ namespace App\Specification\Doc;
 
 use Happyr\DoctrineSpecification\Spec;
 use Happyr\DoctrineSpecification\Specification\BaseSpecification;
+use Happyr\DoctrineSpecification\Specification\Specification;
 
 class DefaultSortSpec extends BaseSpecification
 {
-    protected function getSpec()
+    protected function getSpec(): Specification
     {
         return Spec::andX(
             Spec::orderBy('state', 'ASC'),

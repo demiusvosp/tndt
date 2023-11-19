@@ -8,12 +8,13 @@
 namespace App\Specification\Doc;
 
 use App\Entity\Doc;
+use Happyr\DoctrineSpecification\Filter\Comparison;
 use Happyr\DoctrineSpecification\Spec;
 use Happyr\DoctrineSpecification\Specification\BaseSpecification;
 
 class NotArchivedSpec extends BaseSpecification
 {
-    protected function getSpec()
+    protected function getSpec(): Comparison
     {
         return Spec::neq('state', Doc::STATE_ARCHIVED);
     }

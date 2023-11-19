@@ -9,6 +9,7 @@ namespace App\Specification\User;
 
 use Happyr\DoctrineSpecification\Spec;
 use Happyr\DoctrineSpecification\Specification\BaseSpecification;
+use Happyr\DoctrineSpecification\Specification\Specification;
 
 class InProjectSpec extends BaseSpecification
 {
@@ -20,7 +21,7 @@ class InProjectSpec extends BaseSpecification
         parent::__construct($context);
     }
 
-    protected function getSpec()
+    protected function getSpec(): Specification
     {
         return Spec::andX(Spec::andX(
             Spec::leftJoin('projectUsers', 'pu'),
