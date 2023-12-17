@@ -55,7 +55,15 @@ class TaskStage extends Dictionary
 
     public function getItem($value): TaskStageItem
     {
-        $item = parent::getItem($value);
+        if ($value === 0) {
+            $item = $this->createItem([
+                'id' => 0,
+                'name' => 'dictionaries.not_set.name',
+                'description' => 'dictionaries.not_set.description'
+            ]);
+        } else {
+            $item = parent::getItem($value);
+        }
         if (!$item instanceof TaskStageItem) {
             throw new DictionaryException('Элемент справочника ' . $value . ' не найден среди этапов задачи');
         }
