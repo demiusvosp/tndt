@@ -13,65 +13,50 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass=UserRepository::class)
- * @ORM\Table(name="app_user")
- */
+
+#[ORM\Entity(repositoryClass:UserRepository::class)]
+#[ORM\Table(name: "app_user")]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     public const ROOT_USER = 'root';
 
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
-     * @ORM\Column(type="string", length=80, unique=true)
-     */
+
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: "NONE")]
+    #[ORM\Column(type: "string", length: 80, unique: true)]
     protected string $username;
 
-    /**
-     * @ORM\Column(type="string", length=80)
-     */
+    #[ORM\Column(type: "string", length: 80)]
     protected string $name = '';
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @Assert\Email()
-     */
+    #[ORM\Column(type: "string", length: 255)]
+    #[Assert\Email]
     protected string $email = '';
 
     /**
      * The hashed password
-     * @ORM\Column(type="string")
      */
+    #[ORM\Column(type: "string")]
     protected string $password;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    #[ORM\Column(type: "boolean")]
     protected bool $locked = false;
 
-    /**
-     * @ORM\Column(name="global_roles", type="json")
-     */
+    #[ORM\Column(name: "global_roles", type: "json")]
     protected array $globalRoles = [];
 
     /**
-     * @var ProjectUser[]
-     * @ORM\OneToMany (targetEntity="App\Entity\ProjectUser", mappedBy="user", cascade={"all"}, indexBy="suffix")
-     * @ORM\JoinColumn (name="username", referencedColumnName="username")
+     * @var Collection|ProjectUser[]
      */
-    protected $projectUsers;
+    #[ORM\OneToMany(mappedBy: "user", targetEntity: ProjectUser::class, cascade: ["all"], indexBy: "suffix")]
+    #[ORM\JoinColumn(name: "username", referencedColumnName: "username")]
+    protected Collection $projectUsers;
 
-    /**
-     * @var DateTime
-     * @ORM\Column(type="datetime")
-     * @Gedmo\Timestampable(on="create")
-     */
+    #[ORM\Column(type: "datetime")]
+    #[Gedmo\Timestampable(on: "create")]
     private DateTime $createdAt;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
+    #[ORM\Column(type: "datetime", nullable: true)]
     protected ?DateTime $lastLogin = null;
 
     public function __construct(string $username)
@@ -292,16 +277,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getProjectUsers(): Collection
     {
         return $this->projectUsers;
-    }
-
-    /**
-     * @param ProjectUser[] $projectUsers
-     * @return User
-     */
-    public function setProjectUsers(array $projectUsers): User
-    {
-        $this->projectUsers = $projectUsers;
-        return $this;
     }
 
     /**

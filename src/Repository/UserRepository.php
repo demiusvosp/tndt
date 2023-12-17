@@ -3,17 +3,14 @@
 namespace App\Repository;
 
 use App\Entity\User;
-use App\Form\ToFindCriteriaInterface;
 use App\Specification\User\ExceptRootSpec;
 use App\Specification\User\InProjectSpec;
 use App\Specification\User\NotLockingSpec;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
 use Happyr\DoctrineSpecification\Repository\EntitySpecificationRepositoryTrait;
 use Happyr\DoctrineSpecification\Spec;
 use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
-use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;

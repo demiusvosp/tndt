@@ -10,6 +10,7 @@ namespace App\Entity;
 
 use App\Entity\Contract\CommentableInterface;
 use App\Object\CommentOwnerTypesEnum;
+use App\Repository\CommentRepository;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -17,57 +18,38 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Entity Comment - комментарий к объекту системы
- *
- * @ORM\Entity(repositoryClass="App\Repository\CommentRepository")
  */
+#[ORM\Entity(repositoryClass: CommentRepository::class)]
+#[ORM\Table(name: "comment")]
 class Comment
 {
-    /**
-     * @var int
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column (type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: "integer")]
     private int $id;
 
-    /**
-     * @var string
-     * @ORM\Column (type="string", length=30, nullable=false)
-     */
+    #[ORM\Column(type: "string", length: 30, nullable: false)]
     private string $entity_type;
 
-    /**
-     * @var int
-     * @ORM\Column (type="integer", nullable=false)
-     */
+    #[ORM\Column(type: "integer", nullable: false)]
     private int $entity_id;
 
     /**
-     * @var CommentableInterface
      * Для того чтобы не грузить лишний раз храним здесь инстанцированный объект родительской сущности
      */
     private CommentableInterface $ownerEntity;
 
-    /**
-     * @var DateTime
-     * @ORM\Column(type="datetime")
-     */
+    #[ORM\Column(type: "datetime")]
     private DateTime $createdAt;
 
-    /**
-     * @var User
-     * @ORM\ManyToOne (targetEntity="User")
-     * @ORM\JoinColumn (name="author", referencedColumnName="username", nullable=true)
-     * @Gedmo\Blameable (on="create")
-     */
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: "author", referencedColumnName: "username", nullable: true)]
+    #[Gedmo\Blameable(on: "create")]
     private User $author;
 
-    /**
-     * @var string
-     * @ORM\Column (type="text")
-     * @Assert\Length(min=1, max=1000)
-     * @Assert\NotBlank
-     */
+    #[ORM\Column(type: "text")]
+    #[Assert\Length(min: 1, max: 1000)]
+    #[Assert\NotBlank]
     private string $message;
 
     public function __construct(CommentableInterface $commentableEntity)

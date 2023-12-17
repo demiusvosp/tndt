@@ -6,6 +6,7 @@ use App\Dictionary\Fetcher;
 use App\Dictionary\TypesEnum;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -14,11 +15,12 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
+#[AsCommand(
+    name: 'app:dictionary:fill',
+    description: 'Fill dictionary default value to all related entity'
+)]
 class DictionaryFillCommand extends Command
 {
-    protected static $defaultName = 'app:dictionary:fill';
-    protected static $defaultDescription = 'Fill dictionary default value to all related entity';
-
     private EntityManagerInterface $entityManager;
     private Fetcher $dictionaryFetcher;
     private PropertyAccessorInterface $propertyAccessor;
@@ -26,10 +28,9 @@ class DictionaryFillCommand extends Command
     public function __construct(
         EntityManagerInterface $entityManager,
         Fetcher $dictionaryFetcher,
-        PropertyAccessorInterface $propertyAccessor,
-        string $name = null
+        PropertyAccessorInterface $propertyAccessor
     ) {
-        parent::__construct($name);
+        parent::__construct();
         $this->dictionaryFetcher = $dictionaryFetcher;
         $this->entityManager = $entityManager;
         $this->propertyAccessor = $propertyAccessor;

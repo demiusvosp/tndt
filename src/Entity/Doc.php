@@ -12,6 +12,7 @@ use App\Entity\Contract\CommentableInterface;
 use App\Entity\Contract\NoInterface;
 use App\Entity\Contract\WithProjectInterface;
 use App\Exception\BadRequestException;
+use App\Repository\DocRepository;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -19,9 +20,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class Project entity
- *
- * @ORM\Entity(repositoryClass="App\Repository\DocRepository")
  */
+#[ORM\Entity(repositoryClass: DocRepository::class)]
+#[ORM\Table(name: "doc")]
 class Doc implements NoInterface, WithProjectInterface, CommentableInterface
 {
     public const DOCID_SEPARATOR = '#';
@@ -33,96 +34,60 @@ class Doc implements NoInterface, WithProjectInterface, CommentableInterface
     private const ABSTRACT_FROM_BODY_LIMIT = 1000;
 
 
-    /**
-     * @var int
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: "integer")]
+    #[ORM\GeneratedValue]
     private int $id;
 
-    /**
-     * @var int
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Column(type: "integer")]
     private int $no = 0;
 
-    /**
-     * @var string
-     * @ORM\Column(type="string", length=8)
-     */
+    #[ORM\Column(type: "string", length: 8)]
     private string $suffix = '';
 
-    /**
-     * @var Project
-     * @ORM\ManyToOne(targetEntity="Project", fetch="EAGER")
-     * @ORM\JoinColumn(name="suffix", referencedColumnName="suffix")
-     */
+    #[ORM\ManyToOne(targetEntity: Project::class, fetch: "EAGER")]
+    #[ORM\JoinColumn(name: "suffix", referencedColumnName: "suffix")]
     private Project $project;
 
-    /**
-     * @var DateTime
-     * @ORM\Column(type="datetime")
-     */
+    #[ORM\Column(type: "datetime")]
     private DateTime $createdAt;
 
-    /**
-     * @var User|null
-     * @ORM\ManyToOne (targetEntity="User")
-     * @ORM\JoinColumn (name="created_by", referencedColumnName="username", nullable=true)
-     */
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: "created_by", referencedColumnName: "username", nullable: true)]
     private ?User $createdBy;
 
     /**
-     * @var DateTime
-     * @ORM\Column(type="datetime", nullable=false)
      * Автоматически обновляется через DocOnUpdateSubscriber
      */
+    #[ORM\Column(type: "datetime", nullable: false)]
     private DateTime $updatedAt;
 
     /**
-     * @var User|null
-     * @ORM\ManyToOne (targetEntity="User")
-     * @ORM\JoinColumn (name="updated_by", referencedColumnName="username", nullable=true)
      * Автоматически обновляется через DocOnUpdateSubscriber
      */
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: "updated_by", referencedColumnName: "username", nullable: true)]
     private ?User $updatedBy = null;
 
-    /**
-     * @var int
-     * @ORM\Column (type="integer", nullable=false)
-     */
+    #[ORM\Column(type: "integer", nullable: false)]
     private int $state;
 
-    /**
-     * @var string
-     * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank()
-     * @Assert\Length(min=1, max=255)
-     */
+    #[ORM\Column(type: "string", length: 255)]
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 1, max: 255)]
     private string $caption;
 
-    /**
-     * @var string
-     * @ORM\Column(type="string", length=255)
-     * @Gedmo\Slug(fields={"caption"}, unique_base="suffix")
-     * @Assert\NotBlank()
-     * @Assert\Length(min=1, max=255)
-     */
+    #[ORM\Column(type: "string", length: 255)]
+    #[Gedmo\Slug(fields: ["caption"], unique_base: "suffix")]
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 1, max: 255)]
     private string $slug;
 
-    /**
-     * @var string
-     * @ORM\Column(type="text", length=1000)
-     * @Assert\Length(max=1000)
-     */
+    #[ORM\Column(type: "text", length: 1000)]
+    #[Assert\Length(max: 1000)]
     private string $abstract;
 
-    /**
-     * @var string
-     * @ORM\Column(type="text")
-     * @Assert\NotBlank()
-     */
+    #[ORM\Column(type: "text")]
     private string $body;
 
 
