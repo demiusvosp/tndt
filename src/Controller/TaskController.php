@@ -18,21 +18,20 @@ use App\Form\Type\Task\CloseTaskForm;
 use App\Form\Type\Task\EditTaskType;
 use App\Form\Type\Task\NewTaskType;
 use App\Repository\TaskRepository;
+use App\Security\UserPermissionsEnum;
 use App\Service\InProjectContext;
 use App\Service\TaskService;
 use App\Service\TaskStagesService;
 use App\Specification\InProjectSpec;
 use Knp\Component\Pager\PaginatorInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-/**
- * @InProjectContext()
- */
+#[InProjectContext]
 class TaskController extends AbstractController
 {
     private const TASK_PER_PAGE = 25;
@@ -56,12 +55,12 @@ class TaskController extends AbstractController
     }
 
     /**
-     * @IsGranted ("PERM_TASK_VIEW")
      * @param Request $request
      * @param Project $project
      * @param PaginatorInterface $paginator
      * @return Response
      */
+    #[IsGranted(UserPermissionsEnum::PERM_TASK_VIEW)]
     public function list(Request $request, Project $project, PaginatorInterface $paginator): Response
     {
         $query = $this->taskRepository->getQueryBuilder(new InProjectSpec($project), 't');
@@ -81,10 +80,10 @@ class TaskController extends AbstractController
     }
 
     /**
-     * @IsGranted ("PERM_TASK_VIEW")
      * @param Request $request
      * @return Response
      */
+    #[IsGranted(UserPermissionsEnum::PERM_TASK_VIEW)]
     public function index(Request $request, CsrfTokenManagerInterface $tokenManager): Response
     {
         $task = $this->taskRepository->findByTaskId($request->get('taskId'));
@@ -127,11 +126,11 @@ class TaskController extends AbstractController
     }
 
     /**
-     * @IsGranted("PERM_TASK_CREATE")
      * @param Request $request
      * @param Project $project
      * @return Response
      */
+    #[IsGranted(UserPermissionsEnum::PERM_TASK_CREATE)]
     public function create(Request $request, Project $project): Response
     {
         if ($project->isArchived()) {
@@ -158,10 +157,10 @@ class TaskController extends AbstractController
     }
 
     /**
-     * @IsGranted ("PERM_TASK_EDIT")
      * @param Request $request
      * @return Response
      */
+    #[IsGranted(UserPermissionsEnum::PERM_TASK_EDIT)]
     public function edit(Request $request): Response
     {
         $task = $this->taskRepository->findByTaskId($request->get('taskId'));
@@ -183,10 +182,10 @@ class TaskController extends AbstractController
     }
 
     /**
-     * @IsGranted ("PERM_TASK_CLOSE")
      * @param Request $request
      * @return Response
      */
+    #[IsGranted(UserPermissionsEnum::PERM_TASK_CLOSE)]
     public function close(Request $request): Response
     {
         $task = $this->taskRepository->findByTaskId($request->get('taskId'));
@@ -210,10 +209,10 @@ class TaskController extends AbstractController
     }
 
     /**
-     * @IsGranted("PERM_TASK_EDIT")
      * @param Request $request
      * @return Response
      */
+    #[IsGranted(UserPermissionsEnum::PERM_TASK_EDIT)]
     public function changeStage(Request $request): Response
     {
         $task = $this->taskRepository->findByTaskId($request->get('taskId'));

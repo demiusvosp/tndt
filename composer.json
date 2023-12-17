@@ -22,7 +22,6 @@
         "knplabs/knp-paginator-bundle": "5.*",
         "knplabs/knp-time-bundle": "1.19.*",
         "myclabs/php-enum": "^1.8",
-        "sensio/framework-extra-bundle": "^6.2",
         "stof/doctrine-extensions-bundle": "^1.6",
         "symfony/asset": "6.4.*",
         "symfony/console": "6.4.*",

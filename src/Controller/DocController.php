@@ -16,20 +16,18 @@ use App\Form\DTO\Doc\NewDocDTO;
 use App\Form\Type\Doc\EditDocType;
 use App\Form\Type\Doc\NewDocType;
 use App\Repository\DocRepository;
+use App\Security\UserPermissionsEnum;
 use App\Service\DocService;
-use App\Service\Filler\DocFiller;
 use App\Service\InProjectContext;
 use App\Specification\InProjectSpec;
 use Knp\Component\Pager\PaginatorInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-/**
- * @InProjectContext()
- */
+#[InProjectContext]
 class DocController extends AbstractController
 {
     private const DOC_PER_PAGE = 25;
@@ -49,12 +47,12 @@ class DocController extends AbstractController
     }
 
     /**
-     * @IsGranted ("PERM_DOC_VIEW")
      * @param Request $request
      * @param Project $project
      * @param PaginatorInterface $paginator
      * @return Response
      */
+    #[IsGranted(UserPermissionsEnum::PERM_DOC_VIEW)]
     public function list(Request $request, Project $project, PaginatorInterface $paginator): Response
     {
         $query = $this->docRepository->getQueryBuilder(new InProjectSpec($project), 't');
@@ -71,11 +69,11 @@ class DocController extends AbstractController
     }
 
     /**
-     * @IsGranted ("PERM_DOC_VIEW")
      * @param Request $request
      * @param Project $project
      * @return Response
      */
+    #[IsGranted(UserPermissionsEnum::PERM_DOC_VIEW)]
     public function index(Request $request, Project $project): Response
     {
         $doc = $this->docRepository->getBySlug($request->get('slug'));
@@ -87,12 +85,11 @@ class DocController extends AbstractController
     }
 
     /**
-     * @IsGranted ("PERM_DOC_CREATE")
      * @param Request $request
      * @param Project $project
-     * @param DocFiller $docFiller
      * @return Response
      */
+    #[IsGranted(UserPermissionsEnum::PERM_DOC_CREATE)]
     public function create(Request $request, Project $project): Response
     {
         if ($project->isArchived()) {
@@ -115,12 +112,11 @@ class DocController extends AbstractController
     }
 
     /**
-     * @IsGranted ("PERM_DOC_EDIT")
      * @param Request $request
      * @param Project $project
-     * @param DocFiller $docFiller
      * @return Response
      */
+    #[IsGranted(UserPermissionsEnum::PERM_DOC_EDIT)]
     public function edit(Request $request, Project $project): Response
     {
         $doc = $this->docRepository->getBySlug($request->get('slug'));
@@ -144,13 +140,12 @@ class DocController extends AbstractController
     }
 
     /**
-     * @IsGranted ("PERM_DOC_CHANGE_STATE")
      * @param string $slug
      * @param int $state
      * @param Project $project
-     * @param DocService $docService
      * @return Response
      */
+    #[IsGranted(UserPermissionsEnum::PERM_DOC_CHANGE_STATE)]
     public function changeState(string $slug, int $state, Project $project): Response
     {
         $doc = $this->docRepository->getBySlug($slug);

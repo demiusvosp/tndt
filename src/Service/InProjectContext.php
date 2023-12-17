@@ -8,22 +8,12 @@ declare(strict_types=1);
 
 namespace App\Service;
 
-use Attribute;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ConfigurationAnnotation;
+use \Attribute;
 
 /**
  * @Annotation
- * @Target({"CLASS", "METHOD"})
  */
-class InProjectContext extends ConfigurationAnnotation
+#[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_METHOD)]
+class InProjectContext
 {
-    public function getAliasName(): string
-    {
-        return 'in_project_context';
-    }
-
-    public function allowArray(): bool
-    {
-        return false;
-    }
 }

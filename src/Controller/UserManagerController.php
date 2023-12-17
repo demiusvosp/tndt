@@ -13,14 +13,14 @@ use App\Form\DTO\User\NewUserDTO;
 use App\Form\Type\User\UserManagerEditType;
 use App\Form\Type\User\NewUserType;
 use App\Repository\UserRepository;
+use App\Security\UserPermissionsEnum;
 use App\Service\UserService;
 use Happyr\DoctrineSpecification\Spec;
 use Knp\Component\Pager\PaginatorInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class UserManagerController extends AbstractController
 {
@@ -36,10 +36,10 @@ class UserManagerController extends AbstractController
     }
 
     /**
-     * @IsGranted("PERM_USER_EDIT")
      * @param Request $request
      * @return Response
      */
+    #[IsGranted(UserPermissionsEnum::PERM_USER_EDIT)]
     public function index(Request $request): Response
     {
         if ($request->get('username')) {
@@ -57,11 +57,11 @@ class UserManagerController extends AbstractController
     }
 
     /**
-     * @IsGranted("PERM_USER_EDIT")
      * @param Request $request
      * @param PaginatorInterface $paginator
      * @return Response
      */
+    #[IsGranted(UserPermissionsEnum::PERM_USER_EDIT)]
     public function list(Request $request, PaginatorInterface $paginator): Response
     {
         $query = $this->userRepository->getQuery(Spec::andX(
@@ -78,10 +78,10 @@ class UserManagerController extends AbstractController
     }
 
     /**
-     * @IsGranted("PERM_USER_CREATE")
      * @param Request $request
      * @return Response
      */
+    #[IsGranted(UserPermissionsEnum::PERM_USER_CREATE)]
     public function create(Request $request): Response
     {
         $formData = new NewUserDTO();
@@ -99,10 +99,10 @@ class UserManagerController extends AbstractController
     }
 
     /**
-     * @IsGranted("PERM_USER_EDIT")
      * @param Request $request
      * @return Response
      */
+    #[IsGranted(UserPermissionsEnum::PERM_USER_EDIT)]
     public function edit(Request $request): Response
     {
         $user = $this->userRepository->findByUsername($request->get('username'));

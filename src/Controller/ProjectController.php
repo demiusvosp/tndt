@@ -23,6 +23,7 @@ use App\Form\Type\Project\NewProjectType;
 use App\Repository\DocRepository;
 use App\Repository\ProjectRepository;
 use App\Repository\TaskRepository;
+use App\Security\UserPermissionsEnum;
 use App\Service\InProjectContext;
 use App\Service\ProjectService;
 use App\Service\SpecBuilder\ProjectListFilterApplier;
@@ -32,11 +33,11 @@ use App\Specification\InProjectSpec;
 use App\Specification\Project\VisibleByUserSpec;
 use Happyr\DoctrineSpecification\Spec;
 use InvalidArgumentException;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class ProjectController extends AbstractController
 {
@@ -75,13 +76,13 @@ class ProjectController extends AbstractController
     }
 
     /**
-     * @InProjectContext
-     * @IsGranted ("PERM_PROJECT_VIEW")
      * @param Project $project
      * @param TaskRepository $taskRepository
      * @param DocRepository $docRepository
      * @return Response
      */
+    #[InProjectContext]
+    #[IsGranted(UserPermissionsEnum::PERM_PROJECT_VIEW)]
     public function index(Project $project, TaskRepository $taskRepository, DocRepository $docRepository): Response
     {
         $tasks = $taskRepository->match(Spec::andX(
@@ -106,10 +107,10 @@ class ProjectController extends AbstractController
     }
 
     /**
-     * @IsGranted("PERM_PROJECT_CREATE")
      * @param Request $request
      * @return Response
      */
+    #[IsGranted(UserPermissionsEnum::PERM_PROJECT_CREATE)]
     public function create(Request $request): Response
     {
         $formData = new NewProjectDTO();
@@ -126,12 +127,12 @@ class ProjectController extends AbstractController
     }
 
     /**
-     * @InProjectContext
-     * @IsGranted("PERM_PROJECT_SETTINGS")
      * @param Request $request
      * @param Project $project
      * @return Response
      */
+    #[InProjectContext]
+    #[IsGranted(UserPermissionsEnum::PERM_PROJECT_SETTINGS)]
     public function editCommon(Request $request, Project $project): Response
     {
         $formData = new EditProjectCommonDTO($project);
@@ -147,12 +148,12 @@ class ProjectController extends AbstractController
     }
 
     /**
-     * @InProjectContext
-     * @IsGranted("PERM_PROJECT_SETTINGS")
      * @param Request $request
      * @param Project $project
      * @return Response
      */
+    #[InProjectContext]
+    #[IsGranted(UserPermissionsEnum::PERM_PROJECT_SETTINGS)]
     public function editPermissions(Request $request, Project $project): Response
     {
         $formData = new EditProjectPermissionsDTO($project);
@@ -171,13 +172,13 @@ class ProjectController extends AbstractController
     }
 
     /**
-     * @InProjectContext
-     * @IsGranted("PERM_PROJECT_SETTINGS")
      * @param Request $request
      * @param Project $project
      * @return Response
      * @throws \JsonException
      */
+    #[InProjectContext]
+    #[IsGranted(UserPermissionsEnum::PERM_PROJECT_SETTINGS)]
     public function editTaskSettings(Request $request, Project $project): Response
     {
         $formData = new EditTaskSettingsDTO($project->getTaskSettings());
@@ -199,12 +200,12 @@ class ProjectController extends AbstractController
     }
 
     /**
-     * @InProjectContext
-     * @IsGranted("PERM_PROJECT_ARCHIVE")
      * @param Project $project
      * @param ProjectService $projectService
      * @return Response
      */
+    #[InProjectContext]
+    #[IsGranted(UserPermissionsEnum::PERM_PROJECT_ARCHIVE)]
     public function archive(Project $project, ProjectService $projectService): Response
     {
         $projectService->archiveProject($project);

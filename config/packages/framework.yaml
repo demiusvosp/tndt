@@ -21,3 +21,5 @@ framework:
     error_controller: App\Controller\ErrorController
     handle_all_throwables: true
     http_method_override: false
+    annotations:
+        enabled: false

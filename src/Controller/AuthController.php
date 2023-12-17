@@ -2,19 +2,14 @@
 
 namespace App\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class AuthController extends AbstractController
 {
-
-    /**
-     * @IsGranted("PUBLIC_ACCESS")
-     * @param AuthenticationUtils $authenticationUtils
-     * @return Response
-     */
+    #[IsGranted("PUBLIC_ACCESS")]
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
         // if ($this->getUser()) {
@@ -29,6 +24,7 @@ class AuthController extends AbstractController
         return $this->render('auth/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
     }
 
+    #[IsGranted("IS_AUTHENTICATED")]
     public function logout()
     {
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');

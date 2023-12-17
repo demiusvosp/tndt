@@ -9,6 +9,7 @@ declare(strict_types=1);
 namespace App\EventSubscriber;
 
 use App\Exception\NotInProjectContextException;
+use App\Service\InProjectContext;
 use App\Service\ProjectContext;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
@@ -32,10 +33,8 @@ class InProjectContextRequestSubscriber implements EventSubscriberInterface
 
     public function onKernelController(ControllerEvent $event): void
     {
-        $request = $event->getRequest();
-
-        $configuration = $request->attributes->get('_in_project_context');
-        if (!$configuration) {
+        $attribute = $event->getAttributes(InProjectContext::class);
+        if (!$attribute) {
             return;
         }
 

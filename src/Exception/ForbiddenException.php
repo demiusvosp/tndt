@@ -7,12 +7,10 @@
 
 namespace App\Exception;
 
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Throwable;
 
-class ForbiddenException extends \Exception
+class ForbiddenException extends AccessDeniedException
 {
-    public function __construct(string $message = "", int $code = ErrorCodesEnum::FORBIDDEN, ?Throwable $previous = null)
-    {
-        parent::__construct($message, $code, $previous);
-    }
+
 }
