@@ -9,11 +9,10 @@ declare(strict_types=1);
 namespace App\Form\Type\Project;
 
 use App\Repository\ProjectRepository;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Security\Core\Security;
-//use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
 
 class ProjectSelectType extends AbstractType
 {

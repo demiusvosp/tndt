@@ -13,8 +13,8 @@ use KevinPapst\AdminLTEBundle\Event\NavbarUserEvent;
 use KevinPapst\AdminLTEBundle\Event\ShowUserEvent;
 use KevinPapst\AdminLTEBundle\Event\SidebarUserEvent;
 use KevinPapst\AdminLTEBundle\Model\UserModel;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Security\Core\Security;
 
 class UserMenuBuilderSubscriber implements EventSubscriberInterface
 {

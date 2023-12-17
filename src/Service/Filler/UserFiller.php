@@ -12,8 +12,8 @@ use App\Form\DTO\User\EditUserDTO;
 use App\Form\DTO\User\NewUserDTO;
 use App\Form\DTO\User\SelfEditUserDTO;
 use App\Security\UserPermissionsEnum;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Component\Security\Core\Security;
 
 class UserFiller
 {

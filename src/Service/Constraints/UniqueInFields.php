@@ -19,5 +19,20 @@ use Symfony\Component\Validator\Constraints\AbstractComparison;
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
 class UniqueInFields extends AbstractComparison
 {
-    public $message = 'not_unique_in_fields {{ not_unique_values }}';
+    public function __construct(
+        mixed $value = null,
+        string $propertyPath = null,
+        array $groups = null,
+        mixed $payload = null,
+        array $options = []
+    ) {
+        parent::__construct(
+            $value,
+            $propertyPath,
+            'not_unique_in_fields {{ not_unique_values }}',
+            $groups,
+            $payload,
+            $options
+        );
+    }
 }

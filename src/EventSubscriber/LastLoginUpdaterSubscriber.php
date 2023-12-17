@@ -10,9 +10,8 @@ namespace App\EventSubscriber;
 
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Security\Core\Security;
-use Symfony\Component\Security\Http\Event\DeauthenticatedEvent;
 use Symfony\Component\Security\Http\SecurityEvents;
 
 class LastLoginUpdaterSubscriber implements EventSubscriberInterface
@@ -30,7 +29,6 @@ class LastLoginUpdaterSubscriber implements EventSubscriberInterface
     {
         return [
             SecurityEvents::INTERACTIVE_LOGIN => ['onUpdateLogin', 0],
-//            DeauthenticatedEvent::class => ['onUpdateLogin', 0],
         ];
     }
 

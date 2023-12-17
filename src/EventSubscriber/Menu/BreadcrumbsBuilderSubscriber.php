@@ -10,15 +10,14 @@ namespace App\EventSubscriber\Menu;
 
 use App\Repository\DocRepository;
 use App\Repository\TaskRepository;
-use App\Repository\UserRepository;
 use App\Security\UserPermissionsEnum;
 use App\Service\ProjectContext;
 use InvalidArgumentException;
 use KevinPapst\AdminLTEBundle\Event\BreadcrumbMenuEvent;
 use KevinPapst\AdminLTEBundle\Event\SidebarMenuEvent;
 use KevinPapst\AdminLTEBundle\Model\MenuItemModel;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Security\Core\Security;
 
 class BreadcrumbsBuilderSubscriber implements EventSubscriberInterface
 {

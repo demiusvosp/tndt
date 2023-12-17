@@ -17,14 +17,10 @@ use App\Form\DTO\Project\EditProjectCommonDTO;
 use App\Form\DTO\Project\EditProjectPermissionsDTO;
 use App\Form\DTO\Project\EditTaskSettingsDTO;
 use App\Form\DTO\Project\NewProjectDTO;
-use App\Object\Project\TaskSettings;
 use App\Repository\UserRepository;
 use App\Security\UserRolesEnum;
 use \InvalidArgumentException;
 use JsonException;
-use Symfony\Component\Security\Core\Security;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ProjectFiller
 {

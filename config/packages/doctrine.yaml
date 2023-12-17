@@ -18,6 +18,8 @@ doctrine:
             taskSettings: 'App\Service\Doctrine\Type\TaskSettingsType'
     orm:
         auto_generate_proxy_classes: true
+        # Enables the new implementation of proxies based on lazy ghosts instead of using the legacy implementation
+        enable_lazy_ghost_objects: true
         naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
         auto_mapping: true
         mappings:

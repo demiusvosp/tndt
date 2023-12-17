@@ -165,8 +165,6 @@ class ProjectController extends AbstractController
             } catch (InvalidArgumentException $e) {
                 $form->addError(new FormError($e->getMessage()));
             }
-            $em = $this->getDoctrine()->getManager();
-            $em->flush();
         }
 
         return $this->render('project/edit_permissions.html.twig', ['project' => $project, 'form' => $form->createView()]);

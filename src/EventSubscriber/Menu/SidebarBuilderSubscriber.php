@@ -15,8 +15,8 @@ use App\Service\ProjectContext;
 use InvalidArgumentException;
 use KevinPapst\AdminLTEBundle\Event\SidebarMenuEvent;
 use KevinPapst\AdminLTEBundle\Model\MenuItemModel;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Security\Core\Security;
 
 class SidebarBuilderSubscriber implements EventSubscriberInterface
 {
