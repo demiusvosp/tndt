@@ -29,7 +29,7 @@ CRM менеджмента задач и документов, максимал�
 REQUIREMENTS
 ------------
 
-* PHP >=7.4
+* PHP 8.2
 * MySQL like db
 предпочтительный способ деплоя через docker-контейнеры. 
 
@@ -38,11 +38,19 @@ INSTALLATION
 ------------
 `<ENVIRONMENT>` - prod, dev or test.
 
-1. Unpack archive, or git clone
-2. `make up env=<ENVIRONMENT>`
-3. `make init`
-4. `make build_front`
-5. check write permission for ./var directory
+### локлаьный инстанс
+1. Распаковать архив git clone
+2. Настроить БД
+3. `make up env=<ENVIRONMENT>`
+4. `make init`
+5. `make build_front`
+6. check write permission for ./var directory
+
+### Стейдж
+1. Собрать образы для стейджей
+2. Подготовить БД
+3. Создать файл описания сервиса на стейдже
+4. 
 
 UPDATE
 ------------
