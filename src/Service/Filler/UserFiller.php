@@ -11,18 +11,14 @@ use App\Entity\User;
 use App\Form\DTO\User\EditUserDTO;
 use App\Form\DTO\User\NewUserDTO;
 use App\Form\DTO\User\SelfEditUserDTO;
-use App\Security\UserPermissionsEnum;
-use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class UserFiller
 {
-    private Security $security;
     private UserPasswordHasherInterface $passwordHasher;
 
-    public function __construct(Security $security, UserPasswordHasherInterface $passwordEncoder)
+    public function __construct(UserPasswordHasherInterface $passwordEncoder)
     {
-        $this->security = $security;
         $this->passwordHasher = $passwordEncoder;
     }
 
@@ -42,9 +38,7 @@ class UserFiller
     {
         $user->setName($dto->getName());
         $user->setEmail($dto->getEmail());
-        if ($this->security->isGranted(UserPermissionsEnum::PERM_USER_LOCK)) {
-            $user->setLocked($dto->getLocked());
-        }
+        $user->setLocked($dto->getLocked());
         if (!empty($dto->getPassword())) {
             $user->setPassword($this->passwordHasher->hashPassword($user, $dto->getPassword()));
         }

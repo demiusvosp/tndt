@@ -13,7 +13,7 @@ use App\Form\DTO\User\NewUserDTO;
 use App\Form\Type\User\UserManagerEditType;
 use App\Form\Type\User\NewUserType;
 use App\Repository\UserRepository;
-use App\Service\Filler\UserFiller;
+use App\Service\UserService;
 use Happyr\DoctrineSpecification\Spec;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -27,10 +27,12 @@ class UserManagerController extends AbstractController
     private const USER_PER_PAGE = 50;
 
     private UserRepository $userRepository;
+    private UserService $userService;
 
-    public function __construct(UserRepository $userRepository)
+    public function __construct(UserRepository $userRepository, UserService $userService)
     {
         $this->userRepository = $userRepository;
+        $this->userService = $userService;
     }
 
     /**
@@ -78,21 +80,17 @@ class UserManagerController extends AbstractController
     /**
      * @IsGranted("PERM_USER_CREATE")
      * @param Request $request
-     * @param UserFiller $userFiller
      * @return Response
      */
-    public function create(Request $request, UserFiller $userFiller): Response
+    public function create(Request $request): Response
     {
         $formData = new NewUserDTO();
         $form = $this->createForm(NewUserType::class, $formData);
 
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()) {
-            $user = $userFiller->createFromForm($formData);
+            $user = $this->userService->create($formData);
 
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($user);
-            $em->flush();
             $this->addFlash('success', 'user.create.success');
             return $this->redirectToRoute('user.index', ['username' => $user->getUsername()]);
         }
@@ -103,14 +101,9 @@ class UserManagerController extends AbstractController
     /**
      * @IsGranted("PERM_USER_EDIT")
      * @param Request $request
-     * @param AuthorizationCheckerInterface $authorizationChecker
-     * @param UserFiller $userFiller
      * @return Response
      */
-    public function edit(
-        Request $request,
-        AuthorizationCheckerInterface $authorizationChecker,
-        UserFiller $userFiller): Response
+    public function edit(Request $request): Response
     {
         $user = $this->userRepository->findByUsername($request->get('username'));
         if (!$user) {
@@ -122,9 +115,7 @@ class UserManagerController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $userFiller->fillFromEditForm($formData, $user);
-
-            $this->getDoctrine()->getManager()->flush();
+            $this->userService->edit($formData, $user);
             $this->addFlash('success', 'user.edit.success');
         }
 

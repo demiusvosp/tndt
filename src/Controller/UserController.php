@@ -12,7 +12,7 @@ use App\Entity\User;
 use App\Form\DTO\User\SelfEditUserDTO;
 use App\Form\Type\User\EditProfileType;
 use App\Repository\UserRepository;
-use App\Service\Filler\UserFiller;
+use App\Service\UserService;
 use Happyr\DoctrineSpecification\Spec;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -69,13 +69,13 @@ class UserController extends AbstractController
     /**
      * @IsGranted("IS_AUTHENTICATED_FULLY")
      * @param Request $request
-     * @param UserFiller $userFiller
+     * @param UserService $userService
      * @return Response
      */
     public function edit(
         Request $request,
-        UserFiller $userFiller): Response
-    {
+        UserService $userService,
+    ): Response {
         /** @var User $user */
         $user = $this->getUser();
         $formData = new SelfEditUserDTO($user);
@@ -83,9 +83,8 @@ class UserController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $userFiller->fillFromSelfEditForm($formData, $user);
+            $userService->selfEdit($formData);
 
-            $this->getDoctrine()->getManager()->flush();
             $this->addFlash('success', 'user.edit.success');
         }
 
