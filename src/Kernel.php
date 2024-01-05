@@ -9,6 +9,8 @@ use Symfony\Component\Config\Resource\FileResource;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
+use function array_merge;
+use function var_dump;
 
 class Kernel extends BaseKernel
 {
@@ -30,7 +32,10 @@ class Kernel extends BaseKernel
 
     public function registerBundles(): iterable
     {
-        $contents = require $this->getProjectDir().'/config/bundles.php';
+        $contents = array_merge(
+            require $this->getProjectDir().'/config/bundles.php',
+            require $this->getProjectDir().'/config/'.$this->environment.'/bundles.php'
+        );
         foreach ($contents as $class => $envs) {
             if ($envs[$this->environment] ?? $envs['all'] ?? false) {
                 yield new $class();
