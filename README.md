@@ -38,7 +38,7 @@ INSTALLATION
 ------------
 `<ENVIRONMENT>` - prod, dev or test.
 
-### локлаьный инстанс
+### Локальный инстанс
 1. Распаковать архив git clone
 2. Настроить БД
 3. `make up env=<ENVIRONMENT>`
