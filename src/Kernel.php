@@ -32,9 +32,10 @@ class Kernel extends BaseKernel
 
     public function registerBundles(): iterable
     {
+        $confDir = $this->getProjectDir() . '/config/';
         $contents = array_merge(
-            require $this->getProjectDir().'/config/bundles.php',
-            require $this->getProjectDir().'/config/'.$this->environment.'/bundles.php'
+            require $confDir . 'common/bundles.php',
+            require $confDir . $this->environment . '/bundles.php'
         );
         foreach ($contents as $class => $envs) {
             if ($envs[$this->environment] ?? $envs['all'] ?? false) {
@@ -50,22 +51,23 @@ class Kernel extends BaseKernel
 
     protected function configureContainer(ContainerBuilder $container, LoaderInterface $loader): void
     {
-        $container->addResource(new FileResource($this->getProjectDir().'/config/bundles.php'));
+        $confDir = $this->getProjectDir() . '/config/';
+        $container->addResource(new FileResource($confDir . 'common/bundles.php'));
+        $container->addResource(new FileResource($confDir . $this->environment . '/bundles.php'));
 //        $container->setParameter('container.dumper.inline_class_loader', true);
 
-        $confDir = $this->getProjectDir().'/config';
-        $loader->load($confDir.'/{packages}/*'.self::CONFIG_EXTS, 'glob');
-        $loader->load($confDir.'/{packages}/'.$this->environment.'/**/*'.self::CONFIG_EXTS, 'glob');
-        $loader->load($confDir.'/{services}/services'.self::CONFIG_EXTS, 'glob');
-        $loader->load($confDir.'/{services}/'.$this->environment.'/**/*'.self::CONFIG_EXTS, 'glob');
+        $loader->load($confDir . 'common/packages/*'.self::CONFIG_EXTS, 'glob');
+        $loader->load($confDir . $this->environment . '/packages/*' . self::CONFIG_EXTS, 'glob');
+        $loader->load($confDir . 'common/services/*'.self::CONFIG_EXTS, 'glob');
+        $loader->load($confDir . $this->environment . '/services/*' . self::CONFIG_EXTS, 'glob');
     }
 
     protected function configureRoutes(RoutingConfigurator $routes): void
     {
-        $confDir = $this->getProjectDir().'/config';
+        $confDir = $this->getProjectDir() . '/config/';
 
-        $routes->import($confDir.'/{routes}/*.yaml', 'glob');
-        $routes->import($confDir.'/{routes}/'.$this->environment.'/*'.self::CONFIG_EXTS, 'glob');
+        $routes->import($confDir . 'common/routes/*.yaml', 'glob');
+        $routes->import($confDir . $this->environment . '/routes/*' . self::CONFIG_EXTS, 'glob');
     }
 
 }

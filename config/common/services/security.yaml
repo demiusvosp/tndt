@@ -1,0 +1,26 @@
+services:
+  # default configuration for services in *this* file
+  _defaults:
+    autowire: true      # Automatically injects dependencies in your services.
+    autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+
+  App\Security\Hierarchy\HierarchyHelper:
+    class: 'App\Security\Hierarchy\HierarchyHelper'
+    arguments:
+      - '@cache.permissions.adapter'
+    configurator: [ '@App\Security\Hierarchy\HierarchyConfigurator', 'configure' ]
+
+  App\Security\Voter\PublicProjectVoter:
+    class: 'App\Security\Voter\PublicProjectVoter'
+    tags:
+      - { name: monolog.logger, channel: security }
+
+  App\Security\Voter\PrivateProjectVoter:
+    class: 'App\Security\Voter\PrivateProjectVoter'
+    tags:
+      - { name: monolog.logger, channel: security }
+
+  App\Security\Voter\GlobalRolesVoter:
+    class: 'App\Security\Voter\GlobalRolesVoter'
+    tags:
+      - { name: monolog.logger, channel: security }

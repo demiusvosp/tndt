@@ -51,6 +51,7 @@ class HierarchyHelper
         }
     }
 
+    /** @noinspection SlowArrayOperationsInLoopInspection */
     private function buildItem(array $itemChildren, $hierarchy): array
     {
         $inherited = [];
