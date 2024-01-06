@@ -57,9 +57,9 @@ class Kernel extends BaseKernel
 //        $container->setParameter('container.dumper.inline_class_loader', true);
 
         $loader->load($confDir . 'common/packages/*'.self::CONFIG_EXTS, 'glob');
-        $loader->load($confDir . $this->environment . '/packages/*' . self::CONFIG_EXTS, 'glob');
+        $loader->load($confDir . $this->environment . '/{packages}/*' . self::CONFIG_EXTS, 'glob');
         $loader->load($confDir . 'common/services/*'.self::CONFIG_EXTS, 'glob');
-        $loader->load($confDir . $this->environment . '/services/*' . self::CONFIG_EXTS, 'glob');
+        $loader->load($confDir . $this->environment . '/{services}/*' . self::CONFIG_EXTS, 'glob');
     }
 
     protected function configureRoutes(RoutingConfigurator $routes): void
@@ -67,7 +67,7 @@ class Kernel extends BaseKernel
         $confDir = $this->getProjectDir() . '/config/';
 
         $routes->import($confDir . 'common/routes/*.yaml', 'glob');
-        $routes->import($confDir . $this->environment . '/routes/*' . self::CONFIG_EXTS, 'glob');
+        $routes->import($confDir . $this->environment . '/{routes}/*' . self::CONFIG_EXTS, 'glob');
     }
 
 }
