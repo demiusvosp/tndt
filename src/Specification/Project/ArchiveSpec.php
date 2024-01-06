@@ -7,6 +7,7 @@
 
 namespace App\Specification\Project;
 
+use Happyr\DoctrineSpecification\Filter\Comparison;
 use Happyr\DoctrineSpecification\Spec;
 use Happyr\DoctrineSpecification\Specification\BaseSpecification;
 
@@ -20,7 +21,7 @@ class ArchiveSpec extends BaseSpecification
         parent::__construct($context);
     }
 
-    protected function getSpec()
+    protected function getSpec(): Comparison
     {
         return Spec::eq('isArchive', $this->isArchive);
     }

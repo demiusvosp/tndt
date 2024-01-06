@@ -8,6 +8,7 @@
 namespace App\Specification;
 
 use App\Entity\Project;
+use Happyr\DoctrineSpecification\Filter\Comparison;
 use Happyr\DoctrineSpecification\Spec;
 use Happyr\DoctrineSpecification\Specification\BaseSpecification;
 
@@ -16,8 +17,7 @@ use Happyr\DoctrineSpecification\Specification\BaseSpecification;
  */
 class InProjectSpec extends BaseSpecification
 {
-    /** @var string|Project */
-    private $project;
+    private string|Project $project;
 
     /**
      * @param string|Project $project
@@ -29,7 +29,7 @@ class InProjectSpec extends BaseSpecification
         parent::__construct($context);
     }
 
-    protected function getSpec()
+    protected function getSpec(): Comparison
     {
         return Spec::eq('project', $this->project);
     }

@@ -10,8 +10,10 @@ namespace App\Specification\Project;
 use App\Entity\User;
 use App\Specification\LeftJoin;
 use Doctrine\ORM\Query\Expr;
+use Happyr\DoctrineSpecification\Filter\Comparison;
 use Happyr\DoctrineSpecification\Spec;
 use Happyr\DoctrineSpecification\Specification\BaseSpecification;
+use Happyr\DoctrineSpecification\Specification\Specification;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 class VisibleByUserSpec extends BaseSpecification
@@ -24,7 +26,7 @@ class VisibleByUserSpec extends BaseSpecification
         parent::__construct($context);
     }
 
-    protected function getSpec()
+    protected function getSpec(): Specification|Comparison|null
     {
         if ($this->user) {
             if ($this->user->getUsername() === User::ROOT_USER) {

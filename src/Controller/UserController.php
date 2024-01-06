@@ -12,13 +12,14 @@ use App\Entity\User;
 use App\Form\DTO\User\SelfEditUserDTO;
 use App\Form\Type\User\EditProfileType;
 use App\Repository\UserRepository;
-use App\Service\Filler\UserFiller;
+use App\Security\UserPermissionsEnum;
+use App\Service\UserService;
 use Happyr\DoctrineSpecification\Spec;
 use Knp\Component\Pager\PaginatorInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class UserController extends AbstractController
 {
@@ -46,11 +47,11 @@ class UserController extends AbstractController
     }
 
     /**
-     * @IsGranted("PERM_USER_LIST")
      * @param Request $request
      * @param PaginatorInterface $paginator
      * @return Response
      */
+    #[IsGranted(UserPermissionsEnum::PERM_USER_LIST)]
     public function list(Request $request, PaginatorInterface $paginator): Response
     {
         $query = $this->userRepository->getQuery(Spec::andX(
@@ -67,15 +68,15 @@ class UserController extends AbstractController
     }
 
     /**
-     * @IsGranted("IS_AUTHENTICATED_FULLY")
      * @param Request $request
-     * @param UserFiller $userFiller
+     * @param UserService $userService
      * @return Response
      */
+    #[IsGranted("IS_AUTHENTICATED_FULLY")]
     public function edit(
         Request $request,
-        UserFiller $userFiller): Response
-    {
+        UserService $userService,
+    ): Response {
         /** @var User $user */
         $user = $this->getUser();
         $formData = new SelfEditUserDTO($user);
@@ -83,9 +84,8 @@ class UserController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $userFiller->fillFromSelfEditForm($formData, $user);
+            $userService->selfEdit($formData);
 
-            $this->getDoctrine()->getManager()->flush();
             $this->addFlash('success', 'user.edit.success');
         }
 

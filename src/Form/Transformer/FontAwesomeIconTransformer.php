@@ -11,13 +11,13 @@ use Symfony\Component\Form\DataTransformerInterface;
 
 class FontAwesomeIconTransformer implements DataTransformerInterface
 {
-    public function transform($value)
+    public function transform(mixed $value): mixed
     {
         return $value;
     }
 
-    public function reverseTransform($value)
+    public function reverseTransform(mixed $value): string
     {
-        return preg_replace('/<\w+ class="([\w -]+)">\w*<\/\w+>/', '${1}', $value);
+        return preg_replace('/<\w+ class="([\w -]+)">\w*<\/\w+>/', '${1}', (string) $value);
     }
 }

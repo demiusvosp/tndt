@@ -47,26 +47,6 @@ services:
     project_context:
         alias: App\Service\ProjectContext
 
-    App\Security\Hierarchy\HierarchyHelper:
-        class: 'App\Security\Hierarchy\HierarchyHelper'
-        arguments:
-            - '@cache.permissions.adapter'
-        configurator: ['@App\Security\Hierarchy\HierarchyConfigurator', 'configure']
-
-    App\Security\Voter\PublicProjectVoter:
-        class: 'App\Security\Voter\PublicProjectVoter'
-        tags:
-            - { name: monolog.logger, channel: security }
-
-    App\Security\Voter\PrivateProjectVoter:
-        class: 'App\Security\Voter\PrivateProjectVoter'
-        tags:
-            - { name: monolog.logger, channel: security }
-
-    App\Security\Voter\GlobalRolesVoter:
-        class: 'App\Security\Voter\GlobalRolesVoter'
-        tags:
-            - { name: monolog.logger, channel: security }
 
     App\Service\Badges\DocBadgesHandler:
         class: 'App\Service\Badges\DocBadgesHandler'

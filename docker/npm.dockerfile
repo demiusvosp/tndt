@@ -1,6 +1,6 @@
 FROM node:16
 
-WORKDIR /var/www
+WORKDIR /app
 
 RUN apt-get update -qq && apt-get install -y build-essential
 

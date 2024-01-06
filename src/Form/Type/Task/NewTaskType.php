@@ -126,6 +126,8 @@ class NewTaskType extends AbstractType
                             'items' => $items,
                         ]
                     );
+                } else if ($data instanceof EditTaskDTO) {
+                    $data->setStage(0);
                 }
 
                 if ($settings->getDictionaryByType(TypesEnum::TASK_TYPE())->isEnabled()) {
@@ -138,6 +140,8 @@ class NewTaskType extends AbstractType
                             'dictionary' => TypesEnum::TASK_TYPE()
                         ]
                     );
+                } else if ($data instanceof EditTaskDTO) {
+                    $data->setType(0);
                 }
                 if ($settings->getDictionaryByType(TypesEnum::TASK_PRIORITY())->isEnabled()) {
                     $event->getForm()->add(
@@ -149,6 +153,8 @@ class NewTaskType extends AbstractType
                             'dictionary' => TypesEnum::TASK_PRIORITY()
                         ]
                     );
+                } else if ($data instanceof EditTaskDTO) {
+                    $data->setPriority(0);
                 }
                 if ($settings->getDictionaryByType(TypesEnum::TASK_COMPLEXITY())->isEnabled()) {
                     $event->getForm()->add(
@@ -160,6 +166,8 @@ class NewTaskType extends AbstractType
                             'dictionary' => TypesEnum::TASK_COMPLEXITY()
                         ]
                     );
+                } else if ($data instanceof EditTaskDTO) {
+                    $data->setComplexity(0);
                 }
             }
         );

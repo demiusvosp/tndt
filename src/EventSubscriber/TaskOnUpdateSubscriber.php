@@ -15,8 +15,8 @@ use App\Event\CommentEvent;
 use App\Event\TaskEvent;
 use App\Security\UserRolesEnum;
 use DateTime;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Security\Core\Security;
 
 class TaskOnUpdateSubscriber implements EventSubscriberInterface
 {

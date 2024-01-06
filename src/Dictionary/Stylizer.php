@@ -13,6 +13,8 @@ use App\Dictionary\Object\Task\TaskPriorityItem;
 use App\Dictionary\Object\Task\TaskStageItem;
 use App\Entity\Contract\HasClosedStatusInterface;
 use App\Exception\DictionaryException;
+use Psr\Log\LoggerInterface;
+use function dump;
 
 class Stylizer
 {
@@ -20,28 +22,35 @@ class Stylizer
     private const INVERSE_THRESHOLD = 127;
 
     private Fetcher $fetcher;
+    private LoggerInterface $logger;
 
-    public function __construct(Fetcher $fetcher)
+    public function __construct(Fetcher $fetcher, LoggerInterface $logger)
     {
         $this->fetcher = $fetcher;
+        $this->logger = $logger;
     }
 
     public function getStyle($entity, StylesEnum $styleType): string
     {
-        $items = $this->fetcher->getRelatedItems($entity);
+        try {
+            $items = $this->fetcher->getRelatedItems($entity);
+        } catch (DictionaryException $e) {
+            $this->logger->error("Dictionary stylizer render table for project with incorrect dictionary", ['exception' => $e]);
+            return '';
+        }
 
         // @TODO когда появятся больше разных стилизуемых мест и правил, создать систему хендлеров, а пока так.
         if ($styleType->equals(StylesEnum::TASK_ROW())) {
             $style = '';
             $bgColor = [255, 255, 255];
-            if (isset($items[TypesEnum::TASK_PRIORITY])) {
+            if (isset($items[TypesEnum::TASK_PRIORITY]) && $items[TypesEnum::TASK_PRIORITY]->isSet()) {
                 /** @var TaskPriorityItem $item */
                 $item = $items[TypesEnum::TASK_PRIORITY];
                 if (!empty($item->getBgColor())) {
                     $bgColor = $this->colorStr2Hex($item->getBgColor());
                 }
             }
-            if (isset($items[TypesEnum::TASK_STAGE])) {
+            if (isset($items[TypesEnum::TASK_STAGE]) && $items[TypesEnum::TASK_STAGE]->isSet()) {
                 /** @var TaskStageItem $item */
                 $item = $items[TypesEnum::TASK_STAGE];
                 // стилизация закрытого состояние не совсем прерогатива справочника, но раз он отвечает за стиль списка

@@ -17,11 +17,11 @@ use App\Exception\BadUserException;
 use App\Exception\DomainException;
 use App\Form\Type\Comment\NewCommentType;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 class CommentService
@@ -67,7 +67,7 @@ class CommentService
             }
         }
 
-        $request = $this->requestStack->getMasterRequest();
+        $request = $this->requestStack->getMainRequest();
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $this->applyCommentFromString($commentableObject, $form->getData()['message'], $author);

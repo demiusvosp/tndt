@@ -54,6 +54,9 @@ class TaskService
 
     public function edit(EditTaskDTO $request, Task $task): Task
     {
+        if ($request->getStage() !== $task->getStage()) {
+            $this->stagesService->changeStage($task, $request->getStage());
+        }
         $this->taskFiller->fillFromEditForm($request, $task);
 
         $this->eventDispatcher->dispatch(new TaskEvent($task), AppEvents::TASK_EDIT);

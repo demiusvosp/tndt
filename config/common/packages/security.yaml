@@ -1,0 +1,34 @@
+security:
+    password_hashers:
+        App\Entity\User:
+            algorithm: auto
+    providers:
+        app_user_provider:
+            entity:
+                class: App\Entity\User
+
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+        main:
+            lazy: true
+            entry_point: form_login
+
+            form_login:
+                login_path: app.login
+                check_path: app.login
+                enable_csrf: true
+                use_forward: true
+
+            logout:
+                path: app.logout
+                target: home
+
+            login_throttling:
+                max_attempts: 3
+
+#services:
+#
+# Хотелось бы здесь вписывать свои сервисы, но в случае с security.yaml это не работает
+#

@@ -13,6 +13,7 @@ use App\Dictionary\Object\Task\TaskStage;
 use App\Dictionary\Object\Task\TaskType;
 use App\Entity\Contract\InProjectInterface;
 use App\Object\Project\TaskSettings;
+use App\Repository\ProjectRepository;
 use App\Security\UserRolesEnum;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -23,84 +24,52 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class Project entity
- *
- * @ORM\Entity(repositoryClass="App\Repository\ProjectRepository")
- * @ORM\Table(
- *     name="project",
- *     indexes={
- *          @ORM\Index(name="isArchived", columns={"is_archived"}),
- *          @ORM\Index(name="isPublic", columns={"is_public"})
- *     }
- * )
  */
+#[ORM\Entity(repositoryClass:ProjectRepository::class)]
+#[ORM\Table(name: "project")]
+#[ORM\Index(columns: ["is_archived"], name: "isArchived")]
+#[ORM\Index(columns: ["is_public"], name: "isPublic")]
 class Project implements InProjectInterface
 {
-    /**
-     * @var string
-     * @ORM\Id
-     * @ORM\Column(type="string", length=8)
-     * @Assert\Length(min=1, max=8)
-     * @Assert\Regex("/^\w+$/")
-     */
-    private string $suffix = '';
+    #[ORM\Id]
+    #[ORM\Column(type: "string", length: 8)]
+    #[Assert\Length(min: 1, max: 8)]
+    #[Assert\Regex("/^\w+$/")]
+    private string $suffix;
 
-    /**
-     * @var string
-     * @ORM\Column(type="string")
-     * @Assert\NotBlank()
-     * @Assert\Length(min=1, max=255)
-     */
+    #[ORM\Column(type: "string")]
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 1, max: 255)]
     private string $name = '';
 
-    /**
-     * @var string
-     * @ORM\Column(type="string", length=100)
-     */
+    #[ORM\Column(type: "string", length: 100)]
     private string $icon = '';
 
-    /**
-     * @var DateTime
-     * @ORM\Column(type="datetime")
-     */
+    #[ORM\Column(type: "datetime")]
     private DateTime $createdAt;
 
-    /**
-     * @var DateTime
-     * @ORM\Column(type="datetime")
-     */
+    #[ORM\Column(type: "datetime")]
     private DateTime $updatedAt;
 
-    /**
-     * @var bool
-     * @ORM\Column (type="boolean")
-     */
+    #[ORM\Column(type: "boolean")]
     private bool $isArchived = false;
 
-    /**
-     * @var bool
-     * @ORM\Column (type="boolean")
-     */
+    #[ORM\Column(type: "boolean")]
     private bool $isPublic = true;
 
     /**
      * @var Collection|ProjectUser[]
-     * @ORM\OneToMany (targetEntity="App\Entity\ProjectUser", mappedBy="project", cascade={"all"}, indexBy="username")
-     * @ORM\OrderBy({"role" = "ASC"})
-     * @ORM\JoinColumn (name="suffix", referencedColumnName="suffix")
      */
+    #[ORM\OneToMany(mappedBy: "project", targetEntity: ProjectUser::class, cascade: ["all"], indexBy: "username")]
+    #[ORM\OrderBy(["role" => "ASC"])]
+    #[ORM\JoinColumn(name: "suffix", referencedColumnName: "suffix")]
     private Collection $projectUsers;
 
-    /**
-     * @var string
-     * @ORM\Column(type="text")
-     * @Assert\Length(max=1000)
-     */
+    #[ORM\Column(type: "text")]
+    #[Assert\Length(max: 1000)]
     private string $description = '';
 
-    /**
-     * @var TaskSettings
-     * @ORM\Column (type="taskSettings")
-     */
+    #[ORM\Column(type: "taskSettings")]
     private TaskSettings $taskSettings;
 
     public function __construct(string $suffix)
@@ -265,7 +234,8 @@ class Project implements InProjectInterface
     }
 
     /**
-     * @return Collection|ProjectUser[]
+     * @param UserRolesEnum|null $role
+     * @return Collection
      */
     public function getProjectUsers(?UserRolesEnum $role = null): Collection
     {

@@ -10,7 +10,7 @@ namespace App\Service\Twig;
 
 use App\Repository\ProjectRepository;
 use App\Service\ProjectContext;
-use Symfony\Component\Security\Core\Security;
+use Symfony\Bundle\SecurityBundle\Security;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 

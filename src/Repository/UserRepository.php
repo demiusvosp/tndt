@@ -3,17 +3,15 @@
 namespace App\Repository;
 
 use App\Entity\User;
-use App\Form\ToFindCriteriaInterface;
 use App\Specification\User\ExceptRootSpec;
 use App\Specification\User\InProjectSpec;
 use App\Specification\User\NotLockingSpec;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
 use Happyr\DoctrineSpecification\Repository\EntitySpecificationRepositoryTrait;
 use Happyr\DoctrineSpecification\Spec;
 use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
-use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -36,13 +34,9 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
      * Used to upgrade (rehash) the user's password automatically over time.
      * @inheritDoc
      */
-    public function upgradePassword(UserInterface $user, string $newEncodedPassword): void
+    public function upgradePassword(PasswordAuthenticatedUserInterface $user, string $newHashedPassword): void
     {
-        if (!$user instanceof User) {
-            throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', \get_class($user)));
-        }
-
-        $user->setPassword($newEncodedPassword);
+        $user->setPassword($newHashedPassword);
         $this->_em->persist($user);
         $this->_em->flush();
     }
@@ -52,9 +46,9 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
      * @param string $usernameOrEmail
      * @return UserInterface|null
      */
-    public function loadUserByUsername($usernameOrEmail)
+    public function loadUserByIdentifier(string $identifier): ?UserInterface
     {
-        $loginCriteria = Spec::eq('username', $usernameOrEmail);
+        $loginCriteria = Spec::eq('username', $identifier);
 
         /*
          * так как в наших user case важнее возможность ставить нескольким пользователям одинаковый email, а
@@ -70,6 +64,16 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             new NotLockingSpec(),
             $loginCriteria
         ));
+    }
+
+    /**
+     * @deprecated  remove after update to v0.4 and update symfony to 6.4
+     * @param string $username
+     * @return UserInterface|null
+     */
+    public function loadUserByUsername(string $username): ?UserInterface
+    {
+        return $this->loadUserByIdentifier($username);
     }
 
     /**

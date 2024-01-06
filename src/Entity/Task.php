@@ -11,139 +11,99 @@ use App\Entity\Contract\CommentableInterface;
 use App\Entity\Contract\HasClosedStatusInterface;
 use App\Entity\Contract\NoInterface;
 use App\Entity\Contract\WithProjectInterface;
+use App\Repository\TaskRepository;
 use App\Service\Constraints\DictionaryValue;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use DomainException;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/*
- * пока есть сомнения, что эти индексы вообще нужны, мне кажется это будет быстро искаться по foreign
- * @ORM\Index(name="createdBy" columns={"createdBy"})
- * @ORM\Index(name="assignedBy" columns={"assignedBy"})
- */
-/**
- * Class Task
- * @ORM\Entity(repositoryClass="App\Repository\TaskRepository")
- * @ORM\Table(
- *     name="task",
- *     uniqueConstraints={@ORM\UniqueConstraint(name="idx_full_no", columns={"suffix","no"})},
- *     indexes={
- *          @ORM\Index(name="isClosed", columns={"is_closed"})
- *     }
- * )
- */
+
+#[ORM\Entity(repositoryClass:TaskRepository::class)]
+#[ORM\Table(name: "task")]
+#[ORM\UniqueConstraint(name: "idx_full_no", columns: ["suffix","no"])]
+#[ORM\Index(columns: ["is_closed"], name: "isClosed")]
 class Task implements NoInterface, WithProjectInterface, CommentableInterface, HasClosedStatusInterface
 {
     public const TASKID_SEPARATOR = '-';
 
-    /**
-     * @var int
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue
-     */
+
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: "integer")]
     private int $id;
 
-    /**
-     * @var int
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Column(type: "integer")]
     private int $no = 0;
 
-    /**
-     * @var string
-     * @ORM\Column(type="string", length=8)
-     */
+    #[ORM\Column(type: "string", length: 8)]
     private string $suffix = '';
 
-    /**
-     * @var Project
-     * @ORM\ManyToOne(targetEntity="Project", fetch="EAGER")
-     * @ORM\JoinColumn(name="suffix", referencedColumnName="suffix")
-     */
+    #[ORM\ManyToOne(targetEntity: Project::class, fetch: "EAGER")]
+    #[ORM\JoinColumn(name: "suffix", referencedColumnName: "suffix")]
     private Project $project;
 
-    /**
-     * @var DateTime
-     * @ORM\Column(type="datetime")
-     */
+    #[ORM\Column(type: "datetime")]
     private DateTime $createdAt;
 
-    /**
-     * @var User|null
-     * @ORM\ManyToOne (targetEntity="User")
-     * @ORM\JoinColumn (name="created_by", referencedColumnName="username", nullable=true)
-     */
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: "created_by", referencedColumnName: "username", nullable: true)]
     private ?User $createdBy;
 
     /**
-     * @var DateTime
-     * @ORM\Column(type="datetime", nullable=false)
      * Автоматически обновляется через OnUpdateTaskManager
      */
+    #[ORM\Column(type: "datetime", nullable: false)]
     private DateTime $updatedAt;
 
-    /**
-     * @var User|null
-     * @ORM\ManyToOne (targetEntity="User")
-     * @ORM\JoinColumn (name="assigned_to", referencedColumnName="username", nullable=true)
-     */
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: "assigned_to", referencedColumnName: "username", nullable: true)]
     private ?User $assignedTo = null;
 
-    /**
-     * @var boolean
-     * @ORM\Column (type="boolean")
-     */
+    #[ORM\Column(type: "boolean")]
     private bool $isClosed = false;
 
     /**
-     * @var int - этап реализации задачи, справочник TaskStage
-     * @ORM\Column (type="integer")
-     * @DictionaryValue("task.stage")
+     * Этап реализации задачи, справочник TaskStage
      */
+    #[ORM\Column(type: "integer")]
+    #[DictionaryValue("task.stage")]
     private int $stage = 0;
 
     /**
-     * @var int - тип задачи, справочник TaskType
-     * @ORM\Column (type="integer")
-     * @DictionaryValue("task.type")
+     * тип задачи, справочник TaskType
      */
+    #[ORM\Column(type: "integer")]
+    #[DictionaryValue("task.type")]
     private int $type = 0;
 
-    /**
-     * @var string
-     * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank()
-     * @Assert\Length(min=1, max=255)
-     */
+    #[ORM\Column(type: "string", length: 255)]
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 1, max: 255)]
     private string $caption = '';
 
-    /**
-     * @var string
-     * @ORM\Column(type="text")
-     */
+    #[ORM\Column(type: "text")]
     private string $description = '';
 
     /**
-     * @var int - приоритетность задачи
-     * @ORM\Column (type="integer")
-     * @DictionaryValue("task.priority")
+     * приоритетность задачи
      */
+    #[ORM\Column(type: "integer")]
+    #[DictionaryValue("task.priority")]
     private int $priority = 0;
 
     /**
-     * @var int - сложность, трудоемкость задачи
-     * @ORM\Column (type="integer")
-     * @DictionaryValue("task.complexity")
+     * @сложность, трудоемкость задачи
      */
+    #[ORM\Column(type: "integer")]
+    #[DictionaryValue("task.complexity")]
     private int $complexity = 0;
 
 
     /**
      * @param string|Project $project - Project or project suffix
      */
-    public function __construct($project, ?User $author = null)
+    public function __construct(Project|string $project, ?User $author = null)
     {
         if($project instanceof Project) {
             $this->setProject($project);

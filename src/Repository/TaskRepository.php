@@ -29,15 +29,13 @@ class TaskRepository extends ServiceEntityRepository implements NoEntityReposito
         parent::__construct($registry, Task::class);
     }
 
-    /**
-     * @param string $taskId
-     * @return Task|mixed|object|null
-     */
-    public function findByTaskId(string $taskId)
+    public function findByTaskId(string $taskId): ?Task
     {
-        [$suffix, $no] = explode(Task::TASKID_SEPARATOR, $taskId);
-
-        return $this->matchSingleResult(new ByTaskIdSpec($taskId));
+        try {
+            return $this->matchSingleResult(new ByTaskIdSpec($taskId));
+        } catch (NoResultException) {
+            return null;
+        }
     }
 
     public function getLastNo($suffix): int

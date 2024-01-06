@@ -14,29 +14,17 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class EditProjectCommonDTO
 {
-    /**
-     * @var string
-     * @Assert\NotBlank
-     * @EntityExist(entity="App\Entity\Project", property="suffix")
-     */
+    #[Assert\NotBlank]
+    #[EntityExist(entity: Project::class, property:"suffix")]
     private string $suffix;
 
-    /**
-     * @var string|null
-     * @Assert\NotBlank()
-     * @Assert\Length(min=1, max=255)
-     */
-    private ?string $name = '';
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 1, max: 255)]
+    private ?string $name;
 
-    /**
-     * @var string|null
-     */
-    private ?string $icon = '';
+    private ?string $icon;
 
-    /**
-     * @var string|null
-     * @Assert\Length(max=1000)
-     */
+    #[Assert\Length(max: 1000)]
     private ?string $description;
 
     public function __construct(Project $project)

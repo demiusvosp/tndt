@@ -8,12 +8,13 @@
 namespace App\Specification\User;
 
 use App\Entity\User;
+use Happyr\DoctrineSpecification\Filter\Comparison;
 use Happyr\DoctrineSpecification\Spec;
 use Happyr\DoctrineSpecification\Specification\BaseSpecification;
 
 class ExceptRootSpec extends BaseSpecification
 {
-    protected function getSpec()
+    protected function getSpec(): Comparison
     {
         return Spec::neq('username', User::ROOT_USER);
     }

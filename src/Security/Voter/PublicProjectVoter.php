@@ -36,7 +36,7 @@ class PublicProjectVoter implements VoterInterface, LoggerAwareInterface
         $this->securityLogger = $securityLogger;
     }
 
-    public function vote(TokenInterface $token, $subject, array $attributes)
+    public function vote(TokenInterface $token, $subject, array $attributes): int
     {
         $isPublic = false;
         if (empty($subject)) {

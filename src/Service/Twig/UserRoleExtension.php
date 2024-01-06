@@ -10,8 +10,8 @@ namespace App\Service\Twig;
 
 use App\Security\UserPermissionsEnum;
 use App\Security\UserRolesEnum;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Security\Core\Security;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;

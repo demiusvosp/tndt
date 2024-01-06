@@ -34,7 +34,7 @@ class GlobalRolesVoter implements VoterInterface, LoggerAwareInterface
         $this->securityLogger = $securityLogger;
     }
 
-    public function vote(TokenInterface $token, $subject, array $attributes)
+    public function vote(TokenInterface $token, $subject, array $attributes): int
     {
         foreach ($token->getRoleNames() as $roleName) {
             if (UserRolesEnum::ROLE_ROOT === $roleName) {
