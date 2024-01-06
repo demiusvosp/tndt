@@ -8,7 +8,43 @@
 {% block page_content %}
     <div class="row">
         <div class="col-md-10">
-            {{ mProject.snippet(project, 0) }}
+            {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
+                {# все, что внутри embed теряет свой контекст, и _self здесь больше нет #}
+                {% import 'project/_macro.html.twig' as this %}
+                {% import 'user/_macro.html.twig' as mUser %}
+                {% block box_title %}
+                    <span class="project-title">{{ this.badge(project, true, true) }}</span>
+                {% endblock %}
+                {% block box_body %}
+                    <div class="project-snippet">
+                        <div class="row security-row">
+                            <div class="col-md-6">
+                                {{ 'project.pm.short'|trans }}: {{ project.pm ? mUser.badge(project.pm) : mUser.nobody() }}
+                            </div>
+                            <div class="col-md-6">
+                                {% if project.isArchived %}<span class="label label-default">{{ 'archived'|trans }}</span>{% endif %}
+                                {% if not project.public and is_granted("PERM_PROJECT_VIEW", project) %}
+                                    <i class="fas fa-lock-open pull-right" title="{{ 'Access_granted.description'|trans }}">{{ 'Access_granted.label'|trans }}</i>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="row date-row">
+                            <div class="col-md-4">
+                                {{ 'project.updatedAt'|trans }}: {{ project.updatedAt|ago }}
+                            </div>
+                            <div class="col-md-4">
+                                {{ 'project.createdAt'|trans }}: {{ project.createdAt|ago }}
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row description-row">
+                            <div class="col-md-12">
+                                {{ project.description|markdown_to_html }}
+                            </div>
+                        </div>
+                    </div>
+                {% endblock %}
+            {% endembed %}
         </div>
         <div class="col-md-2">
             {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}

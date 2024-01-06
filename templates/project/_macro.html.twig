@@ -32,21 +32,30 @@
             <span class="project-title">{{ this.badge(project, true, true) }}</span>
         {% endblock %}
         {% block box_body %}
-            <div class="row project-property-string">
+        <div class="project-snippet">
+            <div class="row security-row">
                 <div class="col-md-6">
                     {{ 'project.pm.short'|trans }}: {{ project.pm ? mUser.badge(project.pm) : mUser.nobody() }}
                 </div>
                 <div class="col-md-6">
                     {% if project.isArchived %}<span class="label label-default">{{ 'archived'|trans }}</span>{% endif %}
                     {% if not project.public and is_granted("PERM_PROJECT_VIEW", project) %}
-                        <i class="fas fa-lock-open" title="{{ 'Access_granted.description'|trans }}">{{ 'Access_granted.label'|trans }}</i>
+                        <i class="fas fa-lock-open pull-right" title="{{ 'Access_granted.description'|trans }}"></i>
                     {% endif %}
                 </div>
             </div>
-            <small>
-                {{ (descriptionLength == 0) ? project.description|markdown_to_html : project.description|u.truncate(descriptionLength)|markdown_to_html }}
-            </small>
+            <div class="row">
+                <div class="col-md-12 date-row">
+                    {{ 'project.updatedAt'|trans }}: {{ project.updatedAt|ago }}
+                </div>
+            </div>
             <hr>
+            <div class="row description-row">
+                <div class="col-md-12">
+                    {{ (descriptionLength == 0) ? project.description|markdown_to_html : project.description|u.truncate(descriptionLength)|markdown_to_html }}
+                </div>
+            </div>
+        </div>
         {% endblock %}
     {% endembed %}
 {% endmacro %}

@@ -57,6 +57,20 @@ $color-disabled: #333;
         }
     }
 }
+.project-snippet {
+    .security-row {
+        color: lighten($text-color, 25%);
+    }
+    .date-row {
+        color: lighten($text-color, 25%);
+    }
+    .description-row {
+
+    }
+    hr {
+        margin: 0.25em;
+    }
+}
 
 /* Tasks */
 .task-table {
