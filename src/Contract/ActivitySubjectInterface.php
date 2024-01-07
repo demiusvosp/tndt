@@ -5,7 +5,7 @@
  * Time: 12:19
  */
 
-namespace App\Entity\Contract;
+namespace App\Contract;
 
 interface ActivitySubjectInterface
 {

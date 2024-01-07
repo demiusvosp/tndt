@@ -8,10 +8,12 @@ declare(strict_types=1);
 
 namespace App\Event;
 
+use App\Contract\ActivityEventInterface;
+use App\Contract\ActivitySubjectInterface;
 use App\Entity\Project;
 use App\Entity\Task;
 
-class TaskEvent extends InProjectEvent
+class TaskEvent extends InProjectEvent implements ActivityEventInterface
 {
     private Task $task;
     /**
@@ -44,5 +46,10 @@ class TaskEvent extends InProjectEvent
     public function getProject(): Project
     {
         return $this->task->getProject();
+    }
+
+    public function getActivitySubject(): ActivitySubjectInterface
+    {
+        return $this->task;
     }
 }

@@ -8,6 +8,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Contract\ActivitySubjectInterface;
 use App\Entity\Contract\CommentableInterface;
 use App\Entity\Contract\NoInterface;
 use App\Entity\Contract\WithProjectInterface;
@@ -23,7 +24,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 #[ORM\Entity(repositoryClass: DocRepository::class)]
 #[ORM\Table(name: "doc")]
-class Doc implements NoInterface, WithProjectInterface, CommentableInterface
+class Doc implements NoInterface, WithProjectInterface, ActivitySubjectInterface, CommentableInterface
 {
     public const DOCID_SEPARATOR = '#';
 

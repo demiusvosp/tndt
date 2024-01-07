@@ -7,6 +7,8 @@
 
 namespace App\Model\Enum;
 
+use App\Event\AppEvents;
+
 enum ActivityTypeEnum: string
 {
     case TaskCreate = 'task.create';
@@ -26,6 +28,21 @@ enum ActivityTypeEnum: string
             self::TaskCreate, self::TaskEdit, self::TaskChangeState, self::TaskClose => ActivitySubjectType::Task,
             self::DocCreate, self::DocEdit, self::DocChangeState => ActivitySubjectType::Doc,
             self::CommentAdd => ActivitySubjectType::Comment,
+        };
+    }
+
+    public static function fromEventName(string $eventName): self
+    {
+        return match ($eventName) {
+            AppEvents::TASK_OPEN => self::TaskCreate,
+            AppEvents::TASK_EDIT => self::TaskEdit,
+            AppEvents::TASK_CHANGE_STAGE, AppEvents::TASK_CLOSE => self::TaskChangeState,
+
+            AppEvents::DOC_CREATE => self::DocCreate,
+            AppEvents::DOC_EDIT => self::DocEdit,
+            AppEvents::DOC_CHANGE_STATE => self::DocChangeState,
+
+            AppEvents::COMMENT_ADD => self::CommentAdd,
         };
     }
 }

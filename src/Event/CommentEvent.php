@@ -8,12 +8,14 @@ declare(strict_types=1);
 
 namespace App\Event;
 
+use App\Contract\ActivityEventInterface;
+use App\Contract\ActivitySubjectInterface;
 use App\Entity\Comment;
 use App\Entity\Contract\WithProjectInterface;
 use App\Entity\Project;
 use App\Exception\DomainException;
 
-class CommentEvent extends InProjectEvent
+class CommentEvent extends InProjectEvent implements ActivityEventInterface
 {
     private $comment;
 
@@ -37,5 +39,14 @@ class CommentEvent extends InProjectEvent
         }
 
         return $owner->getProject();
+    }
+
+    public function getActivitySubject(): ?ActivitySubjectInterface
+    {
+        $commentOwner = $this->comment->getOwnerEntity();
+        if ($commentOwner instanceof ActivitySubjectInterface) {
+            return $commentOwner;
+        }
+        return null;
     }
 }

@@ -7,6 +7,7 @@
  */
 namespace App\Entity;
 
+use App\Contract\ActivitySubjectInterface;
 use App\Entity\Contract\CommentableInterface;
 use App\Entity\Contract\HasClosedStatusInterface;
 use App\Entity\Contract\NoInterface;
@@ -23,7 +24,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Table(name: "task")]
 #[ORM\UniqueConstraint(name: "idx_full_no", columns: ["suffix","no"])]
 #[ORM\Index(columns: ["is_closed"], name: "isClosed")]
-class Task implements NoInterface, WithProjectInterface, CommentableInterface, HasClosedStatusInterface
+class Task implements NoInterface, WithProjectInterface, ActivitySubjectInterface, CommentableInterface, HasClosedStatusInterface
 {
     public const TASKID_SEPARATOR = '-';
 

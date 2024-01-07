@@ -7,9 +7,8 @@
 
 namespace App\Entity;
 
-use App\Entity\Contract\ActivitySubjectInterface;
+use App\Contract\ActivitySubjectInterface;
 use App\Entity\Contract\IdInterface;
-use App\Entity\Contract\InProjectInterface;
 use App\Entity\Contract\WithProjectInterface;
 use App\Exception\ActivityException;
 use App\Model\Enum\ActivitySubjectType;
@@ -56,6 +55,12 @@ class Activity
 
     private ?ActivitySubjectInterface $activitySubject = null;
 
+
+    public function __construct(ActivityTypeEnum $type, DateTime $createdAt = new DateTime())
+    {
+        $this->type = $type;
+        $this->createdAt = $createdAt;
+    }
 
     public function getUuid(): UuidInterface
     {
