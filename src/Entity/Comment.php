@@ -9,6 +9,7 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Entity\Contract\CommentableInterface;
+use App\Entity\Contract\IdInterface;
 use App\Object\CommentOwnerTypesEnum;
 use App\Repository\CommentRepository;
 use DateTime;
@@ -21,7 +22,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 #[ORM\Entity(repositoryClass: CommentRepository::class)]
 #[ORM\Table(name: "comment")]
-class Comment
+class Comment implements IdInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]

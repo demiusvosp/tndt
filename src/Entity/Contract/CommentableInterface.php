@@ -11,8 +11,6 @@ namespace App\Entity\Contract;
 /**
  * Интерфейс сущностей, которые можно комментировать
  */
-interface CommentableInterface
+interface CommentableInterface extends IdInterface
 {
-    public function getId(): int;
-
 }

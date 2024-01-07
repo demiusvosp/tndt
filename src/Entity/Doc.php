@@ -69,7 +69,7 @@ class Doc implements NoInterface, WithProjectInterface, CommentableInterface
     #[ORM\JoinColumn(name: "updated_by", referencedColumnName: "username", nullable: true)]
     private ?User $updatedBy = null;
 
-    #[ORM\Column(type: "integer", nullable: false)]
+    #[ORM\Column(type: "smallint", nullable: false)]
     private int $state;
 
     #[ORM\Column(type: "string", length: 255)]
