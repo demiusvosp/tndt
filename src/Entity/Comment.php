@@ -37,7 +37,7 @@ class Comment
     /**
      * Для того чтобы не грузить лишний раз храним здесь инстанцированный объект родительской сущности
      */
-    private CommentableInterface $ownerEntity;
+    private ?CommentableInterface $ownerEntity = null;
 
     #[ORM\Column(type: "datetime")]
     private DateTime $createdAt;
@@ -54,10 +54,8 @@ class Comment
 
     public function __construct(CommentableInterface $commentableEntity)
     {
-        $this->entity_type = CommentOwnerTypesEnum::typeByOwner($commentableEntity);
-        $this->entity_id = $commentableEntity->getId();
         $this->createdAt = new \DateTime();
-        $this->ownerEntity = $commentableEntity;
+        $this->setOwnerEntity($commentableEntity);
     }
 
     /**
@@ -113,10 +111,19 @@ class Comment
     }
 
     /**
-     * @return CommentableInterface
+     * @return CommentableInterface|null
      */
     public function getOwnerEntity(): ?CommentableInterface
     {
         return $this->ownerEntity ?? null;
+    }
+
+    public function setOwnerEntity(CommentableInterface $owner): self
+    {
+        $this->ownerEntity = $owner;
+        $this->entity_id = $owner->getId();
+        $this->entity_type = CommentOwnerTypesEnum::typeByOwner($owner);
+
+        return $this;
     }
 }

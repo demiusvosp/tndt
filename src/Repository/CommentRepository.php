@@ -44,6 +44,11 @@ class CommentRepository extends ServiceEntityRepository
             $spec->andX(Spec::orderBy('createdAt', 'ASC'));
         }
 
-        return $this->match($spec);
+        $comments = $this->match($spec);
+        /** @var Comment $comment */
+        foreach ($comments as $comment) {
+            $comment->setOwnerEntity($owner);
+        }
+        return $comments;
     }
 }
