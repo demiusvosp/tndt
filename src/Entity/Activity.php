@@ -13,6 +13,7 @@ use App\Contract\WithProjectInterface;
 use App\Exception\ActivityException;
 use App\Model\Enum\ActivitySubjectTypeEnum;
 use App\Model\Enum\ActivityTypeEnum;
+use App\Repository\ActivityRepository;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidV7Generator;
@@ -20,7 +21,7 @@ use Ramsey\Uuid\UuidInterface;
 use ValueError;
 use function get_class;
 
-#[ORM\Entity]
+#[ORM\Entity(repositoryClass: ActivityRepository::class)]
 #[ORM\Table(name: 'activity')]
 #[ORM\Index(fields: ['subjectType', 'subjectId'], name: 'subject')]
 #[ORM\Index(fields: ['createdAt'], name: 'createdAt')]

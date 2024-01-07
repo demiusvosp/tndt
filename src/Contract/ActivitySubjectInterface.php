@@ -7,7 +7,6 @@
 
 namespace App\Contract;
 
-interface ActivitySubjectInterface
+interface ActivitySubjectInterface extends IdInterface
 {
-
 }

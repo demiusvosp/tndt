@@ -48,18 +48,23 @@ project.list:
     controller: App\Controller\ProjectController::list
 project.create:
     path: /project/create
+    methods: POST
     controller: App\Controller\ProjectController::create
 project.edit:
     path: /project/{suffix<\w+>}/edit
+    methods: POST
     controller: App\Controller\ProjectController::editCommon
 project.edit.permissions:
     path: /project/{suffix<\w+>}/edit/permissions
+    methods: POST
     controller: App\Controller\ProjectController::editPermissions
 project.edit.task_settings:
     path: /project/{suffix<\w+>}/edit/task_settings
+    methods: POST
     controller: App\Controller\ProjectController::editTaskSettings
 project.archive:
     path: /project/{suffix<\w+>}/archive
+    methods: POST
     controller: App\Controller\ProjectController::archive
 
 #Tasks
@@ -69,14 +74,17 @@ task.list:
 task.index:
     path: /p/{taskId<\w+\-\d+>}
     controller: App\Controller\TaskController::index
-task.global_create:
-    path: /task/create
-    controller: App\Controller\TaskController::create
+#task.global_create:
+#    path: /task/create
+#    methods: POST
+#    controller: App\Controller\TaskController::create
 task.project_create:
     path: /p/{suffix<\w+>}/task/create
+    methods: POST
     controller: App\Controller\TaskController::create
 task.edit:
     path: /p/{taskId<\w+\-\d+>}/edit
+    methods: POST
     controller: App\Controller\TaskController::edit
 task.close:
     path: /p/{taskId<\w+\-\d+>}/close
@@ -91,18 +99,26 @@ task.change_stage:
 doc.list:
     path: /p/{suffix<\w+>}/docs
     controller: App\Controller\DocController::list
-doc.global_create:
-    path: /doc/create
-    controller: App\Controller\DocController::create
+#doc.global_create:
+#    path: /doc/create
+#    controller: App\Controller\DocController::create
 doc.project_create:
     path: /p/{suffix<\w+>}/doc/create
+    methods: POST
     controller: App\Controller\DocController::create
 doc.index:
     path: /p/{suffix<\w+>}/doc/{slug<[\w\d\-_]+>}
     controller: App\Controller\DocController::index
 doc.edit:
     path: /p/{suffix<\w+>}/doc/{slug<[\w\d\-_]+>}/edit
+    methods: POST
     controller: App\Controller\DocController::edit
 doc.change_state:
     path: /p/{suffix<\w+>}/doc/{slug<[\w\d\-_]+>}/change_state/{state}
+    methods: POST
     controller: App\Controller\DocController::changeState
+
+#Activity
+activity.task:
+    path: /p/{taskId<\w+\-\d+>}/activity
+    controller: App\Controller\ActivityController::taskActivity
