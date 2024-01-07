@@ -13,7 +13,7 @@ use App\Entity\Project;
 use App\Entity\Task;
 use App\Exception\ActivityException;
 
-enum ActivitySubjectType: string
+enum ActivitySubjectTypeEnum: string
 {
     case Project = 'Project';
     case Task = 'Task';

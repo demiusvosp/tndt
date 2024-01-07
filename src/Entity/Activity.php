@@ -11,7 +11,7 @@ use App\Contract\ActivitySubjectInterface;
 use App\Contract\IdInterface;
 use App\Contract\WithProjectInterface;
 use App\Exception\ActivityException;
-use App\Model\Enum\ActivitySubjectType;
+use App\Model\Enum\ActivitySubjectTypeEnum;
 use App\Model\Enum\ActivityTypeEnum;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
@@ -42,8 +42,8 @@ class Activity
     #[ORM\JoinColumn(name: 'actor', referencedColumnName: 'username')]
     private ?User $actor;
 
-    #[ORM\Column(type: 'string', length: 8, nullable: false, enumType: ActivitySubjectType::class)]
-    private ActivitySubjectType $subjectType;
+    #[ORM\Column(type: 'string', length: 8, nullable: false, enumType: ActivitySubjectTypeEnum::class)]
+    private ActivitySubjectTypeEnum $subjectType;
 
     #[ORM\Column(type: 'integer', nullable: false)]
     private int $subjectId;
@@ -87,7 +87,7 @@ class Activity
         $this->actor = $actor;
     }
 
-    public function getSubjectType(): ActivitySubjectType
+    public function getSubjectType(): ActivitySubjectTypeEnum
     {
         return $this->subjectType;
     }
@@ -109,7 +109,7 @@ class Activity
     {
         $this->activitySubject = $activitySubject;
         try {
-            $this->subjectType = ActivitySubjectType::fromClass(get_class($activitySubject));
+            $this->subjectType = ActivitySubjectTypeEnum::fromClass(get_class($activitySubject));
             if ($activitySubject instanceof IdInterface) {
                 $this->subjectId = $activitySubject->getId();
             }

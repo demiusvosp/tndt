@@ -22,12 +22,12 @@ enum ActivityTypeEnum: string
 
     case CommentAdd = 'comment.add';
 
-    public function subjectType(): ActivitySubjectType
+    public function subjectType(): ActivitySubjectTypeEnum
     {
         return match ($this) {
-            self::TaskCreate, self::TaskEdit, self::TaskChangeState, self::TaskClose => ActivitySubjectType::Task,
-            self::DocCreate, self::DocEdit, self::DocChangeState => ActivitySubjectType::Doc,
-            self::CommentAdd => ActivitySubjectType::Comment,
+            self::TaskCreate, self::TaskEdit, self::TaskChangeState, self::TaskClose => ActivitySubjectTypeEnum::Task,
+            self::DocCreate, self::DocEdit, self::DocChangeState => ActivitySubjectTypeEnum::Doc,
+            self::CommentAdd => ActivitySubjectTypeEnum::Comment,
         };
     }
 
