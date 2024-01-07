@@ -104,7 +104,7 @@ class Activity
     {
         $this->activitySubject = $activitySubject;
         try {
-            $this->subjectType = ActivitySubjectType::from(get_class($activitySubject));
+            $this->subjectType = ActivitySubjectType::fromClass(get_class($activitySubject));
             if ($activitySubject instanceof IdInterface) {
                 $this->subjectId = $activitySubject->getId();
             }

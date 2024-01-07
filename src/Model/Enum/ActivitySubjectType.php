@@ -11,6 +11,7 @@ use App\Entity\Comment;
 use App\Entity\Doc;
 use App\Entity\Project;
 use App\Entity\Task;
+use App\Exception\ActivityException;
 
 enum ActivitySubjectType: string
 {
@@ -19,13 +20,18 @@ enum ActivitySubjectType: string
     case Doc = 'Doc';
     case Comment = 'Comment';
 
-    public function SubjectClass(): string
+    /**
+     * @throws ActivityException
+     */
+    public static function fromClass(string $classname): self
     {
-        return match($this) {
-            self::Project => Project::class,
-            self::Task => Task::class,
-            self::Doc => Doc::class,
-            self::Comment => Comment::class,
-        };
+        $map = [
+            Project::class => self::Project,
+            Task::class => self::Task,
+            Doc::class => self::Doc,
+            Comment::class => self::Comment,
+        ];
+
+        return $map[$classname] ?? throw new ActivityException(null, $classname . ' is not activity subject');
     }
 }
