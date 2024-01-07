@@ -9,9 +9,9 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Contract\ActivitySubjectInterface;
-use App\Entity\Contract\CommentableInterface;
-use App\Entity\Contract\NoInterface;
-use App\Entity\Contract\WithProjectInterface;
+use App\Contract\CommentableInterface;
+use App\Contract\NoInterface;
+use App\Contract\WithProjectInterface;
 use App\Exception\BadRequestException;
 use App\Repository\DocRepository;
 use DateTime;

@@ -8,8 +8,8 @@
 namespace App\Entity;
 
 use App\Contract\ActivitySubjectInterface;
-use App\Entity\Contract\IdInterface;
-use App\Entity\Contract\WithProjectInterface;
+use App\Contract\IdInterface;
+use App\Contract\WithProjectInterface;
 use App\Exception\ActivityException;
 use App\Model\Enum\ActivitySubjectType;
 use App\Model\Enum\ActivityTypeEnum;

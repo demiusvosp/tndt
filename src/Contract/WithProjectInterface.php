@@ -5,7 +5,7 @@
  * Time: 14:43
  */
 
-namespace App\Entity\Contract;
+namespace App\Contract;
 
 use App\Entity\Project;
 

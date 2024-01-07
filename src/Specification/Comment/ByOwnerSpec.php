@@ -7,7 +7,7 @@
 
 namespace App\Specification\Comment;
 
-use App\Entity\Contract\CommentableInterface;
+use App\Contract\CommentableInterface;
 use App\Object\CommentOwnerTypesEnum;
 use Happyr\DoctrineSpecification\Spec;
 use Happyr\DoctrineSpecification\Specification\BaseSpecification;

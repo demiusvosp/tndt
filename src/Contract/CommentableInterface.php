@@ -5,7 +5,7 @@
  * Time: 15:19
  */
 
-namespace App\Entity\Contract;
+namespace App\Contract;
 
 
 /**

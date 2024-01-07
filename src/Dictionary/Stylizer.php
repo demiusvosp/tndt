@@ -8,13 +8,12 @@ declare(strict_types=1);
 
 namespace App\Dictionary;
 
+use App\Contract\HasClosedStatusInterface;
 use App\Dictionary\Object\Task\StageTypesEnum;
 use App\Dictionary\Object\Task\TaskPriorityItem;
 use App\Dictionary\Object\Task\TaskStageItem;
-use App\Entity\Contract\HasClosedStatusInterface;
 use App\Exception\DictionaryException;
 use Psr\Log\LoggerInterface;
-use function dump;
 
 class Stylizer
 {

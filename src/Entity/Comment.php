@@ -8,8 +8,8 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use App\Entity\Contract\CommentableInterface;
-use App\Entity\Contract\IdInterface;
+use App\Contract\CommentableInterface;
+use App\Contract\IdInterface;
 use App\Object\CommentOwnerTypesEnum;
 use App\Repository\CommentRepository;
 use DateTime;
@@ -112,7 +112,7 @@ class Comment implements IdInterface
     }
 
     /**
-     * @return CommentableInterface|null
+     * @return \App\Contract\CommentableInterface|null
      */
     public function getOwnerEntity(): ?CommentableInterface
     {

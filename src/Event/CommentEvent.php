@@ -10,8 +10,8 @@ namespace App\Event;
 
 use App\Contract\ActivityEventInterface;
 use App\Contract\ActivitySubjectInterface;
+use App\Contract\WithProjectInterface;
 use App\Entity\Comment;
-use App\Entity\Contract\WithProjectInterface;
 use App\Entity\Project;
 use App\Exception\DomainException;
 

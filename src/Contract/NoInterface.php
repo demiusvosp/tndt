@@ -5,7 +5,7 @@
  * Time: 13:05
  */
 
-namespace App\Entity\Contract;
+namespace App\Contract;
 
 /**
  * Интерфейс сущностей, имеющих отдельную нумерацию внутри проекта

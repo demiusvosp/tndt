@@ -8,8 +8,8 @@ declare(strict_types=1);
 
 namespace App\Service;
 
+use App\Contract\CommentableInterface;
 use App\Entity\Comment;
-use App\Entity\Contract\CommentableInterface;
 use App\Entity\User;
 use App\Event\AppEvents;
 use App\Event\CommentEvent;
@@ -52,7 +52,7 @@ class CommentService
     }
 
     /**
-     * @param CommentableInterface $commentableObject
+     * @param \App\Contract\CommentableInterface $commentableObject
      * @param FormInterface $form
      * @param UserInterface|null $author
      * @return bool
@@ -77,7 +77,7 @@ class CommentService
     }
 
     /**
-     * @param CommentableInterface $commentableObject
+     * @param \App\Contract\CommentableInterface $commentableObject
      * @param string $message
      * @param User $author
      */

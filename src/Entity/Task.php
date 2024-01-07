@@ -8,10 +8,10 @@
 namespace App\Entity;
 
 use App\Contract\ActivitySubjectInterface;
-use App\Entity\Contract\CommentableInterface;
-use App\Entity\Contract\HasClosedStatusInterface;
-use App\Entity\Contract\NoInterface;
-use App\Entity\Contract\WithProjectInterface;
+use App\Contract\CommentableInterface;
+use App\Contract\HasClosedStatusInterface;
+use App\Contract\NoInterface;
+use App\Contract\WithProjectInterface;
 use App\Repository\TaskRepository;
 use App\Service\Constraints\DictionaryValue;
 use DateTime;

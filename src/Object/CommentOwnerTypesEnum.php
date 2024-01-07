@@ -7,7 +7,7 @@
 
 namespace App\Object;
 
-use App\Entity\Contract\CommentableInterface;
+use App\Contract\CommentableInterface;
 use App\Entity\Doc;
 use App\Entity\Task;
 use MyCLabs\Enum\Enum;

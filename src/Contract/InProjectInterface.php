@@ -6,7 +6,7 @@
  */
 declare(strict_types=1);
 
-namespace App\Entity\Contract;
+namespace App\Contract;
 
 /**
  * Интерфейс сущностей, относящихся к тому или иному проекту

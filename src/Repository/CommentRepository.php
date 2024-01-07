@@ -8,8 +8,8 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
+use App\Contract\CommentableInterface;
 use App\Entity\Comment;
-use App\Entity\Contract\CommentableInterface;
 use App\Specification\Comment\ByOwnerSpec;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -26,7 +26,7 @@ class CommentRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param CommentableInterface $owner
+     * @param \App\Contract\CommentableInterface $owner
      * @param array $order - [<field> => <direction>]
      * @return Comment[]
      */

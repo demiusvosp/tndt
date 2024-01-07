@@ -8,7 +8,7 @@ declare(strict_types=1);
 
 namespace App\Service\Twig;
 
-use App\Entity\Contract\CommentableInterface;
+use App\Contract\CommentableInterface;
 use App\Repository\CommentRepository;
 use App\Service\CommentService;
 use Symfony\Bundle\SecurityBundle\Security;

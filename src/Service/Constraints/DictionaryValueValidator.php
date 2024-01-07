@@ -8,10 +8,10 @@ declare(strict_types=1);
 
 namespace App\Service\Constraints;
 
+use App\Contract\InProjectInterface;
+use App\Contract\WithProjectInterface;
 use App\Dictionary\Fetcher;
 use App\Dictionary\TypesEnum;
-use App\Entity\Contract\InProjectInterface;
-use App\Entity\Contract\WithProjectInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\ConstraintDefinitionException;

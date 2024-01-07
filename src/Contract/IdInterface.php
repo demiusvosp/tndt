@@ -5,7 +5,7 @@
  * Time: 14:56
  */
 
-namespace App\Entity\Contract;
+namespace App\Contract;
 
 interface IdInterface
 {
