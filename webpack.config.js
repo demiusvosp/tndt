@@ -5,6 +5,7 @@ const Encore = require('@symfony/webpack-encore');
 if (!Encore.isRuntimeEnvironmentConfigured()) {
     Encore.configureRuntimeEnvironment(process.env.NODE_ENV || 'dev');
 }
+const { VueLoaderPlugin } = require('vue-loader');
 
 Encore
     // directory where compiled assets will be stored
@@ -22,8 +23,14 @@ Encore
      */
     .addEntry('app', './assets/app.js')
 
-    // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
-    //.enableStimulusBridge('./assets/controllers.json')
+    .addLoader({
+        test: /\.vue$/,
+        loader: 'vue-loader'
+    })
+    .addPlugin(new VueLoaderPlugin())
+    .addAliases({
+        vue: 'vue/dist/vue.js'
+    })
 
     .copyFiles({
         from: './assets/images',

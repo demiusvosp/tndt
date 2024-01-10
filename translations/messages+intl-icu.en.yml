@@ -315,5 +315,6 @@ Users: Users
 User_list: User list
 Unarchive: Вернуть из архива
 Works:
-  title: Работа над задачей
-  comments: Комментарии
+  title: Works
+  activity: Activity
+  comments: Commentaries

@@ -11,6 +11,8 @@ use App\Repository\ActivityRepository;
 use App\Repository\TaskRepository;
 use App\Security\UserPermissionsEnum;
 use App\Service\InProjectContext;
+use DateTime;
+use DateTimeInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,6 +22,9 @@ use function dump;
 
 class ActivityController extends AbstractController
 {
+    private const DEFAULT_ACTIVITY_LIMIT = 25;
+    private const DATE_FORMAT = DateTimeInterface::W3C;
+
     private ActivityRepository $activityRepository;
     private TranslatorInterface $translator;
 
@@ -41,8 +46,9 @@ class ActivityController extends AbstractController
         $activities = [];
         foreach ($this->activityRepository->findByTask($task) as $activity) {
             $activities[] = [
+                'id' => $activity->getUuid(),
                 'type' => $activity->getType()->value,
-                'createdAt' => $activity->getCreatedAt(),
+                'createdAt' => $activity->getCreatedAt()->format(self::DATE_FORMAT),
                 'actor' => $activity->getActor()?->getUsername(), // вот это бы оптимизировать
             ];
         }
