@@ -98,13 +98,9 @@ if($.AdminLTESidebarTweak.options.EnableRemember){
 /* Dictionary Edit */
 
 /* Activity widget */
-var activityWidget = new Vue({
+new Vue({
     el: '#activity-widget',
-    // data: {
-    //     subjectType: "test from js",
-    //     subjectId: "not html"
-    // },
     components: {
         ActivityTimeline
     }
-})
+});
