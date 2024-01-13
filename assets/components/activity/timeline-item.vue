@@ -27,7 +27,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import "assets/styles/app.scss";
+@import "~bootstrap-sass/assets/stylesheets/bootstrap/variables";
 .timeline-item {
   margin-bottom: 1em;
 
