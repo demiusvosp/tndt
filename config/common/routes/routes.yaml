@@ -119,6 +119,6 @@ doc.change_state:
     controller: App\Controller\DocController::changeState
 
 #Activity
-activity.task:
-    path: /p/{taskId<\w+\-\d+>}/activity
-    controller: App\Controller\ActivityController::taskActivity
+activity.list:
+    path: /activity/list/{type<\w+>}/{id<\d+>}
+    controller: App\Controller\ActivityController::listBySubject

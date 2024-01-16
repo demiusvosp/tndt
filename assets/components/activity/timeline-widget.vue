@@ -1,6 +1,6 @@
 <template>
 <div class="activity-timeline">
-  {{ subjectType}} - {{ subjectId }} from vue component<br/>
+  {{ action }} from vue component<br/>
   <ul class="list-unstyled">
     <li v-for="item in items">
       <timeline-item v-bind="item"></timeline-item>
@@ -14,15 +14,13 @@ import timelineItem from "./timeline-item";
 export default {
   name: "timeline-widget",
   props: {
-    subjectType: String,
-    subjectId: String
+    action: String
   },
   components: {
     timelineItem
   },
   mounted: function() {
-    console.log('subjectType:' + this.subjectType);
-    console.log('subjectId:' + this.subjectId);
+    console.log('action:' + this.action);
     console.log(this.items);
   },
   data: function () {

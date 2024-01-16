@@ -15,23 +15,26 @@ use App\Exception\ActivityException;
 
 enum ActivitySubjectTypeEnum: string
 {
-    case Project = 'Project';
-    case Task = 'Task';
-    case Doc = 'Doc';
-    case Comment = 'Comment';
+    case Project = 'project';
+    case Task = 'task';
+    case Doc = 'doc';
+    case Comment = 'comment';
+
+    public static function classes(): array
+    {
+        return [
+            Project::class => self::Project,
+            Task::class => self::Task,
+            Doc::class => self::Doc,
+            Comment::class => self::Comment,
+        ];
+    }
 
     /**
      * @throws ActivityException
      */
     public static function fromClass(string $classname): self
     {
-        $map = [
-            Project::class => self::Project,
-            Task::class => self::Task,
-            Doc::class => self::Doc,
-            Comment::class => self::Comment,
-        ];
-
-        return $map[$classname] ?? throw new ActivityException(null, $classname . ' is not activity subject');
+        return self::classes()[$classname] ?? throw new ActivityException(null, $classname . ' is not activity subject');
     }
 }

@@ -3,6 +3,18 @@ Abstract: Синопсис
 Access_granted:
   label: Доступ предоставлен
   description: Проект приватный, но вам дан доступ к нему
+activity:
+  comment:
+    add: добавил комментарий
+  doc:
+    create: создал документ
+    edit: отредактировал документ
+    changeState: сменил статус документа
+  task:
+    create: создал задачу
+    edit: отредактировал задачу
+    changeState: сменил этап выполнения задачи
+    close: закрыл задачу
 Administrate: Администрирование
 And_more: И еще
 Archive: Убрать в архив

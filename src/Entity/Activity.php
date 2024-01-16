@@ -10,7 +10,7 @@ namespace App\Entity;
 use App\Contract\ActivitySubjectInterface;
 use App\Contract\IdInterface;
 use App\Contract\WithProjectInterface;
-use App\Exception\ActivityException;
+use App\Exception\ActivityAddException;
 use App\Model\Enum\ActivitySubjectTypeEnum;
 use App\Model\Enum\ActivityTypeEnum;
 use App\Repository\ActivityRepository;
@@ -104,7 +104,7 @@ class Activity
     }
 
     /**
-     * @throws ActivityException
+     * @throws ActivityAddException
      */
     public function setActivitySubject(ActivitySubjectInterface $activitySubject): self
     {
@@ -118,7 +118,7 @@ class Activity
                 $this->project = $activitySubject->getProject();
             }
         } catch (ValueError $e) {
-            throw new ActivityException($e);
+            throw new ActivityAddException($e);
         }
         return $this;
     }

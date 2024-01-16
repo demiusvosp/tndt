@@ -31,6 +31,11 @@ enum ActivityTypeEnum: string
         };
     }
 
+    public function label(): string
+    {
+        return  'activity.' . $this->value;
+    }
+
     public static function fromEventName(string $eventName): self
     {
         return match ($eventName) {

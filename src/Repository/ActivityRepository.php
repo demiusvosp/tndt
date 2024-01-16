@@ -7,13 +7,18 @@
 
 namespace App\Repository;
 
+use App\Contract\ActivitySubjectInterface;
 use App\Entity\Activity;
 use App\Entity\Task;
+use App\Exception\ActivityException;
+use App\Model\Enum\ActivitySubjectTypeEnum;
 use App\Specification\Activity\ByOwnerSpec;
+use App\Specification\Activity\BySubjectSpec;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Happyr\DoctrineSpecification\Repository\EntitySpecificationRepositoryTrait;
 use Happyr\DoctrineSpecification\Spec;
+use ValueError;
 
 class ActivityRepository extends ServiceEntityRepository
 {
@@ -28,14 +33,19 @@ class ActivityRepository extends ServiceEntityRepository
 
     /**
      * @return Activity[]
+     * @throws ActivityException
      */
-    public function findByTask(Task $task, int $limit = self::DEFAULT_LIMIT): array
+    public function findBySubject(string $type, int $id, int $limit = self::DEFAULT_LIMIT): array
     {
-        $spec = Spec::AndX(
-            new ByOwnerSpec($task),
-            Spec::orderBy('createdAt', 'DESC'),
-            Spec::limit($limit)
-        );
+        try {
+            $spec = Spec::AndX(
+                new BySubjectSpec(ActivitySubjectTypeEnum::from($type), $id),
+                Spec::orderBy('createdAt', 'DESC'),
+                Spec::limit($limit)
+            );
+        } catch (ValueError $e) {
+            throw new ActivityException($e);
+        }
 
         return $this->match($spec);
     }
