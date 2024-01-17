@@ -2,26 +2,28 @@
   <div class="timeline-item">
     <div class="head">
       <span class="created">{{ created.toLocaleString("ru", {}) }}</span>,
-      <a class="invisible_link" v-bind:href="'/user/' + actor "><i class="far fa-user"></i>{{ actor }} </a>
-      <span class="action">{{ type }}</span>
+      <user-badge v-bind="actor"></user-badge>
+      <span class="action">{{ type.label }}</span>
     </div>
     <!-- здесь мы раскроем дополнительную инфу, что имено сделал -->
   </div>
 </template>
 
 <script>
+import userBadge from "../common/user-badge";
+
 export default {
   name: "timeline-item",
   props: {
     id: String,
-    type: String,
-    createdAt: String,
-    actor: String
+    type: Object,
+    created: String,
+    actor: Object
+  },
+  components: {
+    userBadge
   },
   computed: {
-    created: function () {
-      return new Date(this.createdAt);
-    }
   }
 }
 </script>

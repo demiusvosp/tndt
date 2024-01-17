@@ -143,7 +143,7 @@
                         {{ comment_widget(task) }}
                     {% elseif currentTab == 'activity' %}
                         <div id="activity-widget">
-                            <activity-timeline action="{{ path('activity.list', {'type': 'tas5k', 'id': task.id})}}"></activity-timeline>
+                            <activity-timeline action="{{ path('activity.list', {'type': 'task', 'id': task.id})}}"></activity-timeline>
                         </div>
                     {% endif %}
                 </div>

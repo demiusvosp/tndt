@@ -8,6 +8,7 @@
 namespace App\AjaxTransformer;
 
 use App\Entity\Activity;
+use DateTimeInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ActivityTransformer
@@ -25,7 +26,7 @@ class ActivityTransformer
     {
         return [
             'id' => $activity->getUuid(),
-            'created' => $activity->getCreatedAt(),
+            'created' => $activity->getCreatedAt()->format(DateTimeInterface::W3C),
             'type' => [
                 'id' => $activity->getType()->value,
                 'label' => $this->translator->trans($activity->getType()->label())
