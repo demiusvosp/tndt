@@ -1,6 +1,5 @@
 <template>
 <div class="activity-timeline">
-  {{ action }} from vue component<br/>
   <ul class="list-unstyled">
     <li v-for="item in items">
       <timeline-item v-bind="item"></timeline-item>
@@ -43,5 +42,7 @@ export default {
 </script>
 
 <style scoped>
-
+  ul {
+    margin-left: 1em;
+  }
 </style>

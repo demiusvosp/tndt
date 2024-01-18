@@ -6,6 +6,7 @@ if (!Encore.isRuntimeEnvironmentConfigured()) {
     Encore.configureRuntimeEnvironment(process.env.NODE_ENV || 'dev');
 }
 const { VueLoaderPlugin } = require('vue-loader');
+const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
 
 Encore
     // directory where compiled assets will be stored
@@ -22,6 +23,8 @@ Encore
      * and one CSS file (e.g. app.scss) if your JavaScript imports CSS.
      */
     .addEntry('app', './assets/app.js')
+
+    .addPlugin(MomentLocalesPlugin({localesToKeep: ['ru']}))
 
     .addLoader({
         test: /\.vue$/,
