@@ -92,14 +92,21 @@
                 {% endblock %}
                 {% block box_body %}
                     <ul class="nav nav-tabs">
-                        {% set currentTab = 'comments' %}{# app.request.query.get('works_tab') пока только одна вкладка #}
+                        {% set currentTab = app.request.query.get('tab', 'comments') %}
                         <li {% if currentTab == 'comments' %}class="active"{% endif %}>
-                            <a href="{{ path('doc.index', doc.getUrlParams({'works_tab': 'comments'})) }}">{{ 'Works.comments'|trans }}</a>
+                            <a href="{{ path('doc.index', doc.getUrlParams({'tab': 'comments'})) }}">{{ 'Works.comments'|trans }}</a>
+                        </li>
+                        <li {% if currentTab == 'activity' %}class="active"{% endif %}>
+                            <a href="{{ path('doc.index', doc.getUrlParams({'tab': 'activity'})) }}">{{ 'Works.activity'|trans }}</a>
                         </li>
                     </ul>
                     <div class="one-block-content">
                         {% if currentTab == 'comments' %}
                             {{ comment_widget(doc) }}
+                        {% elseif currentTab == 'activity' %}
+                            <div id="activity-widget">
+                                <activity-timeline action="{{ path('activity.list', {'type': 'doc', 'id': doc.id})}}"></activity-timeline>
+                            </div>
                         {% endif %}
                     </div>
                 {% endblock %}
