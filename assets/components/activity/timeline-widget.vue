@@ -2,7 +2,7 @@
 <div class="activity-timeline">
   <ul class="list-unstyled">
     <li v-for="item in items">
-      <timeline-item v-bind="item"></timeline-item>
+      <timeline-item v-bind="item" v-bind:key="item.id"></timeline-item>
     </li>
     <li v-if="loaded">
       <div class="row"><div class="col-md-offset-2">
@@ -52,8 +52,6 @@ export default {
         this.loaded = false;
         this.errored = error.response.data.message;
       })
-    console.log('action:' + this.action);
-    console.log(this.items);
   }
 }
 </script>

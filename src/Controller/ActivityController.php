@@ -52,7 +52,9 @@ class ActivityController extends AbstractController
                 $limit + 1
             );
             $hasMore = count($activities) > $limit;
-            array_pop($activities);
+            if ($hasMore) {
+                array_pop($activities);
+            }
 
             $items = [];
             foreach ($activities as $activity) {

@@ -13,7 +13,7 @@ activity:
   task:
     create: создал задачу
     edit: отредактировал задачу
-    changeState: сменил этап выполнения задачи
+    changeState: сменил этап <b>{old}</b> выполнения задачи. Новый этап <b>{new}</b>
     close: закрыл задачу
 Administrate: Администрирование
 And_more: И еще

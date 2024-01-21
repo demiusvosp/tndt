@@ -16,15 +16,11 @@ use App\Entity\Task;
 class TaskEvent extends InProjectEvent implements ActivityEventInterface
 {
     private Task $task;
-    /**
-     * @var bool стала закрытой. Некоторым обработчикам может быть важно задача закрыта в принципе, или в рамках этого действия её закрыли
-     */
-    private bool $becameClosed;
 
-    public function __construct(Task $task, bool $becameClosed = false)
+
+    public function __construct(Task $task)
     {
         $this->task = $task;
-        $this->becameClosed = $becameClosed;
     }
 
     /**
@@ -33,14 +29,6 @@ class TaskEvent extends InProjectEvent implements ActivityEventInterface
     public function getTask(): Task
     {
         return $this->task;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isBecameClosed(): bool
-    {
-        return $this->becameClosed;
     }
 
     public function getProject(): Project

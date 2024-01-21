@@ -13,7 +13,7 @@ activity:
   task:
     create: created the task
     edit: edited the task
-    changeState: changed the task stage
+    changeState: changed the task stage from {old} to {new}
     close: closed the task
 Administrate: Администрирование
 And_more: И еще
@@ -53,7 +53,7 @@ comment:
     label: Комментарий
   createdAt:
     in_widget: ''
-    label: Дата созданиия
+    label: Created date
 Common: Общие
 confirm:
   title: Вы уверены?
@@ -97,11 +97,11 @@ doc:
     label: Аннотация
     help: Краткий синопсис документа. (Можно не заполнять, будет подставляться начало документа)
   body:
-    label: Содержимое
-    help: Полное содержимое документа
+    label: Content
+    help: Full document content
   caption:
-    label: Заголовок
-    help: Используется для идентификации, поэтому желательн делать возможно короче.
+    label: Caption
+    help: as short as possible, because use for document identification
   created:
     label: Дата создания
   create.success: Документ создан
@@ -142,12 +142,12 @@ menu:
   homepage: Главная
   projects: Все проекты
   project:
-    create: Созать проект
-    docs: Список докуменов
-    docs_menu: Документы
-    edit: Настройки
-    tasks: Список задач
-    tasks_menu: Задачи
+    create: Create project
+    docs: Document list
+    docs_menu: Documents
+    edit: Settings
+    tasks: Task list
+    tasks_menu: Tasks
   task:
     create: Создать задачу
     edit: Редактирование

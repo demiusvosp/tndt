@@ -8,20 +8,21 @@
 namespace App\EventSubscriber;
 
 use App\Contract\ActivityEventInterface;
-use App\Entity\Activity;
 use App\Event\AppEvents;
-use App\Model\Enum\ActivityTypeEnum;
+use App\Service\ActivityFactory;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class ActivitySubscriber implements EventSubscriberInterface
 {
+    private ActivityFactory $activityFactory;
     private Security $security;
     private EntityManagerInterface $entityManager;
 
-    public function __construct(Security $security, EntityManagerInterface $entityManager)
+    public function __construct(ActivityFactory $activityFactory, Security $security, EntityManagerInterface $entityManager)
     {
+        $this->activityFactory = $activityFactory;
         $this->security = $security;
         $this->entityManager = $entityManager;
     }
@@ -44,12 +45,12 @@ class ActivitySubscriber implements EventSubscriberInterface
 
     public function addActivity(ActivityEventInterface $event, string $eventName): void
     {
-        $activity = new Activity(ActivityTypeEnum::fromEventName($eventName));
-
         /** @noinspection PhpParamsInspection */
-        $activity->setActor($this->security->getUser());
-        $activity->setActivitySubject($event->getActivitySubject());
-
+        $activity = $this->activityFactory->createFromEvent(
+            $eventName,
+            $event,
+            $this->security->getUser()
+        );
         $this->entityManager->persist($activity);
     }
 }

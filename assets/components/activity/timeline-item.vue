@@ -1,11 +1,12 @@
 <template>
-  <div class="timeline-item row">
-    <div class="head col-lg-6 col-md-8 col-sm-12">
+  <div class="timeline-item ">
+    <div class="head">
       <span class="created">{{ createdAt }},</span>
       <user-badge v-bind="actor"></user-badge>
-      <span class="action">{{ type.label }}</span>
+      <span class="action">
+        <span v-html="type.label"></span>
+      </span>
     </div>
-    <!-- здесь мы раскроем дополнительную инфу, что имено сделал -->
   </div>
 </template>
 
@@ -38,14 +39,13 @@ export default {
   margin-bottom: 1em;
 
   .head {
-    padding: 0 5em 2px 1em;
+    padding: 0 1em 2px 1em;
     border-bottom: $gray-lighter 1px solid;
 
     .created {
       margin-right: 0.3em;
     }
     .action {
-      font-weight: bold;
       margin-left: 0.3em;
     }
   }

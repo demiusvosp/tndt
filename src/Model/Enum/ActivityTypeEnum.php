@@ -35,19 +35,4 @@ enum ActivityTypeEnum: string
     {
         return  'activity.' . $this->value;
     }
-
-    public static function fromEventName(string $eventName): self
-    {
-        return match ($eventName) {
-            AppEvents::TASK_OPEN => self::TaskCreate,
-            AppEvents::TASK_EDIT => self::TaskEdit,
-            AppEvents::TASK_CHANGE_STAGE, AppEvents::TASK_CLOSE => self::TaskChangeState,
-
-            AppEvents::DOC_CREATE => self::DocCreate,
-            AppEvents::DOC_EDIT => self::DocEdit,
-            AppEvents::DOC_CHANGE_STATE => self::DocChangeState,
-
-            AppEvents::COMMENT_ADD => self::CommentAdd,
-        };
-    }
 }

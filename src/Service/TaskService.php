@@ -8,10 +8,14 @@ declare(strict_types=1);
 
 namespace App\Service;
 
+use App\Dictionary\Fetcher;
 use App\Dictionary\Object\Task\StageTypesEnum;
+use App\Dictionary\Object\Task\TaskStageItem;
+use App\Dictionary\TypesEnum;
 use App\Entity\Task;
 use App\Entity\User;
 use App\Event\AppEvents;
+use App\Event\TaskChangeStageEvent;
 use App\Event\TaskEvent;
 use App\Form\DTO\Task\CloseTaskDTO;
 use App\Form\DTO\Task\EditTaskDTO;
@@ -25,6 +29,7 @@ class TaskService
     private CommentService $commentService;
     private TaskFiller $taskFiller;
     private TaskStagesService $stagesService;
+    private Fetcher $dictionaryFetcher;
     private EntityManagerInterface $entityManager;
     private EventDispatcherInterface $eventDispatcher;
 
@@ -32,12 +37,14 @@ class TaskService
         CommentService $commentService,
         TaskFiller $taskFiller,
         TaskStagesService $stagesService,
+        Fetcher $dictionaryFetcher,
         EntityManagerInterface $entityManager,
         EventDispatcherInterface $eventDispatcher
     ) {
         $this->commentService = $commentService;
         $this->taskFiller = $taskFiller;
         $this->stagesService = $stagesService;
+        $this->dictionaryFetcher = $dictionaryFetcher;
         $this->entityManager = $entityManager;
         $this->eventDispatcher = $eventDispatcher;
     }
@@ -76,14 +83,26 @@ class TaskService
         if (!empty($request->getComment())) {
             $this->commentService->applyCommentFromString($task, $request->getComment(), $whoClose);
         }
-        $stage = $request->getStage();
-        if (!$stage) {
-            $stage = current($this->stagesService->availableStages($task, [StageTypesEnum::STAGE_ON_CLOSED()]));
+        $stagesDictionary = $this->dictionaryFetcher->getDictionary(TypesEnum::TASK_STAGE(), $task);
+        /** @var TaskStageItem $oldStage */
+        $oldStage = $stagesDictionary->getItem($task->getStage());
+        $newStage = $stagesDictionary->getItem($request->getStage());
+        if (!$newStage->isSet()) {
+            $newStage = current($this->stagesService->availableStages($task, [StageTypesEnum::STAGE_ON_CLOSED()]));
         }
-        $this->stagesService->changeStage($task, $stage);
-        $task->setIsClosed(true);
 
-        $this->eventDispatcher->dispatch(new TaskEvent($task, true), AppEvents::TASK_CLOSE);
+        $task->setIsClosed(true);
+        $task->setStage($newStage->getId());
+        // теоретически этап стоит менять только через доменный метод, чтобы сработал и другая бизнес-логика,
+        //   помимо смены атрибута в задаче. Но на данный момент там только та бизнес-логика, которая не должна быть
+        //   выполнена при закрытии задачи. (например создание активности смены статуса, когда мы уже создаем активность
+        //   задача закрыта)
+        // $this->stagesService->changeStage($task, $stage);
+
+        $this->eventDispatcher->dispatch(
+            new TaskChangeStageEvent($task, $oldStage, $newStage),
+            AppEvents::TASK_CLOSE
+        );
         $this->entityManager->flush();
     }
 }

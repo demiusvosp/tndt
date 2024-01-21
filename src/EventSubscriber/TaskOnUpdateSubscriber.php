@@ -12,6 +12,7 @@ use App\Entity\Task;
 use App\Entity\User;
 use App\Event\AppEvents;
 use App\Event\CommentEvent;
+use App\Event\TaskChangeStageEvent;
 use App\Event\TaskEvent;
 use App\Security\UserRolesEnum;
 use DateTime;
@@ -42,7 +43,7 @@ class TaskOnUpdateSubscriber implements EventSubscriberInterface
         if ($this->isServiceUser()) {
             return;
         }
-        if (!$event->isBecameClosed() && $event->getTask()->isClosed()) {
+        if ($event->getTask()->isClosed() && !($event instanceof TaskChangeStageEvent && $event->isBecameClosed())) {
             return; // не стала закрытой, а была закрытой ранее
         }
 

@@ -56,6 +56,8 @@ class Activity
 
     private ?ActivitySubjectInterface $activitySubject = null;
 
+    #[ORM\Column(type: 'json', nullable: false)]
+    private array $addInfo = [];
 
     public function __construct(ActivityTypeEnum $type, DateTime $createdAt = new DateTime())
     {
@@ -126,5 +128,15 @@ class Activity
     public function getProject(): ?Project
     {
         return $this->project;
+    }
+
+    public function getAddInfo(): array
+    {
+        return $this->addInfo;
+    }
+
+    public function setAddInfo(array $addInfo): void
+    {
+        $this->addInfo = $addInfo;
     }
 }
