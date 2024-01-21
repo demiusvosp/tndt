@@ -20,6 +20,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class TaskOnUpdateSubscriber implements EventSubscriberInterface
 {
+    use CurrentUserTrait;
     private Security $security;
 
     public function __construct(Security $security)
@@ -59,11 +60,5 @@ class TaskOnUpdateSubscriber implements EventSubscriberInterface
         if ($task instanceof Task && !$task->isClosed()) {
             $task->setUpdatedAt(new DateTime());
         }
-    }
-
-    private function isServiceUser(): bool
-    {
-        return !$this->security->getUser() instanceof User ||
-            $this->security->isGranted(UserRolesEnum::ROLE_ROOT);
     }
 }

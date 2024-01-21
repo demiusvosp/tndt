@@ -20,6 +20,8 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class DocOnUpdateSubscriber implements EventSubscriberInterface
 {
+    use CurrentUserTrait;
+
     private Security $security;
 
     public function __construct(Security $security)
@@ -61,11 +63,5 @@ class DocOnUpdateSubscriber implements EventSubscriberInterface
             $doc->setUpdatedAt(new DateTime());
             $doc->setUpdatedBy($event->getComment()->getAuthor());
         }
-    }
-
-    private function isServiceUser(): bool
-    {
-        return !$this->security->getUser() instanceof User ||
-            $this->security->isGranted(UserRolesEnum::ROLE_ROOT);
     }
 }

@@ -8,10 +8,11 @@ declare(strict_types=1);
 
 namespace App\Event;
 
+use App\Contract\Event\IsArchivedObjectInterface;
 use App\Entity\Project;
 use App\Entity\Task;
 
-class TaskEvent extends InProjectEvent
+class TaskEvent extends InProjectEvent implements IsArchivedObjectInterface
 {
     private Task $task;
     /**
@@ -44,5 +45,10 @@ class TaskEvent extends InProjectEvent
     public function getProject(): Project
     {
         return $this->task->getProject();
+    }
+
+    public function isObjectArchived(): bool
+    {
+        return $this->getTask()->isClosed() && !$this->isBecameClosed();
     }
 }

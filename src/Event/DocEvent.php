@@ -8,11 +8,12 @@ declare(strict_types=1);
 
 namespace App\Event;
 
+use App\Contract\Event\IsArchivedObjectInterface;
 use App\Entity\Doc;
 use App\Entity\Project;
 use Symfony\Contracts\EventDispatcher\Event;
 
-class DocEvent extends InProjectEvent
+class DocEvent extends InProjectEvent implements IsArchivedObjectInterface
 {
     private Doc $doc;
     /**
@@ -42,5 +43,10 @@ class DocEvent extends InProjectEvent
     public function isBecameArchived(): bool
     {
         return $this->isBecameArchived;
+    }
+
+    public function isObjectArchived(): bool
+    {
+        return $this->getDoc()->isArchived() && !$this->isBecameArchived();
     }
 }

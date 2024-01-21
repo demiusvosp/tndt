@@ -8,12 +8,13 @@ declare(strict_types=1);
 
 namespace App\Event;
 
+use App\Contract\Event\IsArchivedObjectInterface;
 use App\Entity\Comment;
 use App\Entity\Contract\WithProjectInterface;
 use App\Entity\Project;
 use App\Exception\DomainException;
 
-class CommentEvent extends InProjectEvent
+class CommentEvent extends InProjectEvent implements IsArchivedObjectInterface
 {
     private $comment;
 
@@ -37,5 +38,10 @@ class CommentEvent extends InProjectEvent
         }
 
         return $owner->getProject();
+    }
+
+    public function isObjectArchived(): bool
+    {
+        return $this->getComment()->isOwnerArchived();
     }
 }
