@@ -58,11 +58,11 @@ class Fetcher
     /**
      * Получить указанный справочник из указанного проекта (или любой сущности, связанной с проектом)
      * @param TypesEnum $dictionaryType
-     * @param InProjectInterface|string|null $entity - null - текущий проект из сервиса ProjectContext
+     * @param InProjectInterface|WithProjectInterface|string|null $entity - null - текущий проект из сервиса ProjectContext
      * @return Dictionary
      * @throws DictionaryException
      */
-    public function getDictionary(TypesEnum $dictionaryType, InProjectInterface|string|null $entity): Dictionary
+    public function getDictionary(TypesEnum $dictionaryType, InProjectInterface|WithProjectInterface|string|null $entity): Dictionary
     {
         $object = null;
         if (is_string($entity)) {

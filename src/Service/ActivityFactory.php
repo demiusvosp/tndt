@@ -11,11 +11,33 @@ use App\Contract\ActivityEventInterface;
 use App\Entity\Activity;
 use App\Entity\User;
 use App\Event\AppEvents;
+use App\Event\CommentEvent;
+use App\Event\DocChangeStateEvent;
+use App\Event\DocEvent;
 use App\Event\TaskChangeStageEvent;
+use App\Event\TaskEvent;
 use App\Model\Enum\ActivityTypeEnum;
+use function array_merge;
 
 class ActivityFactory
 {
+    public function createFromEvent(string $eventName, ActivityEventInterface $event, User $actor): Activity
+    {
+        $type = $this->fromEventName($eventName);
+
+        $activity = new Activity($type);
+        $activity->setActor($actor);
+        $activity->setActivitySubject($event->getActivitySubject());
+
+        $addInfo = [];
+        $addInfo = array_merge($addInfo, $this->createTaskAddInfo($event));
+        $addInfo = array_merge($addInfo, $this->createDocAddInfo($event));
+        $addInfo = array_merge($addInfo, $this->createCommentAddInfo($event));
+        $activity->setAddInfo($addInfo);
+
+        return $activity;
+    }
+
     protected function fromEventName(string $eventName): ActivityTypeEnum
     {
         return match ($eventName) {
@@ -32,15 +54,16 @@ class ActivityFactory
         };
     }
 
-    public function createFromEvent(string $eventName, ActivityEventInterface $event, User $actor): Activity
+    protected function createTaskAddInfo(ActivityEventInterface $event): array
     {
-        $type = $this->fromEventName($eventName);
-
-        $activity = new Activity($type);
-        $activity->setActor($actor);
-        $activity->setActivitySubject($event->getActivitySubject());
+        $addInfo = [];
+        if ($event instanceof TaskEvent) {
+            $addInfo = array_merge($addInfo, [
+                'taskId' => $event->getTask()->getTaskId(),
+            ]);
+        }
         if ($event instanceof TaskChangeStageEvent) {
-            $activity->setAddInfo([
+            $addInfo = array_merge($addInfo, [
                 'old' => [
                     'id' => $event->getOldStage()->getId(),
                     'name' => $event->getOldStage()->getName(),
@@ -51,7 +74,34 @@ class ActivityFactory
                 ],
             ]);
         }
+        return $addInfo;
+    }
 
-        return $activity;
+    protected function createDocAddInfo(ActivityEventInterface $event): array
+    {
+        $addInfo = [];
+        if ($event instanceof DocEvent) {
+            $addInfo = array_merge($addInfo, [
+                'docId' => $event->getDoc()->getDocId(),
+            ]);
+        }
+        if ($event instanceof DocChangeStateEvent) {
+            $addInfo = array_merge($addInfo, [
+                'old' => $event->getOldState(),
+                'new' => $event->getNewState(),
+            ]);
+        }
+        return $addInfo;
+    }
+
+    protected function createCommentAddInfo(ActivityEventInterface $event): array
+    {
+        $addInfo = [];
+        if ($event instanceof CommentEvent) {
+            $addInfo = [
+                'commentId' => $event->getComment()->getId(),
+            ];
+        }
+        return $addInfo;
     }
 }

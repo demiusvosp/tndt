@@ -12,6 +12,7 @@ use App\Entity\Doc;
 use App\Entity\User;
 use App\Event\AppEvents;
 use App\Event\CommentEvent;
+use App\Event\DocChangeStateEvent;
 use App\Event\DocEvent;
 use App\Security\UserRolesEnum;
 use DateTime;
@@ -41,7 +42,7 @@ class DocOnUpdateSubscriber implements EventSubscriberInterface
         if ($this->isServiceUser()) {
             return;
         }
-        if (!$event->isBecameArchived() && $event->getDoc()->isArchived()) {
+        if ($event->getDoc()->isArchived() && !($event instanceof DocChangeStateEvent && $event->isBecameArchived())) {
             return; // документ был архивным, поэтому дату меня не нужно
         }
 

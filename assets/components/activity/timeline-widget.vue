@@ -39,7 +39,7 @@ export default {
   },
   data: function () {
     return {
-      items: null,
+      items: [],
       loaded: true,
       empty: false,
       errored: false,
@@ -52,7 +52,7 @@ export default {
         this.items = response.data.items;
         this.hasMore = response.data.hasMore;
         this.loaded = false;
-        this.empty = this.item.count() > 0 ? response.data.emptyMessage : false;
+        this.empty = this.items.length === 0 ? (response.data?.emptyMessage ? response.data.emptyMessage : 'Не найден') : false;
       })
       .catch(error => {
         console.log(error.response);

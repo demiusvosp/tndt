@@ -16,15 +16,10 @@ use App\Entity\Project;
 class DocEvent extends InProjectEvent implements ActivityEventInterface
 {
     private Doc $doc;
-    /**
-     * @var bool Документ был архивным ранее, а не стал таковым
-     */
-    private bool $isBecameArchived;
 
     public function __construct(Doc $doc, bool $isBecameArchived = false)
     {
         $this->doc = $doc;
-        $this->isBecameArchived = $isBecameArchived;
     }
 
     /**
@@ -38,11 +33,6 @@ class DocEvent extends InProjectEvent implements ActivityEventInterface
     public function getProject(): Project
     {
         return $this->doc->getProject();
-    }
-
-    public function isBecameArchived(): bool
-    {
-        return $this->isBecameArchived;
     }
 
     public function getActivitySubject(): ActivitySubjectInterface

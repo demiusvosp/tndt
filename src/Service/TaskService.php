@@ -54,8 +54,9 @@ class TaskService
         $task = $this->taskFiller->createFromForm($request, $author);
         $this->entityManager->persist($task);
 
+        $this->entityManager->flush();// чтобы сгенерить ПК делаем flush перед остальной логикой
         $this->eventDispatcher->dispatch(new TaskEvent($task), AppEvents::TASK_OPEN);
-        $this->entityManager->flush();
+        $this->entityManager->flush();// а здесь результаты остальной логики фиксируем в БД
         return $task;
     }
 

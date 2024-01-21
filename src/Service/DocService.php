@@ -11,6 +11,7 @@ namespace App\Service;
 use App\Entity\Doc;
 use App\Entity\User;
 use App\Event\AppEvents;
+use App\Event\DocChangeStateEvent;
 use App\Event\DocEvent;
 use App\Form\DTO\Doc\EditDocDTO;
 use App\Form\DTO\Doc\NewDocDTO;
@@ -58,9 +59,15 @@ class DocService
 
     public function changeState(Doc $doc, int $newState): void
     {
-        $isBecameArchived = !$doc->isArchived() && $newState===Doc::STATE_ARCHIVED;
+        $oldState = $doc->getState();
+
         $doc->setState($newState);
-        $this->eventDispatcher->dispatch(new DocEvent($doc, $isBecameArchived), AppEvents::DOC_CHANGE_STATE);
+
+        $this->eventDispatcher->dispatch(
+            new DocChangeStateEvent($doc, $oldState, $newState),
+            AppEvents::DOC_CHANGE_STATE
+        );
+
         $this->entityManager->flush();
     }
 }
