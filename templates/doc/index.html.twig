@@ -48,36 +48,9 @@
                 {% endblock  %}
                 {% block box_body %}
                     <div class="btn-group-vertical" role="toolbar" aria-label="{{ 'ControlPanel'|trans }}">
-                        {% if is_granted("PERM_DOC_EDIT") %}
-                            <a class="btn btn-default btn-secondary" href="{{ path('doc.edit', {'slug':doc.slug, 'suffix': doc.suffix}) }}">{{ 'Edit'|trans }}</a>
-                        {% endif %}
-                        {% if is_granted("PERM_DOC_CHANGE_STATE") %}
-                            {% if not doc.state is constant('STATE_NORMAL', doc) %}
-                                <a
-                                    class="btn btn-default btn-success"
-                                    href="{{ path('doc.change_state', doc.getUrlParams({'state': constant('STATE_NORMAL', doc)})) }}"
-                                >
-                                    {{ 'To_actual'|trans }}
-                                </a>
-                            {% endif %}
-                            {% if not doc.state is constant('STATE_DEPRECATED', doc) %}
-                                <a
-                                    class="btn btn-default btn-info"
-                                    href="{{ path('doc.change_state', doc.getUrlParams({'state': constant('STATE_DEPRECATED', doc)})) }}"
-                                >
-                                    {{ 'To_deprecated'|trans }}
-                                </a>
-                            {%  endif %}
-                            {% if not doc.state is constant('STATE_ARCHIVED', doc) %}
-                                <button
-                                    class="btn btn-secondary btn-warning need-confirm"
-                                    data-action="{{ path('doc.change_state', doc.getUrlParams({'state': constant('STATE_ARCHIVED', doc)})) }}"
-                                    data-text="{{ 'doc.state.archive.confirm'|trans|nl2br }}"
-                                >
-                                    {{ 'To_archive'|trans }}
-                                </button>
-                            {% endif %}
-                        {% endif %}
+                        {% for control in controls %}
+                            <a class="btn btn-default {{ control.class}}" href="{{ control.action }}">{{ control.label }}</a>
+                        {% endfor %}
                     </div>
                 {% endblock %}
             {% endembed %}

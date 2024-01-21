@@ -12,7 +12,7 @@ use App\Contract\ActivitySubjectInterface;
 use App\Contract\CommentableInterface;
 use App\Contract\NoInterface;
 use App\Contract\WithProjectInterface;
-use App\Exception\BadRequestException;
+use App\Model\Enum\DocStateEnum;
 use App\Repository\DocRepository;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
@@ -259,28 +259,17 @@ class Doc implements NoInterface, WithProjectInterface, ActivitySubjectInterface
      */
     public function isArchived(): bool
     {
-        return $this->state === self::STATE_ARCHIVED;
+        return $this->getState() === DocStateEnum::Archived;
     }
 
-    /**
-     * @return int
-     */
-    public function getState(): int
+    public function getState(): DocStateEnum
     {
-        return $this->state;
+        return DocStateEnum::from($this->state);
     }
 
-    /**
-     * @param int $state
-     * @return Doc
-     */
-    public function setState(int $state): Doc
+    public function setState(DocStateEnum $state): Doc
     {
-        if (!in_array($state, [self::STATE_NORMAL, self::STATE_DEPRECATED, self::STATE_ARCHIVED], true)) {
-            throw new BadRequestException('Некорректный state документа');
-        }
-
-        $this->state = $state;
+        $this->state = $state->value;
         return $this;
     }
 

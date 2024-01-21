@@ -20,6 +20,7 @@ use Twig\Error\SyntaxError;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
+
 class CommentExtension extends AbstractExtension
 {
     private CommentService $commentService;

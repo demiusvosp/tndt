@@ -15,6 +15,7 @@ use App\Form\DTO\Doc\EditDocDTO;
 use App\Form\DTO\Doc\NewDocDTO;
 use App\Form\Type\Doc\EditDocType;
 use App\Form\Type\Doc\NewDocType;
+use App\Model\Enum\DocStateEnum;
 use App\Repository\DocRepository;
 use App\Security\UserPermissionsEnum;
 use App\Service\DocService;
@@ -81,7 +82,49 @@ class DocController extends AbstractController
             throw $this->createNotFoundException($this->translator->trans('doc.not_found'));
         }
 
-        return $this->render('doc/index.html.twig', ['doc' => $doc]);
+        if ($this->isGranted(UserPermissionsEnum::PERM_DOC_EDIT)) {
+            $controls[] = [
+                'action' => $this->generateUrl(
+                    'doc.edit',
+                    $doc->getUrlParams()
+                ),
+                'class' => 'btn-secondary',
+                'label' => $this->translator->trans('Edit'),
+            ];
+        }
+        if ($this->isGranted(UserPermissionsEnum::PERM_DOC_CHANGE_STATE)) {
+            if ($doc->getState() !== DocStateEnum::Normal) {
+                $controls[] = [
+                    'action' => $this->generateUrl(
+                        'doc.change_state',
+                        $doc->getUrlParams(['state' => DocStateEnum::Normal->value])
+                    ),
+                    'class' => 'btn-success',
+                    'label' => $this->translator->trans('To_actual'),
+                ];
+            }
+            if ($doc->getState() !== DocStateEnum::Deprecated) {
+                $controls[] = [
+                    'action' => $this->generateUrl(
+                        'doc.change_state',
+                        $doc->getUrlParams(['state' => DocStateEnum::Deprecated->value])
+                    ),
+                    'class' => 'btn-info',
+                    'label' => $this->translator->trans('To_deprecated'),
+                ];
+            }
+            if ($doc->getState() !== DocStateEnum::Archived) {
+                $controls[] = [
+                    'action' => $this->generateUrl(
+                        'doc.change_state',
+                        $doc->getUrlParams(['state' => DocStateEnum::Archived->value])
+                    ),
+                    'class' => 'btn-secondary btn-warning need-confirm',
+                    'label' => $this->translator->trans('To_archive'),
+                ];
+            }
+        }
+        return $this->render('doc/index.html.twig', ['doc' => $doc, 'controls' => $controls]);
     }
 
     /**
@@ -153,14 +196,9 @@ class DocController extends AbstractController
             throw $this->createNotFoundException($this->translator->trans('doc.not_found'));
         }
 
-        $this->docService->changeState($doc, $state);
+        $this->docService->changeState($doc, DocStateEnum::from($state));
 
-        $messages = [
-            Doc::STATE_NORMAL => 'doc.actualized',
-            Doc::STATE_DEPRECATED => 'doc.deprecated',
-            Doc::STATE_ARCHIVED => 'doc.archived',
-        ];
-        $this->addFlash('success', $messages[$doc->getState()]);
+        $this->addFlash('success', $doc->getState()->flashMessage());
 
         return $this->redirectToRoute('doc.index', $doc->getUrlParams());
     }

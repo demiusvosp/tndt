@@ -59,7 +59,7 @@ class EditDocDTO
         $this->caption = $doc->getCaption();
         $this->abstract = $doc->getAbstract(true);
         $this->body = $doc->getBody();
-        $this->state = $doc->getState();
+        $this->state = $doc->getState()->value;
     }
 
     /**

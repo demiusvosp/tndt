@@ -9,6 +9,7 @@ namespace App\AjaxTransformer;
 
 use App\Entity\Activity;
 use App\Model\Enum\ActivityTypeEnum;
+use App\Model\Enum\DocStateEnum;
 use DateTimeInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -30,6 +31,10 @@ class ActivityTransformer
             ActivityTypeEnum::TaskChangeState, ActivityTypeEnum::TaskClose => [
                 'old' => $addInfo['old']['name'] ?? '-',
                 'new' => $addInfo['new']['name'] ?? '-',
+            ],
+            ActivityTypeEnum::DocChangeState => [
+                'old' => $this->translator->trans(DocStateEnum::from($addInfo['old'])->label()),
+                'new' => $this->translator->trans(DocStateEnum::from($addInfo['new'])->label()),
             ],
             default => [],
         };

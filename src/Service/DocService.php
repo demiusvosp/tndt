@@ -15,6 +15,7 @@ use App\Event\DocChangeStateEvent;
 use App\Event\DocEvent;
 use App\Form\DTO\Doc\EditDocDTO;
 use App\Form\DTO\Doc\NewDocDTO;
+use App\Model\Enum\DocStateEnum;
 use App\Service\Filler\DocFiller;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
@@ -40,16 +41,17 @@ class DocService
         $doc = $this->docFiller->createFromForm($request, $author);
         $this->entityManager->persist($doc);
 
+        $this->entityManager->flush(); // логике в листенерах понадобится PK документа
         $this->eventDispatcher->dispatch(new DocEvent($doc), AppEvents::DOC_CREATE);
-        $this->entityManager->flush();
+        $this->entityManager->flush(); // а тут фиксируем уже сработавшую логику
         return $doc;
     }
 
     public function editDoc(EditDocDTO $request, Doc $doc): Doc
     {
         $this->docFiller->fillFromEditForm($request, $doc);
-        if ($doc->getState() !== $request->getState()) {
-            $this->changeState($doc, $request->getState());
+        if ($doc->getState()->value !== $request->getState()) {
+            $this->changeState($doc, DocStateEnum::from($request->getState()));
         }
 
         $this->eventDispatcher->dispatch(new DocEvent($doc), AppEvents::DOC_EDIT);
@@ -57,9 +59,12 @@ class DocService
         return $doc;
     }
 
-    public function changeState(Doc $doc, int $newState): void
+    public function changeState(Doc $doc, DocStateEnum $newState): void
     {
         $oldState = $doc->getState();
+        if ($oldState === $newState) {
+            return; // состояние не изменилось
+        }
 
         $doc->setState($newState);
 

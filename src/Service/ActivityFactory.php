@@ -87,8 +87,8 @@ class ActivityFactory
         }
         if ($event instanceof DocChangeStateEvent) {
             $addInfo = array_merge($addInfo, [
-                'old' => $event->getOldState(),
-                'new' => $event->getNewState(),
+                'old' => $event->getOldState()->value,
+                'new' => $event->getNewState()->value,
             ]);
         }
         return $addInfo;

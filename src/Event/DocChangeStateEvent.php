@@ -8,13 +8,14 @@
 namespace App\Event;
 
 use App\Entity\Doc;
+use App\Model\Enum\DocStateEnum;
 
 class DocChangeStateEvent extends DocEvent
 {
-    private int $oldState;
-    private int $newState;
+    private DocStateEnum $oldState;
+    private DocStateEnum $newState;
 
-    public function __construct(Doc $doc, int $oldState, int $newState, bool $isBecameArchived = false)
+    public function __construct(Doc $doc, DocStateEnum $oldState, DocStateEnum $newState, bool $isBecameArchived = false)
     {
         parent::__construct($doc, $isBecameArchived);
         $this->oldState = $oldState;
@@ -26,16 +27,16 @@ class DocChangeStateEvent extends DocEvent
      */
     public function isBecameArchived(): bool
     {
-        return $this->oldState !== Doc::STATE_ARCHIVED
-            && $this->newState === Doc::STATE_ARCHIVED;
+        return $this->oldState !== DocStateEnum::Archived
+            && $this->newState === DocStateEnum::Archived;
     }
 
-    public function getOldState(): int
+    public function getOldState(): DocStateEnum
     {
         return $this->oldState;
     }
 
-    public function getNewState(): int
+    public function getNewState(): DocStateEnum
     {
         return $this->newState;
     }

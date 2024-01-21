@@ -10,11 +10,11 @@ activity:
   doc:
     create: created the document
     edit: edited the document
-    changeState: changed the document state
+    changeState: changed the document state from <b>{old}</b> to <b>{new}</b>
   task:
     create: created the task
     edit: edited the task
-    changeState: changed the task stage from {old} to {new}
+    changeState: changed the task stage from <b>{old}</b> to <b>{new}</b>
     close: <b>closed</b> the task on stage <b>{old}</b>. New task stage <b>{new}</b>
 Administrate: Администрирование
 And_more: И еще

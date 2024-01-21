@@ -24,6 +24,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\User\UserInterface;
 
+
 class CommentService
 {
     private EntityManagerInterface $entityManager;
@@ -93,8 +94,8 @@ class CommentService
         $this->entityManager->persist($comment);
 
         $commentEvent = new CommentEvent($comment);
+        $this->entityManager->flush(); // логика в листенерах может использовать PK комментария
         $this->eventDispatcher->dispatch($commentEvent, AppEvents::COMMENT_ADD);
-
-        $this->entityManager->flush();
+        $this->entityManager->flush(); // а теперь закрепляем и логику
     }
 }
