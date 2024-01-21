@@ -9,6 +9,11 @@
         <i class="loading fa fa-spinner fa-spin"></i>
       </div></div>
     </li>
+    <li v-if="empty">
+      <div class="row"><div class="col-md-offset-2">
+        <i class="empty">{{ empty }}</i>
+      </div></div>
+    </li>
     <li v-if="errored">
       <div class="row"><div class="col-md-4 col-sm-6">
         <div class="alert alert-danger">
@@ -36,6 +41,7 @@ export default {
     return {
       items: null,
       loaded: true,
+      empty: false,
       errored: false,
       hasMore: false
     }
@@ -46,6 +52,7 @@ export default {
         this.items = response.data.items;
         this.hasMore = response.data.hasMore;
         this.loaded = false;
+        this.empty = response.data.emptyMessage ? response.data.emptyMessage : 'Not found';
       })
       .catch(error => {
         console.log(error.response);

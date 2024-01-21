@@ -6,6 +6,7 @@ Access_granted:
 activity:
   comment:
     add: added the comment
+  empty: No activity found
   doc:
     create: created the document
     edit: edited the document
@@ -14,7 +15,7 @@ activity:
     create: created the task
     edit: edited the task
     changeState: changed the task stage from {old} to {new}
-    close: closed the task
+    close: <b>closed</b> the task on stage <b>{old}</b>. New task stage <b>{new}</b>
 Administrate: Администрирование
 And_more: И еще
 Archive: Убрать в архив

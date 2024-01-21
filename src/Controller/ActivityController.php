@@ -63,7 +63,8 @@ class ActivityController extends AbstractController
 
             return new JsonResponse([
                 'items' => $items,
-                'hasMore' => $hasMore
+                'hasMore' => $hasMore,
+                'emptyMessage' => count($items) === 0 ? $this->translator->trans('activity.empty') : '',
             ]);
         } catch (DomainException $e) {// @todo пока не будет решено всюду в рамках tndt-135
             $errorType = ErrorCodesEnum::from($e->getCode());
