@@ -27,7 +27,7 @@ class ActivityTransformer
     {
         $addInfo = $activity->getAddInfo();
         $typeLabelParams = match($activity->getType()) {
-            ActivityTypeEnum::TaskChangeState => [
+            ActivityTypeEnum::TaskChangeState, ActivityTypeEnum::TaskClose => [
                 'old' => $addInfo['old']['name'] ?? '-',
                 'new' => $addInfo['new']['name'] ?? '-',
             ],

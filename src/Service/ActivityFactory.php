@@ -21,7 +21,8 @@ class ActivityFactory
         return match ($eventName) {
             AppEvents::TASK_OPEN => ActivityTypeEnum::TaskCreate,
             AppEvents::TASK_EDIT => ActivityTypeEnum::TaskEdit,
-            AppEvents::TASK_CHANGE_STAGE, AppEvents::TASK_CLOSE => ActivityTypeEnum::TaskChangeState,
+            AppEvents::TASK_CHANGE_STAGE => ActivityTypeEnum::TaskChangeState,
+            AppEvents::TASK_CLOSE => ActivityTypeEnum::TaskClose,
 
             AppEvents::DOC_CREATE => ActivityTypeEnum::DocCreate,
             AppEvents::DOC_EDIT => ActivityTypeEnum::DocEdit,
@@ -34,8 +35,8 @@ class ActivityFactory
     public function createFromEvent(string $eventName, ActivityEventInterface $event, User $actor): Activity
     {
         $type = $this->fromEventName($eventName);
-        $activity = new Activity($type);
 
+        $activity = new Activity($type);
         $activity->setActor($actor);
         $activity->setActivitySubject($event->getActivitySubject());
         if ($event instanceof TaskChangeStageEvent) {

@@ -52,7 +52,7 @@ export default {
         this.items = response.data.items;
         this.hasMore = response.data.hasMore;
         this.loaded = false;
-        this.empty = response.data.emptyMessage ? response.data.emptyMessage : 'Not found';
+        this.empty = this.item.count() > 0 ? response.data.emptyMessage : false;
       })
       .catch(error => {
         console.log(error.response);
