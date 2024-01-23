@@ -55,10 +55,12 @@ class TaskOnUpdateSubscriber implements EventSubscriberInterface
         if ($this->isServiceUser()) {
             return;
         }
-
-        $task = $event->getComment()->getOwnerEntity();
-        if ($task instanceof Task && !$task->isClosed()) {
-            $task->setUpdatedAt(new DateTime());
+        if ($event->isObjectArchived()) {
+            return;
         }
+
+        /** @var Task $task */
+        $task = $event->getComment()->getOwnerEntity();
+        $task->setUpdatedAt(new DateTime());
     }
 }

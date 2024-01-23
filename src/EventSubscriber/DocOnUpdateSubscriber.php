@@ -58,10 +58,15 @@ class DocOnUpdateSubscriber implements EventSubscriberInterface
         if ($this->isServiceUser()) {
             return;
         }
-        $doc = $event->getComment()->getOwnerEntity();
-        if ($doc instanceof Doc && !$doc->isArchived()) {
-            $doc->setUpdatedAt(new DateTime());
-            $doc->setUpdatedBy($event->getComment()->getAuthor());
+        if ($event->isObjectArchived()) {
+            return;
         }
+
+        /** @var Doc $doc */
+        $doc = $event->getComment()->getOwnerEntity();
+
+        $doc->setUpdatedAt(new DateTime());
+        // вобще странно, что комментатор становится последним работавшим над документом, он его только обсуждал
+        //$doc->setUpdatedBy($event->getComment()->getAuthor());
     }
 }
