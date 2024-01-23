@@ -15,9 +15,9 @@ class DocChangeStateEvent extends DocEvent
     private DocStateEnum $oldState;
     private DocStateEnum $newState;
 
-    public function __construct(Doc $doc, DocStateEnum $oldState, DocStateEnum $newState, bool $isBecameArchived = false)
+    public function __construct(Doc $doc, DocStateEnum $oldState, DocStateEnum $newState)
     {
-        parent::__construct($doc, $isBecameArchived);
+        parent::__construct($doc);
         $this->oldState = $oldState;
         $this->newState = $newState;
     }
@@ -29,6 +29,11 @@ class DocChangeStateEvent extends DocEvent
     {
         return $this->oldState !== DocStateEnum::Archived
             && $this->newState === DocStateEnum::Archived;
+    }
+
+    public function isObjectArchived(): bool
+    {
+        return $this->getProject()->isArchived() || ($this->getDoc()->isArchived() && !$this->isBecameArchived());
     }
 
     public function getOldState(): DocStateEnum

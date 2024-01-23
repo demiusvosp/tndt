@@ -49,7 +49,17 @@
                 {% block box_body %}
                     <div class="btn-group-vertical" role="toolbar" aria-label="{{ 'ControlPanel'|trans }}">
                         {% for control in controls %}
-                            <a class="btn btn-default {{ control.class}}" href="{{ control.action }}">{{ control.label }}</a>
+                            {% if control.needConfirm %}
+                                <button
+                                        class="btn btn-secondary {{ control.class }} need-confirm"
+                                        data-action="{{ control.action }}"
+                                        data-text="{{ control.needConfirm }}"
+                                >
+                                    {{ control.label }}
+                                </button>
+                            {% else %}
+                                <a class="btn btn-default {{ control.class}}" href="{{ control.action }}">{{ control.label }}</a>
+                            {% endif %}
                         {% endfor %}
                     </div>
                 {% endblock %}

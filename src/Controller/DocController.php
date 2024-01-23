@@ -83,7 +83,9 @@ class DocController extends AbstractController
         }
 
         if ($this->isGranted(UserPermissionsEnum::PERM_DOC_EDIT)) {
+            // @todo В [tndt-85] или раньше этот массив превратим в viewModel
             $controls[] = [
+                'needConfirm' => false,
                 'action' => $this->generateUrl(
                     'doc.edit',
                     $doc->getUrlParams()
@@ -95,6 +97,7 @@ class DocController extends AbstractController
         if ($this->isGranted(UserPermissionsEnum::PERM_DOC_CHANGE_STATE)) {
             if ($doc->getState() !== DocStateEnum::Normal) {
                 $controls[] = [
+                    'needConfirm' => false,
                     'action' => $this->generateUrl(
                         'doc.change_state',
                         $doc->getUrlParams(['state' => DocStateEnum::Normal->value])
@@ -105,6 +108,7 @@ class DocController extends AbstractController
             }
             if ($doc->getState() !== DocStateEnum::Deprecated) {
                 $controls[] = [
+                    'needConfirm' => false,
                     'action' => $this->generateUrl(
                         'doc.change_state',
                         $doc->getUrlParams(['state' => DocStateEnum::Deprecated->value])
@@ -115,11 +119,12 @@ class DocController extends AbstractController
             }
             if ($doc->getState() !== DocStateEnum::Archived) {
                 $controls[] = [
+                    'needConfirm' => $this->translator->trans('doc.state.archive.confirm'),
                     'action' => $this->generateUrl(
                         'doc.change_state',
                         $doc->getUrlParams(['state' => DocStateEnum::Archived->value])
                     ),
-                    'class' => 'btn-secondary btn-warning need-confirm',
+                    'class' => 'btn-secondary btn-warning',
                     'label' => $this->translator->trans('To_archive'),
                 ];
             }

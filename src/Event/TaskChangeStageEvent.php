@@ -34,6 +34,11 @@ class TaskChangeStageEvent extends TaskEvent
             && $this->newStage->getType()->equals(StageTypesEnum::STAGE_ON_CLOSED());
     }
 
+    public function isObjectArchived(): bool
+    {
+        return $this->getProject()->isArchived() || ($this->getTask()->isClosed() && !$this->isBecameClosed());
+    }
+
     public function getOldStage(): TaskStageItem
     {
         return $this->oldStage;
