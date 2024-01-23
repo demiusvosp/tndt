@@ -45,4 +45,9 @@ class TaskEvent extends InProjectEvent
     {
         return $this->task->getProject();
     }
+
+    public function isObjectArchived(): bool
+    {
+        return parent::isObjectArchived() || ($this->getTask()->isClosed() && !$this->isBecameClosed());
+    }
 }

@@ -10,7 +10,6 @@ namespace App\Event;
 
 use App\Entity\Doc;
 use App\Entity\Project;
-use Symfony\Contracts\EventDispatcher\Event;
 
 class DocEvent extends InProjectEvent
 {
@@ -42,5 +41,10 @@ class DocEvent extends InProjectEvent
     public function isBecameArchived(): bool
     {
         return $this->isBecameArchived;
+    }
+
+    public function isObjectArchived(): bool
+    {
+        return parent::isObjectArchived() || ($this->getDoc()->isArchived() && !$this->isBecameArchived());
     }
 }
