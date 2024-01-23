@@ -43,8 +43,8 @@ class TaskOnUpdateSubscriber implements EventSubscriberInterface
         if ($this->isServiceUser()) {
             return;
         }
-        if (!$event->isBecameClosed() && $event->getTask()->isClosed()) {
-            return; // не стала закрытой, а была закрытой ранее
+        if ($event->isObjectArchived()) {
+            return;
         }
 
         $event->getTask()->setUpdatedAt(new \DateTime());
