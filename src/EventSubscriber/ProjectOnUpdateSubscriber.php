@@ -7,7 +7,6 @@
 
 namespace App\EventSubscriber;
 
-use App\Contract\Event\IsArchivedObjectInterface;
 use App\Event\AppEvents;
 use App\Event\InProjectEvent;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -48,7 +47,7 @@ class ProjectOnUpdateSubscriber implements EventSubscriberInterface
         if ($this->isServiceUser()) {
             return;
         }
-        if ($event instanceof IsArchivedObjectInterface && $event->isObjectArchived()) {
+        if ($event->isObjectArchived()) {
             return;
         }
 

@@ -13,4 +13,9 @@ use Symfony\Contracts\EventDispatcher\Event;
 abstract class InProjectEvent extends Event
 {
     abstract public function getProject(): Project;
+
+    public function isObjectArchived(): bool
+    {
+        return $this->getProject()->isArchived();
+    }
 }
