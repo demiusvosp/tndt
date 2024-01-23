@@ -39,4 +39,9 @@ class DocEvent extends InProjectEvent implements ActivityEventInterface
     {
         return $this->doc;
     }
+
+    public function isObjectArchived(): bool
+    {
+        return parent::isObjectArchived() || ($this->getDoc()->isArchived() && !$this->isBecameArchived());
+    }
 }

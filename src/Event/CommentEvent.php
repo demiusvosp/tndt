@@ -41,6 +41,11 @@ class CommentEvent extends InProjectEvent implements ActivityEventInterface
         return $owner->getProject();
     }
 
+    public function isObjectArchived(): bool
+    {
+        return parent::isObjectArchived() || $this->getComment()->isOwnerArchived();
+    }
+
     public function getActivitySubject(): ?ActivitySubjectInterface
     {
         $commentOwner = $this->comment->getOwnerEntity();

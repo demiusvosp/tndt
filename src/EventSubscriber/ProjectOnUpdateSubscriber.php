@@ -9,10 +9,20 @@ namespace App\EventSubscriber;
 
 use App\Event\AppEvents;
 use App\Event\InProjectEvent;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class ProjectOnUpdateSubscriber implements EventSubscriberInterface
 {
+    use CurrentUserTrait;
+
+    private Security $security;
+
+    public function __construct(Security $security)
+    {
+        $this->security = $security;
+    }
+
     public static function getSubscribedEvents(): array
     {
         return [
@@ -34,6 +44,13 @@ class ProjectOnUpdateSubscriber implements EventSubscriberInterface
 
     public function onUpdateProject(InProjectEvent $event): void
     {
+        if ($this->isServiceUser()) {
+            return;
+        }
+        if ($event->isObjectArchived()) {
+            return;
+        }
+
         $project = $event->getProject();
         $project->setUpdatedAt(new \DateTime());
     }

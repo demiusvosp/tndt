@@ -21,6 +21,8 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class DocOnUpdateSubscriber implements EventSubscriberInterface
 {
+    use CurrentUserTrait;
+
     private Security $security;
 
     public function __construct(Security $security)
@@ -42,8 +44,8 @@ class DocOnUpdateSubscriber implements EventSubscriberInterface
         if ($this->isServiceUser()) {
             return;
         }
-        if ($event->getDoc()->isArchived() && !($event instanceof DocChangeStateEvent && $event->isBecameArchived())) {
-            return; // документ был архивным, поэтому дату меня не нужно
+        if ($event->isObjectArchived()) {
+            return;
         }
 
         $doc = $event->getDoc();
@@ -57,16 +59,15 @@ class DocOnUpdateSubscriber implements EventSubscriberInterface
         if ($this->isServiceUser()) {
             return;
         }
-        $doc = $event->getComment()->getOwnerEntity();
-        if ($doc instanceof Doc && !$doc->isArchived()) {
-            $doc->setUpdatedAt(new DateTime());
-            $doc->setUpdatedBy($event->getComment()->getAuthor());
+        if ($event->isObjectArchived()) {
+            return;
         }
-    }
 
-    private function isServiceUser(): bool
-    {
-        return !$this->security->getUser() instanceof User ||
-            $this->security->isGranted(UserRolesEnum::ROLE_ROOT);
+        /** @var Doc $doc */
+        $doc = $event->getComment()->getOwnerEntity();
+
+        $doc->setUpdatedAt(new DateTime());
+        // вобще странно, что комментатор становится последним работавшим над документом, он его только обсуждал
+        //$doc->setUpdatedBy($event->getComment()->getAuthor());
     }
 }

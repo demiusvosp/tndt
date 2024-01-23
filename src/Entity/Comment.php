@@ -10,12 +10,14 @@ namespace App\Entity;
 
 use App\Contract\CommentableInterface;
 use App\Contract\IdInterface;
+use App\Exception\DomainException;
 use App\Object\CommentOwnerTypesEnum;
 use App\Repository\CommentRepository;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
+use function get_class;
 
 /**
  * Entity Comment - комментарий к объекту системы
@@ -112,7 +114,7 @@ class Comment implements IdInterface
     }
 
     /**
-     * @return \App\Contract\CommentableInterface|null
+     * @return CommentableInterface|null
      */
     public function getOwnerEntity(): ?CommentableInterface
     {
@@ -126,5 +128,16 @@ class Comment implements IdInterface
         $this->entity_type = CommentOwnerTypesEnum::typeByOwner($owner);
 
         return $this;
+    }
+
+    public function isOwnerArchived(): bool
+    {
+        if ($this->ownerEntity instanceof Task) {
+            return $this->ownerEntity->isClosed();
+        }
+        if ($this->ownerEntity instanceof Doc) {
+            return $this->ownerEntity->isArchived();
+        }
+        throw new DomainException('Comment owned by unknow entity ' . get_class($this->ownerEntity));
     }
 }

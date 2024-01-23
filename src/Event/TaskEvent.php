@@ -40,4 +40,9 @@ class TaskEvent extends InProjectEvent implements ActivityEventInterface
     {
         return $this->task;
     }
+
+    public function isObjectArchived(): bool
+    {
+        return parent::isObjectArchived() || ($this->getTask()->isClosed() && !$this->isBecameClosed());
+    }
 }
