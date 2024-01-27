@@ -6,7 +6,7 @@
  */
 declare(strict_types=1);
 
-namespace App\Model\Dto\Dictionary\Task;
+namespace App\Model\Enum;
 
 use MyCLabs\Enum\Enum;
 
@@ -15,7 +15,7 @@ use MyCLabs\Enum\Enum;
  * @method static STAGE_ON_NORMAL()
  * @method static STAGE_ON_CLOSED()
  */
-class StageTypesEnum extends Enum
+class TaskStageTypeEnum extends Enum
 {
     public const STAGE_ON_OPEN = 'open'; // начальные этапы, назначаемые задаче при открытии
     public const STAGE_ON_NORMAL = 'normal'; // этапы в которых задача живет внутри

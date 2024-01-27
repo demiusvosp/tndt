@@ -10,8 +10,8 @@ namespace App\Form\Type\Task;
 
 use App\Form\DTO\Task\CloseTaskDTO;
 use App\Form\Type\Base\DictionaryStageSelectType;
-use App\Model\Dto\Dictionary\Task\StageTypesEnum;
 use App\Model\Enum\DictionaryTypeEnum;
+use App\Model\Enum\TaskStageTypeEnum;
 use App\Service\TaskStagesService;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -61,7 +61,7 @@ class CloseTaskForm extends AbstractType
                             'label' => 'task.close.stage',
                             'items' => $this->taskStagesService->availableStages(
                                 $entity->getTask(),
-                                [StageTypesEnum::STAGE_ON_CLOSED()]
+                                [TaskStageTypeEnum::STAGE_ON_CLOSED()]
                             )
                         ]
                     );

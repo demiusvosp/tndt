@@ -11,16 +11,17 @@ namespace App\Model\Dto\Dictionary\Task;
 use App\Exception\DictionaryException;
 use App\Model\Dto\Dictionary\DictionaryItem;
 use App\Model\Enum\BadgeEnum;
+use App\Model\Enum\TaskStageTypeEnum;
 
 class TaskStageItem extends DictionaryItem
 {
-    private StageTypesEnum $type;
+    private TaskStageTypeEnum $type;
 
     public function setFromArray(array $arg): void
     {
         parent::setFromArray($arg);
         try {
-            $this->type = StageTypesEnum::from($arg['type'] ?? StageTypesEnum::STAGE_ON_NORMAL);
+            $this->type = TaskStageTypeEnum::from($arg['type'] ?? TaskStageTypeEnum::STAGE_ON_NORMAL);
         } catch (\UnexpectedValueException $e) {
             throw new DictionaryException('Элемент справочника \"' . $this->getName() .'\" имеет некорректный тип', $e);
         }
@@ -37,18 +38,18 @@ class TaskStageItem extends DictionaryItem
     }
 
     /**
-     * @return StageTypesEnum
+     * @return TaskStageTypeEnum
      */
-    public function getType(): StageTypesEnum
+    public function getType(): TaskStageTypeEnum
     {
         return $this->type;
     }
 
     /**
-     * @param StageTypesEnum $type
+     * @param TaskStageTypeEnum $type
      * @return TaskStageItem
      */
-    public function setType(StageTypesEnum $type): TaskStageItem
+    public function setType(TaskStageTypeEnum $type): TaskStageItem
     {
         $this->type = $type;
         return $this;
@@ -58,7 +59,7 @@ class TaskStageItem extends DictionaryItem
     {
         $useBadge = parent::getUseBadge();
 
-        if (!$useBadge && $this->type->equals(StageTypesEnum::STAGE_ON_CLOSED())) {
+        if (!$useBadge && $this->type->equals(TaskStageTypeEnum::STAGE_ON_CLOSED())) {
             $useBadge = BadgeEnum::Default;
         }
 

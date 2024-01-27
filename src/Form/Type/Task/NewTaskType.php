@@ -15,8 +15,8 @@ use App\Form\Type\Base\DictionarySelectType;
 use App\Form\Type\Base\DictionaryStageSelectType;
 use App\Form\Type\Base\MdEditType;
 use App\Form\Type\User\UserSelectType;
-use App\Model\Dto\Dictionary\Task\StageTypesEnum;
 use App\Model\Enum\DictionaryTypeEnum;
+use App\Model\Enum\TaskStageTypeEnum;
 use App\Service\ProjectContext;
 use App\Service\TaskStagesService;
 use InvalidArgumentException;
@@ -100,15 +100,15 @@ class NewTaskType extends AbstractType
                             $items = $this->taskStagesService->availableStages(
                                 $data->getTask(),
                                 [
-                                    StageTypesEnum::STAGE_ON_OPEN(),
-                                    StageTypesEnum::STAGE_ON_NORMAL(),
+                                    TaskStageTypeEnum::STAGE_ON_OPEN(),
+                                    TaskStageTypeEnum::STAGE_ON_NORMAL(),
                                 ],
                                 true
                             );
                         } else {
                             $items = $this->taskStagesService->availableStages(
                                 $data->getTask(),
-                                [StageTypesEnum::STAGE_ON_CLOSED()],
+                                [TaskStageTypeEnum::STAGE_ON_CLOSED()],
                                 true
                             );
                         }

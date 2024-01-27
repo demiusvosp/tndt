@@ -10,6 +10,7 @@ namespace App\Model\Dto\Dictionary\Task;
 
 use App\Exception\DictionaryException;
 use App\Model\Dto\Dictionary\Dictionary;
+use App\Model\Enum\TaskStageTypeEnum;
 use function array_key_first;
 
 class TaskStage extends Dictionary
@@ -28,7 +29,7 @@ class TaskStage extends Dictionary
     {
         $openItems = array_filter(
             $this->items,
-            static function (TaskStageItem $item) { return $item->getType()->equals(StageTypesEnum::STAGE_ON_OPEN()); }
+            static function (TaskStageItem $item) { return $item->getType()->equals(TaskStageTypeEnum::STAGE_ON_OPEN()); }
         );
 
         if (isset($openItems[$this->default])) {
@@ -41,7 +42,7 @@ class TaskStage extends Dictionary
     }
 
     /**
-     * @param StageTypesEnum[] $types
+     * @param TaskStageTypeEnum[] $types
      * @return TaskStageItem[]
      */
     public function getItemsByTypes(array $types): array

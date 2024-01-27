@@ -8,8 +8,8 @@
 namespace App\Event;
 
 use App\Entity\Task;
-use App\Model\Dto\Dictionary\Task\StageTypesEnum;
 use App\Model\Dto\Dictionary\Task\TaskStageItem;
+use App\Model\Enum\TaskStageTypeEnum;
 
 class TaskChangeStageEvent extends TaskEvent
 {
@@ -30,8 +30,8 @@ class TaskChangeStageEvent extends TaskEvent
      */
     public function isBecameClosed(): bool
     {
-        return $this->oldStage->getType()->equals(StageTypesEnum::STAGE_ON_OPEN())
-            && $this->newStage->getType()->equals(StageTypesEnum::STAGE_ON_CLOSED());
+        return $this->oldStage->getType()->equals(TaskStageTypeEnum::STAGE_ON_OPEN())
+            && $this->newStage->getType()->equals(TaskStageTypeEnum::STAGE_ON_CLOSED());
     }
 
     public function isObjectArchived(): bool

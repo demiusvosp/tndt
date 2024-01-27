@@ -16,9 +16,9 @@ use App\Event\TaskEvent;
 use App\Form\DTO\Task\CloseTaskDTO;
 use App\Form\DTO\Task\EditTaskDTO;
 use App\Form\DTO\Task\NewTaskDTO;
-use App\Model\Dto\Dictionary\Task\StageTypesEnum;
 use App\Model\Dto\Dictionary\Task\TaskStageItem;
 use App\Model\Enum\DictionaryTypeEnum;
+use App\Model\Enum\TaskStageTypeEnum;
 use App\Service\Dictionary\Fetcher;
 use App\Service\Filler\TaskFiller;
 use Doctrine\ORM\EntityManagerInterface;
@@ -89,7 +89,7 @@ class TaskService
         $oldStage = $stagesDictionary->getItem($task->getStage());
         $newStage = $stagesDictionary->getItem($request->getStage());
         if (!$newStage->isSet()) {
-            $newStage = current($this->stagesService->availableStages($task, [StageTypesEnum::STAGE_ON_CLOSED()]));
+            $newStage = current($this->stagesService->availableStages($task, [TaskStageTypeEnum::STAGE_ON_CLOSED()]));
         }
 
         $task->setIsClosed(true);

@@ -8,10 +8,11 @@ declare(strict_types=1);
 
 namespace App\Model\Dto\Dictionary;
 
+use App\Contract\JlobObjectInterface;
 use App\Exception\DictionaryException;
 use App\Model\Enum\BadgeEnum;
 
-class DictionaryItem implements \App\Contract\JlobObjectInterface
+class DictionaryItem implements JlobObjectInterface
 {
     /**
      * @var int - уникальный в пределах справочника id.
