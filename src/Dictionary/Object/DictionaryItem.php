@@ -9,10 +9,9 @@ declare(strict_types=1);
 namespace App\Dictionary\Object;
 
 use App\Exception\DictionaryException;
-use App\Object\JlobObjectInterface;
 use App\Service\Badges\BadgeEnum;
 
-class DictionaryItem implements JlobObjectInterface
+class DictionaryItem implements \App\Contract\JlobObjectInterface
 {
     /**
      * @var int - уникальный в пределах справочника id.

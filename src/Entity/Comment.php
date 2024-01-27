@@ -11,7 +11,7 @@ namespace App\Entity;
 use App\Contract\CommentableInterface;
 use App\Contract\IdInterface;
 use App\Exception\DomainException;
-use App\Object\CommentOwnerTypesEnum;
+use App\Model\Enum\CommentOwnerTypesEnum;
 use App\Repository\CommentRepository;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;

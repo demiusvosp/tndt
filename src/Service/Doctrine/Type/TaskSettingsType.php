@@ -11,7 +11,7 @@ use App\Dictionary\Object\Task\TaskComplexity;
 use App\Dictionary\Object\Task\TaskPriority;
 use App\Dictionary\Object\Task\TaskStage;
 use App\Dictionary\Object\Task\TaskType;
-use App\Object\Project\TaskSettings;
+use App\Model\Dto\Project\TaskSettings;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\JsonType;
 

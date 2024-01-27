@@ -12,7 +12,7 @@ use App\Dictionary\Object\Task\TaskComplexity;
 use App\Dictionary\Object\Task\TaskPriority;
 use App\Dictionary\Object\Task\TaskStage;
 use App\Dictionary\Object\Task\TaskType;
-use App\Object\Project\TaskSettings;
+use App\Model\Dto\Project\TaskSettings;
 use App\Repository\ProjectRepository;
 use App\Security\UserRolesEnum;
 use DateTime;
@@ -309,7 +309,7 @@ class Project implements InProjectInterface
     }
 
     /**
-     * @return TaskSettings
+     * @return \App\Model\Dto\Project\TaskSettings
      */
     public function getTaskSettings(): TaskSettings
     {
@@ -317,7 +317,7 @@ class Project implements InProjectInterface
     }
 
     /**
-     * @param TaskSettings $taskSettings
+     * @param \App\Model\Dto\Project\TaskSettings $taskSettings
      * @return Project
      */
     public function setTaskSettings(TaskSettings $taskSettings): self

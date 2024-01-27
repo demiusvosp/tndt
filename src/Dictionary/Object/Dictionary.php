@@ -8,7 +8,7 @@ declare(strict_types=1);
 
 namespace App\Dictionary\Object;
 
-use App\Object\JlobObjectInterface;
+use App\Contract\JlobObjectInterface;
 
 /**
  * Объект справочник. Хранит набор элементов, дающих метаинформацию по своему значению (id),

@@ -8,11 +8,7 @@ declare(strict_types=1);
 
 namespace App\Form\Type\Base;
 
-use App\Dictionary\Object\Dictionary;
-use App\Dictionary\TypesEnum;
-use App\Object\JlobObjectInterface;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;

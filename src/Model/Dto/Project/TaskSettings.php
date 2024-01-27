@@ -6,14 +6,14 @@
  */
 declare(strict_types=1);
 
-namespace App\Object\Project;
+namespace App\Model\Dto\Project;
 
 use App\Dictionary\Object\Dictionary;
-use App\Dictionary\Object\Task\TaskStage;
-use App\Dictionary\TypesEnum;
 use App\Dictionary\Object\Task\TaskComplexity;
 use App\Dictionary\Object\Task\TaskPriority;
+use App\Dictionary\Object\Task\TaskStage;
 use App\Dictionary\Object\Task\TaskType;
+use App\Dictionary\TypesEnum;
 use JsonSerializable;
 
 class TaskSettings implements JsonSerializable

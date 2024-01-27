@@ -5,7 +5,7 @@
  * Time: 23:54
  */
 
-namespace App\Object;
+namespace App\Contract;
 
 use JsonSerializable;
 

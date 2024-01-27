@@ -9,7 +9,7 @@ declare(strict_types=1);
 namespace App\Form\DTO\Project;
 
 use App\Dictionary\Object\Dictionary;
-use App\Object\Project\TaskSettings;
+use App\Model\Dto\Project\TaskSettings;
 use App\Service\Constraints\ValidDictionary;
 use JsonException;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -41,10 +41,10 @@ class EditTaskSettingsDTO
     private string $complexity;
 
     /**
-     * @param TaskSettings $taskSettings
+     * @param \App\Model\Dto\Project\TaskSettings $taskSettings
      * @throws JsonException
      */
-    public function __construct(TaskSettings $taskSettings)
+    public function __construct(\App\Model\Dto\Project\TaskSettings $taskSettings)
     {
         $this->types = $this->dictionaryToString($taskSettings->getTypes());
         $this->stages = $this->dictionaryToString($taskSettings->getStages());

@@ -5,7 +5,7 @@
  * Time: 19:35
  */
 
-namespace App\Object;
+namespace App\Model\Enum;
 
 use App\Contract\CommentableInterface;
 use App\Entity\Doc;

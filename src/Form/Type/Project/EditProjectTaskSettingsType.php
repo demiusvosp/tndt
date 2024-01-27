@@ -11,7 +11,6 @@ namespace App\Form\Type\Project;
 use App\Dictionary\TypesEnum;
 use App\Form\DTO\Project\EditTaskSettingsDTO;
 use App\Form\Type\Base\DictionaryEditType;
-use App\Object\Project\TaskSettings;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
