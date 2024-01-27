@@ -9,14 +9,14 @@ declare(strict_types=1);
 namespace App\Form\Type\Task;
 
 use App\Contract\WithProjectInterface;
-use App\Dictionary\Object\Task\StageTypesEnum;
-use App\Dictionary\TypesEnum;
 use App\Form\DTO\Task\EditTaskDTO;
 use App\Form\DTO\Task\NewTaskDTO;
 use App\Form\Type\Base\DictionarySelectType;
 use App\Form\Type\Base\DictionaryStageSelectType;
 use App\Form\Type\Base\MdEditType;
 use App\Form\Type\User\UserSelectType;
+use App\Model\Dto\Dictionary\Task\StageTypesEnum;
+use App\Model\Enum\DictionaryTypeEnum;
 use App\Service\ProjectContext;
 use App\Service\TaskStagesService;
 use InvalidArgumentException;
@@ -91,7 +91,7 @@ class NewTaskType extends AbstractType
                 }
                 $settings = $data->getProject()->getTaskSettings();
 
-                if ($settings->getDictionaryByType(TypesEnum::TASK_STAGE())->isEnabled()) {
+                if ($settings->getDictionaryByType(DictionaryTypeEnum::TASK_STAGE())->isEnabled()) {
                     if ($data instanceof NewTaskDTO) {
                         $items = $this->taskStagesService->availableStagesForNewTask($data->getProject());
 
@@ -129,40 +129,40 @@ class NewTaskType extends AbstractType
                     $data->setStage(0);
                 }
 
-                if ($settings->getDictionaryByType(TypesEnum::TASK_TYPE())->isEnabled()) {
+                if ($settings->getDictionaryByType(DictionaryTypeEnum::TASK_TYPE())->isEnabled()) {
                     $event->getForm()->add(
                         'type',
                         DictionarySelectType::class,
                         [
                             'label' => 'task.type.label',
                             'help' => 'task.type.help',
-                            'dictionary' => TypesEnum::TASK_TYPE()
+                            'dictionary' => DictionaryTypeEnum::TASK_TYPE()
                         ]
                     );
                 } else if ($data instanceof EditTaskDTO) {
                     $data->setType(0);
                 }
-                if ($settings->getDictionaryByType(TypesEnum::TASK_PRIORITY())->isEnabled()) {
+                if ($settings->getDictionaryByType(DictionaryTypeEnum::TASK_PRIORITY())->isEnabled()) {
                     $event->getForm()->add(
                         'priority',
                         DictionarySelectType::class,
                         [
                             'label' => 'task.priority.label',
                             'help' => 'task.priority.help',
-                            'dictionary' => TypesEnum::TASK_PRIORITY()
+                            'dictionary' => DictionaryTypeEnum::TASK_PRIORITY()
                         ]
                     );
                 } else if ($data instanceof EditTaskDTO) {
                     $data->setPriority(0);
                 }
-                if ($settings->getDictionaryByType(TypesEnum::TASK_COMPLEXITY())->isEnabled()) {
+                if ($settings->getDictionaryByType(DictionaryTypeEnum::TASK_COMPLEXITY())->isEnabled()) {
                     $event->getForm()->add(
                         'complexity',
                         DictionarySelectType::class,
                         [
                             'label' => 'task.complexity.label',
                             'help' => 'task.complexity.help',
-                            'dictionary' => TypesEnum::TASK_COMPLEXITY()
+                            'dictionary' => DictionaryTypeEnum::TASK_COMPLEXITY()
                         ]
                     );
                 } else if ($data instanceof EditTaskDTO) {

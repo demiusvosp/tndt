@@ -9,9 +9,6 @@ declare(strict_types=1);
 namespace App\Service;
 
 use App\Dictionary\Fetcher;
-use App\Dictionary\Object\Task\StageTypesEnum;
-use App\Dictionary\Object\Task\TaskStageItem;
-use App\Dictionary\TypesEnum;
 use App\Entity\Task;
 use App\Entity\User;
 use App\Event\AppEvents;
@@ -20,6 +17,9 @@ use App\Event\TaskEvent;
 use App\Form\DTO\Task\CloseTaskDTO;
 use App\Form\DTO\Task\EditTaskDTO;
 use App\Form\DTO\Task\NewTaskDTO;
+use App\Model\Dto\Dictionary\Task\StageTypesEnum;
+use App\Model\Dto\Dictionary\Task\TaskStageItem;
+use App\Model\Enum\DictionaryTypeEnum;
 use App\Service\Filler\TaskFiller;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
@@ -84,8 +84,8 @@ class TaskService
         if (!empty($request->getComment())) {
             $this->commentService->applyCommentFromString($task, $request->getComment(), $whoClose);
         }
-        $stagesDictionary = $this->dictionaryFetcher->getDictionary(TypesEnum::TASK_STAGE(), $task);
-        /** @var TaskStageItem $oldStage */
+        $stagesDictionary = $this->dictionaryFetcher->getDictionary(DictionaryTypeEnum::TASK_STAGE(), $task);
+        /** @var \App\Model\Dto\Dictionary\Task\TaskStageItem $oldStage */
         $oldStage = $stagesDictionary->getItem($task->getStage());
         $newStage = $stagesDictionary->getItem($request->getStage());
         if (!$newStage->isSet()) {

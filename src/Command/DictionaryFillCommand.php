@@ -3,7 +3,7 @@
 namespace App\Command;
 
 use App\Dictionary\Fetcher;
-use App\Dictionary\TypesEnum;
+use App\Model\Enum\DictionaryTypeEnum;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -74,10 +74,10 @@ class DictionaryFillCommand extends Command
         $io = new SymfonyStyle($input, $output);
 
         try {
-            $dictionaryType = TypesEnum::from($input->getArgument('dictionary'));
+            $dictionaryType = DictionaryTypeEnum::from($input->getArgument('dictionary'));
         } catch (\UnexpectedValueException $e) {
             $io->error('Wrong dictionary type');
-            $io->note('Valid types: ' . implode(', ', TypesEnum::values()));
+            $io->note('Valid types: ' . implode(', ', DictionaryTypeEnum::values()));
             return -1;
         }
         $project = $input->getArgument('project');
@@ -104,7 +104,7 @@ class DictionaryFillCommand extends Command
             $to = $dictionary->getDefault();
         }
 
-        $entityMeta = TypesEnum::relatedEntities()[$dictionaryType->getValue()];
+        $entityMeta = DictionaryTypeEnum::relatedEntities()[$dictionaryType->getValue()];
         $repository = $this->entityManager->getRepository($entityMeta['class']);
 
         $criteria = Criteria::create();

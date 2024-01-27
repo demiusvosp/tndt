@@ -11,7 +11,7 @@ use App\Entity\Doc;
 use App\Entity\Task;
 use App\Exception\DomainException;
 
-enum CommentOwnerTypesEnum: string
+enum CommentOwnerTypeEnum: string
 {
     case Task = 'task';
     case Doc = 'doc';

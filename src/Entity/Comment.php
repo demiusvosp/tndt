@@ -11,7 +11,7 @@ namespace App\Entity;
 use App\Contract\CommentableInterface;
 use App\Contract\IdInterface;
 use App\Exception\DomainException;
-use App\Model\Enum\CommentOwnerTypesEnum;
+use App\Model\Enum\CommentOwnerTypeEnum;
 use App\Repository\CommentRepository;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
@@ -31,8 +31,8 @@ class Comment implements IdInterface
     #[ORM\Column(type: "integer")]
     private int $id;
 
-    #[ORM\Column(type: "string", length: 30, nullable: false, enumType: CommentOwnerTypesEnum::class)]
-    private CommentOwnerTypesEnum $entity_type;
+    #[ORM\Column(type: "string", length: 30, nullable: false, enumType: CommentOwnerTypeEnum::class)]
+    private CommentOwnerTypeEnum $entity_type;
 
     #[ORM\Column(type: "integer", nullable: false)]
     private int $entity_id;
@@ -125,7 +125,7 @@ class Comment implements IdInterface
     {
         $this->ownerEntity = $owner;
         $this->entity_id = $owner->getId();
-        $this->entity_type = CommentOwnerTypesEnum::fromOwner(get_class($owner));
+        $this->entity_type = CommentOwnerTypeEnum::fromOwner(get_class($owner));
 
         return $this;
     }

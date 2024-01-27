@@ -8,7 +8,7 @@
 namespace App\Specification\Comment;
 
 use App\Contract\CommentableInterface;
-use App\Model\Enum\CommentOwnerTypesEnum;
+use App\Model\Enum\CommentOwnerTypeEnum;
 use Happyr\DoctrineSpecification\Spec;
 use Happyr\DoctrineSpecification\Specification\BaseSpecification;
 use Happyr\DoctrineSpecification\Specification\Specification;
@@ -27,7 +27,7 @@ class ByOwnerSpec extends BaseSpecification
     protected function getSpec(): Specification
     {
         return Spec::andX(
-            Spec::eq('entity_type', CommentOwnerTypesEnum::fromOwner(get_class($this->owner))),
+            Spec::eq('entity_type', CommentOwnerTypeEnum::fromOwner(get_class($this->owner))),
             Spec::eq('entity_id', $this->owner->getId())
         );
     }

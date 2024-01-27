@@ -6,7 +6,7 @@
  */
 declare(strict_types=1);
 
-namespace App\Dictionary\Object;
+namespace App\Model\Dto\Dictionary;
 
 use App\Contract\JlobObjectInterface;
 

@@ -6,7 +6,7 @@
  */
 declare(strict_types=1);
 
-namespace App\Dictionary\Object\Task;
+namespace App\Model\Dto\Dictionary\Task;
 
 use MyCLabs\Enum\Enum;
 

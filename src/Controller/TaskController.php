@@ -6,7 +6,6 @@
  */
 namespace App\Controller;
 
-use App\Dictionary\Object\Task\StageTypesEnum;
 use App\Entity\Project;
 use App\Entity\User;
 use App\Exception\BadRequestException;
@@ -17,6 +16,7 @@ use App\Form\DTO\Task\NewTaskDTO;
 use App\Form\Type\Task\CloseTaskForm;
 use App\Form\Type\Task\EditTaskType;
 use App\Form\Type\Task\NewTaskType;
+use App\Model\Dto\Dictionary\Task\StageTypesEnum;
 use App\Repository\TaskRepository;
 use App\Security\UserPermissionsEnum;
 use App\Service\InProjectContext;

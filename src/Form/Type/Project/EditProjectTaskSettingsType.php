@@ -8,9 +8,9 @@ declare(strict_types=1);
 
 namespace App\Form\Type\Project;
 
-use App\Dictionary\TypesEnum;
 use App\Form\DTO\Project\EditTaskSettingsDTO;
 use App\Form\Type\Base\DictionaryEditType;
+use App\Model\Enum\DictionaryTypeEnum;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -24,7 +24,7 @@ class EditProjectTaskSettingsType extends AbstractType
                 'types',
                 DictionaryEditType::class,
                 [
-                    'dictionaryType' => TypesEnum::TASK_TYPE(),
+                    'dictionaryType' => DictionaryTypeEnum::TASK_TYPE(),
                     'label' => 'dictionaries.task_types.label',
                     'help' => 'dictionaries.task_types.help',
                     'required' => false,
@@ -34,7 +34,7 @@ class EditProjectTaskSettingsType extends AbstractType
                 'stages',
                 DictionaryEditType::class,
                 [
-                    'dictionaryType' => TypesEnum::TASK_STAGE(),
+                    'dictionaryType' => DictionaryTypeEnum::TASK_STAGE(),
                     'label' => 'dictionaries.task_stages.label',
                     'help' => 'dictionaries.task_stages.help',
                     'required' => false,
@@ -44,7 +44,7 @@ class EditProjectTaskSettingsType extends AbstractType
                 'priority',
                 DictionaryEditType::class,
                 [
-                    'dictionaryType' => TypesEnum::TASK_PRIORITY(),
+                    'dictionaryType' => DictionaryTypeEnum::TASK_PRIORITY(),
                     'label' => 'dictionaries.task_priority.label',
                     'help' => 'dictionaries.task_priority.help',
                     'required' => false,
@@ -54,7 +54,7 @@ class EditProjectTaskSettingsType extends AbstractType
                 'complexity',
                 DictionaryEditType::class,
                 [
-                    'dictionaryType' => TypesEnum::TASK_COMPLEXITY(),
+                    'dictionaryType' => DictionaryTypeEnum::TASK_COMPLEXITY(),
                     'label' => 'dictionaries.task_complexity.label',
                     'help' => 'dictionaries.task_complexity.help',
                     'required' => false,

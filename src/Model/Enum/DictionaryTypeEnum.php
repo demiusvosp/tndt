@@ -6,17 +6,15 @@
  */
 declare(strict_types=1);
 
-namespace App\Dictionary;
+namespace App\Model\Enum;
 
-use App\Dictionary\Object\Task\TaskStage;
 use App\Entity\Task;
-use App\Dictionary\Object\Dictionary;
-use App\Dictionary\Object\Task\TaskComplexity;
-use App\Dictionary\Object\Task\TaskPriority;
-use App\Dictionary\Object\Task\TaskType;
 use App\Exception\DictionaryException;
-use App\Exception\DomainException;
-use InvalidArgumentException;
+use App\Model\Dto\Dictionary\Dictionary;
+use App\Model\Dto\Dictionary\Task\TaskComplexity;
+use App\Model\Dto\Dictionary\Task\TaskPriority;
+use App\Model\Dto\Dictionary\Task\TaskStage;
+use App\Model\Dto\Dictionary\Task\TaskType;
 use MyCLabs\Enum\Enum;
 
 /**
@@ -25,7 +23,7 @@ use MyCLabs\Enum\Enum;
  * @method static TASK_PRIORITY()
  * @method static TASK_COMPLEXITY()
  */
-class TypesEnum extends Enum
+class DictionaryTypeEnum extends Enum
 {
     public const TASK_TYPE = 'task.type';
     public const TASK_STAGE = 'task.stage';
@@ -57,7 +55,7 @@ class TypesEnum extends Enum
     }
 
     /**
-     * @deprecated это должен знать TaskSettings а не глобальные TypesEnum
+     * @deprecated это должен знать TaskSettings а не глобальные DictionaryTypeEnum
      * @return string[][] - [<type> => [<getSubobjectMethod>, ...]
      */
     public static function sources(): array

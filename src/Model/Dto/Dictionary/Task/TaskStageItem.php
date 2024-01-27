@@ -6,10 +6,10 @@
  */
 declare(strict_types=1);
 
-namespace App\Dictionary\Object\Task;
+namespace App\Model\Dto\Dictionary\Task;
 
-use App\Dictionary\Object\DictionaryItem;
 use App\Exception\DictionaryException;
+use App\Model\Dto\Dictionary\DictionaryItem;
 use App\Model\Enum\BadgeEnum;
 
 class TaskStageItem extends DictionaryItem

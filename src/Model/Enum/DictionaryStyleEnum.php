@@ -6,16 +6,17 @@
  */
 declare(strict_types=1);
 
-namespace App\Dictionary;
+namespace App\Model\Enum;
 
 use App\Entity\Task;
 use App\Exception\DictionaryException;
 use MyCLabs\Enum\Enum;
 
 /**
+ * @deprecated - tndt-84
  * @method static TASK_ROW()
  */
-class StylesEnum extends Enum
+class DictionaryStyleEnum extends Enum
 {
     public const TASK_ROW = 'task.list_row';
 

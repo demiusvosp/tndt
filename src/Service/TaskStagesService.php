@@ -9,16 +9,15 @@ declare(strict_types=1);
 namespace App\Service;
 
 use App\Dictionary\Fetcher;
-use App\Dictionary\Object\Task\StageTypesEnum;
-use App\Dictionary\Object\Task\TaskStage;
-use App\Dictionary\Object\Task\TaskStageItem;
-use App\Dictionary\TypesEnum;
 use App\Entity\Project;
 use App\Entity\Task;
 use App\Event\AppEvents;
 use App\Event\TaskChangeStageEvent;
-use App\Event\TaskEvent;
 use App\Exception\TaskStageException;
+use App\Model\Dto\Dictionary\Task\StageTypesEnum;
+use App\Model\Dto\Dictionary\Task\TaskStage;
+use App\Model\Dto\Dictionary\Task\TaskStageItem;
+use App\Model\Enum\DictionaryTypeEnum;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -46,7 +45,7 @@ class TaskStagesService
     public function availableStagesForNewTask(Project $project): array
     {
         /** @var TaskStage $stagesDictionary */
-        $stagesDictionary = $this->dictionaryFetcher->getDictionary(TypesEnum::TASK_STAGE(), $project);
+        $stagesDictionary = $this->dictionaryFetcher->getDictionary(DictionaryTypeEnum::TASK_STAGE(), $project);
 
         return $stagesDictionary->getItemsByTypes([StageTypesEnum::STAGE_ON_OPEN()]);
     }
@@ -54,7 +53,7 @@ class TaskStagesService
     /**
      * В какие состояния можно перевести указанную задачу
      * @param Task $task
-     * @param StageTypesEnum[] $onlyStageTypes - только указанные типы этапов (например только статусы закрытых задач)
+     * @param \App\Model\Dto\Dictionary\Task\StageTypesEnum[] $onlyStageTypes - только указанные типы этапов (например только статусы закрытых задач)
      * @param bool $allowSame - добавить этап на котором задача сейчас (например для селектов)
      * @return TaskStageItem[]
      */
@@ -63,8 +62,8 @@ class TaskStagesService
         if (count($onlyStageTypes) === 0) {
             $onlyStageTypes[] = StageTypesEnum::STAGE_ON_NORMAL();
         }
-        /** @var TaskStage $stagesDictionary */
-        $stagesDictionary = $this->dictionaryFetcher->getDictionary(TypesEnum::TASK_STAGE(), $task);
+        /** @var \App\Model\Dto\Dictionary\Task\TaskStage $stagesDictionary */
+        $stagesDictionary = $this->dictionaryFetcher->getDictionary(DictionaryTypeEnum::TASK_STAGE(), $task);
         $stages = $stagesDictionary->getItemsByTypes($onlyStageTypes);
         $stages = array_filter(
             $stages,
@@ -99,8 +98,8 @@ class TaskStagesService
             return; // состояние не изменилось
         }
 
-        /** @var TaskStage $stagesDictionary */
-        $stagesDictionary = $this->dictionaryFetcher->getDictionary(TypesEnum::TASK_STAGE(), $task);
+        /** @var \App\Model\Dto\Dictionary\Task\TaskStage $stagesDictionary */
+        $stagesDictionary = $this->dictionaryFetcher->getDictionary(DictionaryTypeEnum::TASK_STAGE(), $task);
 
         if (!$stagesDictionary->hasItem($newStageId)) {
             throw new TaskStageException('Нельзя перевести в неизвестное состояние ' . $newStageId);

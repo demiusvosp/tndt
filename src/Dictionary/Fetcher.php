@@ -10,10 +10,11 @@ namespace App\Dictionary;
 
 use App\Contract\InProjectInterface;
 use App\Contract\WithProjectInterface;
-use App\Dictionary\Object\Dictionary;
-use App\Dictionary\Object\DictionaryItem;
 use App\Entity\Project;
 use App\Exception\DictionaryException;
+use App\Model\Dto\Dictionary\Dictionary;
+use App\Model\Dto\Dictionary\DictionaryItem;
+use App\Model\Enum\DictionaryTypeEnum;
 use App\Repository\ProjectRepository;
 use App\Service\ProjectContext;
 
@@ -40,12 +41,12 @@ class Fetcher
      *    справочника. Строго говоря справочник необязательно хранится в проекте, но сейчас все справочники относятся
      *    к проектам, а когда будет не так, нужно будет создать систему хендлеров умеющий брать справочники из разных
      *    сущностей)
-     * @param TypesEnum $dictionaryType
+     * @param DictionaryTypeEnum $dictionaryType
      * @param InProjectInterface $entity
      * @return DictionaryItem
      * @throws DictionaryException
      */
-    public function getDictionaryItem(TypesEnum $dictionaryType, InProjectInterface $entity): DictionaryItem
+    public function getDictionaryItem(DictionaryTypeEnum $dictionaryType, InProjectInterface $entity): DictionaryItem
     {
         $dictionaryObject = $this->getDictionary($dictionaryType, $entity);
 
@@ -57,12 +58,12 @@ class Fetcher
 
     /**
      * Получить указанный справочник из указанного проекта (или любой сущности, связанной с проектом)
-     * @param TypesEnum $dictionaryType
+     * @param DictionaryTypeEnum $dictionaryType
      * @param InProjectInterface|WithProjectInterface|string|null $entity - null - текущий проект из сервиса ProjectContext
      * @return Dictionary
      * @throws DictionaryException
      */
-    public function getDictionary(TypesEnum $dictionaryType, InProjectInterface|WithProjectInterface|string|null $entity): Dictionary
+    public function getDictionary(DictionaryTypeEnum $dictionaryType, InProjectInterface|WithProjectInterface|string|null $entity): Dictionary
     {
         $object = null;
         if (is_string($entity)) {
@@ -112,7 +113,7 @@ class Fetcher
     public function getDictionariesByEntityClass(string $entityClass, InProjectInterface $entity): array
     {
         $items = [];
-        $dictionaryTypes = TypesEnum::allFromEntity($entityClass);
+        $dictionaryTypes = DictionaryTypeEnum::allFromEntity($entityClass);
         foreach ($dictionaryTypes as $type) {
             $items[$type->getValue()] = $this->getDictionary($type, $entity);
         }
@@ -129,7 +130,7 @@ class Fetcher
     public function getRelatedItems(InProjectInterface $entity): array
     {
         $items = [];
-        $dictionaryTypes = TypesEnum::allFromEntity($entity);
+        $dictionaryTypes = DictionaryTypeEnum::allFromEntity($entity);
         foreach ($dictionaryTypes as $type) {
             $items[$type->getValue()] = $this->getDictionaryItem($type, $entity);
         }

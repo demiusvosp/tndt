@@ -7,10 +7,10 @@
 
 namespace App\Service\Doctrine\Type;
 
-use App\Dictionary\Object\Task\TaskComplexity;
-use App\Dictionary\Object\Task\TaskPriority;
-use App\Dictionary\Object\Task\TaskStage;
-use App\Dictionary\Object\Task\TaskType;
+use App\Model\Dto\Dictionary\Task\TaskComplexity;
+use App\Model\Dto\Dictionary\Task\TaskPriority;
+use App\Model\Dto\Dictionary\Task\TaskStage;
+use App\Model\Dto\Dictionary\Task\TaskType;
 use App\Model\Dto\Project\TaskSettings;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\JsonType;

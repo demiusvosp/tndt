@@ -9,10 +9,12 @@ declare(strict_types=1);
 namespace App\Dictionary;
 
 use App\Contract\HasClosedStatusInterface;
-use App\Dictionary\Object\Task\StageTypesEnum;
-use App\Dictionary\Object\Task\TaskPriorityItem;
-use App\Dictionary\Object\Task\TaskStageItem;
 use App\Exception\DictionaryException;
+use App\Model\Dto\Dictionary\Task\StageTypesEnum;
+use App\Model\Dto\Dictionary\Task\TaskPriorityItem;
+use App\Model\Dto\Dictionary\Task\TaskStageItem;
+use App\Model\Enum\DictionaryTypeEnum;
+use App\Model\Enum\DictionaryStyleEnum;
 use Psr\Log\LoggerInterface;
 
 class Stylizer
@@ -29,7 +31,7 @@ class Stylizer
         $this->logger = $logger;
     }
 
-    public function getStyle($entity, StylesEnum $styleType): string
+    public function getStyle($entity, DictionaryStyleEnum $styleType): string
     {
         try {
             $items = $this->fetcher->getRelatedItems($entity);
@@ -39,19 +41,19 @@ class Stylizer
         }
 
         // @TODO когда появятся больше разных стилизуемых мест и правил, создать систему хендлеров, а пока так.
-        if ($styleType->equals(StylesEnum::TASK_ROW())) {
+        if ($styleType->equals(DictionaryStyleEnum::TASK_ROW())) {
             $style = '';
             $bgColor = [255, 255, 255];
-            if (isset($items[TypesEnum::TASK_PRIORITY]) && $items[TypesEnum::TASK_PRIORITY]->isSet()) {
+            if (isset($items[DictionaryTypeEnum::TASK_PRIORITY]) && $items[DictionaryTypeEnum::TASK_PRIORITY]->isSet()) {
                 /** @var TaskPriorityItem $item */
-                $item = $items[TypesEnum::TASK_PRIORITY];
+                $item = $items[DictionaryTypeEnum::TASK_PRIORITY];
                 if (!empty($item->getBgColor())) {
                     $bgColor = $this->colorStr2Hex($item->getBgColor());
                 }
             }
-            if (isset($items[TypesEnum::TASK_STAGE]) && $items[TypesEnum::TASK_STAGE]->isSet()) {
-                /** @var TaskStageItem $item */
-                $item = $items[TypesEnum::TASK_STAGE];
+            if (isset($items[DictionaryTypeEnum::TASK_STAGE]) && $items[DictionaryTypeEnum::TASK_STAGE]->isSet()) {
+                /** @var \App\Model\Dto\Dictionary\Task\TaskStageItem $item */
+                $item = $items[DictionaryTypeEnum::TASK_STAGE];
                 // стилизация закрытого состояние не совсем прерогатива справочника, но раз он отвечает за стиль списка
                 if (($entity instanceof HasClosedStatusInterface && $entity->isClosed())
                     || $item->getType()->equals(StageTypesEnum::STAGE_ON_CLOSED())

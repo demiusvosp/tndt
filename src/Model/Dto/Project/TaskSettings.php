@@ -8,28 +8,28 @@ declare(strict_types=1);
 
 namespace App\Model\Dto\Project;
 
-use App\Dictionary\Object\Dictionary;
-use App\Dictionary\Object\Task\TaskComplexity;
-use App\Dictionary\Object\Task\TaskPriority;
-use App\Dictionary\Object\Task\TaskStage;
-use App\Dictionary\Object\Task\TaskType;
-use App\Dictionary\TypesEnum;
+use App\Model\Dto\Dictionary\Dictionary;
+use App\Model\Dto\Dictionary\Task\TaskComplexity;
+use App\Model\Dto\Dictionary\Task\TaskPriority;
+use App\Model\Dto\Dictionary\Task\TaskStage;
+use App\Model\Dto\Dictionary\Task\TaskType;
+use App\Model\Enum\DictionaryTypeEnum;
 use JsonSerializable;
 
 class TaskSettings implements JsonSerializable
 {
     /**
-     * @var TaskType
+     * @var \App\Model\Dto\Dictionary\Task\TaskType
      */
     private TaskType $types;
 
     /**
-     * @var TaskStage
+     * @var \App\Model\Dto\Dictionary\Task\TaskStage
      */
     private TaskStage $stages;
 
     /**
-     * @var TaskPriority
+     * @var \App\Model\Dto\Dictionary\Task\TaskPriority
      */
     private TaskPriority $priority;
 
@@ -61,7 +61,7 @@ class TaskSettings implements JsonSerializable
     }
 
     /**
-     * @return TaskType
+     * @return \App\Model\Dto\Dictionary\Task\TaskType
      */
     public function getTypes(): TaskType
     {
@@ -69,7 +69,7 @@ class TaskSettings implements JsonSerializable
     }
 
     /**
-     * @param TaskType $types
+     * @param \App\Model\Dto\Dictionary\Task\TaskType $types
      * @return TaskSettings
      */
     public function setTypes(TaskType $types): TaskSettings
@@ -79,7 +79,7 @@ class TaskSettings implements JsonSerializable
     }
 
     /**
-     * @return TaskStage
+     * @return \App\Model\Dto\Dictionary\Task\TaskStage
      */
     public function getStages(): TaskStage
     {
@@ -133,19 +133,19 @@ class TaskSettings implements JsonSerializable
     }
 
     /**
-     * @param TypesEnum $type
+     * @param \App\Model\Enum\DictionaryTypeEnum $type
      * @return Dictionary
      */
-    public function getDictionaryByType(TypesEnum $type): Dictionary
+    public function getDictionaryByType(DictionaryTypeEnum $type): Dictionary
     {
         switch ($type) {
-            case TypesEnum::TASK_TYPE():
+            case DictionaryTypeEnum::TASK_TYPE():
                 return $this->types;
-            case TypesEnum::TASK_STAGE():
+            case DictionaryTypeEnum::TASK_STAGE():
                 return $this->stages;
-            case TypesEnum::TASK_PRIORITY():
+            case DictionaryTypeEnum::TASK_PRIORITY():
                 return $this->priority;
-            case TypesEnum::TASK_COMPLEXITY():
+            case DictionaryTypeEnum::TASK_COMPLEXITY():
                 return $this->complexity;
             default:
                 throw new \InvalidArgumentException('Unknown dictionaryType');

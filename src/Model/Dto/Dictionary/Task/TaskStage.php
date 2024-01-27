@@ -6,10 +6,11 @@
  */
 declare(strict_types=1);
 
-namespace App\Dictionary\Object\Task;
+namespace App\Model\Dto\Dictionary\Task;
 
-use App\Dictionary\Object\Dictionary;
 use App\Exception\DictionaryException;
+use App\Model\Dto\Dictionary\Dictionary;
+use function array_key_first;
 
 class TaskStage extends Dictionary
 {

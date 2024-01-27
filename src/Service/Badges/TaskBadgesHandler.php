@@ -9,10 +9,10 @@ declare(strict_types=1);
 namespace App\Service\Badges;
 
 use App\Dictionary\Fetcher;
-use App\Dictionary\Object\Task\TaskStageItem;
 use App\Entity\Task;
 use App\Exception\DictionaryException;
 use App\Model\Dto\Badge;
+use App\Model\Dto\Dictionary\Task\TaskStageItem;
 use App\Model\Enum\BadgeEnum;
 use Symfony\Contracts\Translation\TranslatorInterface;
 

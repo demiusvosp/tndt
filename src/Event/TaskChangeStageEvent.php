@@ -7,9 +7,9 @@
 
 namespace App\Event;
 
-use App\Dictionary\Object\Task\StageTypesEnum;
-use App\Dictionary\Object\Task\TaskStageItem;
 use App\Entity\Task;
+use App\Model\Dto\Dictionary\Task\StageTypesEnum;
+use App\Model\Dto\Dictionary\Task\TaskStageItem;
 
 class TaskChangeStageEvent extends TaskEvent
 {

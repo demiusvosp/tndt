@@ -10,11 +10,11 @@ namespace App\Service\Twig;
 
 use App\Contract\InProjectInterface;
 use App\Dictionary\Fetcher;
-use App\Dictionary\StylesEnum;
 use App\Dictionary\Stylizer;
-use App\Dictionary\TypesEnum;
 use App\Exception\DictionaryException;
 use App\Model\Dto\Badge;
+use App\Model\Enum\DictionaryTypeEnum;
+use App\Model\Enum\DictionaryStyleEnum;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
@@ -60,9 +60,9 @@ class DictionaryExtension extends AbstractExtension
     public function dictionaryEnabled(InProjectInterface $projectableEntity, string $dictionaryType): bool
     {
         if (strpos($dictionaryType, '.') !== false) {
-            $type = TypesEnum::from($dictionaryType);
+            $type = DictionaryTypeEnum::from($dictionaryType);
         } else {
-            $type = TypesEnum::fromEntity($projectableEntity, $dictionaryType);
+            $type = DictionaryTypeEnum::fromEntity($projectableEntity, $dictionaryType);
         }
 
         return $this->fetcher->getDictionary($type, $projectableEntity)->isEnabled();
@@ -73,7 +73,7 @@ class DictionaryExtension extends AbstractExtension
         if (!$entity instanceof InProjectInterface) {
             throw new DictionaryException('Справочник можно получить только от сущности относящейся к проекту');
         }
-        $type = TypesEnum::fromEntity($entity, $dictionaryType);
+        $type = DictionaryTypeEnum::fromEntity($entity, $dictionaryType);
         $item = $this->fetcher->getDictionaryItem($type, $entity);
 
         if ($useBadge && $item->getUseBadge()) {
@@ -96,7 +96,7 @@ class DictionaryExtension extends AbstractExtension
 
     public function dictionaryStyle($entity, string $styleType): string
     {
-        $style = StylesEnum::fromEntity($entity, $styleType);
+        $style = DictionaryStyleEnum::fromEntity($entity, $styleType);
 
         return $this->stylizer->getStyle($entity, $style);
     }
