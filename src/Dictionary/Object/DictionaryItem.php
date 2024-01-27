@@ -9,7 +9,7 @@ declare(strict_types=1);
 namespace App\Dictionary\Object;
 
 use App\Exception\DictionaryException;
-use App\Service\Badges\BadgeEnum;
+use App\Model\Enum\BadgeEnum;
 
 class DictionaryItem implements \App\Contract\JlobObjectInterface
 {
@@ -56,7 +56,7 @@ class DictionaryItem implements \App\Contract\JlobObjectInterface
             'id' => $this->id,
             'name' => $this->name,
             'description' => $this->description,
-            'useBadge' => $this->useBadge ? $this->useBadge->getValue() : '',
+            'useBadge' => $this->useBadge ? $this->useBadge->value : '',
         ];
     }
 
@@ -128,10 +128,10 @@ class DictionaryItem implements \App\Contract\JlobObjectInterface
     }
 
     /**
-     * @param BadgeEnum|string|null $useBadge
+     * @param \App\Model\Enum\string|BadgeEnum|null $useBadge
      * @return DictionaryItem
      */
-    public function setUseBadge($useBadge): DictionaryItem
+    public function setUseBadge(BadgeEnum|string|null $useBadge): DictionaryItem
     {
         if ($useBadge instanceof BadgeEnum) {
             $this->useBadge = $useBadge;

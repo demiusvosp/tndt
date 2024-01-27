@@ -8,6 +8,8 @@ declare(strict_types=1);
 
 namespace App\Service\Badges;
 
+use App\Model\Dto\Badge;
+
 interface BadgeHandlerInterface
 {
     /**
@@ -19,7 +21,7 @@ interface BadgeHandlerInterface
     /**
      * @param object $entity
      * @param array $excepts
-     * @return BadgeDTO[]
+     * @return Badge[]
      */
     public function getBadges(object $entity, array $excepts = []): array;
 }

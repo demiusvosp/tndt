@@ -6,9 +6,11 @@
  */
 declare(strict_types=1);
 
-namespace App\Service\Badges;
+namespace App\Model\Dto;
 
-class BadgeDTO
+use App\Model\Enum\BadgeEnum;
+
+class Badge
 {
     private string $label;
     private BadgeEnum $style;
@@ -16,7 +18,7 @@ class BadgeDTO
 
     public function __construct(string $label, ?BadgeEnum $style = null, ?string $alt = null) {
         $this->label = $label;
-        $this->style = $style ?? BadgeEnum::DEFAULT();
+        $this->style = $style ?? BadgeEnum::Default;
         $this->alt = $alt;
     }
 
@@ -31,9 +33,9 @@ class BadgeDTO
     /**
      * @return string
      */
-    public function getStyle(): string
+    public function getStyle(): BadgeEnum
     {
-        return $this->style->getValue();
+        return $this->style;
     }
 
     /**

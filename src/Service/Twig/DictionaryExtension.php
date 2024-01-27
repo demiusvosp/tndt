@@ -14,7 +14,7 @@ use App\Dictionary\StylesEnum;
 use App\Dictionary\Stylizer;
 use App\Dictionary\TypesEnum;
 use App\Exception\DictionaryException;
-use App\Service\Badges\BadgeDTO;
+use App\Model\Dto\Badge;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
@@ -77,7 +77,7 @@ class DictionaryExtension extends AbstractExtension
         $item = $this->fetcher->getDictionaryItem($type, $entity);
 
         if ($useBadge && $item->getUseBadge()) {
-            $badge = new BadgeDTO($item->getName(), $item->getUseBadge(), $item->getDescription());
+            $badge = new Badge($item->getName(), $item->getUseBadge(), $item->getDescription());
             return $this->badgesExtension->badgeHtml($badge);
         }
 

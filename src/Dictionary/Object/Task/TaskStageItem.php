@@ -10,7 +10,7 @@ namespace App\Dictionary\Object\Task;
 
 use App\Dictionary\Object\DictionaryItem;
 use App\Exception\DictionaryException;
-use App\Service\Badges\BadgeEnum;
+use App\Model\Enum\BadgeEnum;
 
 class TaskStageItem extends DictionaryItem
 {
@@ -59,7 +59,7 @@ class TaskStageItem extends DictionaryItem
         $useBadge = parent::getUseBadge();
 
         if (!$useBadge && $this->type->equals(StageTypesEnum::STAGE_ON_CLOSED())) {
-            $useBadge = BadgeEnum::DEFAULT();
+            $useBadge = BadgeEnum::Default;
         }
 
         return $useBadge;

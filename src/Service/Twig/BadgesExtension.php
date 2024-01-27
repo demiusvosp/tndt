@@ -8,7 +8,7 @@ declare(strict_types=1);
 
 namespace App\Service\Twig;
 
-use App\Service\Badges\BadgeDTO;
+use App\Model\Dto\Badge;
 use App\Service\Badges\BadgeHandlerInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
@@ -51,9 +51,9 @@ class BadgesExtension extends AbstractExtension
         return implode('', $html);
     }
 
-    public function badgeHtml(BadgeDTO $badge): string
+    public function badgeHtml(Badge $badge): string
     {
-        $badgeHtml = '<span class="label label-' . $badge->getStyle() . '"';
+        $badgeHtml = '<span class="label label-' . $badge->getStyle()->value . '"';
         if ($badge->getAlt()) {
             $badgeHtml .= ' title="' . $badge->getAlt() . '"';
         }

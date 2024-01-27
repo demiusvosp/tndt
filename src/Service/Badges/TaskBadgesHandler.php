@@ -12,6 +12,8 @@ use App\Dictionary\Fetcher;
 use App\Dictionary\Object\Task\TaskStageItem;
 use App\Entity\Task;
 use App\Exception\DictionaryException;
+use App\Model\Dto\Badge;
+use App\Model\Enum\BadgeEnum;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class TaskBadgesHandler implements BadgeHandlerInterface
@@ -37,7 +39,7 @@ class TaskBadgesHandler implements BadgeHandlerInterface
     /**
      * @param Task $task
      * @param array $excepts
-     * @return BadgeDTO[]
+     * @return Badge[]
      */
     public function getBadges($task, array $excepts = []): array
     {
@@ -49,9 +51,9 @@ class TaskBadgesHandler implements BadgeHandlerInterface
         try {
             $dictionaryItems = $this->dictionaryFetcher->getRelatedItems($task);
         } catch (DictionaryException $e) {
-            return [new BadgeDTO(
+            return [new Badge(
                 $this->translator->trans('dictionaries.error.name'),
-                BadgeEnum::WARNING(),
+                BadgeEnum::Warning,
                 $this->translator->trans('dictionaries.error.description')
             )];
         }
@@ -71,7 +73,7 @@ class TaskBadgesHandler implements BadgeHandlerInterface
             }
 
             if ($label) {
-                $badges[] = new BadgeDTO(
+                $badges[] = new Badge(
                     $label,
                     $itemBadge,
                     $item->getId() > 0 ? $item->getDescription() : null
