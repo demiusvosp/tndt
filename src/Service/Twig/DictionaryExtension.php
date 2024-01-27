@@ -9,12 +9,12 @@ declare(strict_types=1);
 namespace App\Service\Twig;
 
 use App\Contract\InProjectInterface;
-use App\Dictionary\Fetcher;
-use App\Dictionary\Stylizer;
 use App\Exception\DictionaryException;
 use App\Model\Dto\Badge;
-use App\Model\Enum\DictionaryTypeEnum;
 use App\Model\Enum\DictionaryStyleEnum;
+use App\Model\Enum\DictionaryTypeEnum;
+use App\Service\Dictionary\Fetcher;
+use App\Service\Dictionary\Stylizer;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;

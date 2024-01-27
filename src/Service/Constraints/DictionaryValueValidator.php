@@ -10,8 +10,8 @@ namespace App\Service\Constraints;
 
 use App\Contract\InProjectInterface;
 use App\Contract\WithProjectInterface;
-use App\Dictionary\Fetcher;
 use App\Model\Enum\DictionaryTypeEnum;
+use App\Service\Dictionary\Fetcher;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\ConstraintDefinitionException;

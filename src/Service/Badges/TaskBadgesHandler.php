@@ -8,12 +8,12 @@ declare(strict_types=1);
 
 namespace App\Service\Badges;
 
-use App\Dictionary\Fetcher;
 use App\Entity\Task;
 use App\Exception\DictionaryException;
 use App\Model\Dto\Badge;
 use App\Model\Dto\Dictionary\Task\TaskStageItem;
 use App\Model\Enum\BadgeEnum;
+use App\Service\Dictionary\Fetcher;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class TaskBadgesHandler implements BadgeHandlerInterface

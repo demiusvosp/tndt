@@ -6,17 +6,20 @@
  */
 declare(strict_types=1);
 
-namespace App\Dictionary;
+namespace App\Service\Dictionary;
 
 use App\Contract\HasClosedStatusInterface;
 use App\Exception\DictionaryException;
 use App\Model\Dto\Dictionary\Task\StageTypesEnum;
 use App\Model\Dto\Dictionary\Task\TaskPriorityItem;
-use App\Model\Dto\Dictionary\Task\TaskStageItem;
-use App\Model\Enum\DictionaryTypeEnum;
 use App\Model\Enum\DictionaryStyleEnum;
+use App\Model\Enum\DictionaryTypeEnum;
 use Psr\Log\LoggerInterface;
 
+
+/**
+ * @deprecated tndt-84
+ */
 class Stylizer
 {
     private const LIGHTER_STEP = 35;

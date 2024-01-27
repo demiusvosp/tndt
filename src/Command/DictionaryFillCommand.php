@@ -2,8 +2,8 @@
 
 namespace App\Command;
 
-use App\Dictionary\Fetcher;
 use App\Model\Enum\DictionaryTypeEnum;
+use App\Service\Dictionary\Fetcher;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;

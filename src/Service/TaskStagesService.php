@@ -8,7 +8,6 @@ declare(strict_types=1);
 
 namespace App\Service;
 
-use App\Dictionary\Fetcher;
 use App\Entity\Project;
 use App\Entity\Task;
 use App\Event\AppEvents;
@@ -18,6 +17,7 @@ use App\Model\Dto\Dictionary\Task\StageTypesEnum;
 use App\Model\Dto\Dictionary\Task\TaskStage;
 use App\Model\Dto\Dictionary\Task\TaskStageItem;
 use App\Model\Enum\DictionaryTypeEnum;
+use App\Service\Dictionary\Fetcher;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 

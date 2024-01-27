@@ -8,7 +8,7 @@ declare(strict_types=1);
 
 namespace App\Form\Type\Base;
 
-use App\Dictionary\Fetcher;
+use App\Service\Dictionary\Fetcher;
 use App\Service\ProjectContext;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
