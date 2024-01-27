@@ -12,6 +12,7 @@ use App\Model\Enum\CommentOwnerTypesEnum;
 use Happyr\DoctrineSpecification\Spec;
 use Happyr\DoctrineSpecification\Specification\BaseSpecification;
 use Happyr\DoctrineSpecification\Specification\Specification;
+use function get_class;
 
 class ByOwnerSpec extends BaseSpecification
 {
@@ -26,7 +27,7 @@ class ByOwnerSpec extends BaseSpecification
     protected function getSpec(): Specification
     {
         return Spec::andX(
-            Spec::eq('entity_type', CommentOwnerTypesEnum::typeByOwner($this->owner)),
+            Spec::eq('entity_type', CommentOwnerTypesEnum::fromOwner(get_class($this->owner))),
             Spec::eq('entity_id', $this->owner->getId())
         );
     }

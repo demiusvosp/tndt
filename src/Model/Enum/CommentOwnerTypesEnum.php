@@ -7,15 +7,14 @@
 
 namespace App\Model\Enum;
 
-use App\Contract\CommentableInterface;
 use App\Entity\Doc;
 use App\Entity\Task;
-use MyCLabs\Enum\Enum;
+use App\Exception\DomainException;
 
-class CommentOwnerTypesEnum extends Enum
+enum CommentOwnerTypesEnum: string
 {
-    public const TASK = 'task';
-    public const DOC = 'doc';
+    case Task = 'task';
+    case Doc = 'doc';
 
     /**
      * Получить класс сущности владельца комментария по его типу.
@@ -24,23 +23,13 @@ class CommentOwnerTypesEnum extends Enum
     public static function classes(): array
     {
         return [
-            self::TASK => Task::class,
-            self::DOC => Doc::class,
+            Task::class => self::Task,
+            Doc::class => self::Doc,
         ];
     }
 
-    public function getClass(): string
+    public static function fromOwner(string $className): self
     {
-        return self::classes()[$this->value];
-    }
-
-    public static function typeByOwner(CommentableInterface $owner): string
-    {
-        return array_search(get_class($owner), self::classes());
-    }
-
-    public static function fromOwner(CommentableInterface $owner): Enum
-    {
-        return parent::from(static::typeByOwner($owner));
+        return self::classes()[$className] ?? throw new DomainException($className . ' unknown comment owner');
     }
 }

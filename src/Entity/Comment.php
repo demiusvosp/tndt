@@ -31,8 +31,8 @@ class Comment implements IdInterface
     #[ORM\Column(type: "integer")]
     private int $id;
 
-    #[ORM\Column(type: "string", length: 30, nullable: false)]
-    private string $entity_type;
+    #[ORM\Column(type: "string", length: 30, nullable: false, enumType: CommentOwnerTypesEnum::class)]
+    private CommentOwnerTypesEnum $entity_type;
 
     #[ORM\Column(type: "integer", nullable: false)]
     private int $entity_id;
@@ -125,7 +125,7 @@ class Comment implements IdInterface
     {
         $this->ownerEntity = $owner;
         $this->entity_id = $owner->getId();
-        $this->entity_type = CommentOwnerTypesEnum::typeByOwner($owner);
+        $this->entity_type = CommentOwnerTypesEnum::fromOwner(get_class($owner));
 
         return $this;
     }
