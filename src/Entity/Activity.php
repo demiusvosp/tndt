@@ -53,11 +53,11 @@ class Activity
     #[ORM\JoinColumn(name: 'project', referencedColumnName: 'suffix')]
     private ?Project $project;
 
-
     private ?ActivitySubjectInterface $activitySubject = null;
 
     #[ORM\Column(type: 'json', nullable: false)]
     private array $addInfo = [];
+
 
     public function __construct(ActivityTypeEnum $type, DateTime $createdAt = new DateTime())
     {

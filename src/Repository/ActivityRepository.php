@@ -35,11 +35,11 @@ class ActivityRepository extends ServiceEntityRepository
      * @return Activity[]
      * @throws ActivityException
      */
-    public function findBySubject(string $type, int $id, int $limit = self::DEFAULT_LIMIT): array
+    public function findBySubject(ActivitySubjectTypeEnum $type, int $id, int $limit = self::DEFAULT_LIMIT): array
     {
         try {
             $spec = Spec::AndX(
-                new BySubjectSpec(ActivitySubjectTypeEnum::from($type), $id),
+                new BySubjectSpec($type, $id),
                 Spec::orderBy('createdAt', 'DESC'),
                 Spec::limit($limit)
             );
