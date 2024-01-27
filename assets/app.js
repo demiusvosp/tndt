@@ -7,6 +7,8 @@
  * (and its CSS file) in your base layout (base.html.twig).
  */
 import './bootstrap.js';
+import Vue from "vue";
+import ActivityTimeline from './components/activity/timeline-widget'
 
 // Собственно сам js
 console.log('running');
@@ -94,3 +96,11 @@ if($.AdminLTESidebarTweak.options.EnableRemember){
 }
 
 /* Dictionary Edit */
+
+/* Activity widget */
+new Vue({
+    el: '#activity-widget',
+    components: {
+        ActivityTimeline
+    }
+});

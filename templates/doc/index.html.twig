@@ -48,36 +48,19 @@
                 {% endblock  %}
                 {% block box_body %}
                     <div class="btn-group-vertical" role="toolbar" aria-label="{{ 'ControlPanel'|trans }}">
-                        {% if is_granted("PERM_DOC_EDIT") %}
-                            <a class="btn btn-default btn-secondary" href="{{ path('doc.edit', {'slug':doc.slug, 'suffix': doc.suffix}) }}">{{ 'Edit'|trans }}</a>
-                        {% endif %}
-                        {% if is_granted("PERM_DOC_CHANGE_STATE") %}
-                            {% if not doc.state is constant('STATE_NORMAL', doc) %}
-                                <a
-                                    class="btn btn-default btn-success"
-                                    href="{{ path('doc.change_state', doc.getUrlParams({'state': constant('STATE_NORMAL', doc)})) }}"
-                                >
-                                    {{ 'To_actual'|trans }}
-                                </a>
-                            {% endif %}
-                            {% if not doc.state is constant('STATE_DEPRECATED', doc) %}
-                                <a
-                                    class="btn btn-default btn-info"
-                                    href="{{ path('doc.change_state', doc.getUrlParams({'state': constant('STATE_DEPRECATED', doc)})) }}"
-                                >
-                                    {{ 'To_deprecated'|trans }}
-                                </a>
-                            {%  endif %}
-                            {% if not doc.state is constant('STATE_ARCHIVED', doc) %}
+                        {% for control in controls %}
+                            {% if control.needConfirm %}
                                 <button
-                                    class="btn btn-secondary btn-warning need-confirm"
-                                    data-action="{{ path('doc.change_state', doc.getUrlParams({'state': constant('STATE_ARCHIVED', doc)})) }}"
-                                    data-text="{{ 'doc.state.archive.confirm'|trans|nl2br }}"
+                                        class="btn btn-secondary {{ control.class }} need-confirm"
+                                        data-action="{{ control.action }}"
+                                        data-text="{{ control.needConfirm }}"
                                 >
-                                    {{ 'To_archive'|trans }}
+                                    {{ control.label }}
                                 </button>
+                            {% else %}
+                                <a class="btn btn-default {{ control.class}}" href="{{ control.action }}">{{ control.label }}</a>
                             {% endif %}
-                        {% endif %}
+                        {% endfor %}
                     </div>
                 {% endblock %}
             {% endembed %}
@@ -92,14 +75,21 @@
                 {% endblock %}
                 {% block box_body %}
                     <ul class="nav nav-tabs">
-                        {% set currentTab = 'comments' %}{# app.request.query.get('works_tab') пока только одна вкладка #}
+                        {% set currentTab = app.request.query.get('tab', 'comments') %}
                         <li {% if currentTab == 'comments' %}class="active"{% endif %}>
-                            <a href="{{ path('doc.index', doc.getUrlParams({'works_tab': 'comments'})) }}">{{ 'Works.comments'|trans }}</a>
+                            <a href="{{ path('doc.index', doc.getUrlParams({'tab': 'comments'})) }}">{{ 'Works.comments'|trans }}</a>
+                        </li>
+                        <li {% if currentTab == 'activity' %}class="active"{% endif %}>
+                            <a href="{{ path('doc.index', doc.getUrlParams({'tab': 'activity'})) }}">{{ 'Works.activity'|trans }}</a>
                         </li>
                     </ul>
                     <div class="one-block-content">
                         {% if currentTab == 'comments' %}
                             {{ comment_widget(doc) }}
+                        {% elseif currentTab == 'activity' %}
+                            <div id="activity-widget">
+                                <activity-timeline action="{{ path('activity.list', {'type': 'doc', 'id': doc.id})}}"></activity-timeline>
+                            </div>
                         {% endif %}
                     </div>
                 {% endblock %}

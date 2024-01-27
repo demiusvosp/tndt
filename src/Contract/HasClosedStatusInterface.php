@@ -5,7 +5,7 @@
  * Time: 22:02
  */
 
-namespace App\Entity\Contract;
+namespace App\Contract;
 
 /**
  * Интерфейс объектов, которые могут иметь состояние, считающееся закрытым

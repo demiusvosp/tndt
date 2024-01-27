@@ -12,6 +12,7 @@ use App\Entity\Doc;
 use App\Entity\User;
 use App\Event\AppEvents;
 use App\Event\CommentEvent;
+use App\Event\DocChangeStateEvent;
 use App\Event\DocEvent;
 use App\Security\UserRolesEnum;
 use DateTime;

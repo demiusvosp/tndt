@@ -7,11 +7,11 @@
  */
 namespace App\Entity;
 
+use App\Contract\InProjectInterface;
 use App\Dictionary\Object\Task\TaskComplexity;
 use App\Dictionary\Object\Task\TaskPriority;
 use App\Dictionary\Object\Task\TaskStage;
 use App\Dictionary\Object\Task\TaskType;
-use App\Entity\Contract\InProjectInterface;
 use App\Object\Project\TaskSettings;
 use App\Repository\ProjectRepository;
 use App\Security\UserRolesEnum;

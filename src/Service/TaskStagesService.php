@@ -16,6 +16,7 @@ use App\Dictionary\TypesEnum;
 use App\Entity\Project;
 use App\Entity\Task;
 use App\Event\AppEvents;
+use App\Event\TaskChangeStageEvent;
 use App\Event\TaskEvent;
 use App\Exception\TaskStageException;
 use Doctrine\ORM\EntityManagerInterface;
@@ -55,7 +56,7 @@ class TaskStagesService
      * @param Task $task
      * @param StageTypesEnum[] $onlyStageTypes - только указанные типы этапов (например только статусы закрытых задач)
      * @param bool $allowSame - добавить этап на котором задача сейчас (например для селектов)
-     * @return array
+     * @return TaskStageItem[]
      */
     public function availableStages(Task $task, array $onlyStageTypes = [], bool $allowSame = false): array
     {
@@ -93,9 +94,11 @@ class TaskStagesService
      */
     public function changeStage(Task $task, int $newStageId): void
     {
-        if ($task->getStage() === $newStageId) {
+        $oldStage = $task->getStage();
+        if ($oldStage === $newStageId) {
             return; // состояние не изменилось
         }
+
         /** @var TaskStage $stagesDictionary */
         $stagesDictionary = $this->dictionaryFetcher->getDictionary(TypesEnum::TASK_STAGE(), $task);
 
@@ -106,16 +109,17 @@ class TaskStagesService
 
         $task->setStage($newStageId);
 
-        $becameClosed = false;
         if (!$task->isClosed() && $newStage->getType()->equals(StageTypesEnum::STAGE_ON_CLOSED())) {
             $task->setIsClosed(true);// новый этап закрывает задачу
-            $becameClosed = true;
         }
         if ($task->isClosed() && !$newStage->getType()->equals(StageTypesEnum::STAGE_ON_CLOSED())) {
             $task->setIsClosed(false);// новый этап открывает задачу
         }
 
-        $this->eventDispatcher->dispatch(new TaskEvent($task, $becameClosed), AppEvents::TASK_CHANGE_STAGE);
+        $this->eventDispatcher->dispatch(
+            new TaskChangeStageEvent($task, $stagesDictionary->getItem($oldStage), $newStage),
+            AppEvents::TASK_CHANGE_STAGE
+        );
         $this->entityManager->flush();
     }
 }

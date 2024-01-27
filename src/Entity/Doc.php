@@ -8,10 +8,11 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use App\Entity\Contract\CommentableInterface;
-use App\Entity\Contract\NoInterface;
-use App\Entity\Contract\WithProjectInterface;
-use App\Exception\BadRequestException;
+use App\Contract\ActivitySubjectInterface;
+use App\Contract\CommentableInterface;
+use App\Contract\NoInterface;
+use App\Contract\WithProjectInterface;
+use App\Model\Enum\DocStateEnum;
 use App\Repository\DocRepository;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
@@ -23,7 +24,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 #[ORM\Entity(repositoryClass: DocRepository::class)]
 #[ORM\Table(name: "doc")]
-class Doc implements NoInterface, WithProjectInterface, CommentableInterface
+class Doc implements NoInterface, WithProjectInterface, ActivitySubjectInterface, CommentableInterface
 {
     public const DOCID_SEPARATOR = '#';
 
@@ -69,7 +70,7 @@ class Doc implements NoInterface, WithProjectInterface, CommentableInterface
     #[ORM\JoinColumn(name: "updated_by", referencedColumnName: "username", nullable: true)]
     private ?User $updatedBy = null;
 
-    #[ORM\Column(type: "integer", nullable: false)]
+    #[ORM\Column(type: "smallint", nullable: false)]
     private int $state;
 
     #[ORM\Column(type: "string", length: 255)]
@@ -258,28 +259,17 @@ class Doc implements NoInterface, WithProjectInterface, CommentableInterface
      */
     public function isArchived(): bool
     {
-        return $this->state === self::STATE_ARCHIVED;
+        return $this->getState() === DocStateEnum::Archived;
     }
 
-    /**
-     * @return int
-     */
-    public function getState(): int
+    public function getState(): DocStateEnum
     {
-        return $this->state;
+        return DocStateEnum::from($this->state);
     }
 
-    /**
-     * @param int $state
-     * @return Doc
-     */
-    public function setState(int $state): Doc
+    public function setState(DocStateEnum $state): Doc
     {
-        if (!in_array($state, [self::STATE_NORMAL, self::STATE_DEPRECATED, self::STATE_ARCHIVED], true)) {
-            throw new BadRequestException('Некорректный state документа');
-        }
-
-        $this->state = $state;
+        $this->state = $state->value;
         return $this;
     }
 

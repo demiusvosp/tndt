@@ -8,8 +8,8 @@ declare(strict_types=1);
 
 namespace App\Service;
 
+use App\Contract\CommentableInterface;
 use App\Entity\Comment;
-use App\Entity\Contract\CommentableInterface;
 use App\Entity\User;
 use App\Event\AppEvents;
 use App\Event\CommentEvent;
@@ -23,6 +23,7 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\User\UserInterface;
+
 
 class CommentService
 {
@@ -93,8 +94,8 @@ class CommentService
         $this->entityManager->persist($comment);
 
         $commentEvent = new CommentEvent($comment);
+        $this->entityManager->flush(); // логика в листенерах может использовать PK комментария
         $this->eventDispatcher->dispatch($commentEvent, AppEvents::COMMENT_ADD);
-
-        $this->entityManager->flush();
+        $this->entityManager->flush(); // а теперь закрепляем и логику
     }
 }

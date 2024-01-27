@@ -8,21 +8,19 @@ declare(strict_types=1);
 
 namespace App\Event;
 
+use App\Contract\ActivityEventInterface;
+use App\Contract\ActivitySubjectInterface;
 use App\Entity\Project;
 use App\Entity\Task;
 
-class TaskEvent extends InProjectEvent
+class TaskEvent extends InProjectEvent implements ActivityEventInterface
 {
     private Task $task;
-    /**
-     * @var bool стала закрытой. Некоторым обработчикам может быть важно задача закрыта в принципе, или в рамках этого действия её закрыли
-     */
-    private bool $becameClosed;
 
-    public function __construct(Task $task, bool $becameClosed = false)
+
+    public function __construct(Task $task)
     {
         $this->task = $task;
-        $this->becameClosed = $becameClosed;
     }
 
     /**
@@ -33,21 +31,18 @@ class TaskEvent extends InProjectEvent
         return $this->task;
     }
 
-    /**
-     * @return bool
-     */
-    public function isBecameClosed(): bool
-    {
-        return $this->becameClosed;
-    }
-
     public function getProject(): Project
     {
         return $this->task->getProject();
     }
 
+    public function getActivitySubject(): ActivitySubjectInterface
+    {
+        return $this->task;
+    }
+
     public function isObjectArchived(): bool
     {
-        return parent::isObjectArchived() || ($this->getTask()->isClosed() && !$this->isBecameClosed());
+        return parent::isObjectArchived() || ($this->getTask()->isClosed());
     }
 }

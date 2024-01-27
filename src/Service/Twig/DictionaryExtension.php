@@ -8,11 +8,11 @@ declare(strict_types=1);
 
 namespace App\Service\Twig;
 
-use App\Entity\Contract\InProjectInterface;
-use App\Dictionary\TypesEnum;
+use App\Contract\InProjectInterface;
 use App\Dictionary\Fetcher;
 use App\Dictionary\StylesEnum;
 use App\Dictionary\Stylizer;
+use App\Dictionary\TypesEnum;
 use App\Exception\DictionaryException;
 use App\Service\Badges\BadgeDTO;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -65,9 +65,7 @@ class DictionaryExtension extends AbstractExtension
             $type = TypesEnum::fromEntity($projectableEntity, $dictionaryType);
         }
 
-        $dictionary = $this->fetcher->getDictionary($type, $projectableEntity);
-
-        return $dictionary->isEnabled();
+        return $this->fetcher->getDictionary($type, $projectableEntity)->isEnabled();
     }
 
     public function dictionaryName($entity, string $dictionaryType, bool $useBadge = true): string

@@ -8,21 +8,18 @@ declare(strict_types=1);
 
 namespace App\Event;
 
+use App\Contract\ActivityEventInterface;
+use App\Contract\ActivitySubjectInterface;
 use App\Entity\Doc;
 use App\Entity\Project;
 
-class DocEvent extends InProjectEvent
+class DocEvent extends InProjectEvent implements ActivityEventInterface
 {
     private Doc $doc;
-    /**
-     * @var bool Документ был архивным ранее, а не стал таковым
-     */
-    private bool $isBecameArchived;
 
-    public function __construct(Doc $doc, bool $isBecameArchived = false)
+    public function __construct(Doc $doc)
     {
         $this->doc = $doc;
-        $this->isBecameArchived = $isBecameArchived;
     }
 
     /**
@@ -38,13 +35,13 @@ class DocEvent extends InProjectEvent
         return $this->doc->getProject();
     }
 
-    public function isBecameArchived(): bool
+    public function getActivitySubject(): ActivitySubjectInterface
     {
-        return $this->isBecameArchived;
+        return $this->doc;
     }
 
     public function isObjectArchived(): bool
     {
-        return parent::isObjectArchived() || ($this->getDoc()->isArchived() && !$this->isBecameArchived());
+        return parent::isObjectArchived() || $this->getDoc()->isArchived();
     }
 }

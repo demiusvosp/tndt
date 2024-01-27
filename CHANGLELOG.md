@@ -1,5 +1,20 @@
 # Changelog
 
+## [master] - present
+
+### New feature
+- [tndt-11](http://tasks.demius.ru/p/tndt-11) - Система активности работы над задачей.
+#### Minor features
+- [tndt-121](http://tasks.demius.ru/p/tndt-121) - Отображать на дашборде проекта когда он создан и обновлен
+### Refactoring
+- [tndt-94](http://tasks.demius.ru/p/tndt-94), [tndt-26](http://tasks.demius.ru/p/tndt-26) - Обновление системы до php8, Symfony6.4
+- [tndt-104](http://tasks.demius.ru/p/tndt-104) - Перераспределить файлы конфигурации (теперь все конфиги одного окружения в одной папке, и их легче подменять для каждого инстанса)
+- [tndt-108](http://tasks.demius.ru/p/tndt-108) - Рефакторинг TaskSettings и получения справочников из проекта
+- [tndt-109](http://tasks.demius.ru/p/tndt-109) - Комментарии прицеплять к типу, а не классу
+### Bugfixes
+- [tndt-115](http://tasks.demius.ru/p/tndt-115) - Смена статуса документа не обновялет его дату
+- [tndt-30](http://tasks.demius.ru/p/tndt-30) - Обновлять дату проекта, когда в нем совершается работа
+
 ## [v0.2.2] - 2023-05-07
 
 ### New feature
@@ -8,7 +23,8 @@
 - [tndt-90](http://tasks.demius.ru/p/tndt-90) - Списки. номера задач/документов по правому краю
 ### Refactoring
 - [tndt-96](http://tasks.demius.ru/p/tndt-96) - Добавить в проект Спецификации и перевести на них репозитории
-- [tndt-99](http://tasks.demius.ru/p/tndt-99) - Разделить UserController и пользовательский и менеджерский и tndt-98 Разобраться с User->getRoles()
+- [tndt-98](http://tasks.demius.ru/p/tndt-98) - Разобраться с User->getRoles()
+- [tndt-99](http://tasks.demius.ru/p/tndt-99) - Разделить UserController и пользовательский и менеджерский и 
 ### Bugfixes
 - [tndt-83](http://tasks.demius.ru/p/tndt-83) - Закрытие задачи без комментария, не обновляет её дату
 - [tndt-98](http://tasks.demius.ru/p/tndt-98) - Разобраться с User->getRoles()
@@ -17,7 +33,7 @@
 ## [v0.2.1.1] - 2023-04-06
 
 ### Bugfixes
-- **hotfix** - [tndt-92](http://tasks.demius.ru/p/tndt-92) Шторка с справкой md не подргружалась в продовый контейнер
+- **hotfix** - [tndt-92](http://tasks.demius.ru/p/tndt-92) Шторка со справкой md не подгружалась в продовый контейнер
 - [tndt-93](http://tasks.demius.ru/p/tndt-93) Обновил пакеты composer, npm
 
 ## [v0.2.1] - 2023-04-02

@@ -8,10 +8,9 @@ declare(strict_types=1);
 
 namespace App\Form\Type\Task;
 
-use App\Dictionary\Fetcher;
+use App\Contract\WithProjectInterface;
 use App\Dictionary\Object\Task\StageTypesEnum;
 use App\Dictionary\TypesEnum;
-use App\Entity\Contract\WithProjectInterface;
 use App\Form\DTO\Task\EditTaskDTO;
 use App\Form\DTO\Task\NewTaskDTO;
 use App\Form\Type\Base\DictionarySelectType;

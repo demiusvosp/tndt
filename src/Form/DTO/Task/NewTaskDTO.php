@@ -8,12 +8,12 @@ declare(strict_types=1);
 
 namespace App\Form\DTO\Task;
 
-use App\Entity\Contract\WithProjectInterface;
+use App\Contract\WithProjectInterface;
 use App\Entity\Project;
+use App\Entity\User;
 use App\Service\Constraints\DictionaryValue;
 use Happyr\Validator\Constraint\EntityExist;
 use Symfony\Component\Validator\Constraints as Assert;
-use App\Entity\User;
 
 class NewTaskDTO implements WithProjectInterface
 {

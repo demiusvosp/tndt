@@ -8,7 +8,7 @@ declare(strict_types=1);
 
 namespace App\EventSubscriber;
 
-use App\Entity\Contract\NoInterface;
+use App\Contract\NoInterface;
 use App\Repository\NoEntityRepositoryInterface;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Exception;

@@ -5,14 +5,12 @@
  * Time: 15:19
  */
 
-namespace App\Entity\Contract;
+namespace App\Contract;
 
 
 /**
  * Интерфейс сущностей, которые можно комментировать
  */
-interface CommentableInterface
+interface CommentableInterface extends IdInterface
 {
-    public function getId(): int;
-
 }
