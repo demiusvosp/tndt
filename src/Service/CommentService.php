@@ -53,7 +53,7 @@ class CommentService
     }
 
     /**
-     * @param \App\Contract\CommentableInterface $commentableObject
+     * @param CommentableInterface $commentableObject
      * @param FormInterface $form
      * @param UserInterface|null $author
      * @return bool
@@ -78,7 +78,7 @@ class CommentService
     }
 
     /**
-     * @param \App\Contract\CommentableInterface $commentableObject
+     * @param CommentableInterface $commentableObject
      * @param string $message
      * @param User $author
      */
