@@ -20,6 +20,7 @@ use App\Repository\DocRepository;
 use App\Service\DocService;
 use App\Service\InProjectContext;
 use App\Specification\InProjectSpec;
+use App\ViewModel\Button\ControlButton;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -81,51 +82,48 @@ class DocController extends AbstractController
             throw $this->createNotFoundException($this->translator->trans('doc.not_found'));
         }
 
+        $controls = [];
         if ($this->isGranted(UserPermissionsEnum::PERM_DOC_EDIT)) {
             // @todo В [tndt-85] или раньше этот массив превратим в viewModel
-            $controls[] = [
-                'needConfirm' => false,
-                'action' => $this->generateUrl(
+            $controls[] = new ControlButton(
+                $this->translator->trans('Edit'),
+                $this->generateUrl(
                     'doc.edit',
                     $doc->getUrlParams()
-                ),
-                'class' => 'btn-secondary',
-                'label' => $this->translator->trans('Edit'),
-            ];
+                )
+            );
         }
         if ($this->isGranted(UserPermissionsEnum::PERM_DOC_CHANGE_STATE)) {
             if ($doc->getState() !== DocStateEnum::Normal) {
-                $controls[] = [
-                    'needConfirm' => false,
-                    'action' => $this->generateUrl(
+                $controls[] = new ControlButton(
+                    $this->translator->trans('To_actual'),
+                    $this->generateUrl(
                         'doc.change_state',
                         $doc->getUrlParams(['state' => DocStateEnum::Normal->value])
                     ),
-                    'class' => 'btn-success',
-                    'label' => $this->translator->trans('To_actual'),
-                ];
+                    'btn-success'
+                );
             }
             if ($doc->getState() !== DocStateEnum::Deprecated) {
-                $controls[] = [
-                    'needConfirm' => false,
-                    'action' => $this->generateUrl(
+                $controls[] = new ControlButton(
+                    $this->translator->trans('To_deprecated'),
+                    $this->generateUrl(
                         'doc.change_state',
                         $doc->getUrlParams(['state' => DocStateEnum::Deprecated->value])
                     ),
-                    'class' => 'btn-info',
-                    'label' => $this->translator->trans('To_deprecated'),
-                ];
+                    'btn-info'
+                );
             }
             if ($doc->getState() !== DocStateEnum::Archived) {
-                $controls[] = [
-                    'needConfirm' => $this->translator->trans('doc.state.archive.confirm'),
-                    'action' => $this->generateUrl(
+                $controls[] = new ControlButton(
+                    $this->translator->trans('To_archive'),
+                    $this->generateUrl(
                         'doc.change_state',
                         $doc->getUrlParams(['state' => DocStateEnum::Archived->value])
                     ),
-                    'class' => 'btn-secondary btn-warning',
-                    'label' => $this->translator->trans('To_archive'),
-                ];
+                    'btn-secondary btn-warning',
+                    $this->translator->trans('doc.state.archive.confirm')
+                );
             }
         }
         return $this->render('doc/index.html.twig', ['doc' => $doc, 'controls' => $controls]);
