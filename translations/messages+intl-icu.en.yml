@@ -44,7 +44,7 @@ breadcrumb:
   user.management:
     create: New...
     edit: Common
-    home: Management
+    home: User management
 Close: Закрыть
 closed: закрыта
 comment:
