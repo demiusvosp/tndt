@@ -1,0 +1,23 @@
+services:
+  # default configuration for services in *this* file
+  _defaults:
+    autowire: true      # Automatically injects dependencies in your services.
+    autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+
+  # CLI
+  App\Command\:
+    resource: '%kernel.project_dir%/src/Command'
+
+  # Web
+  App\Controller\:
+    resource: '%kernel.project_dir%/src/Controller'
+    tags: [ 'controller.service_arguments' ]
+
+  App\Form\Type\:
+    resource: '%kernel.project_dir%/src/Form/Type/'
+
+  App\Form\Transformer\:
+    resource: '%kernel.project_dir%/src/Form/Transformer/'
+
+  App\ViewTransformer\:
+    resource: '%kernel.project_dir%/src/ViewTransformer'

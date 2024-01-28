@@ -7,11 +7,11 @@
 
 namespace App\Controller;
 
-use App\AjaxTransformer\ActivityTransformer;
 use App\Exception\DomainException;
 use App\Exception\ErrorCodesEnum;
 use App\Model\Enum\ActivitySubjectTypeEnum;
 use App\Repository\ActivityRepository;
+use App\ViewTransformer\ActivityTransformer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;

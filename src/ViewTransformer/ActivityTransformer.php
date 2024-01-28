@@ -5,7 +5,7 @@
  * Time: 1:13
  */
 
-namespace App\AjaxTransformer;
+namespace App\ViewTransformer;
 
 use App\Entity\Activity;
 use App\Model\Enum\ActivityTypeEnum;

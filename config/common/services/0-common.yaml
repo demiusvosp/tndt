@@ -18,27 +18,24 @@ services:
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
-    App\:
-        resource: '%kernel.project_dir%/src/*'
-        exclude: '%kernel.project_dir%/src/{Entity,Event,Exception,Migrations,Object,Specification,Kernel.php}'
-
-    # controllers are imported separately to make sure services can be injected
-    # as action arguments even if you don't extend any base controller class
-    App\Controller\:
-        resource: '%kernel.project_dir%/src/Controller'
-        tags: ['controller.service_arguments']
-
-    # add more service definitions when explicit configuration is needed
-    # please note that last definitions always *replace* previous ones
+#    App\:
+#        resource: '%kernel.project_dir%/src/*'
+#        exclude: '%kernel.project_dir%/src/{Entity,Event,Exception,Migrations,Model,Specification,Kernel.php}'
 
     # Event Subscribers and Listeners
+    App\EventSubscriber\:
+        resource: '%kernel.project_dir%/src/EventSubscriber'
+
     App\EventSubscriber\NoGeneratorListener:
         class: App\EventSubscriber\NoGeneratorListener
         tags:
             - { name: doctrine.event_listener, event: prePersist }
 
 
-    # Various Services
+    # Services @todo separate to different config in tndt-85
+    App\Service\:
+        resource: '%kernel.project_dir%/src/Service'
+
     App\Service\ProjectContext:
         class: 'App\Service\ProjectContext'
         calls:
@@ -60,6 +57,7 @@ services:
         class: 'App\Service\Badges\UserBadgesHandler'
         tags: ['app.badges_handler']
 
+    # @todo move to presentation in tndt-85
     App\Service\Twig\BadgesExtension:
         class: 'App\Service\Twig\BadgesExtension'
         arguments:

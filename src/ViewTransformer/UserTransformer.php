@@ -5,7 +5,7 @@
  * Time: 22:41
  */
 
-namespace App\AjaxTransformer;
+namespace App\ViewTransformer;
 
 use App\Entity\User;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
