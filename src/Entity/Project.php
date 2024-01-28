@@ -234,7 +234,7 @@ class Project implements InProjectInterface
     }
 
     /**
-     * @param \App\Model\Enum\UserRolesEnum|null $role
+     * @param UserRolesEnum|null $role
      * @return Collection
      */
     public function getProjectUsers(?UserRolesEnum $role = null): Collection
@@ -309,7 +309,7 @@ class Project implements InProjectInterface
     }
 
     /**
-     * @return \App\Model\Dto\Project\TaskSettings
+     * @return TaskSettings
      */
     public function getTaskSettings(): TaskSettings
     {
@@ -317,7 +317,7 @@ class Project implements InProjectInterface
     }
 
     /**
-     * @param \App\Model\Dto\Project\TaskSettings $taskSettings
+     * @param TaskSettings $taskSettings
      * @return Project
      */
     public function setTaskSettings(TaskSettings $taskSettings): self

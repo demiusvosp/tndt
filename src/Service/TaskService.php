@@ -85,7 +85,7 @@ class TaskService
             $this->commentService->applyCommentFromString($task, $request->getComment(), $whoClose);
         }
         $stagesDictionary = $this->dictionaryFetcher->getDictionary(DictionaryTypeEnum::TASK_STAGE(), $task);
-        /** @var \App\Model\Dto\Dictionary\Task\TaskStageItem $oldStage */
+        /** @var TaskStageItem $oldStage */
         $oldStage = $stagesDictionary->getItem($task->getStage());
         $newStage = $stagesDictionary->getItem($request->getStage());
         if (!$newStage->isSet()) {
@@ -94,7 +94,7 @@ class TaskService
 
         $task->setIsClosed(true);
         $task->setStage($newStage->getId());
-        // теоретически этап стоит менять только через доменный метод, чтобы сработал и другая бизнес-логика,
+        // Теоретически этап стоит менять только через доменный метод, чтобы сработал и другая бизнес-логика,
         //   помимо смены атрибута в задаче. Но на данный момент там только та бизнес-логика, которая не должна быть
         //   выполнена при закрытии задачи. (например создание активности смены статуса, когда мы уже создаем активность
         //   задача закрыта)

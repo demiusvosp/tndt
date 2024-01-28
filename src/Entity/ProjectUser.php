@@ -146,7 +146,7 @@ class ProjectUser
     }
 
     /**
-     * @return \App\Model\Enum\UserRolesEnum
+     * @return UserRolesEnum
      */
     public function getRole(): UserRolesEnum
     {

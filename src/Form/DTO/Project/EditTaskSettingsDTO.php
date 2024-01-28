@@ -41,10 +41,10 @@ class EditTaskSettingsDTO
     private string $complexity;
 
     /**
-     * @param \App\Model\Dto\Project\TaskSettings $taskSettings
+     * @param TaskSettings $taskSettings
      * @throws JsonException
      */
-    public function __construct(\App\Model\Dto\Project\TaskSettings $taskSettings)
+    public function __construct(TaskSettings $taskSettings)
     {
         $this->types = $this->dictionaryToString($taskSettings->getTypes());
         $this->stages = $this->dictionaryToString($taskSettings->getStages());

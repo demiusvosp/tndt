@@ -53,7 +53,7 @@ class TaskStagesService
     /**
      * В какие состояния можно перевести указанную задачу
      * @param Task $task
-     * @param \App\Model\Dto\Dictionary\Task\TaskStageTypeEnum[] $onlyStageTypes - только указанные типы этапов (например только статусы закрытых задач)
+     * @param TaskStageTypeEnum[] $onlyStageTypes - только указанные типы этапов (например только статусы закрытых задач)
      * @param bool $allowSame - добавить этап на котором задача сейчас (например для селектов)
      * @return TaskStageItem[]
      */
@@ -62,7 +62,7 @@ class TaskStagesService
         if (count($onlyStageTypes) === 0) {
             $onlyStageTypes[] = TaskStageTypeEnum::STAGE_ON_NORMAL();
         }
-        /** @var \App\Model\Dto\Dictionary\Task\TaskStage $stagesDictionary */
+        /** @var TaskStage $stagesDictionary */
         $stagesDictionary = $this->dictionaryFetcher->getDictionary(DictionaryTypeEnum::TASK_STAGE(), $task);
         $stages = $stagesDictionary->getItemsByTypes($onlyStageTypes);
         $stages = array_filter(
@@ -98,7 +98,7 @@ class TaskStagesService
             return; // состояние не изменилось
         }
 
-        /** @var \App\Model\Dto\Dictionary\Task\TaskStage $stagesDictionary */
+        /** @var TaskStage $stagesDictionary */
         $stagesDictionary = $this->dictionaryFetcher->getDictionary(DictionaryTypeEnum::TASK_STAGE(), $task);
 
         if (!$stagesDictionary->hasItem($newStageId)) {

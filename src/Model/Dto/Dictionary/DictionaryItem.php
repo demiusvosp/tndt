@@ -129,7 +129,7 @@ class DictionaryItem implements JlobObjectInterface
     }
 
     /**
-     * @param \App\Model\Enum\string|BadgeEnum|null $useBadge
+     * @param BadgeEnum|string|null $useBadge
      * @return DictionaryItem
      */
     public function setUseBadge(BadgeEnum|string|null $useBadge): DictionaryItem

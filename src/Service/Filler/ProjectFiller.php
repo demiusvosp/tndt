@@ -124,9 +124,9 @@ class ProjectFiller
     }
 
     /**
-     * @param \App\Model\Enum\DictionaryTypeEnum $dictionaryType
+     * @param DictionaryTypeEnum $dictionaryType
      * @param string $string
-     * @return \App\Model\Dto\Dictionary\Dictionary
+     * @return Dictionary
      * @throws DictionaryException
      */
     private function stringToDictionary(DictionaryTypeEnum $dictionaryType, string $string): Dictionary

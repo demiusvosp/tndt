@@ -11,6 +11,7 @@ namespace App\Service\Dictionary;
 use App\Contract\HasClosedStatusInterface;
 use App\Exception\DictionaryException;
 use App\Model\Dto\Dictionary\Task\TaskPriorityItem;
+use App\Model\Dto\Dictionary\Task\TaskStageItem;
 use App\Model\Enum\DictionaryStyleEnum;
 use App\Model\Enum\DictionaryTypeEnum;
 use App\Model\Enum\TaskStageTypeEnum;
@@ -55,7 +56,7 @@ class Stylizer
                 }
             }
             if (isset($items[DictionaryTypeEnum::TASK_STAGE]) && $items[DictionaryTypeEnum::TASK_STAGE]->isSet()) {
-                /** @var \App\Model\Dto\Dictionary\Task\TaskStageItem $item */
+                /** @var TaskStageItem $item */
                 $item = $items[DictionaryTypeEnum::TASK_STAGE];
                 // стилизация закрытого состояние не совсем прерогатива справочника, но раз он отвечает за стиль списка
                 if (($entity instanceof HasClosedStatusInterface && $entity->isClosed())

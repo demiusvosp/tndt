@@ -19,17 +19,17 @@ use JsonSerializable;
 class TaskSettings implements JsonSerializable
 {
     /**
-     * @var \App\Model\Dto\Dictionary\Task\TaskType
+     * @var TaskType
      */
     private TaskType $types;
 
     /**
-     * @var \App\Model\Dto\Dictionary\Task\TaskStage
+     * @var TaskStage
      */
     private TaskStage $stages;
 
     /**
-     * @var \App\Model\Dto\Dictionary\Task\TaskPriority
+     * @var TaskPriority
      */
     private TaskPriority $priority;
 
@@ -61,7 +61,7 @@ class TaskSettings implements JsonSerializable
     }
 
     /**
-     * @return \App\Model\Dto\Dictionary\Task\TaskType
+     * @return TaskType
      */
     public function getTypes(): TaskType
     {
@@ -69,7 +69,7 @@ class TaskSettings implements JsonSerializable
     }
 
     /**
-     * @param \App\Model\Dto\Dictionary\Task\TaskType $types
+     * @param TaskType $types
      * @return TaskSettings
      */
     public function setTypes(TaskType $types): TaskSettings
@@ -79,7 +79,7 @@ class TaskSettings implements JsonSerializable
     }
 
     /**
-     * @return \App\Model\Dto\Dictionary\Task\TaskStage
+     * @return TaskStage
      */
     public function getStages(): TaskStage
     {
@@ -133,7 +133,7 @@ class TaskSettings implements JsonSerializable
     }
 
     /**
-     * @param \App\Model\Enum\DictionaryTypeEnum $type
+     * @param DictionaryTypeEnum $type
      * @return Dictionary
      */
     public function getDictionaryByType(DictionaryTypeEnum $type): Dictionary

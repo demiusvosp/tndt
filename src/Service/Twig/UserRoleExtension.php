@@ -62,7 +62,7 @@ class UserRoleExtension extends AbstractExtension
     }
 
     /**
-     * @param \App\Model\Enum\UserRolesEnum|string $role
+     * @param UserRolesEnum|string $role
      * @param bool $html - разрешить html
      * @return string
      */
