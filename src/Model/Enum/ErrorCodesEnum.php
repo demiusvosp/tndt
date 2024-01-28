@@ -6,7 +6,7 @@
  */
 declare(strict_types=1);
 
-namespace App\Exception;
+namespace App\Model\Enum;
 
 use MyCLabs\Enum\Enum;
 

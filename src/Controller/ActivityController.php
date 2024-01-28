@@ -8,8 +8,8 @@
 namespace App\Controller;
 
 use App\Exception\DomainException;
-use App\Exception\ErrorCodesEnum;
 use App\Model\Enum\ActivitySubjectTypeEnum;
+use App\Model\Enum\ErrorCodesEnum;
 use App\Repository\ActivityRepository;
 use App\ViewTransformer\ActivityTransformer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

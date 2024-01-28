@@ -7,6 +7,7 @@
 
 namespace App\Exception;
 
+use App\Model\Enum\ErrorCodesEnum;
 use Throwable;
 
 class ActivityAddException extends DomainException

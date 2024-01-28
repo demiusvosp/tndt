@@ -8,6 +8,7 @@ declare(strict_types=1);
 
 namespace App\Exception;
 
+use App\Model\Enum\ErrorCodesEnum;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
 

@@ -8,7 +8,7 @@ declare(strict_types=1);
 
 namespace App\Exception;
 
-use Symfony\Component\HttpFoundation\Response;
+use App\Model\Enum\ErrorCodesEnum;
 use Throwable;
 
 class DomainException extends \DomainException

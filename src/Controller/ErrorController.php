@@ -8,7 +8,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Exception\ErrorCodesEnum;
+use App\Model\Enum\ErrorCodesEnum;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\ErrorHandler\Exception\FlattenException;
 use Symfony\Component\HttpFoundation\Response;
