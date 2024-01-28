@@ -37,7 +37,7 @@ services:
         calls:
             - findCurrentProject: []
 
-    project_context:
+    app.project_context:
         alias: App\Service\ProjectContext
 
 
