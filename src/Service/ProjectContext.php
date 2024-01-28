@@ -10,7 +10,6 @@ namespace App\Service;
 
 use App\Entity\Project;
 use App\Repository\ProjectRepository;
-use App\Security\UserPermissionsEnum;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 

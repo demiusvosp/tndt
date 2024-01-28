@@ -17,8 +17,8 @@ use App\Form\DTO\Project\EditTaskSettingsDTO;
 use App\Form\DTO\Project\NewProjectDTO;
 use App\Model\Dto\Dictionary\Dictionary;
 use App\Model\Enum\DictionaryTypeEnum;
+use App\Model\Enum\UserRolesEnum;
 use App\Repository\UserRepository;
-use App\Security\UserRolesEnum;
 use InvalidArgumentException;
 use JsonException;
 

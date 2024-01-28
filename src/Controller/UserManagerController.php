@@ -10,10 +10,10 @@ namespace App\Controller;
 
 use App\Form\DTO\User\EditUserDTO;
 use App\Form\DTO\User\NewUserDTO;
-use App\Form\Type\User\UserManagerEditType;
 use App\Form\Type\User\NewUserType;
+use App\Form\Type\User\UserManagerEditType;
+use App\Model\Enum\UserPermissionsEnum;
 use App\Repository\UserRepository;
-use App\Security\UserPermissionsEnum;
 use App\Service\UserService;
 use Happyr\DoctrineSpecification\Spec;
 use Knp\Component\Pager\PaginatorInterface;

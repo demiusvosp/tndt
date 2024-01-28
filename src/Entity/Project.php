@@ -13,8 +13,8 @@ use App\Model\Dto\Dictionary\Task\TaskPriority;
 use App\Model\Dto\Dictionary\Task\TaskStage;
 use App\Model\Dto\Dictionary\Task\TaskType;
 use App\Model\Dto\Project\TaskSettings;
+use App\Model\Enum\UserRolesEnum;
 use App\Repository\ProjectRepository;
-use App\Security\UserRolesEnum;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -234,7 +234,7 @@ class Project implements InProjectInterface
     }
 
     /**
-     * @param UserRolesEnum|null $role
+     * @param \App\Model\Enum\UserRolesEnum|null $role
      * @return Collection
      */
     public function getProjectUsers(?UserRolesEnum $role = null): Collection

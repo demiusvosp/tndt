@@ -8,7 +8,6 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Entity\Doc;
 use App\Entity\Project;
 use App\Exception\DomainException;
 use App\Form\DTO\Doc\EditDocDTO;
@@ -16,8 +15,8 @@ use App\Form\DTO\Doc\NewDocDTO;
 use App\Form\Type\Doc\EditDocType;
 use App\Form\Type\Doc\NewDocType;
 use App\Model\Enum\DocStateEnum;
+use App\Model\Enum\UserPermissionsEnum;
 use App\Repository\DocRepository;
-use App\Security\UserPermissionsEnum;
 use App\Service\DocService;
 use App\Service\InProjectContext;
 use App\Specification\InProjectSpec;

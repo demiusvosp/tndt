@@ -11,7 +11,7 @@ namespace App\Service\Badges;
 use App\Entity\User;
 use App\Model\Dto\Badge;
 use App\Model\Enum\BadgeEnum;
-use App\Security\UserRolesEnum;
+use App\Model\Enum\UserRolesEnum;
 use App\Service\ProjectContext;
 use Symfony\Contracts\Translation\TranslatorInterface;
 

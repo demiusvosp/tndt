@@ -8,9 +8,9 @@ declare(strict_types=1);
 
 namespace App\EventSubscriber\Menu;
 
+use App\Model\Enum\UserPermissionsEnum;
 use App\Repository\DocRepository;
 use App\Repository\TaskRepository;
-use App\Security\UserPermissionsEnum;
 use App\Service\ProjectContext;
 use InvalidArgumentException;
 use KevinPapst\AdminLTEBundle\Event\BreadcrumbMenuEvent;

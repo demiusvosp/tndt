@@ -6,7 +6,7 @@
  */
 declare(strict_types=1);
 
-namespace App\Security;
+namespace App\Model\Enum;
 
 class UserPermissionsEnum extends UserRolesEnum
 {

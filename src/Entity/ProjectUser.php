@@ -8,7 +8,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use App\Security\UserRolesEnum;
+use App\Model\Enum\UserRolesEnum;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -146,7 +146,7 @@ class ProjectUser
     }
 
     /**
-     * @return UserRolesEnum
+     * @return \App\Model\Enum\UserRolesEnum
      */
     public function getRole(): UserRolesEnum
     {

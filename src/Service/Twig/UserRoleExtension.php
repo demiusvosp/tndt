@@ -8,8 +8,8 @@ declare(strict_types=1);
 
 namespace App\Service\Twig;
 
-use App\Security\UserPermissionsEnum;
-use App\Security\UserRolesEnum;
+use App\Model\Enum\UserPermissionsEnum;
+use App\Model\Enum\UserRolesEnum;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -62,7 +62,7 @@ class UserRoleExtension extends AbstractExtension
     }
 
     /**
-     * @param UserRolesEnum|string $role
+     * @param \App\Model\Enum\UserRolesEnum|string $role
      * @param bool $html - разрешить html
      * @return string
      */

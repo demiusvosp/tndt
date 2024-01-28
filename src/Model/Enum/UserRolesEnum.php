@@ -6,10 +6,9 @@
  */
 declare(strict_types=1);
 
-namespace App\Security;
+namespace App\Model\Enum;
 
 use MyCLabs\Enum\Enum;
-use phpDocumentor\Reflection\Types\This;
 
 /**
  * @method static ROLE_ROOT()
