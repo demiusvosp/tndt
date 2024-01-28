@@ -2,8 +2,8 @@
 
 namespace App\Entity;
 
+use App\Model\Enum\UserRolesEnum;
 use App\Repository\UserRepository;
-use App\Security\UserRolesEnum;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -322,7 +322,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return '';
     }
 
-    public function eraseCredentials()
+    public function eraseCredentials(): void
     {
         // TODO: Implement eraseCredentials() method.
     }

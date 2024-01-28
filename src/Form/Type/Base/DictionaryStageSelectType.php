@@ -8,7 +8,7 @@ declare(strict_types=1);
 
 namespace App\Form\Type\Base;
 
-use App\Dictionary\TypesEnum;
+use App\Model\Enum\DictionaryTypeEnum;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -18,11 +18,11 @@ class DictionaryStageSelectType extends DictionarySelectType
     {
         parent::configureOptions($resolver);
 
-        $resolver->setDefault('dictionary', TypesEnum::TASK_STAGE());
+        $resolver->setDefault('dictionary', DictionaryTypeEnum::TASK_STAGE());
         $resolver->setDefault(
             'items',
             function(Options $options) {
-                return $this->getItemsByDictionary(TypesEnum::TASK_STAGE());
+                return $this->getItemsByDictionary(DictionaryTypeEnum::TASK_STAGE());
             }
         );
 

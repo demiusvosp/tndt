@@ -91,7 +91,7 @@
                     <form action="{{ controls.stages.action }}" method="post">
                     <div class="btn-group-vertical" role="toolbar" aria-label="{{ 'ControlPanel'|trans }}">
                         {% if controls.edit %}
-                            <a class="btn btn-default btn-secondary" href="{{ controls.edit.action }}">{{ 'Edit'|trans }}</a>
+                            <a class="btn btn-default btn-secondary" href="{{ controls.edit.action }}">{{ controls.edit.label }}</a>
                         {% endif %}
                             {% for stage in controls.stages.items %}
                                 <button

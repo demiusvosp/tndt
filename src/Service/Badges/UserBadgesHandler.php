@@ -9,7 +9,9 @@ declare(strict_types=1);
 namespace App\Service\Badges;
 
 use App\Entity\User;
-use App\Security\UserRolesEnum;
+use App\Model\Dto\Badge;
+use App\Model\Enum\BadgeEnum;
+use App\Model\Enum\UserRolesEnum;
 use App\Service\ProjectContext;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -36,7 +38,7 @@ class UserBadgesHandler implements BadgeHandlerInterface
     /**
      * @param User $user
      * @param array $excepts
-     * @return BadgeDTO[]
+     * @return Badge[]
      */
     public function getBadges($user, array $excepts = []): array
     {
@@ -46,14 +48,14 @@ class UserBadgesHandler implements BadgeHandlerInterface
 
         $badges = [];
         if ($user->hasRole(UserRolesEnum::PROLE_PM, $this->projectContext->getProject())) {
-            $badges[] = new BadgeDTO(
+            $badges[] = new Badge(
                 $this->translator->trans('role.pm'),
-                BadgeEnum::SUCCESS(),
+                BadgeEnum::Success,
                 $this->translator->trans('role.project_manager')
             );
         }
         if ($user->isLocked()) {
-            $badges[] = new BadgeDTO(
+            $badges[] = new Badge(
                 '🛇',
                 null,
                 $this->translator->trans('user.locked.label')

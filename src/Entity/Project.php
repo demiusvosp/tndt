@@ -8,13 +8,13 @@
 namespace App\Entity;
 
 use App\Contract\InProjectInterface;
-use App\Dictionary\Object\Task\TaskComplexity;
-use App\Dictionary\Object\Task\TaskPriority;
-use App\Dictionary\Object\Task\TaskStage;
-use App\Dictionary\Object\Task\TaskType;
-use App\Object\Project\TaskSettings;
+use App\Model\Dto\Dictionary\Task\TaskComplexity;
+use App\Model\Dto\Dictionary\Task\TaskPriority;
+use App\Model\Dto\Dictionary\Task\TaskStage;
+use App\Model\Dto\Dictionary\Task\TaskType;
+use App\Model\Dto\Project\TaskSettings;
+use App\Model\Enum\UserRolesEnum;
 use App\Repository\ProjectRepository;
-use App\Security\UserRolesEnum;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;

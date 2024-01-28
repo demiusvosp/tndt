@@ -18,13 +18,13 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ListFilterType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('isArchived', CheckboxType::class, ['required' => false, 'label' => 'project.show_archive']);
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => ProjectListFilterDTO::class,

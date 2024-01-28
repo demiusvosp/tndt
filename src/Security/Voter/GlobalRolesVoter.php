@@ -8,9 +8,9 @@ declare(strict_types=1);
 
 namespace App\Security\Voter;
 
+use App\Model\Enum\UserPermissionsEnum;
+use App\Model\Enum\UserRolesEnum;
 use App\Security\Hierarchy\HierarchyHelper;
-use App\Security\UserPermissionsEnum;
-use App\Security\UserRolesEnum;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;

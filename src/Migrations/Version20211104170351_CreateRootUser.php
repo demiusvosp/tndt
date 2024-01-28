@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace App\Migrations;
 
 use App\Entity\User;
-use App\Security\UserRolesEnum;
+use App\Model\Enum\UserRolesEnum;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
+use DomainException;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
@@ -24,8 +25,10 @@ final class Version20211104170351_CreateRootUser extends AbstractMigration imple
     }
 
     /**
+     * @throws DomainException
      * @throws \Doctrine\DBAL\Driver\Exception
      * @throws \Doctrine\DBAL\Exception
+     * @throws \JsonException
      */
     public function up(Schema $schema) : void
     {
@@ -33,12 +36,15 @@ final class Version20211104170351_CreateRootUser extends AbstractMigration imple
 
         if (($existRoot = $checkRoot->fetchOne()) === false) {
             $passwordHasher = $this->container->get('security.user_password_hasher');
+            if (!$passwordHasher) {
+                throw new DomainException('Cannot find security.user_password_hasher service');
+            }
             $root = new User('root');
 
             $this->addSql('INSERT INTO tndt.app_user (id, username, name,  email, roles, password, locked, created_at) 
                 VALUES (1, "root", "root", "", :roles, :password, false, NOW())',
                 [
-                    'roles' => json_encode([UserRolesEnum::ROLE_ROOT]),
+                    'roles' => json_encode([UserRolesEnum::ROLE_ROOT], JSON_THROW_ON_ERROR),
                     'password' => $passwordHasher->hashPassword($root, 'root')
                 ]
             );

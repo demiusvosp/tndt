@@ -8,8 +8,8 @@ declare(strict_types=1);
 
 namespace App\Service\Constraints;
 
-use App\Dictionary\TypesEnum;
 use App\Exception\DictionaryException;
+use App\Model\Enum\DictionaryTypeEnum;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -36,7 +36,7 @@ class ValidDictionaryValidator extends ConstraintValidator
             return;
         }
 
-        $type = TypesEnum::from($constraint->type);
+        $type = DictionaryTypeEnum::from($constraint->type);
 
         if (is_string($value)) {
             try {

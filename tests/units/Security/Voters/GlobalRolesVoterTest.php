@@ -7,8 +7,9 @@
 
 namespace App\Tests\units\Security\Voters;
 
+use App\Entity\User;
+use App\Model\Enum\UserPermissionsEnum;
 use App\Security\Hierarchy\HierarchyHelper;
-use App\Security\UserPermissionsEnum;
 use App\Security\Voter\GlobalRolesVoter;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -44,7 +45,7 @@ class GlobalRolesVoterTest extends TestCase
 //        $token = $this->createMock(TokenInterface::class)
 //            ->method('getRoleNames')
 //            ->willReturn($userRoles);
-        $token = new UsernamePasswordToken('abc', 'creds', 'key', $userRoles);
+        $token = new UsernamePasswordToken(new User('abc'), 'main', $userRoles);
 
         $result = $this->globalRolesVoter->vote($token, $subject, $attributes);
         $this->assertSame($expected, $result);

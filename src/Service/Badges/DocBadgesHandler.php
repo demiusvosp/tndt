@@ -9,6 +9,8 @@ declare(strict_types=1);
 namespace App\Service\Badges;
 
 use App\Entity\Doc;
+use App\Model\Dto\Badge;
+use App\Model\Enum\BadgeEnum;
 use App\Model\Enum\DocStateEnum;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -33,7 +35,7 @@ class DocBadgesHandler implements BadgeHandlerInterface
     /**
      * @param Doc $doc
      * @param array $excepts
-     * @return BadgeDTO[]
+     * @return Badge[]
      */
     public function getBadges($doc, array $excepts = []): array
     {
@@ -43,14 +45,14 @@ class DocBadgesHandler implements BadgeHandlerInterface
 
         $badges = [];
         if ($doc->getState() === DocStateEnum::Deprecated && !in_array('deprecated', $excepts, true)) {
-            $badges[] = new BadgeDTO(
+            $badges[] = new Badge(
                 $this->translator->trans('doc.state.deprecated.label'),
-                BadgeEnum::WARNING(),
+                BadgeEnum::Warning,
                 $this->translator->trans('doc.state.deprecated.help')
             );
         }
         if ($doc->getState() === DocStateEnum::Archived && !in_array('archived', $excepts, true)) {
-            $badges[] = new BadgeDTO(
+            $badges[] = new Badge(
                 $this->translator->trans('doc.state.archive.label'),
                 null,
                 $this->translator->trans('doc.state.archive.help')

@@ -4,6 +4,10 @@ services:
     autowire: true      # Automatically injects dependencies in your services.
     autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
 
+  App\Security\:
+    resource: '%kernel.project_dir%/src/Security'
+
+
   App\Security\Hierarchy\HierarchyHelper:
     class: 'App\Security\Hierarchy\HierarchyHelper'
     arguments:

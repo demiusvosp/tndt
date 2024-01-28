@@ -8,8 +8,6 @@ declare(strict_types=1);
 
 namespace App\Service\Filler;
 
-use App\Dictionary\Object\Dictionary;
-use App\Dictionary\TypesEnum;
 use App\Entity\Project;
 use App\Entity\ProjectUser;
 use App\Exception\DictionaryException;
@@ -17,9 +15,11 @@ use App\Form\DTO\Project\EditProjectCommonDTO;
 use App\Form\DTO\Project\EditProjectPermissionsDTO;
 use App\Form\DTO\Project\EditTaskSettingsDTO;
 use App\Form\DTO\Project\NewProjectDTO;
+use App\Model\Dto\Dictionary\Dictionary;
+use App\Model\Enum\DictionaryTypeEnum;
+use App\Model\Enum\UserRolesEnum;
 use App\Repository\UserRepository;
-use App\Security\UserRolesEnum;
-use \InvalidArgumentException;
+use InvalidArgumentException;
 use JsonException;
 
 class ProjectFiller
@@ -108,28 +108,28 @@ class ProjectFiller
         $currentSetting = $project->getTaskSettings();
 
         $currentSetting->getTypes()->merge(
-            $this->stringToDictionary(TypesEnum::TASK_TYPE(), $dto->getTypes())
+            $this->stringToDictionary(DictionaryTypeEnum::TASK_TYPE(), $dto->getTypes())
         );
         $currentSetting->getStages()->merge(
-            $this->stringToDictionary(TypesEnum::TASK_STAGE(), $dto->getStages())
+            $this->stringToDictionary(DictionaryTypeEnum::TASK_STAGE(), $dto->getStages())
         );
         $currentSetting->getPriority()->merge(
-            $this->stringToDictionary(TypesEnum::TASK_PRIORITY(), $dto->getPriority())
+            $this->stringToDictionary(DictionaryTypeEnum::TASK_PRIORITY(), $dto->getPriority())
         );
         $currentSetting->getComplexity()->merge(
-            $this->stringToDictionary(TypesEnum::TASK_COMPLEXITY(), $dto->getComplexity())
+            $this->stringToDictionary(DictionaryTypeEnum::TASK_COMPLEXITY(), $dto->getComplexity())
         );
         // необходимо доктрине, иначе она не понимает, что объект изменился
         $project->setTaskSettings(clone $currentSetting);
     }
 
     /**
-     * @param TypesEnum $dictionaryType
+     * @param DictionaryTypeEnum $dictionaryType
      * @param string $string
      * @return Dictionary
      * @throws DictionaryException
      */
-    private function stringToDictionary(TypesEnum $dictionaryType, string $string): Dictionary
+    private function stringToDictionary(DictionaryTypeEnum $dictionaryType, string $string): Dictionary
     {
         try {
             $array = json_decode($string, true, 512, JSON_THROW_ON_ERROR);

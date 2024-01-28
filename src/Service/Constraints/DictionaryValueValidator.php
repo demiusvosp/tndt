@@ -10,8 +10,8 @@ namespace App\Service\Constraints;
 
 use App\Contract\InProjectInterface;
 use App\Contract\WithProjectInterface;
-use App\Dictionary\Fetcher;
-use App\Dictionary\TypesEnum;
+use App\Model\Enum\DictionaryTypeEnum;
+use App\Service\Dictionary\Fetcher;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
@@ -35,7 +35,7 @@ class DictionaryValueValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, DictionaryValue::class);
         }
 
-        $type = TypesEnum::from($constraint->type);
+        $type = DictionaryTypeEnum::from($constraint->type);
 
         if (null === $object = $this->context->getObject()) {
             return;

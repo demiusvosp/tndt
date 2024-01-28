@@ -8,11 +8,10 @@ declare(strict_types=1);
 
 namespace App\Form\Type\Task;
 
-use App\Dictionary\Fetcher;
-use App\Dictionary\Object\Task\StageTypesEnum;
-use App\Dictionary\TypesEnum;
 use App\Form\DTO\Task\CloseTaskDTO;
 use App\Form\Type\Base\DictionaryStageSelectType;
+use App\Model\Enum\DictionaryTypeEnum;
+use App\Model\Enum\TaskStageTypeEnum;
 use App\Service\TaskStagesService;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -52,7 +51,7 @@ class CloseTaskForm extends AbstractType
                 }
 
                 $settings = $entity->getProject()->getTaskSettings();
-                $stage = $settings->getDictionaryByType(TypesEnum::TASK_STAGE());
+                $stage = $settings->getDictionaryByType(DictionaryTypeEnum::TASK_STAGE());
                 if ($stage->isEnabled()) {
                     $event->getForm()->add(
                         'stage',
@@ -62,7 +61,7 @@ class CloseTaskForm extends AbstractType
                             'label' => 'task.close.stage',
                             'items' => $this->taskStagesService->availableStages(
                                 $entity->getTask(),
-                                [StageTypesEnum::STAGE_ON_CLOSED()]
+                                [TaskStageTypeEnum::STAGE_ON_CLOSED()]
                             )
                         ]
                     );

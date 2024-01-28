@@ -8,17 +8,16 @@ declare(strict_types=1);
 
 namespace App\Service;
 
-use App\Dictionary\Fetcher;
-use App\Dictionary\Object\Task\StageTypesEnum;
-use App\Dictionary\Object\Task\TaskStage;
-use App\Dictionary\Object\Task\TaskStageItem;
-use App\Dictionary\TypesEnum;
 use App\Entity\Project;
 use App\Entity\Task;
 use App\Event\AppEvents;
 use App\Event\TaskChangeStageEvent;
-use App\Event\TaskEvent;
 use App\Exception\TaskStageException;
+use App\Model\Dto\Dictionary\Task\TaskStage;
+use App\Model\Dto\Dictionary\Task\TaskStageItem;
+use App\Model\Enum\DictionaryTypeEnum;
+use App\Model\Enum\TaskStageTypeEnum;
+use App\Service\Dictionary\Fetcher;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -46,25 +45,25 @@ class TaskStagesService
     public function availableStagesForNewTask(Project $project): array
     {
         /** @var TaskStage $stagesDictionary */
-        $stagesDictionary = $this->dictionaryFetcher->getDictionary(TypesEnum::TASK_STAGE(), $project);
+        $stagesDictionary = $this->dictionaryFetcher->getDictionary(DictionaryTypeEnum::TASK_STAGE(), $project);
 
-        return $stagesDictionary->getItemsByTypes([StageTypesEnum::STAGE_ON_OPEN()]);
+        return $stagesDictionary->getItemsByTypes([TaskStageTypeEnum::STAGE_ON_OPEN()]);
     }
 
     /**
      * В какие состояния можно перевести указанную задачу
      * @param Task $task
-     * @param StageTypesEnum[] $onlyStageTypes - только указанные типы этапов (например только статусы закрытых задач)
+     * @param TaskStageTypeEnum[] $onlyStageTypes - только указанные типы этапов (например только статусы закрытых задач)
      * @param bool $allowSame - добавить этап на котором задача сейчас (например для селектов)
      * @return TaskStageItem[]
      */
     public function availableStages(Task $task, array $onlyStageTypes = [], bool $allowSame = false): array
     {
         if (count($onlyStageTypes) === 0) {
-            $onlyStageTypes[] = StageTypesEnum::STAGE_ON_NORMAL();
+            $onlyStageTypes[] = TaskStageTypeEnum::STAGE_ON_NORMAL();
         }
         /** @var TaskStage $stagesDictionary */
-        $stagesDictionary = $this->dictionaryFetcher->getDictionary(TypesEnum::TASK_STAGE(), $task);
+        $stagesDictionary = $this->dictionaryFetcher->getDictionary(DictionaryTypeEnum::TASK_STAGE(), $task);
         $stages = $stagesDictionary->getItemsByTypes($onlyStageTypes);
         $stages = array_filter(
             $stages,
@@ -73,10 +72,10 @@ class TaskStagesService
                     // задача уже на этом этапе
                     return $allowSame; // если мы такие этапы включаем то всегда, если нет, то выбрасываем
                 }
-                if (!$task->getAssignedTo() && $stage->getType()->equals(StageTypesEnum::STAGE_ON_NORMAL())) {
+                if (!$task->getAssignedTo() && $stage->getType()->equals(TaskStageTypeEnum::STAGE_ON_NORMAL())) {
                     return false;// никому не назначенные задачи нельзя взять в работу
                 }
-                if ($task->isClosed() && !$stage->getType()->equals(StageTypesEnum::STAGE_ON_CLOSED())) {
+                if ($task->isClosed() && !$stage->getType()->equals(TaskStageTypeEnum::STAGE_ON_CLOSED())) {
                     return false;// закрытым задачам не предлагаем открытые этапы (вновь открываться будет через отдельный метод)
                 }
                 return true;
@@ -100,7 +99,7 @@ class TaskStagesService
         }
 
         /** @var TaskStage $stagesDictionary */
-        $stagesDictionary = $this->dictionaryFetcher->getDictionary(TypesEnum::TASK_STAGE(), $task);
+        $stagesDictionary = $this->dictionaryFetcher->getDictionary(DictionaryTypeEnum::TASK_STAGE(), $task);
 
         if (!$stagesDictionary->hasItem($newStageId)) {
             throw new TaskStageException('Нельзя перевести в неизвестное состояние ' . $newStageId);
@@ -109,10 +108,10 @@ class TaskStagesService
 
         $task->setStage($newStageId);
 
-        if (!$task->isClosed() && $newStage->getType()->equals(StageTypesEnum::STAGE_ON_CLOSED())) {
+        if (!$task->isClosed() && $newStage->getType()->equals(TaskStageTypeEnum::STAGE_ON_CLOSED())) {
             $task->setIsClosed(true);// новый этап закрывает задачу
         }
-        if ($task->isClosed() && !$newStage->getType()->equals(StageTypesEnum::STAGE_ON_CLOSED())) {
+        if ($task->isClosed() && !$newStage->getType()->equals(TaskStageTypeEnum::STAGE_ON_CLOSED())) {
             $task->setIsClosed(false);// новый этап открывает задачу
         }
 

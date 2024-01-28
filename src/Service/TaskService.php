@@ -8,10 +8,6 @@ declare(strict_types=1);
 
 namespace App\Service;
 
-use App\Dictionary\Fetcher;
-use App\Dictionary\Object\Task\StageTypesEnum;
-use App\Dictionary\Object\Task\TaskStageItem;
-use App\Dictionary\TypesEnum;
 use App\Entity\Task;
 use App\Entity\User;
 use App\Event\AppEvents;
@@ -20,6 +16,10 @@ use App\Event\TaskEvent;
 use App\Form\DTO\Task\CloseTaskDTO;
 use App\Form\DTO\Task\EditTaskDTO;
 use App\Form\DTO\Task\NewTaskDTO;
+use App\Model\Dto\Dictionary\Task\TaskStageItem;
+use App\Model\Enum\DictionaryTypeEnum;
+use App\Model\Enum\TaskStageTypeEnum;
+use App\Service\Dictionary\Fetcher;
 use App\Service\Filler\TaskFiller;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
@@ -84,17 +84,17 @@ class TaskService
         if (!empty($request->getComment())) {
             $this->commentService->applyCommentFromString($task, $request->getComment(), $whoClose);
         }
-        $stagesDictionary = $this->dictionaryFetcher->getDictionary(TypesEnum::TASK_STAGE(), $task);
+        $stagesDictionary = $this->dictionaryFetcher->getDictionary(DictionaryTypeEnum::TASK_STAGE(), $task);
         /** @var TaskStageItem $oldStage */
         $oldStage = $stagesDictionary->getItem($task->getStage());
         $newStage = $stagesDictionary->getItem($request->getStage());
         if (!$newStage->isSet()) {
-            $newStage = current($this->stagesService->availableStages($task, [StageTypesEnum::STAGE_ON_CLOSED()]));
+            $newStage = current($this->stagesService->availableStages($task, [TaskStageTypeEnum::STAGE_ON_CLOSED()]));
         }
 
         $task->setIsClosed(true);
         $task->setStage($newStage->getId());
-        // теоретически этап стоит менять только через доменный метод, чтобы сработал и другая бизнес-логика,
+        // Теоретически этап стоит менять только через доменный метод, чтобы сработал и другая бизнес-логика,
         //   помимо смены атрибута в задаче. Но на данный момент там только та бизнес-логика, которая не должна быть
         //   выполнена при закрытии задачи. (например создание активности смены статуса, когда мы уже создаем активность
         //   задача закрыта)

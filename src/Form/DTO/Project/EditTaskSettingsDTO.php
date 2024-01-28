@@ -8,8 +8,8 @@ declare(strict_types=1);
 
 namespace App\Form\DTO\Project;
 
-use App\Dictionary\Object\Dictionary;
-use App\Object\Project\TaskSettings;
+use App\Model\Dto\Dictionary\Dictionary;
+use App\Model\Dto\Project\TaskSettings;
 use App\Service\Constraints\ValidDictionary;
 use JsonException;
 use Symfony\Component\Validator\Constraints as Assert;

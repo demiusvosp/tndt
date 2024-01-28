@@ -9,12 +9,12 @@ declare(strict_types=1);
 namespace App\Form\DTO\Project;
 
 use App\Entity\Project;
-use App\Security\UserRolesEnum;
+use App\Entity\User;
+use App\Model\Enum\UserRolesEnum;
 use App\Service\Constraints\UniqueInFields;
 use Doctrine\Common\Collections\ArrayCollection;
 use Happyr\Validator\Constraint\EntityExist;
 use Symfony\Component\Validator\Constraints as Assert;
-use App\Entity\User;
 
 class EditProjectPermissionsDTO
 {

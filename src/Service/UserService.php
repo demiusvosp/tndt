@@ -12,7 +12,7 @@ use App\Exception\ForbiddenException;
 use App\Form\DTO\User\EditUserDTO;
 use App\Form\DTO\User\NewUserDTO;
 use App\Form\DTO\User\SelfEditUserDTO;
-use App\Security\UserPermissionsEnum;
+use App\Model\Enum\UserPermissionsEnum;
 use App\Service\Filler\UserFiller;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\SecurityBundle\Security;

@@ -9,12 +9,9 @@ declare(strict_types=1);
 namespace App\EventSubscriber;
 
 use App\Entity\Doc;
-use App\Entity\User;
 use App\Event\AppEvents;
 use App\Event\CommentEvent;
-use App\Event\DocChangeStateEvent;
 use App\Event\DocEvent;
-use App\Security\UserRolesEnum;
 use DateTime;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
