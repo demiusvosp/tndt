@@ -23,6 +23,7 @@ use App\Service\InProjectContext;
 use App\Service\TaskService;
 use App\Service\TaskStagesService;
 use App\Specification\InProjectSpec;
+use App\ViewModel\Button\ControlButton;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -93,7 +94,10 @@ class TaskController extends AbstractController
 
         $edit = null;
         if ($this->isGranted('PERM_TASK_EDIT')) {
-            $edit['action'] = $this->generateUrl('task.edit', ['taskId' => $task->getTaskId()]);
+            $edit = new ControlButton(
+                $this->translator->trans('Edit'),
+                $this->generateUrl('task.edit', ['taskId' => $task->getTaskId()])
+            );
         }
         $editStages = [];
         foreach ($this->taskStagesService->availableStages($task, [TaskStageTypeEnum::STAGE_ON_NORMAL()]) as $stage) {
