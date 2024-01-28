@@ -16,13 +16,13 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ListFilterType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('addClosed', CheckboxType::class, ['required' => false, 'label' => 'task.show_closed']);
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => ListFilterDTO::class,

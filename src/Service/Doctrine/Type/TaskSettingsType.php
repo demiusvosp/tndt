@@ -24,7 +24,7 @@ class TaskSettingsType extends JsonType
         return self::TYPE_NAME;
     }
 
-    public function convertToDatabaseValue($value, AbstractPlatform $platform)
+    public function convertToDatabaseValue($value, AbstractPlatform $platform): mixed
     {
         return parent::convertToDatabaseValue($value, $platform);
     }
