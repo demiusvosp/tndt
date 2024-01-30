@@ -53,11 +53,19 @@ class ProjectItemsSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $event->addItem(new BaseMenuItem(
-            'project',
-            $project->getName(),
-            $this->router->generate('project.index', ['suffix' => $project->getSuffix()])
-        ));
+        if ($route === 'project.index') {
+            $event->addItem(new BaseMenuItem(
+                'project.list',
+                $this->translator->trans('breadcrumb.projects'),
+                $this->router->generate('project.list')
+            ));
+        } else {
+            $event->addItem(new BaseMenuItem(
+                'project',
+                $project->getName(),
+                $this->router->generate('project.index', ['suffix' => $project->getSuffix()])
+            ));
+        }
         if (str_starts_with($route, 'project.edit')) {
             $event->addItem(new BaseMenuItem(
                 'project.edit',
@@ -65,6 +73,7 @@ class ProjectItemsSubscriber implements EventSubscriberInterface
                 $this->router->generate('project.edit', ['suffix' => $project->getSuffix()])
             ));
         }
+
         if (str_starts_with($route, 'task.')) {
             $event->addItem(new BaseMenuItem(
                 'tasks',
@@ -81,6 +90,7 @@ class ProjectItemsSubscriber implements EventSubscriberInterface
                 ));
             }
         }
+
         if (str_starts_with($route, 'doc.')) {
             $event->addItem(new BaseMenuItem(
                 'doc',
