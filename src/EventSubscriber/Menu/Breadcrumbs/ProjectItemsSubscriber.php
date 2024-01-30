@@ -7,6 +7,7 @@
 
 namespace App\EventSubscriber\Menu\Breadcrumbs;
 
+use App\Entity\Task;
 use App\Event\Menu\MenuEvent;
 use App\Service\ProjectContext;
 use App\ViewModel\Menu\BaseMenuItem;
@@ -44,9 +45,10 @@ class ProjectItemsSubscriber implements EventSubscriberInterface
 
     public function buildBreadcrumb(MenuEvent $event): void
     {
-        $route = $this->requestStack->getMainRequest()?->get('_route');
-        $project = $this->projectContext->getProject();
-        if (!$project) {
+        $request = $this->requestStack->getMainRequest();
+        $route = $request?->get('_route');
+        $project = $request?->attributes->get('project');
+        if (!$request || !$project) {
             return;
         }
 
@@ -68,6 +70,16 @@ class ProjectItemsSubscriber implements EventSubscriberInterface
                 $this->translator->trans('breadcrumb.project.tasks'),
                 $this->router->generate('task.list', ['suffix' => $project->getSuffix()])
             ));
+            /** @vat Task $task */
+            if ($route !== 'task.index' && $request->attributes->has('task')) {
+                /** @var Task $task */
+                $task = $request->attributes->get('task');
+                $event->addItem(new BaseMenuItem(
+                    $route,
+                    $task->getTaskId() . ' - ' . $task->getCaption(),
+                    $this->router->generate('task.index', ['taskId' => $task->getTaskId()])
+                ));
+            }
         }
         if (str_starts_with($route, 'doc.')) {
             $event->addItem(new BaseMenuItem(
