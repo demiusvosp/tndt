@@ -7,6 +7,7 @@
 
 namespace App\EventSubscriber\Menu\Breadcrumbs;
 
+use App\Entity\Doc;
 use App\Entity\Task;
 use App\Event\Menu\MenuEvent;
 use App\Service\ProjectContext;
@@ -70,12 +71,11 @@ class ProjectItemsSubscriber implements EventSubscriberInterface
                 $this->translator->trans('breadcrumb.project.tasks'),
                 $this->router->generate('task.list', ['suffix' => $project->getSuffix()])
             ));
-            /** @vat Task $task */
             if ($route !== 'task.index' && $request->attributes->has('task')) {
                 /** @var Task $task */
                 $task = $request->attributes->get('task');
                 $event->addItem(new BaseMenuItem(
-                    $route,
+                    'task.index',
                     $task->getTaskId() . ' - ' . $task->getCaption(),
                     $this->router->generate('task.index', ['taskId' => $task->getTaskId()])
                 ));
@@ -87,6 +87,15 @@ class ProjectItemsSubscriber implements EventSubscriberInterface
                 $this->translator->trans('breadcrumb.project.docs'),
                 $this->router->generate('doc.list', ['suffix' => $project->getSuffix()])
             ));
+            if ($route !== 'doc.index' && $request->attributes->has('doc')) {
+                /** @var Doc $doc */
+                $doc = $request->attributes->get('doc');
+                $event->addItem(new BaseMenuItem(
+                    'doc.index',
+                    $doc->getDocId() . ' - ' . $doc->getCaption(),
+                    $this->router->generate('doc.index', $doc->getUrlParams())
+                ));
+            }
         }
     }
 }
