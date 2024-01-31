@@ -41,16 +41,16 @@
     {# @TODO вернуть когда будет реализован поиск по треккеру #}
 {% endblock %}
 {% block sidebar_nav %}
-    {% include 'bundles/AdminLTEBundle/Sidebar/menu.html.twig' with {'adminlte_direct_include': true} %}
+    {% include '_sidebar.html.twig' %}
 {% endblock %}
 
 {% block breadcrumb %}
-    {% include 'breadcrumbs.html.twig' with {'adminlte_direct_include': true} %}
+    {% include '_breadcrumbs.html.twig' with {'adminlte_direct_include': true} %}
 {% endblock %}
 
 {% block footer %}
-    {% include 'footer.html.twig' %}
-    {% include 'modals.html.twig' %}
+    {% include '_footer.html.twig' %}
+    {% include '_modals.html.twig' %}
     {% if app.request.get('addMdHelp') %}
         {{ render(controller('App\\Controller\\HomeController::helpMd')) }}
     {% endif %}

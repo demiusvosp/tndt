@@ -1,0 +1,17 @@
+{% from "bundles/AdminLTEBundle/Macros/menu.html.twig" import menu_item %}
+{% set menu = adminlte_menu(app.request) %}
+{% if menu is defined and menu is not null %}
+<ul class="sidebar-menu" data-widget="tree">
+    {% for item in menu %}
+        {{ menu_item(item) }}
+    {% endfor %}
+    {% for item in sidebar() %}
+        <li>
+            <a href="{{ item.action }}">
+                {% if item.icon %} <i class="{{ item.icon }}"></i> {% endif %}
+                <span>{{ item.label }}</span>
+            </a>
+        </li>
+    {% endfor %}
+</ul>
+{% endif %}

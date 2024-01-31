@@ -29,12 +29,26 @@ class LayoutExtension extends AbstractExtension
                 [$this, 'buildBreadcrumbs'],
                 ['is_safe' => ['html']]
             ),
+            new TwigFunction(
+                'sidebar',
+                [$this, 'buildSidebar'],
+                ['is_safe' => ['html']]
+            ),
         ];
     }
 
     public function buildBreadcrumbs(): ?array
     {
+        /** @var MenuEvent $result */
         $result = $this->eventDispatcher->dispatch(new MenuEvent(), MenuEvent::BREADCRUMB);
+
+        return $result->getItems();
+    }
+
+    public function buildSidebar(): ?array
+    {
+        /** @var MenuEvent $result */
+        $result = $this->eventDispatcher->dispatch(new MenuEvent(), MenuEvent::SIDEBAR);
 
         return $result->getItems();
     }

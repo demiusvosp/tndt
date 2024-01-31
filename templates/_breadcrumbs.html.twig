@@ -1,8 +1,5 @@
-
-{% set active = adminlte_breadcrumbs(app.request) %}
-{% set breadcrumbs = breadcrumbs() %}
 <ol class="breadcrumb">
-    {% for item in breadcrumbs %}
+    {% for item in breadcrumbs() %}
     <li>
         <a href="{{ item.action }}">
             {% if item.icon %}<i class="{{ item.icon }}"></i>{% endif %}
