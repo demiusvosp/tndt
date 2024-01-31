@@ -21,29 +21,17 @@ And_more: И еще
 Archive: Убрать в архив
 archived: в архиве
 breadcrumb:
-  dashboard.about: О системе
-  doc:
-    create: Новый...
-    edit: Редактирование
-  home: Главная
-  projects: Проекты
+  dashboard.about: About
+  home: Home
+  projects: Projects
   project:
-    create: Новый...
     edit:
-      common: Настройки
-      permissions: Полномочия
-      task_settings: Задачи
-    docs: Документы
-    tasks: Задачи
-  task:
-    create: Новая...
-    edit: Редактирование
+      common: Setting
+    docs: Documents
+    tasks: Tasks
   user:
-    edit: Edit profile
     home: Users
   user.management:
-    create: New...
-    edit: Common
     home: User management
 Close: Закрыть
 closed: закрыта

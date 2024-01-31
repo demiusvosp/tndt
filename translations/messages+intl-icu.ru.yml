@@ -22,28 +22,16 @@ Archive: Убрать в архив
 archived: в архиве
 breadcrumb:
   dashboard.about: О системе
-  doc:
-    create: Новый...
-    edit: Редактирование
   home: Главная
   projects: Проекты
   project:
-    create: Новый...
     edit:
       common: Настройки
-      permissions: Полномочия
-      task_settings: Задачи
     docs: Документы
     tasks: Задачи
-  task:
-    create: Новая...
-    edit: Редактирование
   user:
-    edit: Редактирование профиля
     home: Пользователи
   user.management:
-    create: Новый...
-    edit: Основные
     home: Управление пользователями
 Close: Закрыть
 closed: закрыта
