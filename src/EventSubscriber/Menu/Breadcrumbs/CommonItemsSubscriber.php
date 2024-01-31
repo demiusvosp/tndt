@@ -39,7 +39,6 @@ class CommonItemsSubscriber implements EventSubscriberInterface
         $route = $this->requestStack->getMainRequest()?->get('_route');
 
         $event->addItem(new BaseMenuItem(
-            'home',
             $this->translator->trans('breadcrumb.home'),
             $this->router->generate('home'),
             'fas fa-tachometer-alt'
@@ -47,7 +46,6 @@ class CommonItemsSubscriber implements EventSubscriberInterface
 
         if ($route === 'about') {
             $event->addItem(new BaseMenuItem(
-                'about',
                 $this->translator->trans('breadcrumb.dashboard.about'),
                 $this->router->generate('about')
             ));

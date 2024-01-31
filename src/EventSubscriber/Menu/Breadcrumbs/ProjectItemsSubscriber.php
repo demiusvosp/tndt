@@ -55,20 +55,17 @@ class ProjectItemsSubscriber implements EventSubscriberInterface
 
         if ($route === 'project.index') {
             $event->addItem(new BaseMenuItem(
-                'project.list',
                 $this->translator->trans('breadcrumb.projects'),
                 $this->router->generate('project.list')
             ));
         } else {
             $event->addItem(new BaseMenuItem(
-                'project',
                 $project->getName(),
                 $this->router->generate('project.index', ['suffix' => $project->getSuffix()])
             ));
         }
         if (str_starts_with($route, 'project.edit')) {
             $event->addItem(new BaseMenuItem(
-                'project.edit',
                 $this->translator->trans('breadcrumb.project.edit.common'),
                 $this->router->generate('project.edit', ['suffix' => $project->getSuffix()])
             ));
@@ -76,7 +73,6 @@ class ProjectItemsSubscriber implements EventSubscriberInterface
 
         if (str_starts_with($route, 'task.')) {
             $event->addItem(new BaseMenuItem(
-                'tasks',
                 $this->translator->trans('breadcrumb.project.tasks'),
                 $this->router->generate('task.list', ['suffix' => $project->getSuffix()])
             ));
@@ -84,7 +80,6 @@ class ProjectItemsSubscriber implements EventSubscriberInterface
                 /** @var Task $task */
                 $task = $request->attributes->get('task');
                 $event->addItem(new BaseMenuItem(
-                    'task.index',
                     $task->getTaskId() . ' - ' . $task->getCaption(),
                     $this->router->generate('task.index', ['taskId' => $task->getTaskId()])
                 ));
@@ -93,7 +88,6 @@ class ProjectItemsSubscriber implements EventSubscriberInterface
 
         if (str_starts_with($route, 'doc.')) {
             $event->addItem(new BaseMenuItem(
-                'doc',
                 $this->translator->trans('breadcrumb.project.docs'),
                 $this->router->generate('doc.list', ['suffix' => $project->getSuffix()])
             ));
@@ -101,7 +95,6 @@ class ProjectItemsSubscriber implements EventSubscriberInterface
                 /** @var Doc $doc */
                 $doc = $request->attributes->get('doc');
                 $event->addItem(new BaseMenuItem(
-                    'doc.index',
                     $doc->getDocId() . ' - ' . $doc->getCaption(),
                     $this->router->generate('doc.index', $doc->getUrlParams())
                 ));
