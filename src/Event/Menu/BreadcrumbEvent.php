@@ -7,14 +7,14 @@
 
 namespace App\Event\Menu;
 
-use App\ViewModel\Menu\AbstractSidebarTreeItem;
+use App\ViewModel\Menu\BreadcrumbMenuItem;
 use Symfony\Contracts\EventDispatcher\Event;
 
-class MenuEvent extends Event
+class BreadcrumbEvent extends Event
 {
-    public const SIDEBAR = 'app.menu.sidebar';
+    public const BREADCRUMB = 'app.menu.breadcrumb';
 
-    /** @var AbstractSidebarTreeItem[] */
+    /** @var BreadcrumbMenuItem[] */
     private array $items;
 
     public function __construct()
@@ -22,13 +22,13 @@ class MenuEvent extends Event
         $this->items = [];
     }
 
-    public function addItem(AbstractSidebarTreeItem $item): void
+    public function addItem(BreadcrumbMenuItem $item): void
     {
         $this->items[] = $item;
     }
 
     /**
-     * @return AbstractSidebarTreeItem[]
+     * @return BreadcrumbMenuItem[]
      */
     public function getItems(): array
     {

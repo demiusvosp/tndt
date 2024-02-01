@@ -7,18 +7,24 @@
 
 namespace App\ViewModel\Menu;
 
-class SidebarMenuItem extends BaseMenuItem // здесь это красиво, а как в твиге подружиить разные элементы?
-{
-    private bool $active;
 
-    public function __construct(string $label, string $action, bool $active, ?string $icon = null, )
+class SidebarMenuItem extends AbstractSidebarTreeItem
+{
+    private string $action;
+
+    public function __construct(string $action, bool $active, string $label, ?string $icon)
     {
-        $this->active = $active;
-        parent::__construct($label, $action, $icon);
+        $this->action = $action;
+        parent::__construct($active, $label, $icon);
     }
 
-    public function active(): bool
+    public function isTree(): bool
     {
-        return $this->active;
+        return false;
+    }
+
+    public function getAction(): string
+    {
+        return $this->action;
     }
 }

@@ -9,9 +9,9 @@ namespace App\EventSubscriber\Menu\Breadcrumbs;
 
 use App\Entity\Doc;
 use App\Entity\Task;
-use App\Event\Menu\MenuEvent;
+use App\Event\Menu\BreadcrumbEvent;
 use App\Service\ProjectContext;
-use App\ViewModel\Menu\BaseMenuItem;
+use App\ViewModel\Menu\BreadcrumbMenuItem;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -40,11 +40,11 @@ class ProjectItemsSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            MenuEvent::BREADCRUMB => ['buildBreadcrumb', 800],
+            BreadcrumbEvent::BREADCRUMB => ['buildBreadcrumb', 800],
         ];
     }
 
-    public function buildBreadcrumb(MenuEvent $event): void
+    public function buildBreadcrumb(BreadcrumbEvent $event): void
     {
         $request = $this->requestStack->getMainRequest();
         $route = $request?->get('_route');
@@ -54,32 +54,32 @@ class ProjectItemsSubscriber implements EventSubscriberInterface
         }
 
         if ($route === 'project.index') {
-            $event->addItem(new BaseMenuItem(
+            $event->addItem(new BreadcrumbMenuItem(
                 $this->translator->trans('breadcrumb.projects'),
                 $this->router->generate('project.list')
             ));
         } else {
-            $event->addItem(new BaseMenuItem(
+            $event->addItem(new BreadcrumbMenuItem(
                 $project->getName(),
                 $this->router->generate('project.index', ['suffix' => $project->getSuffix()])
             ));
         }
         if (str_starts_with($route, 'project.edit')) {
-            $event->addItem(new BaseMenuItem(
+            $event->addItem(new BreadcrumbMenuItem(
                 $this->translator->trans('breadcrumb.project.edit.common'),
                 $this->router->generate('project.edit', ['suffix' => $project->getSuffix()])
             ));
         }
 
         if (str_starts_with($route, 'task.')) {
-            $event->addItem(new BaseMenuItem(
+            $event->addItem(new BreadcrumbMenuItem(
                 $this->translator->trans('breadcrumb.project.tasks'),
                 $this->router->generate('task.list', ['suffix' => $project->getSuffix()])
             ));
             if ($route !== 'task.index' && $request->attributes->has('task')) {
                 /** @var Task $task */
                 $task = $request->attributes->get('task');
-                $event->addItem(new BaseMenuItem(
+                $event->addItem(new BreadcrumbMenuItem(
                     $task->getTaskId() . ' - ' . $task->getCaption(),
                     $this->router->generate('task.index', ['taskId' => $task->getTaskId()])
                 ));
@@ -87,14 +87,14 @@ class ProjectItemsSubscriber implements EventSubscriberInterface
         }
 
         if (str_starts_with($route, 'doc.')) {
-            $event->addItem(new BaseMenuItem(
+            $event->addItem(new BreadcrumbMenuItem(
                 $this->translator->trans('breadcrumb.project.docs'),
                 $this->router->generate('doc.list', ['suffix' => $project->getSuffix()])
             ));
             if ($route !== 'doc.index' && $request->attributes->has('doc')) {
                 /** @var Doc $doc */
                 $doc = $request->attributes->get('doc');
-                $event->addItem(new BaseMenuItem(
+                $event->addItem(new BreadcrumbMenuItem(
                     $doc->getDocId() . ' - ' . $doc->getCaption(),
                     $this->router->generate('doc.index', $doc->getUrlParams())
                 ));

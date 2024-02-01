@@ -48,17 +48,17 @@ class UserItemsSubscriber implements EventSubscriberInterface
         if ($this->security->isGranted(UserPermissionsEnum::PERM_USER_EDIT)
         ) {
             $event->addItem(new SidebarMenuItem(
-                $this->translator->trans('menu.user.management.list'),
                 $this->router->generate('user.management.list'),
                 str_starts_with($route, 'user.management.'),
+                $this->translator->trans('menu.user.management.list'),
                 'fas fa-users-cog'
             ));
 
         } elseif ($this->security->isGranted(UserPermissionsEnum::PERM_USER_LIST)) {
             $event->addItem(new SidebarMenuItem(
-                $this->translator->trans('menu.user.list'),
                 $this->router->generate('user.list'),
                 str_starts_with($route, 'user.'),
+                $this->translator->trans('menu.user.list'),
                 'fa fa-users fa-fw'
             ));
         }

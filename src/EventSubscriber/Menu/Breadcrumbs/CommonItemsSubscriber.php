@@ -7,8 +7,8 @@
 
 namespace App\EventSubscriber\Menu\Breadcrumbs;
 
-use App\Event\Menu\MenuEvent;
-use App\ViewModel\Menu\BaseMenuItem;
+use App\Event\Menu\BreadcrumbEvent;
+use App\ViewModel\Menu\BreadcrumbMenuItem;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -30,22 +30,22 @@ class CommonItemsSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            MenuEvent::BREADCRUMB => ['buildBreadcrumb', 1000],
+            BreadcrumbEvent::BREADCRUMB => ['buildBreadcrumb', 1000],
         ];
     }
 
-    public function buildBreadcrumb(MenuEvent $event): void
+    public function buildBreadcrumb(BreadcrumbEvent $event): void
     {
         $route = $this->requestStack->getMainRequest()?->get('_route');
 
-        $event->addItem(new BaseMenuItem(
+        $event->addItem(new BreadcrumbMenuItem(
             $this->translator->trans('breadcrumb.home'),
             $this->router->generate('home'),
             'fas fa-tachometer-alt'
         ));
 
         if ($route === 'about') {
-            $event->addItem(new BaseMenuItem(
+            $event->addItem(new BreadcrumbMenuItem(
                 $this->translator->trans('breadcrumb.dashboard.about'),
                 $this->router->generate('about')
             ));

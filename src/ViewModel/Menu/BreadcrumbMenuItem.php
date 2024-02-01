@@ -7,7 +7,7 @@
 
 namespace App\ViewModel\Menu;
 
-class BaseMenuItem
+class BreadcrumbMenuItem
 {
     private string $label;
     private string $action;

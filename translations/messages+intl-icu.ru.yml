@@ -132,6 +132,7 @@ menu:
   projects: Все проекты
   project:
     create: Создать проект
+    dashboard: Обзор
     docs: Список документов
     docs_menu: Документы
     edit: Настройки

@@ -7,8 +7,9 @@
 
 namespace App\EventSubscriber\Menu\SidebarMenu;
 
+use App\Event\Menu\BreadcrumbEvent;
 use App\Event\Menu\MenuEvent;
-use App\ViewModel\Menu\BaseMenuItem;
+use App\ViewModel\Menu\BreadcrumbMenuItem;
 use App\ViewModel\Menu\SidebarMenuItem;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -39,9 +40,9 @@ class CommonItemsSubscriber implements EventSubscriberInterface
     {
         $route = $this->requestStack->getMainRequest()?->get('_route');
         $event->addItem(new SidebarMenuItem(
-            $this->translator->trans('menu.dashboard.about'),
             $this->router->generate('about'),
             $route === 'about',
+            $this->translator->trans('menu.dashboard.about'),
             'fa fa-info fa-fw'
         ));
     }

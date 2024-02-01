@@ -7,8 +7,8 @@
 
 namespace App\EventSubscriber\Menu\Breadcrumbs;
 
-use App\Event\Menu\MenuEvent;
-use App\ViewModel\Menu\BaseMenuItem;
+use App\Event\Menu\BreadcrumbEvent;
+use App\ViewModel\Menu\BreadcrumbMenuItem;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -30,21 +30,21 @@ class UserItemsSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            MenuEvent::BREADCRUMB => ['buildBreadcrumb', 500],
+            BreadcrumbEvent::BREADCRUMB => ['buildBreadcrumb', 500],
         ];
     }
 
-    public function buildBreadcrumb(MenuEvent $event): void
+    public function buildBreadcrumb(BreadcrumbEvent $event): void
     {
         $route = $this->requestStack->getMainRequest()?->get('_route');
         if (str_starts_with($route, 'user.management.')) {
-            $event->addItem(new BaseMenuItem(
+            $event->addItem(new BreadcrumbMenuItem(
                 $this->translator->trans('breadcrumb.user.management.home'),
                 $this->router->generate('user.management.list'),
                 'fas fa-users-cog'
             ));
         } elseif (str_starts_with($route, 'user.')) {
-            $event->addItem(new BaseMenuItem(
+            $event->addItem(new BreadcrumbMenuItem(
                 $this->translator->trans('breadcrumb.user.home'),
                 $this->router->generate('user.list'),
                 'fa fa-users'

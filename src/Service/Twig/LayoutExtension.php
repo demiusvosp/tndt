@@ -7,6 +7,7 @@
 
 namespace App\Service\Twig;
 
+use App\Event\Menu\BreadcrumbEvent;
 use App\Event\Menu\MenuEvent;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Twig\Extension\AbstractExtension;
@@ -39,15 +40,13 @@ class LayoutExtension extends AbstractExtension
 
     public function buildBreadcrumbs(): ?array
     {
-        /** @var MenuEvent $result */
-        $result = $this->eventDispatcher->dispatch(new MenuEvent(), MenuEvent::BREADCRUMB);
+        $result = $this->eventDispatcher->dispatch(new BreadcrumbEvent(), BreadcrumbEvent::BREADCRUMB);
 
         return $result->getItems();
     }
 
     public function buildSidebar(): ?array
     {
-        /** @var MenuEvent $result */
         $result = $this->eventDispatcher->dispatch(new MenuEvent(), MenuEvent::SIDEBAR);
 
         return $result->getItems();

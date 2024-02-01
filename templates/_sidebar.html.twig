@@ -1,17 +1,23 @@
-{% from "bundles/AdminLTEBundle/Macros/menu.html.twig" import menu_item %}
-{% set menu = adminlte_menu(app.request) %}
-{% if menu is defined and menu is not null %}
 <ul class="sidebar-menu" data-widget="tree">
-    {% for item in menu %}
-        {{ menu_item(item) }}
-    {% endfor %}
     {% for item in sidebar() %}
-        <li class="{{ item.active ? 'active' : '' }}">
-            <a href="{{ item.action }}">
+        <li class="{{ item.isActive ? 'active' : '' }} {{ item.isTree ? 'treeview' : '' }}">
+            <a href="{{ item.isTree ? '#' : item.action }}">
                 {% if item.icon %} <i class="{{ item.icon }}"></i> {% endif %}
                 <span>{{ item.label }}</span>
+                {% if item.isTree %}<i class="fas fa-angle-left pull-right"></i>{% endif %}
             </a>
+            {% if item.isTree %}
+                <ul class="treeview-menu">
+                    {% for child in item.children %}
+                        <li class="{{ child.isActive ? 'active': ''}}">
+                            <a href="{{ child.action }}">
+                                {% if child.icon %} <i class="{{ child.icon }}"></i> {% endif %}
+                                {{ child.label }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
         </li>
     {% endfor %}
 </ul>
-{% endif %}
