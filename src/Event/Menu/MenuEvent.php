@@ -23,7 +23,7 @@ class MenuEvent extends Event
         $this->items = [];
     }
 
-    public function addItem(BaseMenuItem $item)
+    public function addItem(BaseMenuItem $item): void
     {
         $this->items[] = $item;
     }

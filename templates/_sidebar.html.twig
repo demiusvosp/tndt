@@ -6,7 +6,7 @@
         {{ menu_item(item) }}
     {% endfor %}
     {% for item in sidebar() %}
-        <li>
+        <li class="{{ item.active ? 'active' : '' }}">
             <a href="{{ item.action }}">
                 {% if item.icon %} <i class="{{ item.icon }}"></i> {% endif %}
                 <span>{{ item.label }}</span>

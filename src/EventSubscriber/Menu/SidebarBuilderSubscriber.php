@@ -166,24 +166,6 @@ class SidebarBuilderSubscriber implements EventSubscriberInterface
             }
         }
 
-        if($this->isGranted(UserPermissionsEnum::PERM_USER_LIST)) {
-            $event->addItem(new MenuItemModel(
-                'users',
-                $this->security->isGranted(UserPermissionsEnum::PERM_USER_EDIT) ? 'menu.user.management.list' : 'menu.user.list',
-                $this->security->isGranted(UserPermissionsEnum::PERM_USER_EDIT) ? 'user.management.list' : 'user.list',
-                [],
-                'fa fa-users fa-fw'
-            ));
-        }
-
-        $event->addItem(new MenuItemModel(
-            'about',
-            'menu.dashboard.about',
-            'about',
-            [],
-            'fa fa-info fa-fw'
-        ));
-
         if ($route) {
             $this->activateByRoute(
                 $route,

@@ -76,14 +76,11 @@ Encore
         config.corejs = 3;
     })
 
-    // enables Sass/SCSS support (штука клевая, но нам опять же не жизненно необходима)
+    // enables Sass/SCSS support
     .enableSassLoader()
 
     // uncomment if you use TypeScript
     //.enableTypeScriptLoader()
-
-    // uncomment if you use React
-    //.enableReactPreset()
 
     // uncomment to get integrity="..." attributes on your script & link tags
     // requires WebpackEncoreBundle 1.4 or higher
