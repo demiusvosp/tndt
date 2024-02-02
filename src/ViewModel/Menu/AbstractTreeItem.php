@@ -7,8 +7,14 @@
 
 namespace App\ViewModel\Menu;
 
+use function dump;
+
 abstract class AbstractTreeItem
 {
+    public const TYPE_LINK = 'link';
+    public const TYPE_TREE = 'tree';
+    public const TYPE_USER = 'user';
+
     private bool $active;
     private string $label;
     private ?string $icon;
@@ -21,6 +27,14 @@ abstract class AbstractTreeItem
     }
 
     abstract public function isTree(): bool;
+
+    public function type(): string
+    {
+        if ($this->isTree()) {
+            return self::TYPE_TREE;
+        }
+        return self::TYPE_LINK;
+    }
 
     public function isActive(): bool
     {

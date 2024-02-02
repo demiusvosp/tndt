@@ -1,10 +1,16 @@
 {% for item in navbar() %}
-    <li {{ item.isTree ? 'class="dropdown"' : '' }}>
-        <a href="{{ item.isTree ? '#' : item.action }}" {{ item.isTree ? 'class="dropdown-toggle" data-toggle="dropdown"' : '' }}>
-            {{ item.label }}
-            {% if item.isTree %}<span class="caret"></span>{% endif %}
-        </a>
-        {% if item.isTree %}
+    {% if item.type == 'link' %}
+        <li>
+            <a href="{{ item.action }}">
+                {{ item.label }}
+            </a>
+        </li>
+    {% elseif item.type == 'tree' %}
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                {{ item.label }}
+                <span class="caret"></span>
+            </a>
             <ul class="dropdown-menu" role="menu">
                 {% for child in item.children %}
                     <li>
@@ -19,68 +25,29 @@
                     </li>
                 {% endfor %}
             </ul>
-        {% endif %}
-    </li>
-{% endfor %}
-
-{% import "@AdminLTE/Macros/default.html.twig" as macro %}
-
-{% set userMenu = null %}
-{% set adminlte_userdetails = adminlte_user() %}
-{% if adminlte_userdetails is not null %}
-    {% set userMenu = adminlte_userdetails.user %}
-    {% set links = adminlte_userdetails.links %}
-    {% set showProfileLink = adminlte_userdetails.showProfileLink %}
-    {% set showLogoutLink = adminlte_userdetails.showLogoutLink %}
-{% endif %}
-
-{% if userMenu is defined and userMenu is not null %}
-    <li class="dropdown user user-menu">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-            {{ macro.avatar(userMenu.avatar, userMenu.username, 'user-image') }}
-            <span class="hidden-xs">{{ userMenu.name }}</span>
-        </a>
-        <ul class="dropdown-menu">
-            <!-- User image -->
-            <li class="user-header">
-                {{ macro.avatar(userMenu.avatar, userMenu.username) }}
-                <p>
-                    {{ userMenu.name }}
-                </p>
-            </li>
-            {% if links %}
-                <!-- Menu Body -->
-                <li class="user-body">
-                    {% for link in links %}
-                        <div class="col-xs-4 text-center">
-                            <a href="{{ path(link.path|route_alias, link.parameters) }}">{{ link.title }}</a>
-                        </div>
-                    {% endfor %}
+        </li>
+    {% elseif item.type == 'user' %}
+        <li class="dropdown user user-menu">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                <img src="{{ asset(item.avatar) }}" alt="{{ item.label}}" class="user-image">
+                <span class="hidden-xs">{{ item.label }}</span>
+            </a>
+            <ul class="dropdown-menu">
+                <li class="user-header">
+                    <img src="{{ asset(item.avatar) }}" alt="{{ item.user.username }}" class="img-circle">
+                    <p>{{ item.user.username }}</p>
                 </li>
-            {% endif %}
-            {% if showLogoutLink or showProfileLink %}
-                <!-- Menu Footer-->
                 <li class="user-footer">
-                    {% if showProfileLink %}
-                        <div class="pull-left">
-                            <a href="{{ path('user.index', {'username' : userMenu.username }) }}"
-                               class="btn btn-default btn-flat">{{ 'Profile'|trans }}</a>
-                        </div>
-                    {% endif %}
-                    {% if showLogoutLink %}
-                        <div class="pull-right">
-                            <a href="{{ logout_path() }}"
-                               class="btn btn-default btn-flat">{{ 'Logout'|trans({}, 'security') }}</a>
-                        </div>
-                    {% endif %}
+                    <div class="pull-left">
+                        <a href="{{ path('user.index', {'username' : item.user.username }) }}"
+                           class="btn btn-default btn-flat">{{ 'Profile'|trans }}</a>
+                    </div>
+                    <div class="pull-right">
+                        <a href="{{ logout_path() }}"
+                           class="btn btn-default btn-flat">{{ 'Logout'|trans({}, 'security') }}</a>
+                    </div>
                 </li>
-            {% endif %}
-        </ul>
-    </li>
-{% endif %}
-
-{% if app.user is null %}
-    <li>
-        <a href="{{ path('app.login') }}">{{ 'Login'|trans([], 'security') }}</a>
-    </li>
-{% endif %}
+            </ul>
+        </li>
+    {% endif %}
+{% endfor %}

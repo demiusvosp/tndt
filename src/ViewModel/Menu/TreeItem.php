@@ -13,7 +13,6 @@ class TreeItem extends AbstractTreeItem
     /** @var MenuItem[] */
     private array $children;
 
-
     public function __construct(string $id, bool $active, string $label, ?string $icon)
     {
         $this->id = $id;
@@ -35,12 +34,12 @@ class TreeItem extends AbstractTreeItem
      */
     public function children(): array
     {
-        return $this->childs;
+        return $this->children;
     }
 
     public function addChild(MenuItem $item): self
     {
-        $this->childs[] = $item;
+        $this->children[] = $item;
         return $this;
     }
 }

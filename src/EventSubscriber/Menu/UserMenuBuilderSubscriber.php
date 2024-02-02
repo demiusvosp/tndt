@@ -12,6 +12,7 @@ use App\Entity\User;
 use KevinPapst\AdminLTEBundle\Event\NavbarUserEvent;
 use KevinPapst\AdminLTEBundle\Event\ShowUserEvent;
 use KevinPapst\AdminLTEBundle\Event\SidebarUserEvent;
+use KevinPapst\AdminLTEBundle\Model\NavBarUserLink;
 use KevinPapst\AdminLTEBundle\Model\UserModel;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -50,5 +51,8 @@ class UserMenuBuilderSubscriber implements EventSubscriberInterface
             ->setId($user->getUsername());
 
         $event->setUser($userMenu);
+        $event->addLink(new NavBarUserLink('Настройки', 'user.edit', ['username'=>$user->getUsername()]));
+        $event->addLink(new NavBarUserLink('Мои задачи', 'user.index', ['username'=>$user->getUsername()]));
+        $event->addLink(new NavBarUserLink('Мои проекты', 'user.index', ['username'=>$user->getUsername()]));
     }
 }
