@@ -11,6 +11,8 @@
 - [tndt-42](http://tasks.demius.ru/p/tndt-42), [tndt-104](http://tasks.demius.ru/p/tndt-104) - Перераспределить файлы конфигурации, расположение моделей, сервисов. (теперь все конфиги одного окружения в одной папке, и их легче подменять для каждого инстанса)
 - [tndt-108](http://tasks.demius.ru/p/tndt-108) - Рефакторинг TaskSettings и получения справочников из проекта
 - [tndt-109](http://tasks.demius.ru/p/tndt-109) - Комментарии прицеплять к типу, а не классу
+#### [tndt-143](http://tasks.demius.ru/p/tndt-143) - Переход от AdminLTE на Tabler 
+- [tndt-141](http://tasks.demius.ru/p/tndt-141) - Переводим хлебный крошки, sidebar и navbar на наши события
 ### Bugfixes
 - [tndt-115](http://tasks.demius.ru/p/tndt-115) - Смена статуса документа не обновялет его дату
 - [tndt-30](http://tasks.demius.ru/p/tndt-30) - Обновлять дату проекта, когда в нем совершается работа
