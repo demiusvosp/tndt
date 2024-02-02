@@ -9,7 +9,7 @@ namespace App\EventSubscriber\Menu\SidebarMenu;
 
 use App\Event\Menu\MenuEvent;
 use App\Model\Enum\UserPermissionsEnum;
-use App\ViewModel\Menu\SidebarMenuItem;
+use App\ViewModel\Menu\MenuItem;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -47,7 +47,7 @@ class UserItemsSubscriber implements EventSubscriberInterface
         $route = $this->requestStack->getMainRequest()?->get('_route');
         if ($this->security->isGranted(UserPermissionsEnum::PERM_USER_EDIT)
         ) {
-            $event->addItem(new SidebarMenuItem(
+            $event->addItem(new MenuItem(
                 $this->router->generate('user.management.list'),
                 str_starts_with($route, 'user.management.'),
                 $this->translator->trans('menu.user.management.list'),
@@ -55,7 +55,7 @@ class UserItemsSubscriber implements EventSubscriberInterface
             ));
 
         } elseif ($this->security->isGranted(UserPermissionsEnum::PERM_USER_LIST)) {
-            $event->addItem(new SidebarMenuItem(
+            $event->addItem(new MenuItem(
                 $this->router->generate('user.list'),
                 str_starts_with($route, 'user.'),
                 $this->translator->trans('menu.user.list'),

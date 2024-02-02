@@ -8,7 +8,7 @@
 namespace App\EventSubscriber\Menu\Breadcrumbs;
 
 use App\Event\Menu\BreadcrumbEvent;
-use App\ViewModel\Menu\BreadcrumbMenuItem;
+use App\ViewModel\Menu\BreadcrumbItem;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -38,14 +38,14 @@ class CommonItemsSubscriber implements EventSubscriberInterface
     {
         $route = $this->requestStack->getMainRequest()?->get('_route');
 
-        $event->addItem(new BreadcrumbMenuItem(
+        $event->addItem(new BreadcrumbItem(
             $this->translator->trans('breadcrumb.home'),
             $this->router->generate('home'),
             'fas fa-tachometer-alt'
         ));
 
         if ($route === 'about') {
-            $event->addItem(new BreadcrumbMenuItem(
+            $event->addItem(new BreadcrumbItem(
                 $this->translator->trans('breadcrumb.dashboard.about'),
                 $this->router->generate('about')
             ));

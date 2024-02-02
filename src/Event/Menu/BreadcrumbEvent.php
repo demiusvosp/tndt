@@ -7,14 +7,14 @@
 
 namespace App\Event\Menu;
 
-use App\ViewModel\Menu\BreadcrumbMenuItem;
+use App\ViewModel\Menu\BreadcrumbItem;
 use Symfony\Contracts\EventDispatcher\Event;
 
 class BreadcrumbEvent extends Event
 {
     public const BREADCRUMB = 'app.menu.breadcrumb';
 
-    /** @var BreadcrumbMenuItem[] */
+    /** @var BreadcrumbItem[] */
     private array $items;
 
     public function __construct()
@@ -22,13 +22,13 @@ class BreadcrumbEvent extends Event
         $this->items = [];
     }
 
-    public function addItem(BreadcrumbMenuItem $item): void
+    public function addItem(BreadcrumbItem $item): void
     {
         $this->items[] = $item;
     }
 
     /**
-     * @return BreadcrumbMenuItem[]
+     * @return BreadcrumbItem[]
      */
     public function getItems(): array
     {

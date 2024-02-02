@@ -10,8 +10,8 @@ namespace App\EventSubscriber\Menu\SidebarMenu;
 use App\Entity\Project;
 use App\Event\Menu\MenuEvent;
 use App\Model\Enum\UserPermissionsEnum;
-use App\ViewModel\Menu\SidebarMenuItem;
-use App\ViewModel\Menu\SidebarTreeItem;
+use App\ViewModel\Menu\MenuItem;
+use App\ViewModel\Menu\TreeItem;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -49,7 +49,7 @@ class ProjectItemsSubscriber implements EventSubscriberInterface
         $request = $this->requestStack->getMainRequest();
         $route = $request?->get('_route');
 
-        $event->addItem(new SidebarMenuItem(
+        $event->addItem(new MenuItem(
             $this->router->generate('project.list'),
             $route === 'project.list',
             $this->translator->trans('menu.projects'),
@@ -61,7 +61,7 @@ class ProjectItemsSubscriber implements EventSubscriberInterface
         if (!$request || !$project) {
             return;
         }
-        $projectMenu = new SidebarTreeItem(
+        $projectMenu = new TreeItem(
             'project-' . $project->getSuffix(),
             true,
             $project->getName(),
@@ -69,34 +69,34 @@ class ProjectItemsSubscriber implements EventSubscriberInterface
         );
         $event->addItem($projectMenu);
 
-        $projectMenu->addchild(new SidebarMenuItem(
+        $projectMenu->addchild(new MenuItem(
             $this->router->generate('project.index', ['suffix' => $project->getSuffix()]),
             $route === 'project.index',
             $this->translator->trans('menu.project.dashboard'),
             'fa fa-project-diagram'
         ));
-        $projectMenu->addChild(new SidebarMenuItem(
+        $projectMenu->addChild(new MenuItem(
             $this->router->generate('task.list', ['suffix' => $project->getSuffix()]),
             $route === 'task.list',
             $this->translator->trans('menu.project.tasks'),
             'fa fa-tasks fa-fw'
         ));
         if ($this->security->isGranted(UserPermissionsEnum::PERM_TASK_CREATE)) {
-            $projectMenu->addChild(new SidebarMenuItem(
+            $projectMenu->addChild(new MenuItem(
                 $this->router->generate('task.project_create', ['suffix' => $project->getSuffix()]),
                 $route === 'task.project_create',
                 $this->translator->trans('menu.task.create'),
                 'fa fa-plus-square fa-fw'
             ));
         }
-        $projectMenu->addChild(new SidebarMenuItem(
+        $projectMenu->addChild(new MenuItem(
             $this->router->generate('doc.list', ['suffix' => $project->getSuffix()]),
             $route === 'doc.list',
             $this->translator->trans('menu.project.docs'),
             'far fa-copy fa-fw'
         ));
         if ($this->security->isGranted(UserPermissionsEnum::PERM_DOC_CREATE)) {
-            $projectMenu->addChild(new SidebarMenuItem(
+            $projectMenu->addChild(new MenuItem(
                 $this->router->generate('doc.project_create', ['suffix' => $project->getSuffix()]),
                 $route === 'doc.project_create',
                 $this->translator->trans('menu.doc.create'),
@@ -104,7 +104,7 @@ class ProjectItemsSubscriber implements EventSubscriberInterface
             ));
         }
         if ($this->security->isGranted(UserPermissionsEnum::PERM_PROJECT_SETTINGS)) {
-            $projectMenu->addChild(new SidebarMenuItem(
+            $projectMenu->addChild(new MenuItem(
                 $this->router->generate('project.edit', ['suffix' => $project->getSuffix()]),
                 $route === 'project.edit',
                 $this->translator->trans('menu.project.edit'),

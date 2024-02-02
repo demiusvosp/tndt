@@ -8,7 +8,7 @@
 namespace App\ViewModel\Menu;
 
 
-class SidebarMenuItem extends AbstractSidebarTreeItem
+class MenuItem extends AbstractTreeItem
 {
     private string $action;
 

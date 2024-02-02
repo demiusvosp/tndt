@@ -7,7 +7,7 @@
 
 namespace App\ViewModel\Menu;
 
-abstract class AbstractSidebarTreeItem
+abstract class AbstractTreeItem
 {
     private bool $active;
     private string $label;

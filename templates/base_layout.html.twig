@@ -15,7 +15,6 @@
 {% endblock %}
 
 {% block navbar_start %}
-    {% include 'project/navbar_menu.html.twig' %}
 {% endblock %}
 {% block navbar_messages %}
 {% endblock %}
@@ -24,7 +23,7 @@
 {% block navbar_tasks %}
 {% endblock %}
 {% block navbar_user %}
-    {% include 'user/navbar_menu.html.twig' %}
+    {% include '_navbar.html.twig' %}
 {% endblock %}
 {% block navbar_end %}{% endblock %}
 {% block navbar_control_sidebar_toggle %}
@@ -38,7 +37,6 @@
 {% block sidebar_user %}
 {% endblock %}
 {% block sidebar_search %}
-    {# @TODO вернуть когда будет реализован поиск по треккеру #}
 {% endblock %}
 {% block sidebar_nav %}
     {% include '_sidebar.html.twig' %}

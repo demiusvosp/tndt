@@ -7,10 +7,10 @@
 
 namespace App\ViewModel\Menu;
 
-class SidebarTreeItem extends AbstractSidebarTreeItem
+class TreeItem extends AbstractTreeItem
 {
     private string $id;
-    /** @var SidebarMenuItem[] */
+    /** @var MenuItem[] */
     private array $children;
 
 
@@ -31,14 +31,14 @@ class SidebarTreeItem extends AbstractSidebarTreeItem
     }
 
     /**
-     * @return SidebarMenuItem[]
+     * @return MenuItem[]
      */
     public function children(): array
     {
         return $this->childs;
     }
 
-    public function addChild(SidebarMenuItem $item): self
+    public function addChild(MenuItem $item): self
     {
         $this->childs[] = $item;
         return $this;

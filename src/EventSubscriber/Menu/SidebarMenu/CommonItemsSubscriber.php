@@ -9,8 +9,8 @@ namespace App\EventSubscriber\Menu\SidebarMenu;
 
 use App\Event\Menu\BreadcrumbEvent;
 use App\Event\Menu\MenuEvent;
-use App\ViewModel\Menu\BreadcrumbMenuItem;
-use App\ViewModel\Menu\SidebarMenuItem;
+use App\ViewModel\Menu\BreadcrumbItem;
+use App\ViewModel\Menu\MenuItem;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -39,7 +39,7 @@ class CommonItemsSubscriber implements EventSubscriberInterface
     public function buildSidebar(MenuEvent $event): void
     {
         $route = $this->requestStack->getMainRequest()?->get('_route');
-        $event->addItem(new SidebarMenuItem(
+        $event->addItem(new MenuItem(
             $this->router->generate('about'),
             $route === 'about',
             $this->translator->trans('menu.dashboard.about'),

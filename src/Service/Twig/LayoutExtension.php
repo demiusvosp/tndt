@@ -35,6 +35,11 @@ class LayoutExtension extends AbstractExtension
                 [$this, 'buildSidebar'],
                 ['is_safe' => ['html']]
             ),
+            new TwigFunction(
+                'navbar',
+                [$this, 'buildNavbar'],
+                ['is_safe' => ['html']]
+            ),
         ];
     }
 
@@ -48,6 +53,13 @@ class LayoutExtension extends AbstractExtension
     public function buildSidebar(): ?array
     {
         $result = $this->eventDispatcher->dispatch(new MenuEvent(), MenuEvent::SIDEBAR);
+
+        return $result->getItems();
+    }
+
+    public function buildNavbar(): ?array
+    {
+        $result = $this->eventDispatcher->dispatch(new MenuEvent(), MenuEvent::NAVBAR);
 
         return $result->getItems();
     }
