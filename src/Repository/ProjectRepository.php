@@ -54,8 +54,8 @@ class ProjectRepository extends ServiceEntityRepository
     /**
      * Несколько популярных проектов для дашборда и меню проектов
      * @param int $limit
-     * @param User|UserInterface|null $user - если передать юзера, включает видимые ему приватные проекты
-     * @return array
+     * @param UserInterface|null $user - если передать юзера, включает видимые ему приватные проекты
+     * @return Project[]
      */
     public function getPopularProjectsSnippets(int $limit = 5, ?UserInterface $user = null): array
     {

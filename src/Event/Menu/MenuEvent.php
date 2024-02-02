@@ -12,8 +12,8 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 class MenuEvent extends Event
 {
+    public const NAVBAR = 'app.menu.navbar';
     public const SIDEBAR = 'app.menu.sidebar';
-    public const NAVBAR = 'app.menu,navbar';
 
     /** @var AbstractTreeItem[] */
     private array $items;
