@@ -7,7 +7,7 @@
 
 namespace App\Event\Menu;
 
-use App\ViewModel\Menu\AbstractTreeItem;
+use App\ViewModel\Menu\AbstractMenuItem;
 use Symfony\Contracts\EventDispatcher\Event;
 
 class MenuEvent extends Event
@@ -15,7 +15,7 @@ class MenuEvent extends Event
     public const NAVBAR = 'app.menu.navbar';
     public const SIDEBAR = 'app.menu.sidebar';
 
-    /** @var AbstractTreeItem[] */
+    /** @var AbstractMenuItem[] */
     private array $items;
 
     public function __construct()
@@ -23,13 +23,13 @@ class MenuEvent extends Event
         $this->items = [];
     }
 
-    public function addItem(AbstractTreeItem $item): void
+    public function addItem(AbstractMenuItem $item): void
     {
         $this->items[] = $item;
     }
 
     /**
-     * @return AbstractTreeItem[]
+     * @return AbstractMenuItem[]
      */
     public function getItems(): array
     {

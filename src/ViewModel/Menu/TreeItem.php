@@ -7,7 +7,7 @@
 
 namespace App\ViewModel\Menu;
 
-class TreeItem extends AbstractTreeItem
+class TreeItem extends AbstractMenuItem
 {
     private string $id;
     /** @var MenuItem[] */

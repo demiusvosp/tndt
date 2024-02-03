@@ -7,9 +7,8 @@
 
 namespace App\ViewModel\Menu;
 
-use function dump;
 
-abstract class AbstractTreeItem
+abstract class AbstractMenuItem
 {
     public const TYPE_LINK = 'link';
     public const TYPE_TREE = 'tree';

@@ -8,7 +8,7 @@
 namespace App\ViewModel\Menu;
 
 
-class MenuItem extends AbstractTreeItem
+class MenuItem extends AbstractMenuItem
 {
     private string $action;
 

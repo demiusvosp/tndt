@@ -9,15 +9,10 @@ namespace App\ViewModel\Menu;
 
 use App\Entity\User;
 
-class UserItem extends AbstractTreeItem
+class UserItem extends AbstractMenuItem
 {
     private User $user;
     private string $avatar;
-
-    public function __construct(bool $active, string $label, ?string $icon)
-    {
-        parent::__construct($active, $label, $icon);
-    }
 
     public function isTree(): bool
     {
