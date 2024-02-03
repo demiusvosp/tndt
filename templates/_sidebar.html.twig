@@ -1,0 +1,23 @@
+<ul class="sidebar-menu" data-widget="tree">
+    {% for item in sidebar() %}
+        <li class="{{ item.isActive ? 'active' : '' }} {{ item.isTree ? 'treeview' : '' }}">
+            <a href="{{ item.isTree ? '#' : item.action }}">
+                {% if item.icon %} <i class="{{ item.icon }}"></i> {% endif %}
+                <span>{{ item.label }}</span>
+                {% if item.isTree %}<i class="fas fa-angle-left pull-right"></i>{% endif %}
+            </a>
+            {% if item.isTree %}
+                <ul class="treeview-menu">
+                    {% for child in item.children %}
+                        <li class="{{ child.isActive ? 'active': ''}}">
+                            <a href="{{ child.action }}">
+                                {% if child.icon %} <i class="{{ child.icon }}"></i> {% endif %}
+                                {{ child.label }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </li>
+    {% endfor %}
+</ul>

@@ -1,0 +1,10 @@
+<ol class="breadcrumb">
+    {% for item in breadcrumbs() %}
+    <li>
+        <a href="{{ item.action }}">
+            {% if item.icon %}<i class="{{ item.icon }}"></i>{% endif %}
+            {{ item.label }}
+        </a>
+    </li>
+    {% endfor %}
+</ol>

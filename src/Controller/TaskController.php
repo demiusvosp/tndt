@@ -7,6 +7,7 @@
 namespace App\Controller;
 
 use App\Entity\Project;
+use App\Entity\Task;
 use App\Entity\User;
 use App\Exception\BadRequestException;
 use App\Exception\DomainException;
@@ -25,6 +26,7 @@ use App\Service\TaskStagesService;
 use App\Specification\InProjectSpec;
 use App\ViewModel\Button\ControlButton;
 use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -81,17 +83,15 @@ class TaskController extends AbstractController
     }
 
     /**
-     * @param Request $request
+     * @param Task $task
+     * @param CsrfTokenManagerInterface $tokenManager
      * @return Response
      */
     #[IsGranted(UserPermissionsEnum::PERM_TASK_VIEW)]
-    public function index(Request $request, CsrfTokenManagerInterface $tokenManager): Response
-    {
-        $task = $this->taskRepository->findByTaskId($request->get('taskId'));
-        if (!$task) {
-            throw $this->createNotFoundException($this->translator->trans('task.not_found'));
-        }
-
+    public function index(
+        #[MapEntity(expr: 'repository.findByTaskId(taskId)')] Task $task,
+        CsrfTokenManagerInterface $tokenManager
+    ): Response {
         $edit = null;
         if ($this->isGranted('PERM_TASK_EDIT')) {
             $edit = new ControlButton(
@@ -161,16 +161,13 @@ class TaskController extends AbstractController
     }
 
     /**
+     * @param Task $task
      * @param Request $request
      * @return Response
      */
     #[IsGranted(UserPermissionsEnum::PERM_TASK_EDIT)]
-    public function edit(Request $request): Response
+    public function edit(#[MapEntity(expr: 'repository.findByTaskId(taskId)')] Task $task, Request $request): Response
     {
-        $task = $this->taskRepository->findByTaskId($request->get('taskId'));
-        if (!$task) {
-            throw $this->createNotFoundException($this->translator->trans('task.not_found'));
-        }
         $formData = new EditTaskDTO($task);
         $form = $this->createForm(EditTaskType::class, $formData);
 
@@ -190,12 +187,8 @@ class TaskController extends AbstractController
      * @return Response
      */
     #[IsGranted(UserPermissionsEnum::PERM_TASK_CLOSE)]
-    public function close(Request $request): Response
+    public function close(#[MapEntity(expr: 'repository.findByTaskId(taskId)')] Task $task, Request $request): Response
     {
-        $task = $this->taskRepository->findByTaskId($request->get('taskId'));
-        if (!$task) {
-            throw $this->createNotFoundException($this->translator->trans('task.not_found'));
-        }
         $formData = new CloseTaskDTO($task);
         $form = $this->createForm(CloseTaskForm::class, $formData);
 
@@ -217,12 +210,10 @@ class TaskController extends AbstractController
      * @return Response
      */
     #[IsGranted(UserPermissionsEnum::PERM_TASK_EDIT)]
-    public function changeStage(Request $request): Response
-    {
-        $task = $this->taskRepository->findByTaskId($request->get('taskId'));
-        if (!$task) {
-            throw $this->createNotFoundException($this->translator->trans('task.not_found'));
-        }
+    public function changeStage(
+        #[MapEntity(expr: 'repository.findByTaskId(taskId)')] Task $task,
+        Request $request
+    ): Response {
         if (!$this->isCsrfTokenValid(self::CHANGE_STAGE_TOKEN, $request->request->get('_token'))) {
             throw new BadRequestException();
         }

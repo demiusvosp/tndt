@@ -1,0 +1,53 @@
+{% for item in navbar() %}
+    {% if item.type == 'link' %}
+        <li>
+            <a href="{{ item.action }}">
+                {{ item.label }}
+            </a>
+        </li>
+    {% elseif item.type == 'tree' %}
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                {{ item.label }}
+                <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu" role="menu">
+                {% for child in item.children %}
+                    <li>
+                        <a href="{{ child.action }}">
+                            {% if child.isActive %}
+                                <i class="fa fa-check fa-fw"></i>
+                            {% else %}
+                                <i class="fa fa-fw"></i>
+                            {% endif %}
+                            {{ child.label }}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </li>
+    {% elseif item.type == 'user' %}
+        <li class="dropdown user user-menu">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                <img src="{{ asset(item.avatar) }}" alt="{{ item.label}}" class="user-image">
+                <span class="hidden-xs">{{ item.label }}</span>
+            </a>
+            <ul class="dropdown-menu">
+                <li class="user-header">
+                    <img src="{{ asset(item.avatar) }}" alt="{{ item.user.username }}" class="img-circle">
+                    <p>{{ item.user.username }}</p>
+                </li>
+                <li class="user-footer">
+                    <div class="pull-left">
+                        <a href="{{ path('user.index', {'username' : item.user.username }) }}"
+                           class="btn btn-default btn-flat">{{ 'Profile'|trans }}</a>
+                    </div>
+                    <div class="pull-right">
+                        <a href="{{ logout_path() }}"
+                           class="btn btn-default btn-flat">{{ 'Logout'|trans({}, 'security') }}</a>
+                    </div>
+                </li>
+            </ul>
+        </li>
+    {% endif %}
+{% endfor %}

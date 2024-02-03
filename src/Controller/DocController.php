@@ -8,6 +8,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Entity\Doc;
 use App\Entity\Project;
 use App\Exception\DomainException;
 use App\Form\DTO\Doc\EditDocDTO;
@@ -22,6 +23,7 @@ use App\Service\InProjectContext;
 use App\Specification\InProjectSpec;
 use App\ViewModel\Button\ControlButton;
 use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -70,18 +72,19 @@ class DocController extends AbstractController
     }
 
     /**
-     * @param Request $request
+     * @param Doc $doc
      * @param Project $project
+     * @param Request $request
      * @return Response
      */
     #[IsGranted(UserPermissionsEnum::PERM_DOC_VIEW)]
-    public function index(Request $request, Project $project): Response
-    {
-        $doc = $this->docRepository->getBySlug($request->get('slug'));
-        if (!$doc || $doc->getSuffix() !== $project->getSuffix()) {
+    public function index(
+        #[MapEntity(expr: 'repository.getBySlug(slug)')] Doc $doc,
+        Project $project,
+    ): Response {
+        if ($doc->getSuffix() !== $project->getSuffix()) {
             throw $this->createNotFoundException($this->translator->trans('doc.not_found'));
         }
-
         $controls = [];
         if ($this->isGranted(UserPermissionsEnum::PERM_DOC_EDIT)) {
             // @todo В [tndt-85] или раньше этот массив превратим в viewModel
@@ -122,7 +125,7 @@ class DocController extends AbstractController
                         $doc->getUrlParams(['state' => DocStateEnum::Archived->value])
                     ),
                     'btn-secondary btn-warning',
-                    $this->translator->trans('doc.state.archive.confirm')
+                    $this->translator->trans('doc.state.archived.confirm')
                 );
             }
         }
@@ -162,10 +165,12 @@ class DocController extends AbstractController
      * @return Response
      */
     #[IsGranted(UserPermissionsEnum::PERM_DOC_EDIT)]
-    public function edit(Request $request, Project $project): Response
-    {
-        $doc = $this->docRepository->getBySlug($request->get('slug'));
-        if (!$doc || $doc->getSuffix() !== $project->getSuffix()) {
+    public function edit(
+        #[MapEntity(expr: 'repository.getBySlug(slug)')] Doc $doc,
+        Project $project,
+        Request $request
+    ): Response {
+        if ($doc->getSuffix() !== $project->getSuffix()) {
             // В doc slug не содержит suffix проекта (в отличие от taskId), поэтому нам необходимо проверить
             //   консистентность suffix и slug в реквесте.
             throw $this->createNotFoundException($this->translator->trans('doc.not_found'));
@@ -191,10 +196,12 @@ class DocController extends AbstractController
      * @return Response
      */
     #[IsGranted(UserPermissionsEnum::PERM_DOC_CHANGE_STATE)]
-    public function changeState(string $slug, int $state, Project $project): Response
-    {
-        $doc = $this->docRepository->getBySlug($slug);
-        if (!$doc || $doc->getSuffix() !== $project->getSuffix()) {
+    public function changeState(
+        #[MapEntity(expr: 'repository.getBySlug(slug)')] Doc $doc,
+        int $state,
+        Project $project
+    ): Response {
+        if ($doc->getSuffix() !== $project->getSuffix()) {
             throw $this->createNotFoundException($this->translator->trans('doc.not_found'));
         }
 

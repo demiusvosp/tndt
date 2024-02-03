@@ -21,30 +21,18 @@ And_more: И еще
 Archive: Убрать в архив
 archived: в архиве
 breadcrumb:
-  dashboard.about: О системе
-  doc:
-    create: Новый...
-    edit: Редактирование
-  home: Главная
-  projects: Проекты
+  dashboard.about: About
+  home: Home
+  projects: Projects
   project:
-    create: Новый...
     edit:
-      common: Настройки
-      permissions: Полномочия
-      task_settings: Задачи
-    docs: Документы
-    tasks: Задачи
-  task:
-    create: Новая...
-    edit: Редактирование
+      common: Setting
+    docs: Documents
+    tasks: Tasks
   user:
-    edit: Edit profile
     home: Users
   user.management:
-    create: New...
-    edit: Common
-    home: Management
+    home: User management
 Close: Закрыть
 closed: закрыта
 comment:
@@ -122,7 +110,7 @@ doc:
     deprecated:
       label: Устаревший
       help: Документ отмечен, как нуждающийся в актуализации
-    archive:
+    archived:
       label: В архиве
       help: Документ сдан в архив, и более не будет актуализирован
       confirm: Вы уверены, что хотите перевести документ в архив? Может стоит его актуализировать?
@@ -144,6 +132,7 @@ menu:
   projects: Все проекты
   project:
     create: Create project
+    dashboard: Dashboard
     docs: Document list
     docs_menu: Documents
     edit: Settings

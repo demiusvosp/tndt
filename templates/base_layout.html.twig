@@ -15,7 +15,6 @@
 {% endblock %}
 
 {% block navbar_start %}
-    {% include 'project/navbar_menu.html.twig' %}
 {% endblock %}
 {% block navbar_messages %}
 {% endblock %}
@@ -24,7 +23,7 @@
 {% block navbar_tasks %}
 {% endblock %}
 {% block navbar_user %}
-    {% include 'user/navbar_menu.html.twig' %}
+    {% include '_navbar.html.twig' %}
 {% endblock %}
 {% block navbar_end %}{% endblock %}
 {% block navbar_control_sidebar_toggle %}
@@ -38,15 +37,18 @@
 {% block sidebar_user %}
 {% endblock %}
 {% block sidebar_search %}
-    {# @TODO вернуть когда будет реализован поиск по треккеру #}
 {% endblock %}
 {% block sidebar_nav %}
-    {% include 'bundles/AdminLTEBundle/Sidebar/menu.html.twig' with {'adminlte_direct_include': true} %}
+    {% include '_sidebar.html.twig' %}
+{% endblock %}
+
+{% block breadcrumb %}
+    {% include '_breadcrumbs.html.twig' %}
 {% endblock %}
 
 {% block footer %}
-    {% include 'footer.html.twig' %}
-    {% include 'modals.html.twig' %}
+    {% include '_footer.html.twig' %}
+    {% include '_modals.html.twig' %}
     {% if app.request.get('addMdHelp') %}
         {{ render(controller('App\\Controller\\HomeController::helpMd')) }}
     {% endif %}

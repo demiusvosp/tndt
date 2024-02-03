@@ -217,6 +217,17 @@ $color-disabled: #333;
     float: left;
 }
 
+/* Main left sidebar */
+.sidebar > ul.sidebar-menu > li.active {
+    border-left: #3c8dbc solid 3px !important;
+}
+
+.sidebar > ul.sidebar-menu > li.active > a {
+    color: #000000;
+    background: #e4e4e7;
+    padding: 12px 5px 12px 12px;
+}
+
 /* Help right sidebar */
 .help-sidebar {
     position: fixed;
