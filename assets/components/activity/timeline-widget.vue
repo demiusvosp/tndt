@@ -64,11 +64,11 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import "~bootstrap-sass/assets/stylesheets/bootstrap/variables";
+@import "~bootstrap/scss/bootstrap";
   ul {
     margin-left: 1em;
   }
   .loading {
-    font-size: $font-size-h3;
+    font-size: $h3-font-size;
   }
 </style>

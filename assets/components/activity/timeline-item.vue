@@ -34,13 +34,13 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import "~bootstrap-sass/assets/stylesheets/bootstrap/variables";
+@import "~bootstrap/scss/bootstrap";
 .timeline-item {
   margin-bottom: 1em;
 
   .head {
     padding: 0 1em 2px 1em;
-    border-bottom: $gray-lighter 1px solid;
+    border-bottom: $border-color 1px solid;
 
     .created {
       margin-right: 0.3em;

@@ -1,10 +1,11 @@
 /*
  * Собственные стили проекта
  */
-$icon-font-path: "~bootstrap-sass/assets/fonts/bootstrap/";
-$fa-font-path: "~@fortawesome/fontawesome-free/webfonts/";
+//$icon-font-path: "~bootstrap-sass/assets/fonts/bootstrap/";
+//$fa-font-path: "~@fortawesome/fontawesome-free/webfonts/";
 
-@import "~bootstrap-sass/assets/stylesheets/bootstrap";
+@import "~bootstrap/scss/bootstrap";
+@import "~@tabler/core/src/scss/_variables.scss";
 
 $color-disabled: #333;
 
@@ -34,7 +35,7 @@ $color-disabled: #333;
 
 .project-settings-blocks {
     .settings-block {
-        border: $gray-lighter 1px solid;
+        border: $text-secondary 1px solid;
         border-radius: 0.5em;
         margin: 1em 0;
         padding: 1em;
@@ -44,14 +45,14 @@ $color-disabled: #333;
             top: -2em;
             left: 0;
             padding: 0.2em 1em;
-            background-color: $body-bg;
+            background-color: $bg-surface-secondary;
         }
         .help-text {
-            color: lighten($text-color, 25%);
+            color: $text-secondary-dark;
             margin-bottom: 0;
         }
         .dictionary-add-item {
-            color: $brand-success;
+            color: $color-green;
             font-size: large;
             padding: 0.1em 0.3em;
         }
@@ -59,10 +60,10 @@ $color-disabled: #333;
 }
 .project-snippet {
     .security-row {
-        color: lighten($text-color, 25%);
+        color: $text-secondary;
     }
     .date-row {
-        color: lighten($text-color, 25%);
+        color: $text-secondary;
     }
     .description-row {
 
@@ -151,7 +152,7 @@ $color-disabled: #333;
 }
 .doc-property-string {
     font-style: italic;
-    color: $text-muted;
+    color: $text-secondary;
     margin: -0.5em 0.5em 1em 1em;
 
     span.label {
@@ -159,7 +160,7 @@ $color-disabled: #333;
     }
 
     a, &:hover {
-        color: $text-muted;
+        color: $text-secondary;
     }
 }
 
@@ -167,7 +168,7 @@ $color-disabled: #333;
 .comment-list {
     .comment-head {
         padding: 0 5em 2px 1em;
-        border-bottom: $gray-lighter 1px solid;
+        border-bottom: $border-color 1px solid;
     }
     .comment-message {
         text-align: left;
@@ -210,7 +211,7 @@ $color-disabled: #333;
 
 /* Dictionaries */
 .dictionary-not-set {
-    color: $text-muted;
+    color: $text-secondary;
 }
 
 .modal-header h5 {
@@ -334,7 +335,7 @@ a.invisible_link, a.invisible_link:hover {
 }
 
 select option.service-item {
-    color: $input-color-placeholder;
+    //color: $input-color-placeholder;
     font-style: italic;
 }
 
