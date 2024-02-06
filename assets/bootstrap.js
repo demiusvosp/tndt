@@ -4,4 +4,5 @@ import moment from "moment";
 moment.locale('ru');
 
 // any CSS you import will output into a single css file (app.css in this case)
-import './styles/app.scss';
+import '@tabler/core/src/scss/tabler.scss'
+// import './styles/app.scss';

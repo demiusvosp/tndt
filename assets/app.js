@@ -7,6 +7,7 @@
  * (and its CSS file) in your base layout (base.html.twig).
  */
 import './bootstrap.js';
+import '@tabler/core/src/js/tabler'
 import Vue from "vue";
 import ActivityTimeline from './components/activity/timeline-widget'
 

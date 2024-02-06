@@ -1,53 +1,41 @@
+<ul class="navbar-nav">
 {% for item in navbar() %}
     {% if item.type == 'link' %}
-        <li>
-            <a href="{{ item.action }}">
-                {{ item.label }}
+        <li class="nav-item" {{ item.isActive ? 'active' : '' }}>
+            <a class="nav-link" href="{{ item.action }}">
+                <span class="nav-link-title">{{ item.label }}</span>
             </a>
         </li>
     {% elseif item.type == 'tree' %}
-        <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                {{ item.label }}
-                <span class="caret"></span>
+        <li class="nav-item dropdown {{ item.isActive ? 'active' : '' }}">
+            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" data-bs-autoclose="outside" role="button">
+                <span class="nav-link-title">{{ item.label }}</span>
             </a>
-            <ul class="dropdown-menu" role="menu">
+            <div class="dropdown-menu">
                 {% for child in item.children %}
-                    <li>
-                        <a href="{{ child.action }}">
-                            {% if child.isActive %}
-                                <i class="fa fa-check fa-fw"></i>
-                            {% else %}
-                                <i class="fa fa-fw"></i>
-                            {% endif %}
-                            {{ child.label }}
-                        </a>
-                    </li>
+                    <a class="dropdown-item {{ child.isActive ? 'active' : '' }}" href="{{ child.action }}">
+                        {{ child.label }}
+                    </a>
                 {% endfor %}
-            </ul>
+            </div>
         </li>
     {% elseif item.type == 'user' %}
-        <li class="dropdown user user-menu">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                <img src="{{ asset(item.avatar) }}" alt="{{ item.label}}" class="user-image">
-                <span class="hidden-xs">{{ item.label }}</span>
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
+                <span class="avatar avatar-sm" style="background-image: url({{ asset(item.avatar) }})"></span>
+                <div class="d-none d-xl-block ps-2">
+                    <div>{{ item.label }}</div>
+                </div>
             </a>
-            <ul class="dropdown-menu">
-                <li class="user-header">
-                    <img src="{{ asset(item.avatar) }}" alt="{{ item.user.username }}" class="img-circle">
-                    <p>{{ item.user.username }}</p>
-                </li>
-                <li class="user-footer">
-                    <div class="pull-left">
-                        <a href="{{ path('user.index', {'username' : item.user.username }) }}"
-                           class="btn btn-default btn-flat">{{ 'Profile'|trans }}</a>
-                    </div>
-                    <div class="pull-right">
-                        <a href="{{ logout_path() }}"
-                           class="btn btn-default btn-flat">{{ 'Logout'|trans({}, 'security') }}</a>
-                    </div>
-                </li>
-            </ul>
+            <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                    <a class="dropdown-item" href="{{ path('user.index', {'username' : item.user.username }) }}">
+                        {{ 'Profile'|trans }}
+                    </a>
+                    <a class="dropdown-item" href="{{ logout_path() }}">
+                        {{ 'Logout'|trans({}, 'security') }}
+                    </a>
+            </div>
         </li>
     {% endif %}
 {% endfor %}
+</ul>
