@@ -13,6 +13,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use function in_array;
 
 class CommonItemsSubscriber implements EventSubscriberInterface
 {
@@ -44,11 +45,5 @@ class CommonItemsSubscriber implements EventSubscriberInterface
             'fas fa-tachometer-alt'
         ));
 
-        if ($route === 'about') {
-            $event->addItem(new BreadcrumbItem(
-                $this->translator->trans('breadcrumb.dashboard.about'),
-                $this->router->generate('about')
-            ));
-        }
     }
 }

@@ -12,7 +12,7 @@
 </head>
 <body>
     <div class="page">
-        <aside class="navbar navbar-vertical navbar navbar-vertical navbar-expand-md">
+        <aside class="navbar navbar-vertical navbar navbar-vertical navbar-expand-md" data-bs-theme="dark">
                 {% include '_sidebar.html.twig' %}
         </aside>
         <header class="navbar navbar-expand-md d-print-none">
@@ -22,24 +22,30 @@
         <div class="page-wrapper">
 
             <div class="page-header">
-                {% block page_head %}
-                    <div class="row align-items-center mw-100">
-                        <div class="col">
-                            <div class="mb-1">
-                                {% include '_breadcrumbs.html.twig' %}
+                <div class="container-xl">
+                    <div class="col">
+                    {% block page_head %}
+                        <div class="row align-items-center mw-100">
+                            <div class="col">
+                                <div class="mb-1">
+                                    {% include '_breadcrumbs.html.twig' %}
+                                </div>
                             </div>
+                            <h2 class="page-title">
+                                <div class="text-truncate">{% block page_title %}{% endblock %}</div>
+                            </h2>
                         </div>
-                        <h2 class="page-title">
-                            <div class="text-truncate">{% block page_title %}{% endblock %}</div>
-                        </h2>
+                    {% endblock %}
                     </div>
-                {% endblock %}
+                </div>
             </div>
 
             <div class="page-body">
                 <div class="container-xl">
+                    <div class="col">
                     {% block page_content %}
                     {% endblock %}
+                    </div>
                 </div>
             </div>
 
