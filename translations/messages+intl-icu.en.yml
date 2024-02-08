@@ -33,6 +33,7 @@ breadcrumb:
     home: Users
   user.management:
     home: User management
+Changelog: Changelog
 Close: Закрыть
 closed: закрыта
 comment:
@@ -122,6 +123,7 @@ Edit: Редактировать
 Edit_project: Настроить проект
 Edit_user: Редактировать профиль
 Hidden: hidden
+License: License
 Maintenance: Обслуживание
 menu:
   dashboard.about: О системе

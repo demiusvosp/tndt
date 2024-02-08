@@ -1,0 +1,9 @@
+{% extends 'base_layout.html.twig' %}
+
+{% block title %}{{ parent() }} - {{ title|trans }}{% endblock %}
+{% block page_title%}{{ title|trans }}{% endblock %}
+
+{% block page_content %}
+    {{ text|markdown_to_html }}
+    <div class="row" style="height: 20em;">&nbsp;</div>
+{% endblock %}
