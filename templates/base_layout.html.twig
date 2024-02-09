@@ -32,7 +32,7 @@
                                 </div>
                             </div>
                             <h2 class="page-title">
-                                <div class="text-truncate">{% block page_title %}{% endblock %}</div>
+                                {% block page_title %}{% endblock %}
                             </h2>
                         </div>
                     {% endblock %}
@@ -42,10 +42,10 @@
 
             <div class="page-body">
                 <div class="container-xl">
-                    <div class="col">
                     {% block page_content %}
+                        <div class="col">
+                        </div>
                     {% endblock %}
-                    </div>
                 </div>
             </div>
 

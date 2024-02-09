@@ -2,18 +2,21 @@
 {% trans_default_domain "errors" %}
 {% block title %}{{ parent() }} - {{ status_label }}{% endblock %}
 {% block page_title%}{% endblock %}
-{% block page_subtitle %}{% endblock %}
-
-{% block breadcrumb %}
-{% endblock %}
 
 {% block page_content %}
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <h3 class="panel-title error-title">{{ 'Error_page.reason'|trans }}: <span class="error-code">{{ status_code }}</span> - {{ status_label }}</h3>
+<div class="col">
+    <div class="card">
+        <div class="card-status-top bg-danger"></div>
+        <div class="card-header card-header-light">
+            <h3 class="card-title">
+                <b>{{ status_code }}</b> - {{ status_label }}
+            </h3>
         </div>
-        <div class="panel-body">
+        <div class="card-body">
+            <p>
             {{ 'Error_page.message'|trans }}: {{ status_description }}
+            </p>
         </div>
     </div>
+</div>
 {% endblock %}
