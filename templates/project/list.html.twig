@@ -29,18 +29,23 @@
         {% endif %}
             <div class="col-md-3">
                 {% if project != 'create' %}
-                    {{ mProject.snippet(project, 500) }}
+                    {% include 'project/_project_block.twig' with { 'project':project, 'descriptionLength': 500 } %}
                 {% else %}
-                    {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
-                        {% block box_title %}
-                            {{ 'project.new_project'|trans }}
-                        {% endblock %}
-                        {% block box_body %}
-                            <div class="text-center">
-                            <a class="btn btn-success btn-lg" href="{{ path('project.create') }}">{{ 'project.create'|trans }}</a>
+                    <div class="card">
+                        <div class="card-status-top bg-green"></div>
+                        <div class="card-header card-header-light">
+                            <h3 class="card-title">
+                                {{ 'project.new_project'|trans }}
+                            </h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="container-fluid">
+                                <div class="col-sm">
+                                    <a class="btn btn-success btn-lg" href="{{ path('project.create') }}">{{ 'project.create'|trans }}</a>
+                                </div>
                             </div>
-                        {% endblock %}
-                    {% endembed %}
+                        </div>
+                    </div>
                 {% endif %}
             </div>
         {% if loop.index is divisible by(4) %}

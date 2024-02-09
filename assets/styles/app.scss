@@ -1,5 +1,42 @@
+@import "~@tabler/core/src/scss/_variables.scss";
 
+/* grid */
+.card {
+  margin-top: 1rem;
+}
+
+/* base */
 .breadcrumb-item.active a {
   color: inherit;
   pointer-events: all !important;
+}
+
+/* project */
+.project-block {
+  .security-row {
+    color: $text-secondary;
+    font-size: 0.75rem;
+  }
+  .date-row {
+    color: $text-secondary;
+    font-size: $font-size-75;
+  }
+  .description-row {
+    font-size: $font-size-100;
+  }
+  hr {
+    margin: 0.25em 0;
+  }
+}
+
+/* task */
+.task-link {
+  color: $black;
+  text-decoration: none;
+  outline: none;
+}
+
+/* typography */
+code {
+
 }

@@ -19,22 +19,22 @@
     {% if task.isClosed() %}</s>{% endif %}
 {% endmacro %}
 
-{% macro badge(task, withName = false, link = false, limit = 100) %}
-    {% if link %}
-        <a class="invisible_link" href="{{ path('task.index', {'taskId': task.taskId}) }}">
-    {% endif %}
+{% macro taskLink(task) %}
+    <a class="task-link" href="{{ path('task.index', {'taskId': task.taskId}) }}">
+        <span {{ task.isClosed ? 'class="task-closed"' }}>
+    {#        <i class="fa-solid fa-bars-progress"></i> не работает, ждет font-awesome 5.7 и значит и adminlte3#}
+            {% import _self as this %}
+            <b>{{ task.taskId }}</b>
+                - {{ task.caption}}
+                {{ badges(task) }}
+        </span>
+    </a>
+{% endmacro %}
+
+{% macro badge(task) %}
     <span {{ task.isClosed ? 'class="task-closed"' }}>
-{#        <i class="fa-solid fa-bars-progress"></i> не работает, ждет font-awesome 5.7 и значит и adminlte3#}
-        {% import _self as this %}
         <b>{{ task.taskId }}</b>
-        {% if withName %}
-            - {{ this.caption(task, limit) }}
-            {{ badges(task) }}
-        {% endif %}
     </span>
-    {% if link %}
-        </a>
-    {% endif %}
 {% endmacro %}
 
 {% macro table(tasks, project) %}
