@@ -124,6 +124,9 @@ Edit_project: Настроить проект
 Edit_user: Редактировать профиль
 Hidden: hidden
 License: License
+Login: Login
+LoginTo: Login to task tracker
+Logout: Logout
 Maintenance: Обслуживание
 menu:
   dashboard.about: О системе

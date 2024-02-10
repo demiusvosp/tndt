@@ -1,11 +1,17 @@
-{% extends '@AdminLTE/layout/security-layout.html.twig' %}
+{% extends 'empty_layout.html.twig' %}
 
-{% block title %}TnDT - {{ 'Login'|trans }}{% endblock %}
-{% block stylesheets %}
-    {#    {{ parent() }}#}
-    <link type="image/x-icon" rel="shortcut icon" href="{{ asset('build/images/favicon.ico') }}">
-    <link rel="icon" type="image/png" href="{{ asset('build/images/favicon.png') }}" />
-    {{ encore_entry_link_tags('app') }}
+{% block body %}
+<div class="page page-center">
+    <div class="container container-tight py-4">
+        <div class="text-center mb-4">
+            <h1 class="navbar-brand navbar-brand-autodark">
+                <a href="{{ path('home') }}">
+                    Task & Doc Tracker
+                </a>
+            </h1>
+        </div>
+        {% block page_content %}
+        {% endblock %}
+    </div>
+</div>
 {% endblock %}
-
-{% block logo_login %}<b>Task</b>&<b>DocTracker</b>{% endblock %}

@@ -124,6 +124,9 @@ Edit_project: Настроить проект
 Edit_user: Редактировать профиль
 Hidden: cкрыт
 License: Лицензия
+Login: Войти
+LoginTo: Войти в систему
+Logout: Выйти
 Maintenance: Обслуживание
 menu:
   dashboard.about: О системе
@@ -326,3 +329,4 @@ Works:
   title: Работа над задачей
   activity: Активность
   comments: Комментарии
+

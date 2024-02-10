@@ -1,0 +1,17 @@
+<html lang="{{ app.locale }}">
+<head>
+    <title>{% block title %}TnDT{% endblock %}</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    {% block stylesheets %}
+        <link type="image/x-icon" rel="shortcut icon" href="{{ asset('build/images/favicon.ico') }}">
+        <link rel="icon" type="image/png" href="{{ asset('build/images/favicon.png') }}" />
+        {{ encore_entry_link_tags('app') }}
+    {% endblock %}
+</head>
+<body>
+    {% block body %}
+    {% endblock %}
+</body>
+</html>
