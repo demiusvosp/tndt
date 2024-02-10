@@ -13,17 +13,23 @@
 
             <div class="page-header">
                 <div class="container-xl">
-                    <div class="col">
+                    <div class="row">
                     {% block page_head %}
-                        <div class="row align-items-center mw-100">
-                            <div class="col">
-                                <div class="mb-1">
-                                    {% include '_breadcrumbs.html.twig' %}
+                        <div class="col">
+                            <div class="row align-items-center mw-100">
+                                <div class="col">
+                                    <div class="mb-1">
+                                        {% include '_breadcrumbs.html.twig' %}
+                                    </div>
                                 </div>
+                                <h2 class="page-title">
+                                    {% block page_title %}{% endblock %}
+                                </h2>
                             </div>
-                            <h2 class="page-title">
-                                {% block page_title %}{% endblock %}
-                            </h2>
+                        </div>
+                        <div class="col-auto">
+                            {% block page_head_control %}
+                            {% endblock%}
                         </div>
                     {% endblock %}
                     </div>

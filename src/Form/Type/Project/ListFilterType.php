@@ -21,7 +21,14 @@ class ListFilterType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('isArchived', CheckboxType::class, ['required' => false, 'label' => 'project.show_archive']);
+            ->add(
+                'isArchived',
+                CheckboxType::class,
+                [
+                    'required' => false,
+                    'label' => 'project.show_archive',
+                ]
+            );
     }
 
     public function configureOptions(OptionsResolver $resolver): void
