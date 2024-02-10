@@ -6,11 +6,11 @@
             <b>{{ project.suffix }}</b> - {{ project.name }}
         </h3>
         <div class="project-block">
-            <div class="row-cols-2 justify-content-between security-row">
+            <div class="row row-cols-2 justify-content-between security-row">
                 <div class="col">
                     {{ 'project.pm.short'|trans }}: {{ project.pm ? mUser.badge(project.pm) : mUser.nobody() }}
                 </div>
-                <div class="col">
+                <div class="col right-col">
                     {% if project.isArchived %}<span class="badge">{{ 'archived'|trans }}</span>{% endif %}
                     {% if not project.public and is_granted("PERM_PROJECT_VIEW", project) %}
                         <i class="fas fa-lock-open pull-right" title="{{ 'Access_granted.description'|trans }}"></i>

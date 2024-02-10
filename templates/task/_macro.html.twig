@@ -20,7 +20,7 @@
 {% endmacro %}
 
 {% macro taskLink(task) %}
-    <a class="task-link" href="{{ path('task.index', {'taskId': task.taskId}) }}">
+    <a class="invisible_link" href="{{ path('task.index', {'taskId': task.taskId}) }}">
         <span {{ task.isClosed ? 'class="task-closed"' }}>
     {#        <i class="fa-solid fa-bars-progress"></i> не работает, ждет font-awesome 5.7 и значит и adminlte3#}
             {% import _self as this %}

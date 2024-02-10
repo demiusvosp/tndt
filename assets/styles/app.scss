@@ -10,6 +10,12 @@ $icon-size: 1rem;
 }
 
 /* common blocks */
+.invisible_link {
+  color: $black;
+  text-decoration: none;
+  outline: none;
+}
+
 .icon {
   $icon-stroke-width: 1;
   $icon-size: 1rem;
@@ -37,6 +43,9 @@ $icon-size: 1rem;
   .security-row {
     color: $text-secondary;
     font-size: 0.75rem;
+    .right-col {
+      text-align: right;
+    }
   }
   .date-row {
     color: $text-secondary;
@@ -51,8 +60,3 @@ $icon-size: 1rem;
 }
 
 /* task */
-.task-link {
-  color: $black;
-  text-decoration: none;
-  outline: none;
-}
