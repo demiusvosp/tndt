@@ -8,6 +8,14 @@
                     <span class="nav-link-title">{{ item.label }}</span>
                 </a>
             </div>
+        {% elseif item.type == 'button' %}
+            <div class="nav-item" {{ item.isActive ? 'active' : '' }}>
+                <a class="nav-link" href="{{ item.action }}">
+                    <span class="btn {{ item.buttonClass }}">
+                        <span class="nav-link-title">{{ item.label }}</span>
+                    </span>
+                </a>
+            </div>
         {% elseif item.type == 'tree' %}
             <div class="nav-item dropdown {{ item.isActive ? 'active' : '' }}">
                 <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" data-bs-autoclose="outside" role="button">

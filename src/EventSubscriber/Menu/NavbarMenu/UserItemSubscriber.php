@@ -9,6 +9,7 @@ namespace App\EventSubscriber\Menu\NavbarMenu;
 
 use App\Entity\User;
 use App\Event\Menu\MenuEvent;
+use App\ViewModel\Menu\ButtonItem;
 use App\ViewModel\Menu\MenuItem;
 use App\ViewModel\Menu\UserItem;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -62,12 +63,15 @@ class UserItemSubscriber implements EventSubscriberInterface
                 ->setAvatar('build/images/default_avatar.png')
             );
         } else {
-            $event->addItem(new MenuItem(
-                $this->router->generate('app.login'),
-                false,
-                $this->translator->trans('Login', [], 'security'),
-                null
-            ));
+            $event->addItem(
+                (new ButtonItem(
+                    $this->router->generate('app.login'),
+                    false,
+                    $this->translator->trans('Login', [], 'security'),
+                    null
+                ))
+                ->setButtonClass('btn-primary')
+            );
         }
     }
 }
