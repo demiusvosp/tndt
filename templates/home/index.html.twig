@@ -60,6 +60,9 @@
                             <li class="text-truncate">{{ mTask.taskLink(task) }}</li>
                         {% endfor %}
                     </ul>
+                    {% if tasks|length == 0 %}
+                        <div style="height: 4rem;">&nbsp;</div>
+                    {% endif%}
                 </div>
             </div>
         </div>
@@ -77,6 +80,9 @@
                             </li>
                         {% endfor %}
                     </ul>
+                    {% if docs|length == 0 %}
+                        <div style="height: 4rem;">&nbsp;</div>
+                    {% endif%}
                 </div>
             </div>
         </div>
@@ -87,15 +93,18 @@
                     <h3 class="card-title">
                         {% trans %}Users{% endtrans %}:
                     </h3>
-                {% if users|length > 0 and app.user %}
-                    <ul class="list-unstyled">
-                        {% for user in users %}
-                            <li>
-                                <b>{{ mUser.badge(user) }}</b> - {{ role_label_list(user.roles, 100) }}
-                            </li>
-                        {% endfor %}
-                    </ul>
-                {% endif %}
+                    {% if app.user %}
+                        <ul class="list-unstyled">
+                            {% for user in users %}
+                                <li>
+                                    <b>{{ mUser.badge(user) }}</b> - {{ role_label_list(user.roles, 100) }}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                    {% if users|length == 0 %}
+                        <div style="height: 4rem;">&nbsp;</div>
+                    {% endif%}
                 </div>
             </div>
         </div>

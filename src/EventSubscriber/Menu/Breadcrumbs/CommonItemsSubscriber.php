@@ -42,7 +42,7 @@ class CommonItemsSubscriber implements EventSubscriberInterface
         $event->addItem(new BreadcrumbItem(
             $this->translator->trans('breadcrumb.home'),
             $this->router->generate('home'),
-            'fas fa-tachometer-alt'
+            'home.svg'//'fas fa-tachometer-alt'
         ));
 
     }

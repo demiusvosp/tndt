@@ -2,7 +2,7 @@
     {% for item in breadcrumbs() %}
     <li class="breadcrumb-item {{ loop.last ? 'active' : '' }}">
         <a href="{{ item.action }}">
-            {% if item.icon %}<i class="{{ item.icon }}"></i>{% endif %}
+            {{ item.icon ? icon(item.icon) : '' }}
             {{ item.label }}
         </a>
     </li>

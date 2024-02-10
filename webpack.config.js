@@ -42,6 +42,11 @@ Encore
         //to: 'images/[path][name].[hash:8].[ext]',
         pattern: /\.(png|ico|jpg)$/
     })
+    .copyFiles({
+        from: './node_modules/@tabler/icons/icons',
+        to: 'icons/[path][name].[ext]',
+        pattern: /\.(svg)$/
+    })
 
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
     .splitEntryChunks()

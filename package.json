@@ -23,6 +23,7 @@
     },
     "dependencies": {
         "@fortawesome/fontawesome-free": "^5",
+        "@tabler/icons": "^3.0.0-alpha.1",
         "autosize": "^6.0.1",
         "axios": "^1.6.5",
         "core-js": "^3.17.2",

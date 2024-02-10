@@ -13,20 +13,20 @@
             {% if item.isTree == false %}
                 <li class="nav-item {{ item.isActive ? 'active' : '' }}">
                     <a class="nav-link" href="{{ item.action }}">
-                        {% if item.icon %} <i class="nav-link-icon d-md-none{{ item.icon }}"></i> {% endif %}
+                        {{ item.icon ? icon(item.icon, 'nav-link-icon') : '' }}
                         <span class="nav-link-title">{{ item.label }}</span>
                     </a>
                 </li>
             {% else %}
                 <li class="nav-item dropdown {{ item.isActive ? 'active' : '' }}">
                     <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="true">
-                        {% if item.icon %} <i class="nav-link-icon d-md-none {{ item.icon }}"></i> {% endif %}
+                        {{ item.icon ? icon(item.icon, 'nav-link-icon') : '' }}
                         <span class="nav-link-title">{{ item.label }}</span>
                     </a>
                     <div class="dropdown-menu">
                     {% for child in item.children %}
-                        <a class="dropdown-item {{ child.isActive ? 'active': ''}}" href="{{ child.action }}>
-                            {% if child.icon %} <i class="{{ child.icon }}"></i> {% endif %}
+                        <a class="dropdown-item {{ child.isActive ? 'active': ''}}" href="{{ child.action }}>">
+                            {{ child.icon ? icon(child.icon) : '' }}
                             {{ child.label }}
                         </a>
                     {% endfor %}
