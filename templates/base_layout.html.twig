@@ -1,56 +1,63 @@
-{% extends '@AdminLTE/layout/default-layout.html.twig' %}
+{% extends 'empty_layout.html.twig' %}
+{% block body %}
+<body class="layout-fluid">
+    <div class="page">
+        <aside class="navbar navbar-vertical navbar navbar-vertical navbar-expand-md" data-bs-theme="dark">
+                {% include '_sidebar.html.twig' %}
+        </aside>
+        <header class="navbar navbar-expand-md d-print-none">
+            {% include '_navbar.html.twig' %}
+        </header>
 
-{% block title %}TnDT{% endblock %}
-{% block logo_mini %}<b>T</b>&<b>DT</b>{% endblock %}
-{% block logo_large %}<b>Task</b>&<b>DocTracker</b>{% endblock %}
-{% block stylesheets %}
-{#    {{ parent() }}#}
-    <link type="image/x-icon" rel="shortcut icon" href="{{ asset('build/images/favicon.ico') }}">
-    <link rel="icon" type="image/png" href="{{ asset('build/images/favicon.png') }}" />
-    {{ encore_entry_link_tags('app') }}
-{% endblock %}
-{% block javascripts %}
-{#    {{ parent() }}#}
-    {{ encore_entry_script_tags('app') }}
-{% endblock %}
+        <div class="page-wrapper">
 
-{% block navbar_start %}
-{% endblock %}
-{% block navbar_messages %}
-{% endblock %}
-{% block navbar_notifications %}
-{% endblock %}
-{% block navbar_tasks %}
-{% endblock %}
-{% block navbar_user %}
-    {% include '_navbar.html.twig' %}
-{% endblock %}
-{% block navbar_end %}{% endblock %}
-{% block navbar_control_sidebar_toggle %}
-    {% if admin_lte_context.control_sidebar is defined and admin_lte_context.control_sidebar is not empty %}
-        <li>
-            <a href="#" data-toggle="control-sidebar"><i class="fas fa-cogs"></i></a>
-        </li>
-    {% endif %}
-{% endblock %}
+            <div class="page-header">
+                <div class="container-xl">
+                    <div class="row">
+                    {% block page_head %}
+                        <div class="col">
+                            <div class="row align-items-center mw-100">
+                                <div class="col">
+                                    <div class="mb-1">
+                                        {% include '_breadcrumbs.html.twig' %}
+                                    </div>
+                                </div>
+                                <h2 class="page-title">
+                                    {% block page_title %}{% endblock %}
+                                </h2>
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            {% block page_head_control %}
+                            {% endblock%}
+                        </div>
+                    {% endblock %}
+                    </div>
+                </div>
+            </div>
 
-{% block sidebar_user %}
-{% endblock %}
-{% block sidebar_search %}
-{% endblock %}
-{% block sidebar_nav %}
-    {% include '_sidebar.html.twig' %}
-{% endblock %}
+            <div class="page-body">
+                <div class="container-xl">
+                    {% block page_content %}
+                        <div class="col">
+                        </div>
+                    {% endblock %}
+                </div>
+            </div>
 
-{% block breadcrumb %}
-    {% include '_breadcrumbs.html.twig' %}
-{% endblock %}
+            <footer class="footer footer-transparent">
+                {% include '_footer.html.twig' %}
+            </footer>
 
-{% block footer %}
-    {% include '_footer.html.twig' %}
-    {% include '_modals.html.twig' %}
-    {% if app.request.get('addMdHelp') %}
-        {{ render(controller('App\\Controller\\HomeController::helpMd')) }}
-    {% endif %}
-{% endblock %}
+            {% include '_modals.html.twig' %}
+            {% if app.request.get('addMdHelp') %}
+                {{ render(controller('App\\Controller\\HomeController::helpMd')) }}
+            {% endif %}
+            {% block javascripts %}
+                {{ encore_entry_script_tags('app') }}
+            {% endblock %}
+        </div>
 
+    </div>
+</body>
+{% endblock %}

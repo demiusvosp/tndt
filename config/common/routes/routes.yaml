@@ -2,9 +2,9 @@
 home:
     path: /
     controller: App\Controller\HomeController::index
-about:
-    path: /about
-    controller: App\Controller\HomeController::about
+static:
+    path: /static/{page<\w+>}
+    controller: App\Controller\HomeController::static
 
 #Auth
 app.login:

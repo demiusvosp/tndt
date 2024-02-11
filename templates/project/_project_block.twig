@@ -1,0 +1,35 @@
+<div class="card h-100">
+    {% import 'user/_macro.html.twig' as mUser %}
+    <div class="card-status-top {{ project.isArchived ? 'bg-muted-lt' : 'bg-blue' }}"></div>
+    <div class="card-body">
+        <a class="invisible_link" href="{{ path('project.index', {'suffix': project.suffix}) }}">
+            <h3 class="card-title text-truncate {{ project.isArchived ? 'text-muted' : '' }}">
+                <b>{{ project.suffix }}</b> - {{ project.name }}
+            </h3>
+        </a>
+        <div class="project-block">
+            <div class="row row-cols-2 justify-content-between security-row">
+                <div class="col">
+                    {{ 'project.pm.short'|trans }}: {{ project.pm ? mUser.badge(project.pm) : mUser.nobody() }}
+                </div>
+                <div class="col right-col">
+                    {% if project.isArchived %}<span class="badge">{{ 'archived'|trans }}</span>{% endif %}
+                    {% if not project.public and is_granted("PERM_PROJECT_VIEW", project) %}
+                        <i class="fas fa-lock-open pull-right" title="{{ 'Access_granted.description'|trans }}"></i>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="date-row">
+                <div class="col">
+                    {{ 'project.updatedAt'|trans }}: {{ project.updatedAt|ago }}
+                </div>
+            </div>
+            <hr>
+            <div class="description-row">
+                <div class="col-md-12">
+                    {{ (descriptionLength == 0) ? project.description|markdown_to_html : project.description|u.truncate(descriptionLength)|markdown_to_html }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

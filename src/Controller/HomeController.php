@@ -61,11 +61,17 @@ class HomeController extends AbstractController
         );
     }
 
-    public function about(): Response
+    public function static(string $page): Response
     {
-        $about = file_get_contents($this->getParameter('kernel.project_dir') . '/README.md');
+        [$title, $file] = match ($page) {
+            'changelog' => ['Changelog', '/CHANGELOG.md'],
+            'license' => ['License', '/LICENSE'],
+            default => ['About', '/README.md']
+        };
 
-        return $this->render('home/about.html.twig', ['about_text' => $about])
+        $text = file_get_contents($this->getParameter('kernel.project_dir') . $file);
+
+        return $this->render('home/static.html.twig', ['title' => $title, 'text' => $text])
             ->setPublic()
             ->setMaxAge(self::STATIC_PAGE_CACHE_TTL);
     }

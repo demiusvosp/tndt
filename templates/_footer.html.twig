@@ -1,8 +1,20 @@
-<footer class="main-footer">
-    <!-- To the right -->
-    <div class="pull-right hidden-xs">
-        <small>v. {{ app_version }}</small>
+<div class="container-xl">
+    <div class="row text-center align-items-center flex-row-reverse">
+        <div class="col-lg-auto ms-lg-auto">
+            <ul class="list-inline list-inline-dots mb-0">
+                <li class="list-inline-item"><a class="link-secondary" href="{{ support_url }}" target="_blank">{{ 'Support'|trans }}</a></li>
+                <li class="list-inline-item"><a class="link-secondary" href="{{ path('static', {'page':'changelog'}) }}" target="_blank">{{ 'Changelog'|trans }}</a></li>
+            </ul>
+        </div>
+        <div class="col-12 col-lg-auto mt-3 mt-lg-0">
+            <ul class="list-inline list-inline-dots mb-0">
+                <li class="list-inline-item">
+                    Copyright &copy; 2021 - {{ app_version_year }}
+                    <a class="link-secondary" href="http://demius.ru">demius</a>.
+                    <a class="link-secondary" href="{{ path('static', {'page':'license'}) }}" target="_blank">MIT</a>.
+                </li>
+                <li class="list-inline-item">v. {{ app_version }}</li>
+            </ul>
+        </div>
     </div>
-    <!-- Default to the left -->
-    <strong>Copyleft &copy; 2021 - {{ app_version_year }} <a href="http://demius.ru">demius</a>.</strong> MIT. <a href="{{ support_url }}">{{ 'Support'|trans }}</a>
-</footer>
+</div>

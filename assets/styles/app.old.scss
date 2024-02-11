@@ -1,0 +1,339 @@
+/*
+ * Собственные стили проекта
+ */
+//$icon-font-path: "~bootstrap-sass/assets/fonts/bootstrap/";
+//$fa-font-path: "~@fortawesome/fontawesome-free/webfonts/";
+
+@import "~bootstrap/scss/bootstrap";
+@import "~@tabler/core/src/scss/_variables.scss";
+
+$color-disabled: #333;
+
+/* Common blocks */
+.one-block-content {
+    margin-top: 1em;
+}
+.btn-toolbar > .btn-group-vertical {
+    margin-top: 5px;
+}
+
+/* Projects */
+.project-title {
+    a, a:hover {
+        color: black;
+        text-decoration: none;
+        outline: none;
+    }
+    i {
+        font-size: smaller;
+    }
+}
+
+.more-project-block .panel-body {
+    padding: 0;
+}
+
+.project-settings-blocks {
+    .settings-block {
+        border: $text-secondary 1px solid;
+        border-radius: 0.5em;
+        margin: 1em 0;
+        padding: 1em;
+
+        label {
+            position: relative;
+            top: -2em;
+            left: 0;
+            padding: 0.2em 1em;
+            background-color: $bg-surface-secondary;
+        }
+        .help-text {
+            color: $text-secondary-dark;
+            margin-bottom: 0;
+        }
+        .dictionary-add-item {
+            color: $color-green;
+            font-size: large;
+            padding: 0.1em 0.3em;
+        }
+    }
+}
+
+
+/* Tasks */
+.task-table {
+    th {
+        vertical-align: middle;
+        text-align: center;
+        font-weight: bold;
+    }
+
+    .no {
+        font-weight: bold;
+        text-align: right;
+    }
+    .caption {
+        width: 50%; // потом что в th не ставится vertical-align: middle;
+    }
+}
+.task-table-small {
+    th {
+        text-align: center;
+        font-weight: bold;
+    }
+    .no {
+        font-weight: bold;
+        text-align: right;
+    }
+    .caption {
+        width: 70%;
+    }
+}
+
+.task-properties {
+    .task-property-item {
+        padding: 0.2em 1em;
+    }
+}
+
+#modalConfirmClose {
+    .form-label {
+        padding: 0 2em 0 0;
+    }
+    .close-stage {
+        margin: 1em;
+        .form-widget {
+            float: right;
+            width: 60%;
+        }
+    }
+    .close-comment {
+        margin: 1em;
+    }
+}
+
+/* Docs */
+.doc-table {
+    th {
+        vertical-align: middle;
+        text-align: center;
+        font-weight: bold;
+    }
+    .no {
+        font-weight: bold;
+        text-align: right;
+    }
+}
+.doc-table-small {
+    th {
+        text-align: center;
+        font-weight: bold;
+    }
+    .no {
+        font-weight: bold;
+        text-align: right;
+    }
+    .caption {
+        width: 70%;
+    }
+}
+.doc-property-string {
+    font-style: italic;
+    color: $text-secondary;
+    margin: -0.5em 0.5em 1em 1em;
+
+    span.label {
+        margin-right: 0.5em;
+    }
+
+    a, &:hover {
+        color: $text-secondary;
+    }
+}
+
+/* Comments */
+.comment-list {
+    .comment-head {
+        padding: 0 5em 2px 1em;
+        border-bottom: $border-color 1px solid;
+    }
+    .comment-message {
+        text-align: left;
+        margin-bottom: 1em;
+    }
+    .comment-form {
+        margin: 1em;
+        width: 50%;
+        .comment-message-field {
+
+        }
+    }
+}
+
+/* Forms */
+/* Create/Edit Entity */
+.form-entity {
+    .form-group {
+        margin: 0 1em;
+        .form-label {
+            float: left;
+            padding: 0 2em;
+        }
+        .form-widget {
+            float: left;
+        }
+    }
+    .form-right-column {
+        .form-group {
+            margin-top: 1em;
+            .form-label {
+                float: none;
+            }
+            .form-widget {
+                float: none;
+            }
+        }
+    }
+}
+
+/* Dictionaries */
+.dictionary-not-set {
+    color: $text-secondary;
+}
+
+.modal-header h5 {
+    float: left;
+}
+
+/* Main left sidebar */
+.sidebar > ul.sidebar-menu > li.active {
+    border-left: #3c8dbc solid 3px !important;
+}
+
+.sidebar > ul.sidebar-menu > li.active > a {
+    color: #000000;
+    background: #e4e4e7;
+    padding: 12px 5px 12px 12px;
+}
+
+/* Help right sidebar */
+.help-sidebar {
+    position: fixed;
+    width: 40%;
+    height: 100%;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 2000;
+    transform: translateX(100%);
+    transition: 0.5s;
+    margin: 0;
+    padding: 0;
+    background-color: #fff;
+
+    .nav {
+        position: relative;
+        top: 60%;
+        bottom: -5em;
+        left: -3.3em;
+        z-index: 2010;
+        margin: 0;
+        padding: 0;
+        writing-mode: vertical-lr;
+        li label {
+            cursor: pointer;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-right-color: transparent;
+            border-radius: 4px 0 0 4px;
+            padding: 3em 1em 3em 1em;
+        }
+    }
+    .nav-tabs {
+        border: 0;
+    }
+    .help-container {
+        position: fixed;
+        top: 0;
+        height: 100%;
+        overflow: auto;
+        padding: 1em;
+        border-left: 1px solid #ddd;
+        margin: 0 0.2em;
+    }
+}
+#md-help-toggle {
+    display: none;
+}
+#md-help-toggle:checked ~ .help-sidebar {
+    -webkit-transform: translateX(0);
+    -moz-transform: translateX(0);
+    transform: translateX(0);
+}
+
+/* Other small widgets */
+
+.form-footer-buttons {
+    //float: right !important;
+    margin-left: 2em;
+}
+
+.label {
+    margin-right: 0.3em;
+}
+
+.label-sm {
+    font-size: 50%;
+    vertical-align: middle;
+}
+
+/* неясно как не сломать ими bootstrap стили */
+.style-deleted {
+    text-decoration: line-through;
+    font-weight: normal;
+}
+.style-disabled {
+    color: $color-disabled;
+    opacity: 1;
+}
+
+a.invisible_link, a.invisible_link:hover {
+    color: black;
+    text-decoration: none;
+    outline: none;
+}
+
+.dropdown-menu li div.checkbox {
+    margin: 10px 1em;
+}
+
+.btn-group-vertical .btn-group-vertical {
+    margin-bottom: 5px;
+}
+
+.btn-group-vertical .btn:first-child:not(:last-child) {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.btn-group-vertical .btn:not(:first-child) {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+select option.service-item {
+    //color: $input-color-placeholder;
+    font-style: italic;
+}
+
+.manual-edit {
+    font-family: $font-family-monospace;
+}
+
+.error-title {
+    font-family: $font-family-monospace;
+
+    .error-code {
+        font-weight: bolder;
+    }
+}

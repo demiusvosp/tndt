@@ -65,7 +65,7 @@ class ProjectItemsSubscriber implements EventSubscriberInterface
             'project-' . $project->getSuffix(),
             true,
             $project->getName(),
-            $project->getIcon() . ' fa-fw'
+            'fa-fw ' . $project->getIcon()
         );
         $event->addItem($projectMenu);
 
