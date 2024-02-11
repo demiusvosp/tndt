@@ -67,7 +67,7 @@ class UserItemSubscriber implements EventSubscriberInterface
                 (new ButtonItem(
                     $this->router->generate('app.login'),
                     false,
-                    $this->translator->trans('Login', [], 'security'),
+                    $this->translator->trans('Login'),
                     null
                 ))
                 ->setButtonClass('btn-primary')

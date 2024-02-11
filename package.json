@@ -2,8 +2,6 @@
     "devDependencies": {
         "@popperjs/core": "^2.11.8",
         "@symfony/webpack-encore": "^1.0.5",
-        "@tabler/core": "1.0.0-beta20",
-        "bootstrap": "^5.3",
         "css-loader": "^6",
         "file-loader": "^6.0.0",
         "jquery": "^3.4",
@@ -22,7 +20,9 @@
         "build": "encore production --progress"
     },
     "dependencies": {
+        "bootstrap": "^5.3",
         "@fortawesome/fontawesome-free": "^5",
+        "@tabler/core": "1.0.0-beta20",
         "@tabler/icons": "^3.0.0-alpha.1",
         "autosize": "^6.0.1",
         "axios": "^1.6.5",

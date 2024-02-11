@@ -5,7 +5,7 @@
 {% block page_title%}{% trans %}dashboard{% endtrans %}{% endblock %}
 
 {% block page_content %}
-    <div class="row row-cards row-cols-xl-4 row-cols-lg-3 row-cols-md-2">
+    <div class="row row-cards row-cols-xxl-4 row-cols-xl-3 row-cols-md-2 row-cols-sm-1 row-cols-xs-1">
         {% if is_granted("PERM_PROJECT_CREATE") %}
             {% set projects = projects|merge(['create']) %}
         {% endif %}
@@ -45,7 +45,7 @@
         </div>
     {% endif %}
 
-    <div class="row row-cards row-cols-xl-3 row-cols-lg-2 row-cols-md-1">
+    <div class="row row-cards row-cols-xl-3 row-cols-lg-2 row-cols-md-1 row-cols-sm-1 row-cols-xs-1">
         <div class="col">
             <div class="card">
                 {% import 'task/_macro.html.twig' as mTask %}

@@ -4,9 +4,8 @@ import moment from "moment";
 moment.locale('ru');
 
 import '@fortawesome/fontawesome-free/css/all.css'
-// import '@fortawesome/fontawesome-free/js/solid'
-// import '@fortawesome/fontawesome-free/js/regular'
 
+import '@tabler/core/src/js/tabler'
 import '@tabler/core/src/scss/tabler.scss'
 
 import './styles/app.scss';
