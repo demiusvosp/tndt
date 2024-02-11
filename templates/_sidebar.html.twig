@@ -23,10 +23,10 @@
                         {{ item.icon ? icon(item.icon, 'nav-link-icon') : '' }}
                         <span class="nav-link-title">{{ item.label }}</span>
                     </a>
-                    <div class="dropdown-menu">
+                    <div class="dropdown-menu {{ item.isActive ? 'show' : '' }}">
                     {% for child in item.children %}
-                        <a class="dropdown-item {{ child.isActive ? 'active': ''}}" href="{{ child.action }}>">
-                            {{ child.icon ? icon(child.icon) : '' }}
+                        <a class="dropdown-item {{ child.isActive ? 'active': ''}}" href="{{ child.action }}">
+                            {{ child.icon ? icon(child.icon, 'nav-link-icon') : '' }}
                             {{ child.label }}
                         </a>
                     {% endfor %}
