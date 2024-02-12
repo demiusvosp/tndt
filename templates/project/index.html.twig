@@ -2,100 +2,165 @@
 {% import 'project/_macro.html.twig' as mProject %}
 
 {% block title %}{{ project.name}}{% endblock %}
-{% block page_title%}{% endblock %}
-{% block page_subtitle %}{% endblock %}
+{% block page_title%}{{ project.name}}{% endblock %}
 
 {% block page_content %}
-    <div class="row">
-        <div class="col-md-10">
-            {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
-                {# все, что внутри embed теряет свой контекст, и _self здесь больше нет #}
-                {% import 'project/_macro.html.twig' as this %}
-                {% import 'user/_macro.html.twig' as mUser %}
-                {% block box_title %}
-                    <span class="project-title">{{ this.badge(project, true, true) }}</span>
-                {% endblock %}
-                {% block box_body %}
-                    <div class="project-snippet">
-                        <div class="row security-row">
-                            <div class="col-md-6">
-                                {{ 'project.pm.short'|trans }}: {{ project.pm ? mUser.badge(project.pm) : mUser.nobody() }}
-                            </div>
-                            <div class="col-md-6">
-                                {% if project.isArchived %}<span class="label label-default">{{ 'archived'|trans }}</span>{% endif %}
-                                {% if not project.public and is_granted("PERM_PROJECT_VIEW", project) %}
-                                    <i class="fas fa-lock-open pull-right" title="{{ 'Access_granted.description'|trans }}">{{ 'Access_granted.label'|trans }}</i>
-                                {% endif %}
-                            </div>
+    {% import 'project/_macro.html.twig' as this %}
+    {% import 'user/_macro.html.twig' as mUser %}
+    <div class="row row-cards row-cols-xl-2 row-cols-lg-1">
+        <div class="col-xxl-10 col-xl-8 col-lg-12">
+            <div class="card h-100">
+                <div class="card-status-top {{ project.isArchived ? 'bg-muted-lt' : 'bg-blue' }}"></div>
+                <div class="card-body project-block">
+                    <h3 class="card-title text-truncate {{ project.isArchived ? 'text-muted' : '' }}">
+                        {{ 'menu.project.dashboard'|trans }}
+                    </h3>
+                    <div class="row row-cols-2 justify-content-between security-row">
+                        <div class="col">
+                            {{ 'project.pm.short'|trans }}: {{ project.pm ? mUser.badge(project.pm) : mUser.nobody() }}
                         </div>
-                        <div class="row date-row">
-                            <div class="col-md-4">
-                                {{ 'project.updatedAt'|trans }}: {{ project.updatedAt|ago }}
-                            </div>
-                            <div class="col-md-4">
-                                {{ 'project.createdAt'|trans }}: {{ project.createdAt|ago }}
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="row description-row">
-                            <div class="col-md-12">
-                                {{ project.description|markdown_to_html }}
-                            </div>
+                        <div class="col right-col">
+                            {% if project.isArchived %}<span class="badge">{{ 'archived'|trans }}</span>{% endif %}
+                            {% if not project.public and is_granted("PERM_PROJECT_VIEW", project) %}
+                                <i class="fas fa-lock-open pull-right" title="{{ 'Access_granted.description'|trans }}"></i>
+                            {% endif %}
                         </div>
                     </div>
-                {% endblock %}
-            {% endembed %}
+                    <div class="row row-cols-2 justify-content-start date-row">
+                        <div class="col-4">
+                            {{ 'project.updatedAt'|trans }}: {{ project.updatedAt|ago }}
+                        </div>
+                        <div class="col-4">
+                            {{ 'project.createdAt'|trans }}: {{ project.createdAt|ago }}
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row description-row">
+                        <div class="col">
+                            {{ project.description|markdown_to_html }}
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="col-md-2">
-            {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-            {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
-                {% block box_title %}
-                    {{ 'ControlPanel'|trans }}
-                {% endblock  %}
-                {% block box_body %}
-                    <div class="btn-group-vertical" role="toolbar" aria-label="{{ 'ControlPanel'|trans }}">
-                        <div class="btn-group-vertical" role="group" aria-label="{{ 'Common'|trans }}">
+        <div class="col-xxl-2 col-xl-4 d-lg-none d-md-none d-sm-none d-xl-block">
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="card-title">
+                        {{ 'ControlPanel'|trans }}
+                    </h3>
+                    {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                        <div class="btn-group-vertical w-100" role="group" aria-label="{{ 'Common'|trans }}">
                             {% if is_granted('PERM_TASK_CREATE') and not project.isArchived() %}
-                                <a class="btn btn-default btn-secondary" href="{{ path('task.project_create', {'suffix':project.suffix}) }}">{{ 'Create_task'|trans }}</a>
+                                <a class="btn btn-outline-primary"
+                                   href="{{ path('task.project_create', {'suffix':project.suffix}) }}"
+                                >
+                                    {{ 'Create_task'|trans }}
+                                </a>
                             {% endif %}
                             {% if is_granted('PERM_DOC_CREATE') and not project.isArchived() %}
-                                <a class="btn btn-default btn-secondary" href="{{ path('doc.project_create', {'suffix':project.suffix}) }}">{{ 'Create_doc'|trans }}</a>
+                                <a class="btn btn-outline-primary"
+                                   href="{{ path('doc.project_create', {'suffix':project.suffix}) }}"
+                                >
+                                    {{ 'Create_doc'|trans }}
+                                </a>
                             {% endif %}
                         </div>
 
-                        <div class="btn-group-vertical" role="group" aria-label="{{ 'Maintenance'|trans }}">
+                        <div class="btn-group-vertical w-100 mt-3" role="group" aria-label="{{ 'Maintenance'|trans }}">
                             {% if is_granted('PERM_PROJECT_SETTINGS') %}
-                                <a class="btn btn-default btn-secondary" href="{{ path('project.edit', {'suffix':project.suffix}) }}">{{ 'Edit_project'|trans }}</a>
+                                <a class="btn btn-outline-primary"
+                                   href="{{ path('project.edit', {'suffix':project.suffix}) }}"
+                                >
+                                    {{ 'Edit_project'|trans }}
+                                </a>
                             {% endif %}
                         </div>
-                    </div>
-                {% endblock %}
-            {% endembed %}
-            {% endif %}
+                    {% endif %}
+                </div>
+            </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-md-6">
-        {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
-            {% import 'task/_macro.html.twig' as mTask %}
-            {% block box_title %}
-                <a href="{{ path('task.list', {'suffix': project.suffix}) }}">{{ 'Tasks'|trans }}</a>
-            {% endblock %}
-            {% block box_body %}
-                {{ mTask.table(tasks) }}
-            {% endblock %}
-        {% endembed %}
+    <div class="row row-cards row-cols-xl-2 row-cols-lg-1 row-cols-md-1 row-cols-sm-1">
+        <div class="col-6">
+            <div class="card">
+                {% import 'task/_macro.html.twig' as mTask %}
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <a href="{{ path('task.list', {'suffix': project.suffix}) }}">{{ 'Tasks'|trans }}</a>
+                    </h3>
+                </div>
+                <div class="card-table table-responsive dashboard-middle-table">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th class="no">#</th>
+                                <th class="caption">{{ 'task.caption.label'|trans }}</th>
+                                {% if project and dictionary_enabled(project, 'task.type') %}
+                                    <th>{{ 'task.type.label'|trans }}</th>
+                                {% endif %}
+                                <th>{{ 'task.assignedTo.label'|trans }}</th>
+                                <th>{{ 'task.updated.label'|trans }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for task in tasks %}
+                            <tr>
+                                <td class="no">{{ mTask.no(task) }}</td>
+                                <td class="caption">
+                                    {{ mTask.caption(task, 80) }}
+                                    {{ badges(task, ['task.type']) }}
+                                </td>
+                                {% if project and dictionary_enabled(project, 'task.type') %}
+                                    <td>{{ dictionary_name(task, 'type') }}</td>
+                                {% endif %}
+                                <td>{{ mUser.badge(task.assignedTo) }}</td>
+                                <td>{{ task.updatedAt|ago }}</td>{# localizeddate('medium', 'medium') #}
+                            </tr>
+                        {% endfor%}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
-        <div class="col-md-6">
-            {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
+        <div class="col-6">
+            <div class="card">
                 {% import 'doc/_macro.html.twig' as mDoc %}
-                {% block box_title %}
-                    <a href="{{ path('doc.list', {'suffix': project.suffix}) }}">{{ 'Docs'|trans }}</a>
-                {% endblock %}
-                {% block box_body %}
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <a href="{{ path('doc.list', {'suffix': project.suffix}) }}">{{ 'Docs'|trans }}</a>
+                    </h3>
+                </div>
+                <div class="card-table table-responsive dashboard-middle-table">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th class="no">#</th>
+                                <th class="caption">{{ 'doc.caption.label'|trans }}</th>
+                                <th>{{ 'doc.updatedBy.label'|trans }}</th>
+                                <th>{{ 'doc.updated.label'|trans }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for doc in docs %}
+                            <tr>
+                                <td class="no">
+                                    <a class="invisible_link"
+                                       href="{{ path('doc.index', doc.getUrlParams) }}"
+                                    >
+                                        {{ doc.no }}
+                                    </a>
+                                </td>
+                                <td class="caption">{{ mDoc.caption(doc, 80) }}</td>
+                                <td>{{ mUser.badge(doc.updatedBy) }}</td>
+                                <td>{{ doc.updatedAt|ago }}</td> {# localizeddate('medium', 'medium') #}
+                            </tr>
+                        {% endfor%}
+                        </tbody>
+                    </table>
                     {{ mDoc.table(docs) }}
-                {% endblock %}
-            {% endembed %}
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}
