@@ -40,6 +40,10 @@ $icon-size: 1rem;
   font-size: $h6-font-size;
 }
 
+form {
+  margin: 0;
+}
+
 /* layout blocks */
 .breadcrumb-item.active a {
   color: inherit;
