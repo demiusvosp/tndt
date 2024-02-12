@@ -44,6 +44,10 @@ form {
   margin: 0;
 }
 
+.sortable {
+  padding-right: 2em;
+}
+
 /* layout blocks */
 .breadcrumb-item.active a {
   color: inherit;
@@ -84,4 +88,18 @@ form {
   .caption {
     width: 60%;
   }
+}
+.table {
+  .bool {
+    text-align: center;
+  }
+}
+
+/* user */
+.user-badge {
+  white-space: nowrap;
+}
+.locked {
+  text-decoration: line-through;
+  font-weight: normal;
 }

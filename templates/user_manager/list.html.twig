@@ -1,30 +1,37 @@
 {% extends 'base_layout.html.twig' %}
 
 {% block title %}TnDT {{ 'Administrate'|trans }} - {{ 'User_list'|trans }}{% endblock %}
-{% block page_title %}  {% endblock %}
-{% block page_subtitle %}{% endblock %}
+{% block page_title %}{{ 'User_list'|trans }}{% endblock %}
+
+{% block page_head_control %}
+    <div class="btn-list">
+        {% if is_granted("PERM_USER_CREATE") %}
+            <a class="btn btn-outline-success" href="{{ path('user.management.create') }}">{{ 'Create_user'|trans }}</a>
+        {% endif %}
+    </div>
+{% endblock %}
 
 {% block page_content %}
-    <div class="row">
-        <div class="col-md-10">
-            {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
+    <div class="row row-cards">
+        <div class="col">
+            <div class="card">
                 {% import 'user/_macro.html.twig' as mUser %}
-
-                {% block box_title %}
-                    {{ 'User_list'|trans }}
-                {% endblock %}
-                {% block box_body %}
-                    <table class="table table-condensed">
-                        <tr>
-                            <th>{{ knp_pagination_sortable(users, 'user.username.label'|trans, 't.username') }}</th>
-                            <th>{{ knp_pagination_sortable(users, 'user.name.label'|trans, 't.name') }}</th>
-                            <th>{{ knp_pagination_sortable(users, 'user.email.label'|trans, 't.email') }}</th>
-                            <th>{{ knp_pagination_sortable(users, 'user.locked.label'|trans, 't.locked') }}</th>
-                            <th>{{ knp_pagination_sortable(users, 'user.roles.label'|trans, 't.roles') }}</th>
-                            <th>{{ knp_pagination_sortable(users, 'user.createdAt.label'|trans, 't.createdAt') }}</th>
-                            <th>{{ knp_pagination_sortable(users, 'user.lastLogin.label'|trans, 't.lastLogin') }}</th>
-                            <th>{{ 'user.controls.label'|trans }}</th>
-                        </tr>
+                <div class="card-status-top bg-warning"></div>
+                <div class="card-table table-responsive">
+                    <table class="table table-vcenter">
+                        <thead>
+                            <tr>
+                                <th>{{ knp_pagination_sortable(users, 'user.username.label'|trans, 't.username') }}</th>
+                                <th>{{ knp_pagination_sortable(users, 'user.name.label'|trans, 't.name') }}</th>
+                                <th>{{ knp_pagination_sortable(users, 'user.email.label'|trans, 't.email') }}</th>
+                                <th>{{ knp_pagination_sortable(users, 'user.locked.short'|trans, 't.locked') }}</th>
+                                <th>{{ 'user.roles.label'|trans }}</th>
+                                <th>{{ knp_pagination_sortable(users, 'user.createdAt.label'|trans, 't.createdAt') }}</th>
+                                <th>{{ knp_pagination_sortable(users, 'user.lastLogin.label'|trans, 't.lastLogin') }}</th>
+                                <th>{{ 'user.controls.label'|trans }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
                         {%  for user in users %}
                             <tr>
                                 <td><a href="{{ path('user.index', {'username': user.username}) }}" class="invisible_link">
@@ -32,34 +39,28 @@
                                 </a></td>
                                 <td>{{ user.name }}</td>
                                 <td>{{ user.email }}</td>
-                                <td>{{ user.locked ? 'user.locked.short'|trans }}</td>
+                                <td class="bool">{{ user.locked ? icon('check.svg') }}</td>
                                 <td>{{ role_label_list(user.roles) }}</td>
                                 <td>{{ user.createdAt|ago }}</td>
                                 <td>{{ user.lastLogin|ago }}</td>
-                                <td><a class="btn btn-default btn-sm" href="{{ path('user.management.edit', {'username': user.username}) }}"><i class="fa fa-edit"></i></a></td>
+                                <td><a class="btn btn-default"
+                                       href="{{ path('user.management.edit', {'username': user.username}) }}"
+                                       title="{{ 'user.edit'|trans }}"
+                                    >
+                                        <i class="fa fa-edit"></i>
+                                    </a>
+                                </td>
                             </tr>
                         {% endfor %}
+                        </tbody>
                     </table>
-                    <hr>
-                    <nav class="center-block">
+                </div>
+                <div class="card-footer">
+                    <span class="m-0">
                         {{ knp_pagination_render(users) }}
-                    </nav>
-                {% endblock %}
-            {% endembed %}
-        </div>
-        <div class="col-md-2">
-            {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
-                {% block box_title %}
-                    {{ 'ControlPanel'|trans }}
-                {% endblock  %}
-                {% block box_body %}
-                    <div class="btn-group-vertical" role="toolbar" aria-label="{{ 'ControlPanel'|trans }}">
-                        {% if is_granted("PERM_USER_CREATE") %}
-                            <a class="btn btn-default btn-secondary" href="{{ path('user.management.create') }}">{{ 'Create_user'|trans }}</a>
-                        {% endif %}
-                    </div>
-                {% endblock %}
-            {% endembed %}
+                    </span>
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}

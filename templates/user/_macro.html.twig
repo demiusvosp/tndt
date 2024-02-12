@@ -3,8 +3,7 @@
         {% if link %}
             <a class="invisible_link" href="{{ path('user.index', {'username': user.username}) }}">
         {% endif %}
-        <i class="far fa-user"></i>
-        <span {{ user.isLocked ? 'class="style-deleted"' }}>{{ user.username }}</span>
+        <span class="user-badge {{ user.isLocked ? 'locked' -}}"><i class="far fa-user"></i>&nbsp;{{- user.username }}</span>
             {% if not short %}
                 {{ badges(user) }}
             {% endif %}
