@@ -2,11 +2,11 @@
     {% import 'user/_macro.html.twig' as mUser %}
     <div class="card-status-top {{ project.isArchived ? 'bg-muted-lt' : 'bg-blue' }}"></div>
     <div class="card-body">
-        <a class="invisible_link" href="{{ path('project.index', {'suffix': project.suffix}) }}">
-            <h3 class="card-title text-truncate {{ project.isArchived ? 'text-muted' : '' }}">
+        <h3 class="card-title text-truncate {{ project.isArchived ? 'text-muted' : '' }}">
+            <a href="{{ path('project.index', {'suffix': project.suffix}) }}">
                 <b>{{ project.suffix }}</b> - {{ project.name }}
-            </h3>
-        </a>
+            </a>
+        </h3>
         <div class="project-block">
             <div class="row row-cols-2 justify-content-between security-row">
                 <div class="col">
