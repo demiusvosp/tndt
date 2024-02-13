@@ -96,7 +96,11 @@ form {
     text-align: center;
   }
 }
+.doc-table {
+  min-width: 1000px;
+}
 .task-table {
+  min-width: 1000px;
   td {
     padding: 0.25rem 0.75rem;
   }
