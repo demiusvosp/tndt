@@ -75,7 +75,7 @@ form {
   }
 }
 
-/* project task&docs small tables */
+/* tables */
 .table {
   tbody {
     font-size: $font-size-100;
@@ -94,6 +94,15 @@ form {
   }
   .bool {
     text-align: center;
+  }
+}
+.task-table {
+  td {
+    padding: 0.25rem 0.75rem;
+  }
+
+  .caption {
+    width: 50%;
   }
 }
 
