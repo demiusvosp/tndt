@@ -126,6 +126,9 @@ form {
     color: $text-secondary;
   }
 }
+.doc-abstract-ctrl {
+  margin-top: 1rem;
+}
 
 /* user */
 .user-badge {
@@ -149,8 +152,5 @@ form {
   .comment-form {
     margin: 1em;
     width: 50%;
-    .comment-message-field {
-
-    }
   }
 }

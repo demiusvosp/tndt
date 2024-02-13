@@ -21,11 +21,11 @@
                     </div>
                 </div>
                 {% if doc.abstract %}
-                    <div class="hr-text" data-bs-toggle="collapse">
-                        <a href="#abstract">{{ 'Abstract'|trans }}</a>
+                    <div class="hr-text doc-abstract-ctrl" >
+                        <a data-bs-toggle="collapse" data-bs-target="#abstract" href="#abstract">{{ 'Abstract'|trans }}</a>
                     </div>
                     <div id="abstract" class="collapse">
-                        <div class="panel-body">
+                        <div class="card card-body markdown">
                             {{ doc.abstract|markdown_to_html }}
                         </div>
                     </div>
@@ -71,14 +71,14 @@
                         <a class="nav-link {{ currentTab == 'comments' ? 'active' : '' -}}"
                            href="{{ path('doc.index', doc.getUrlParams({'tab': 'comments'})) }}"
                         >
-                            {{ 'Works.comments'|trans }}
+                            {{ icon('messages.svg')}} {{ 'Works.comments'|trans }}
                         </a>
                     </li>
                     <li class="nav-item">
                         <a  class="nav-link {{ currentTab == 'activity' ? 'active' : '' -}}"
                             href="{{ path('doc.index', doc.getUrlParams({'tab': 'activity'})) }}"
                         >
-                            {{ 'Works.activity'|trans }}
+                            {{ icon('activity.svg')}} {{ 'Works.activity'|trans }}
                         </a>
                     </li>
                 </ul>

@@ -2,13 +2,13 @@
     {% import 'user/_macro.html.twig' as mUser %}
     <li>
         {% if form is not null %}
-            <div class="comment-form">
+            <div class="row comment-form">
                 {{ form_start(form) }}
-                <div class="form-group">
+                <div class="col-lg-10">
                     {{ form_widget(form.message) }}
                 </div>
-                <div class="form-group">
-                    <button type="submit" class="btn btn-success">{{ 'Post'|trans }}</button>
+                <div class="col align-self-end">
+                    <button type="submit" class="btn btn-outline-success">{{ 'Post'|trans }}</button>
                 </div>
                 {{ form_end(form) }}
             </div>
