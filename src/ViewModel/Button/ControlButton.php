@@ -17,7 +17,7 @@ class ControlButton
     public function __construct(
         string $label,
         string $action,
-        string $class = 'btn-secondary',
+        string $class = 'btn-outline-primary',
         ?string $needConfirm = null
     ) {
         $this->label = $label;

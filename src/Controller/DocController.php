@@ -104,7 +104,7 @@ class DocController extends AbstractController
                         'doc.change_state',
                         $doc->getUrlParams(['state' => DocStateEnum::Normal->value])
                     ),
-                    'btn-success'
+                    'btn-outline-success'
                 );
             }
             if ($doc->getState() !== DocStateEnum::Deprecated) {
@@ -114,7 +114,7 @@ class DocController extends AbstractController
                         'doc.change_state',
                         $doc->getUrlParams(['state' => DocStateEnum::Deprecated->value])
                     ),
-                    'btn-info'
+                    'btn-outline-info'
                 );
             }
             if ($doc->getState() !== DocStateEnum::Archived) {
@@ -124,7 +124,7 @@ class DocController extends AbstractController
                         'doc.change_state',
                         $doc->getUrlParams(['state' => DocStateEnum::Archived->value])
                     ),
-                    'btn-secondary btn-warning',
+                    'btn-warning',
                     $this->translator->trans('doc.state.archived.confirm')
                 );
             }

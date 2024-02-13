@@ -96,9 +96,7 @@ form {
     text-align: center;
   }
 }
-.doc-table {
-  min-width: 1000px;
-}
+
 .task-table {
   min-width: 1000px;
   td {
@@ -110,6 +108,24 @@ form {
   }
 }
 
+/* Docs */
+.doc-table {
+  min-width: 1000px;
+}
+
+.doc-property-string {
+  font-style: italic;
+  color: $text-secondary;
+  margin: -0.5em 0.5em 1em 1em;
+
+  span.label {
+    margin-right: 0.5em;
+  }
+
+  a, &:hover {
+    color: $text-secondary;
+  }
+}
 
 /* user */
 .user-badge {
@@ -118,4 +134,23 @@ form {
 .locked {
   text-decoration: line-through;
   font-weight: normal;
+}
+
+/* Comments */
+.comment-list {
+  .comment-head {
+    padding: 0 5em 2px 1em;
+    border-bottom: $border-color 1px solid;
+  }
+  .comment-message {
+    text-align: left;
+    margin-bottom: 1em;
+  }
+  .comment-form {
+    margin: 1em;
+    width: 50%;
+    .comment-message-field {
+
+    }
+  }
 }
