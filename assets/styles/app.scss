@@ -6,7 +6,7 @@ $icon-size: 1rem;
 
 /* grid */
 .card {
-  margin-top: 1rem;
+  margin-bottom: 1rem;
 }
 .row-cards {
   margin-top: 0;
@@ -81,8 +81,12 @@ form {
     font-size: $font-size-100;
   }
 
+  thead .no {
+    font-weight: $font-weight-bold;
+    font-size: $font-size-200;
+  }
   .no {
-    font-weight: bold;
+    font-weight: $font-weight-bold;
     text-align: right;
   }
   .caption {
