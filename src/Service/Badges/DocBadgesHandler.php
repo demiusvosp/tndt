@@ -53,9 +53,9 @@ class DocBadgesHandler implements BadgeHandlerInterface
         }
         if ($doc->getState() === DocStateEnum::Archived && !in_array('archived', $excepts, true)) {
             $badges[] = new Badge(
-                $this->translator->trans('doc.state.archive.label'),
+                $this->translator->trans('doc.state.archived.label'),
                 null,
-                $this->translator->trans('doc.state.archive.help')
+                $this->translator->trans('doc.state.archived.help')
             );
         }
 

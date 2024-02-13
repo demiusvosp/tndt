@@ -58,7 +58,7 @@ class UserBadgesHandler implements BadgeHandlerInterface
             $badges[] = new Badge(
                 '🛇',
                 null,
-                $this->translator->trans('user.locked.label')
+                $this->translator->trans('user.locked.short')
             );
         }
         return $badges;

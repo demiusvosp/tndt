@@ -76,7 +76,7 @@ form {
 }
 
 /* project task&docs small tables */
-.dashboard-middle-table {
+.table {
   tbody {
     font-size: $font-size-100;
   }
@@ -88,12 +88,11 @@ form {
   .caption {
     width: 60%;
   }
-}
-.table {
   .bool {
     text-align: center;
   }
 }
+
 
 /* user */
 .user-badge {
