@@ -34,8 +34,8 @@
                         <tbody>
                         {%  for user in users %}
                             <tr>
-                                <td><a href="{{ path('user.index', {'username': user.username}) }}" class="invisible_link">
-                                    {{ mUser.badge(user) }}
+                                <td><a href="{{ path('user.management.index', {'username': user.username}) }}" class="invisible_link">
+                                    {{ mUser.badge(user, false) }}
                                 </a></td>
                                 <td>{{ user.name }}</td>
                                 <td>{{ user.email }}</td>

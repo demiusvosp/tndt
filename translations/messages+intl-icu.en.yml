@@ -121,7 +121,6 @@ doc:
     label: Обновлен
 Edit: Редактировать
 Edit_project: Настроить проект
-Edit_user: Редактировать профиль
 Hidden: hidden
 License: License
 Login: Login
@@ -292,6 +291,7 @@ user:
   createdAt:
     label: Зарегистрирован
   edit: User edit
+  edit_profile: Edit profile
   email:
     label: E-mail
     help: Опционален. По нему можно авторизовываться, для проектов где не приняты логины/ники

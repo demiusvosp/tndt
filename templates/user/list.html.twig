@@ -22,10 +22,14 @@
                     <tbody>
                         {%  for user in users %}
                             <tr>
-                                <td><a href="{{ path('user.index', {'username': user.username}) }}" class="invisible_link">
+                                <td>
                                     {{ mUser.badge(user) }}
-                                </a></td>
-                                <td>{{ user.name }}</td>
+                                </td>
+                                <td>
+                                    <a href="{{ path('user.index', {'username': user.username}) }}" class="invisible_link">
+                                        {{ user.name }}
+                                    </a>
+                                </td>
                                 <td>{{ role_label_list(user.roles) }}</td>
                                 <td>{{ user.createdAt|ago }}</td>
                                 <td>{{ user.lastLogin|ago }}</td>

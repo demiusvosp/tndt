@@ -9,7 +9,7 @@
 {% block page_head_control %}
     {% if app.user and app.user.name == user.name %}
     <div class="btn-list">
-        <a class="btn btn-outline-primary" href="{{ path('user.edit') }}">{{ 'Edit_user'|trans }}</a>
+        <a class="btn btn-outline-primary" href="{{ path('user.edit', {'username': user.username}) }}">{{ 'user.edit_profile'|trans }}</a>
     </div>
     {% endif %}
 {% endblock %}
@@ -38,7 +38,7 @@
                                 {% if app.user and app.user.name == user.name %}
                                     {{ user.email }}
                                 {% else %}
-                                    <i>{{ 'Hidden'|trans }}</i>
+                                    <i class="text-muted">{{ 'Hidden'|trans }}</i>
                                 {% endif %}
                             </div>
                         </div>
