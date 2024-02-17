@@ -1,20 +1,16 @@
 {% extends 'base_layout.html.twig' %}
 
 {% block title %}TnDT {{ 'User_list'|trans }}{% endblock %}
-{% block page_title %}  {% endblock %}
-{% block page_subtitle %}{% endblock %}
+{% block page_title %}{{ 'User_list'|trans }}{% endblock %}
 
 {% block page_content %}
-    <div class="row">
-        <div class="col-md-10">
-            {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
-                {% import 'user/_macro.html.twig' as mUser %}
-
-                {% block box_title %}
-                    {{ 'User_list'|trans }}
-                {% endblock %}
-                {% block box_body %}
-                    <table class="table table-condensed">
+<div class="row row-cards">
+    <div class="col">
+        <div class="card">
+            {% import 'user/_macro.html.twig' as mUser %}
+            <div class="card-table table-responsive">
+                <table class="table table-vcenter">
+                    <thead>
                         <tr>
                             <th>{{ knp_pagination_sortable(users, 'user.username.label'|trans, 'root.username') }}</th>
                             <th>{{ knp_pagination_sortable(users, 'user.name.label'|trans, 'root.name') }}</th>
@@ -22,6 +18,8 @@
                             <th>{{ knp_pagination_sortable(users, 'user.createdAt.label'|trans, 'root.createdAt') }}</th>
                             <th>{{ knp_pagination_sortable(users, 'user.lastLogin.label'|trans, 'root.lastLogin') }}</th>
                         </tr>
+                    </thead>
+                    <tbody>
                         {%  for user in users %}
                             <tr>
                                 <td><a href="{{ path('user.index', {'username': user.username}) }}" class="invisible_link">
@@ -33,13 +31,15 @@
                                 <td>{{ user.lastLogin|ago }}</td>
                             </tr>
                         {% endfor %}
-                    </table>
-                    <hr>
-                    <nav class="center-block">
+                    </tbody>
+                </table>
+            </div>
+            <div class="card-footer">
+                    <span class="m-0">
                         {{ knp_pagination_render(users) }}
-                    </nav>
-                {% endblock %}
-            {% endembed %}
+                    </span>
+            </div>
         </div>
     </div>
+</div>
 {% endblock %}

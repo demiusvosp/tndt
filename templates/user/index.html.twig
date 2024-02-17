@@ -1,77 +1,74 @@
 {% extends 'base_layout.html.twig' %}
+{% import 'user/_macro.html.twig' as mUser %}
 
 {% block title %}TnDT - {{ user.username }}{% endblock %}
-{% block page_title%}{% endblock %}
-{% block page_subtitle %}{% endblock %}
+{% block page_title%}
+    {# Когда-нибудь потом, когда на этой странице будут еще блоки, мы перенесем сюда имя пользователя и подумаем, что сделать в хлебными крошками #}
+{% endblock %}
+
+{% block page_head_control %}
+    {% if app.user and app.user.name == user.name %}
+    <div class="btn-list">
+        <a class="btn btn-outline-primary" href="{{ path('user.edit') }}">{{ 'Edit_user'|trans }}</a>
+    </div>
+    {% endif %}
+{% endblock %}
 
 {% block page_content %}
-    <div class="row">
-        <div class="col-md-10">
-            {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
-                {% import 'user/_macro.html.twig' as mUser %}
-                {% block box_title %}
-                    {{ mUser.badge(user, false, false) }}
-                {% endblock %}
-                {% block box_body %}
-                    <div class="row">
-                        <div class="col-md-8">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    {{ 'user.username.label'|trans }}: {{ user.username }}
-                                </div>
-                                <div class="col-md-6">
-                                    {{ 'user.createdAt.label'|trans }}: {{ user.createdAt|ago }}
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    {{ 'user.name.label'|trans }}: {{ user.name(true) }}
-                                </div>
-                                <div class="col-md-6">
-                                    {{ 'user.lastLogin.label'|trans }}:
-                                    {% if user.lastLogin %}{{ user.lastLogin|ago }}{% else %}{{ 'Never_logined'|trans }}{% endif %}
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    {{ 'user.email.label'|trans }}: {% if app.user and app.user.name == user.name %}
-                                        {{ user.email }}
-                                    {% else %}
-                                        <i>{{ 'Hidden'|trans }}</i>
-                                    {% endif %}
-                                </div>
+<div class="row row-cards">
+    <div class="col">
+        <div class="card h-100">
+            <div class="card-body">
+                <div class="card-title">
+                    {{ user.username }}
+                </div>
+                <div class="row row-cols-lg-2 row-cols-md-1">
+                    <div class="col-lg-9 datagrid">
+                        <div class="datagrid-item">
+                            <div class="datagrid-title">{{ 'user.username.label'|trans }}</div>
+                            <div class="datagrid-content">{{ user.username }}</div>
+                        </div>
+                        <div class="datagrid-item">
+                            <div class="datagrid-title">{{ 'user.name.label'|trans }}</div>
+                            <div class="datagrid-content">{{ user.name(true) }}</div>
+                        </div>
+                        <div class="datagrid-item">
+                            <div class="datagrid-title">{{ 'user.email.label'|trans }}</div>
+                            <div class="datagrid-content">
+                                {% if app.user and app.user.name == user.name %}
+                                    {{ user.email }}
+                                {% else %}
+                                    <i>{{ 'Hidden'|trans }}</i>
+                                {% endif %}
                             </div>
                         </div>
-                        <div class="col-md-4">
-                            {{ 'user.roles.label'|trans }}:
-                            <ul>
+                        <div class="datagrid-item">
+                            <div class="datagrid-title">{{ 'user.createdAt.label'|trans }}</div>
+                            <div class="datagrid-content">{{ user.createdAt|ago }}</div>
+                        </div>
+                        <div class="datagrid-item">
+                            <div class="datagrid-title">{{ 'user.lastLogin.label'|trans }}</div>
+                            <div class="datagrid-content">
+                                {% if user.lastLogin %}{{ user.lastLogin|ago }}{% else %}{{ 'Never_logined'|trans }}{% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 datagrid">
+                        <div class="datagrid-item">
+                            <div class="datagrid-title">{{ 'user.roles.label'|trans }}</div>
+                            <div class="datagrid-content">
                                 {% for role in user.roles %}
                                     {% set role_label = role_label(role) %}
                                     {% if role_label %}
                                         <li>{{ role_label|raw }}</li>
                                     {% endif %}
                                 {% endfor %}
-                            </ul>
+                            </div>
                         </div>
                     </div>
-                {% endblock %}
-            {% endembed %}
+                </div>
+            </div>
         </div>
-        {% if app.user and app.user.name == user.name %}
-        <div class="col-md-2">
-            {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
-                {% block box_title %}
-                    {{ 'ControlPanel'|trans }}
-                {% endblock  %}
-                {% block box_body %}
-                    <div class="btn-group-vertical" role="toolbar" aria-label="{{ 'ControlPanel'|trans }}">
-                        <div class="btn-group-vertical" role="group">
-                            <a class="btn btn-default btn-secondary" href="{{ path('user.edit') }}">{{ 'Edit_user'|trans }}</a>
-                        </div>
-                    </div>
-                {% endblock %}
-            {% endembed %}
-        </div>
-        {% endif %}
     </div>
+</div>
 {% endblock %}

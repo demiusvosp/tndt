@@ -286,6 +286,7 @@ To_archive: Убрать в архив
 To_deprecated: Отметить устаревшим
 UpdatedAt: Обновлена
 user:
+  about: About user
   controls:
     label: Действия
   createdAt:
