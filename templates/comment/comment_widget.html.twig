@@ -9,12 +9,14 @@
                             {{ form_row(form.message) }}
                         </div>
 
-                        <button type="submit" class="btn btn-outline-success">{{ 'Post'|trans }}</button>
+                        <div class="text-end">
+                            <button type="submit" class="btn btn-outline-success">{{ 'Post'|trans }}</button>
+                        </div>
                     </div>
                 {{ form_end(form) }}
 
             {% else %}
-                <div class="text-warning center-block">{{ 'Only_for_authorized.comment'|trans }}</div>
+                <div class="text-danger center-block">{{ 'Only_for_authorized.comment'|trans }}</div>
             {% endif %}
         </div>
     </div>

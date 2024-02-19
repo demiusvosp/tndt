@@ -1,17 +1,16 @@
 <template>
-  <div class="timeline-item ">
-    <div class="head">
-      <span class="created">{{ createdAt }},</span>
-      <user-badge v-bind="actor"></user-badge>
-      <span class="action">
-        <span v-html="type.label"></span>
-      </span>
+  <div>
+    <div class="activity-head">
+      <span v-html="created"></span>
+      <user-badge class="ms-1" v-bind="actor"></user-badge>
     </div>
+    <span class="activity-action text-secondary">
+      <span v-html="type.label"></span>
+    </span>
   </div>
 </template>
 
 <script>
-import moment from "moment";
 import userBadge from "../common/user-badge";
 
 export default {
@@ -24,30 +23,10 @@ export default {
   },
   components: {
     userBadge
-  },
-  computed: {
-    createdAt: function () {
-      return moment(this.created).fromNow();
-    }
   }
 }
 </script>
 
 <style scoped lang="scss">
-@import "~bootstrap/scss/bootstrap";
-.timeline-item {
-  margin-bottom: 1em;
 
-  .head {
-    padding: 0 1em 2px 1em;
-    border-bottom: $border-color 1px solid;
-
-    .created {
-      margin-right: 0.3em;
-    }
-    .action {
-      margin-left: 0.3em;
-    }
-  }
-}
 </style>

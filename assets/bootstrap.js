@@ -1,8 +1,4 @@
 
-// пока не вижу смыла втягивать себе в приложение весь js и scss adminlte с его библиотеками.
-import moment from "moment";
-moment.locale('ru');
-
 import '@fortawesome/fontawesome-free/css/all.css'
 
 import '@tabler/core/src/js/tabler'
