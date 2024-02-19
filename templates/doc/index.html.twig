@@ -4,9 +4,29 @@
 {% block title %} {{ doc.docId }} - {{ doc.caption }} {% endblock %}
 {% block page_title%}{{ doc.docId }} - {{ doc.caption }}{% endblock %}
 
+{% block page_head_control %}
+    {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+        <div class="btn-group" role="toolbar" aria-label="{{ 'ControlPanel'|trans }}">
+            {% for control in controls %}
+                {% if control.needConfirm %}
+                    <button
+                            class="btn {{ control.class }} need-confirm"
+                            data-action="{{ control.action }}"
+                            data-text="{{ control.needConfirm }}"
+                    >
+                        {{ control.label }}
+                    </button>
+                {% else %}
+                    <a class="btn {{ control.class }}" href="{{ control.action }}">{{ control.label }}</a>
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endblock%}
+
 {% block page_content %}
-<div class="row row-cards row-cols-xl-2 row-cols-lg-1">
-    <div class="col-xxl-10 col-xl-8 col-lg-12">
+<div class="row row-cards">
+    <div class="col col-xxl-10">
         <div class="card h-100">
             {% import 'doc/_macro.html.twig' as mDoc %}
             {% import 'user/_macro.html.twig' as mUser %}
@@ -31,32 +51,6 @@
                     </div>
                 {% endif %}
                 <span class="markdown">{{ doc.body|markdown_to_html }}</span>
-            </div>
-        </div>
-    </div>
-    <div class="col-xxl-2 col-xl-4 d-lg-none d-md-none d-sm-none d-xl-block">
-        <div class="card">
-            <div class="card-body">
-                <h3 class="card-title">
-                    {{ 'ControlPanel'|trans }}
-                </h3>
-                {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-                    <div class="btn-group-vertical" role="toolbar" aria-label="{{ 'ControlPanel'|trans }}">
-                        {% for control in controls %}
-                            {% if control.needConfirm %}
-                                <button
-                                        class="btn {{ control.class }} need-confirm"
-                                        data-action="{{ control.action }}"
-                                        data-text="{{ control.needConfirm }}"
-                                >
-                                    {{ control.label }}
-                                </button>
-                            {% else %}
-                                <a class="btn btn-default {{ control.class }}" href="{{ control.action }}">{{ control.label }}</a>
-                            {% endif %}
-                        {% endfor %}
-                    </div>
-                {% endif %}
             </div>
         </div>
     </div>

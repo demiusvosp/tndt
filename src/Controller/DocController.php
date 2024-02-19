@@ -124,7 +124,7 @@ class DocController extends AbstractController
                         'doc.change_state',
                         $doc->getUrlParams(['state' => DocStateEnum::Archived->value])
                     ),
-                    'btn-warning',
+                    'btn-outline-warning',
                     $this->translator->trans('doc.state.archived.confirm')
                 );
             }

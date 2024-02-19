@@ -71,7 +71,7 @@
             </div>
         </div>
     </div>
-    <div class="col-xxl-2 col-xl-4 d-lg-none d-md-none d-sm-none d-xl-block">
+    <div class="col-xxl-2 col-xl-4">
         <div class="card">
             <div class="card-body">
                 <h3 class="card-title">
@@ -79,21 +79,23 @@
                 </h3>
                 {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
                     <form action="{{ controls.stages.action }}" method="post">
-                        <div class="btn-group-vertical" role="toolbar" aria-label="{{ 'ControlPanel'|trans }}">
+                        <div class="btn-group-vertical w-100" role="toolbar">
                             {% if controls.edit %}
                                 <a class="btn btn-outline-primary" href="{{ controls.edit.action }}">{{ controls.edit.label }}</a>
                             {% endif %}
-                                {% for stage in controls.stages.items %}
-                                    <button
-                                        class="btn btn-outline-secondary"
-                                        type="submit"
-                                        name="new_stage"
-                                        value="{{ stage.value }}"
-                                    >
-                                        {{ 'task.stage.change_to'|trans ~ ' "' ~ stage.label ~ '"' }}
-                                    </button>
-                                {% endfor %}
-                                <input type="hidden" name="_token" value="{{ controls.stages.token }}">
+                        </div>
+                        <div class="btn-group-vertical w-100 mt-3" role="toolbar">
+                            {% for stage in controls.stages.items %}
+                                <button
+                                    class="btn btn-outline-secondary"
+                                    type="submit"
+                                    name="new_stage"
+                                    value="{{ stage.value }}"
+                                >
+                                    {{ 'task.stage.change_to'|trans ~ ' "' ~ stage.label ~ '"' }}
+                                </button>
+                            {% endfor %}
+                            <input type="hidden" name="_token" value="{{ controls.stages.token }}">
                             {% if controls.close %}
                                 <button
                                         class="btn btn-outline-warning confirm-close"
