@@ -1,32 +1,30 @@
-<ul class="list-unstyled comment-list">
+<div class="container divide-y">
     {% import 'user/_macro.html.twig' as mUser %}
-    <li class="comment-form">
-        {% if form is not null %}
-            <div class="container w-100">
-            {{ form_start(form) }}
-                <div class="row">
-                    <div class="col">
-                        {{ form_widget(form.message) }}
-                    </div>
-                </div>
-                <div class="row justify-content-end">
-                    <div class="col ">
+    <div class="row">
+        <div class="card">
+            {% if form is not null %}
+                {{ form_start(form) }}
+                    <div class="card-body">
+                        <div class="col">
+                            {{ form_row(form.message) }}
+                        </div>
+
                         <button type="submit" class="btn btn-outline-success">{{ 'Post'|trans }}</button>
                     </div>
-                </div>
-            {{ form_end(form) }}
-            </div>
-        {% else %}
-            <div class="text-warning center-block">{{ 'Only_for_authorized.comment'|trans }}</div>
-        {% endif %}
-    </li>
+                {{ form_end(form) }}
+
+            {% else %}
+                <div class="text-warning center-block">{{ 'Only_for_authorized.comment'|trans }}</div>
+            {% endif %}
+        </div>
+    </div>
     {% for comment in comments %}
-        <li>
+        <div class="row">
             <span class="comment-head">
-                {{ 'comment.author.label'|trans }}: {{ mUser.badge(comment.author) }};
-                {{ 'comment.createdAt.in_widget'|trans }} {{ comment.createdAt|ago }};
+                <strong class="me-1">{{ mUser.badge(comment.author) }}</strong>
+                <span class="text-secondary">{{ 'comment.createdAt.in_widget'|trans }} {{ comment.createdAt|ago }}</span>
             </span>
-            <div class="comment-message">{{ comment.message|markdown_to_html }}</div>
-        </li>
+            <div class="card-body comment-message markdown">{{ comment.message|markdown_to_html }}</div>
+        </div>
     {% endfor %}
-</ul>
+</div>
