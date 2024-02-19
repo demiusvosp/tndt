@@ -43,9 +43,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">{{ 'confirm.title'|trans }}</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 {% set form = task_close_form(task) %}
                 {% form_theme form 'form_condensed_theme.html.twig' %}
@@ -62,8 +60,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-success" data-dismiss="modal">{{ 'confirm.yes'|trans }}</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ 'confirm.no'|trans }}</button>
+                    <button type="button" class="btn me-auto" data-bs-dismiss="modal">{{ 'confirm.no'|trans }}</button>
+                    <button type="submit" class="btn btn-success" data-bs-dismiss="modal">{{ 'confirm.yes'|trans }}</button>
                 </div>
                 {{ form_end(form) }}
             </div>
