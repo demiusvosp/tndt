@@ -14,6 +14,7 @@
 #### [tndt-143](http://tasks.demius.ru/p/tndt-143) - Переход от AdminLTE на Tabler 
 - [tndt-141](http://tasks.demius.ru/p/tndt-141) - Переводим хлебные крошки, sidebar и navbar на наши события
 - [tndt-146](http://tasks.demius.ru/p/tndt-146) - Страницы: главная, входа, ошибки, readme
+- [tndt-149](http://tasks.demius.ru/p/tndt-149) - Страницы пользователей и управления пользователями
 ### Bugfixes
 - [tndt-115](http://tasks.demius.ru/p/tndt-115) - Смена статуса документа не обновляет его дату
 - [tndt-30](http://tasks.demius.ru/p/tndt-30) - Обновлять дату проекта, когда в нем совершается работа
