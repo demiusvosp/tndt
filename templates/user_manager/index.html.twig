@@ -31,6 +31,16 @@
                                 <div class="datagrid-content">{{ user.name(true) }}</div>
                             </div>
                             <div class="datagrid-item">
+                                <div class="datagrid-title">{{ 'user.locked.table_head'|trans }}</div>
+                                <div class="datagrid-content">
+                                    {% if user.locked %}
+                                        {{ icon('user-off.svg') }} {{ 'user.locked.label'|trans }}
+                                    {% else %}
+                                        {{ icon('check.svg') }}
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="datagrid-item">
                                 <div class="datagrid-title">{{ 'user.email.label'|trans }}</div>
                                 <div class="datagrid-content">{{ user.email }}</div>
                             </div>
