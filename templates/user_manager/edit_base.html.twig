@@ -1,31 +1,36 @@
-{% extends 'one_block_layout.html.twig' %}
+{% extends 'base_layout.html.twig' %}
 
-{% block title %} {{ user.username }} - {{ 'user.management.edit.title'|trans }}/{% block edit_page_title %}{% endblock %}{% endblock %}
-{% block page_title%}{% endblock %}
-{% block page_subtitle %}{% endblock %}
+{% block title %} {{ user.username }} - {{ 'user.management.edit.title'|trans }}/{% block page_subtitle %}{% endblock %}{% endblock %}
+{% block page_title%}{{ 'user.management.edit.title'|trans }}{% endblock %}
 
-{% block box_title %}
-    {{ user.username }} - {{ 'user.management.edit.title'|trans }}
-{% endblock %}
-{% block box_body %}
-    <ul class="nav nav-tabs">
-        {% set currentPage = app.request.attributes.get('_route') %}
-        <li {% if currentPage == 'user.management.edit' %}class="active"{% endif %}>
-            <a href="{{ path('user.management.edit', {'username':user.username}) }}">{{ 'user.management.edit.common'|trans }}</a>
-        </li>
-        <li {% if currentPage == 'user.management.permission' %}class="active"{% endif %}>
-            {#<a href="{{ path('user.management.permission', {'username':user.username}) }}">{{ 'user.management.edit.permission'|trans }}</a>#}
-        </li>
-    </ul>
-    <div class="one-block-content">
-        {% block edit_page %}
-        {% endblock %}
+{% block page_content %}
+<div class="row row-cards">
+    <div class="col-xl-8 col-lg-10 col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <ul class="nav nav-tabs card-header-tabs">
+                    {% set currentPage = app.request.attributes.get('_route') %}
+                    <li class="nav-item">
+                        <a class="nav-link {{ currentPage == 'user.management.edit' ? 'active': '' -}}"
+                           href="{{ path('user.management.edit', {'username':user.username}) }}"
+                        >
+                            {{ 'user.management.edit.common'|trans }}
+                        </a>
+                    </li>
+{#                    <li class="nav-item {{ currentPage == 'user.management.permission' ? 'active': '' -}}">#}
+{#                        <a href="{{ path('user.management.permission', {'username':user.username}) }}">{{ 'user.management.edit.permission'|trans }}</a>#}
+{#                    </li>#}
+                </ul>
+            </div>
+            <div class="card-body">
+                {% block edit_page_body %}
+                {% endblock %}
+            </div>
+            <div class="card-footer">
+                {% block edit_page_footer%}
+                {% endblock %}
+            </div>
+        </div>
     </div>
-{% endblock %}
-
-{% block box_footer %}
-    <div class="form-footer-buttons">
-        <button type="submit" class="btn btn-success">{{ 'Edit'|trans }}</button>
-    </div>
-    {{ form_end(form) }}
+</div>
 {% endblock %}
