@@ -1,8 +1,11 @@
 @import "~@tabler/core/src/scss/_variables.scss";
 
+:root {
+  --#{$prefix}font-size-h2: 1.25rem;
+  --tblr-breadcrumb-font-size: 0.85rem;
+}
 $icon-stroke-width: 1;
 $icon-size: 1rem;
-
 
 /* grid */
 .card {
