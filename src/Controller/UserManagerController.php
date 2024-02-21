@@ -21,7 +21,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use function dump;
 
 class UserManagerController extends AbstractController
 {
@@ -65,10 +64,10 @@ class UserManagerController extends AbstractController
     #[IsGranted(UserPermissionsEnum::PERM_USER_EDIT)]
     public function list(Request $request, PaginatorInterface $paginator): Response
     {
-        $query = $this->userRepository->getQueryBuilder(Spec::andX(
+        $query = $this->userRepository->getQuery(Spec::andX(
             Spec::leftJoin('projectUsers', 'pu'),
             Spec::addSelect(Spec::selectEntity('projectUsers'))
-        ), 't');
+        ));
 
         $users = $paginator->paginate(
             $query,

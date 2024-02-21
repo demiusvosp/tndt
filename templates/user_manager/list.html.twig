@@ -21,13 +21,13 @@
                     <table class="table table-vcenter">
                         <thead>
                             <tr>
-                                <th>{{ knp_pagination_sortable(users, 'user.username.label'|trans, 't.username') }}</th>
-                                <th>{{ knp_pagination_sortable(users, 'user.name.label'|trans, 't.name') }}</th>
-                                <th>{{ knp_pagination_sortable(users, 'user.email.label'|trans, 't.email') }}</th>
-                                <th>{{ knp_pagination_sortable(users, 'user.locked.table_head'|trans, 't.locked') }}</th>
+                                <th>{{ knp_pagination_sortable(users, 'user.username.label'|trans, 'root.username') }}</th>
+                                <th>{{ knp_pagination_sortable(users, 'user.name.label'|trans, 'root.name') }}</th>
+                                <th>{{ knp_pagination_sortable(users, 'user.email.label'|trans, 'root.email') }}</th>
+                                <th>{{ knp_pagination_sortable(users, 'user.locked.table_head'|trans, 'root.locked') }}</th>
                                 <th>{{ 'user.roles.label'|trans }}</th>
-                                <th>{{ knp_pagination_sortable(users, 'user.createdAt.label'|trans, 't.createdAt') }}</th>
-                                <th>{{ knp_pagination_sortable(users, 'user.lastLogin.label'|trans, 't.lastLogin') }}</th>
+                                <th>{{ knp_pagination_sortable(users, 'user.createdAt.label'|trans, 'root.createdAt') }}</th>
+                                <th>{{ knp_pagination_sortable(users, 'user.lastLogin.label'|trans, 'root.lastLogin') }}</th>
                                 <th>{{ 'user.controls.label'|trans }}</th>
                             </tr>
                         </thead>

@@ -14,9 +14,9 @@
                         <tr>
                             <th>{{ knp_pagination_sortable(users, 'user.username.label'|trans, 'root.username') }}</th>
                             <th>{{ knp_pagination_sortable(users, 'user.name.label'|trans, 'root.name') }}</th>
-                            <th>{{ 'user.roles.label'|trans }}</th>
                             <th>{{ knp_pagination_sortable(users, 'user.createdAt.label'|trans, 'root.createdAt') }}</th>
                             <th>{{ knp_pagination_sortable(users, 'user.lastLogin.label'|trans, 'root.lastLogin') }}</th>
+                            <th>{{ 'user.roles.label'|trans }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -30,9 +30,9 @@
                                         {{ user.name }}
                                     </a>
                                 </td>
-                                <td>{{ role_label_list(user.roles) }}</td>
                                 <td>{{ user.createdAt|ago }}</td>
                                 <td>{{ user.lastLogin|ago }}</td>
+                                <td>{{ role_label_list(user.roles) }}</td>
                             </tr>
                         {% endfor %}
                     </tbody>
