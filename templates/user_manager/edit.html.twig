@@ -1,16 +1,18 @@
 {% extends 'user_manager/edit_base.html.twig' %}
 
-{% block edit_page_title%}{{ 'user.management.edit.common'|trans }}{% endblock %}
+{% block page_subtitle %}{{ 'user.management.edit.common'|trans }}{% endblock %}
 
-{% block edit_page %}
+{% block edit_page_body %}
+<div class="col-xl-6 col-lg-8 col-md-12">
     {{ form_start(form) }}
     {{ form_row(form.name) }}
     {{ form_row(form.email) }}
     {{ form_row(form.password) }}
     {{ form_row(form.locked) }}
+</div>
 {% endblock %}
 
-{% block box_footer %}
+{% block edit_page_footer %}
     <div class="form-footer-buttons">
         <button type="submit" class="btn btn-success">{{ 'Edit'|trans }}</button>
     </div>

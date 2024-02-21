@@ -11,6 +11,11 @@ $icon-size: 1rem;
 .row-cards {
   margin-top: 0;
 }
+.card-title a, .card-title a:hover {
+  color: $black;
+  text-decoration: none;
+  outline: none;
+}
 
 /* common blocks */
 .invisible_link {
@@ -33,6 +38,14 @@ $icon-size: 1rem;
 
 .badge {
   font-size: $h6-font-size;
+}
+
+form {
+  margin: 0;
+}
+
+.sortable {
+  padding-right: 2em;
 }
 
 /* layout blocks */
@@ -62,4 +75,31 @@ $icon-size: 1rem;
   }
 }
 
-/* task */
+/* project task&docs small tables */
+.dashboard-middle-table {
+  tbody {
+    font-size: $font-size-100;
+  }
+
+  .no {
+    font-weight: bold;
+    text-align: right;
+  }
+  .caption {
+    width: 60%;
+  }
+}
+.table {
+  .bool {
+    text-align: center;
+  }
+}
+
+/* user */
+.user-badge {
+  white-space: nowrap;
+}
+.locked {
+  text-decoration: line-through;
+  font-weight: normal;
+}

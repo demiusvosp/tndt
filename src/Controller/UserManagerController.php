@@ -68,6 +68,7 @@ class UserManagerController extends AbstractController
             Spec::leftJoin('projectUsers', 'pu'),
             Spec::addSelect(Spec::selectEntity('projectUsers'))
         ));
+
         $users = $paginator->paginate(
             $query,
             $request->query->getInt('page', 1),

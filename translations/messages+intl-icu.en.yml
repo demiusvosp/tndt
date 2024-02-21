@@ -121,7 +121,6 @@ doc:
     label: Обновлен
 Edit: Редактировать
 Edit_project: Настроить проект
-Edit_user: Редактировать профиль
 Hidden: hidden
 License: License
 Login: Login
@@ -286,20 +285,22 @@ To_archive: Убрать в архив
 To_deprecated: Отметить устаревшим
 UpdatedAt: Обновлена
 user:
+  about: About user
   controls:
     label: Действия
   createdAt:
     label: Зарегистрирован
   edit: User edit
+  edit_profile: Edit profile
   email:
     label: E-mail
     help: Опционален. По нему можно авторизовываться, для проектов где не приняты логины/ники
   lastLogin:
     label: Заходил
   locked:
-    label: Пользователь заблокирован
-    short: заблокирован
-    help: Заблокированый пользователь больше не сможет входить и совершать какие-либо действия. Если необходимо забрать доступ пользователя к проекту, оставив возможность быть посетителем, стоит исключить его и проекта, а не блокировать
+    label: Locked
+    table_head: status
+    help: Locked user won't be able to do anything. Если необходимо забрать доступ пользователя к проекту, оставив возможность быть посетителем, стоит исключить его и проекта, а не блокировать
   management:
     edit:
       title: User manager

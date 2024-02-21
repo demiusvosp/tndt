@@ -43,6 +43,16 @@ class UserItemsSubscriber implements EventSubscriberInterface
                 $this->router->generate('user.management.list'),
                 'fas fa-users-cog'
             ));
+
+            $username = $this->requestStack->getMainRequest()?->get('username');
+            if ($route !== 'user.management.index' && $username) {
+                $event->addItem(new BreadcrumbItem(
+                    $this->translator->trans($username),
+                    $this->router->generate('user.management.index', ['username' => $username]),
+                    'user.svg'
+                ));
+            }
+
         } elseif (str_starts_with($route, 'user.')) {
             $event->addItem(new BreadcrumbItem(
                 $this->translator->trans('breadcrumb.user.home'),
