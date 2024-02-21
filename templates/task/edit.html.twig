@@ -7,7 +7,6 @@
 <div class="row row-cards">
     <div class="col-xl-9 col-lg-12">
         <div class="card">
-            {% form_theme form 'form_condensed_theme.html.twig' %}
             {{ form_start(form) }}
             <div class="card-body">
                 <div class="row mb-3">
@@ -38,11 +37,11 @@
                         {{ form_row(form.assignedTo) }}
                     </div>
                 </div>
-                <div class="form-footer-buttons">
-                    <button type="submit" class="btn btn-success">{{ 'Edit'|trans }}</button>
-                </div>
-                {{ form_end(form) }}
             </div>
+            <div class="card-footer">
+                <button type="submit" class="btn btn-success">{{ 'Edit'|trans }}</button>
+            </div>
+            {{ form_end(form) }}
         </div>
     </div>
 </div>

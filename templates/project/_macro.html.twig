@@ -3,7 +3,7 @@
     {% if link %}
         <a href="{{ path('project.index', {'suffix': project.suffix}) }}">
     {% endif %}
-        <i class="{{ project.icon }}"></i>
+        <i class="{{ project.icon }} me-2"></i>
         <b {{ project.isArchived ? 'class="style-deleted"' }}>{{ project.suffix }}</b>
         {% if withName %}
             - {{ project.name }}
