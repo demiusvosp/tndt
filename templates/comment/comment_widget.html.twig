@@ -1,24 +1,21 @@
 <div class="container divide-y">
     {% import 'user/_macro.html.twig' as mUser %}
     <div class="row">
-        <div class="card">
-            {% if form is not null %}
-                {{ form_start(form) }}
-                    <div class="card-body">
-                        <div class="col">
-                            {{ form_row(form.message) }}
-                        </div>
+        {% if form is not null %}
+            {{ form_start(form) }}
+                <div class="col">
+                    {{ form_row(form.message) }}
+                </div>
 
-                        <div class="text-end">
-                            <button type="submit" class="btn btn-outline-success">{{ 'Post'|trans }}</button>
-                        </div>
-                    </div>
-                {{ form_end(form) }}
-
-            {% else %}
+                <div class="text-end">
+                    <button type="submit" class="btn btn-outline-success">{{ 'Post'|trans }}</button>
+                </div>
+            {{ form_end(form) }}
+        {% else %}
+            <div class="card card-body">
                 <div class="text-danger center-block">{{ 'Only_for_authorized.comment'|trans }}</div>
-            {% endif %}
-        </div>
+            </div>
+        {% endif %}
     </div>
     {% for comment in comments %}
         <div class="row">
