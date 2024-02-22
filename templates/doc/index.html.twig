@@ -1,8 +1,8 @@
 {% extends 'base_layout.html.twig' %}
-
+{% import 'doc/_macro.html.twig' as mDoc %}
 
 {% block title %} {{ doc.docId }} - {{ doc.caption }} {% endblock %}
-{% block page_title%}{{ doc.docId }} - {{ doc.caption }}{% endblock %}
+{% block page_title%}{{ mDoc.badge(doc, true) }}{% endblock %}
 
 {% block page_head_control %}
     {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
