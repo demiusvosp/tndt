@@ -12,7 +12,7 @@ use App\Entity\Task;
 use App\Exception\DictionaryException;
 use App\Model\Dto\Badge;
 use App\Model\Dto\Dictionary\Task\TaskStageItem;
-use App\Model\Enum\BadgeEnum;
+use App\Model\Enum\BadgeStyleEnum;
 use App\Service\Dictionary\Fetcher;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -53,7 +53,7 @@ class TaskBadgesHandler implements BadgeHandlerInterface
         } catch (DictionaryException $e) {
             return [new Badge(
                 $this->translator->trans('dictionaries.error.name'),
-                BadgeEnum::Warning,
+                BadgeStyleEnum::Warning,
                 $this->translator->trans('dictionaries.error.description')
             )];
         }

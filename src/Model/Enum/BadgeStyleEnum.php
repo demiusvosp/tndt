@@ -9,7 +9,7 @@ declare(strict_types=1);
 namespace App\Model\Enum;
 
 
-enum BadgeEnum: string
+enum BadgeStyleEnum: string
 {
     case Default = 'default';
     case Secondary = 'secondary';

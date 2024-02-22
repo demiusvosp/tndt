@@ -10,7 +10,7 @@ namespace App\Service\Badges;
 
 use App\Entity\User;
 use App\Model\Dto\Badge;
-use App\Model\Enum\BadgeEnum;
+use App\Model\Enum\BadgeStyleEnum;
 use App\Model\Enum\UserRolesEnum;
 use App\Service\ProjectContext;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -50,7 +50,7 @@ class UserBadgesHandler implements BadgeHandlerInterface
         if ($user->hasRole(UserRolesEnum::PROLE_PM, $this->projectContext->getProject())) {
             $badges[] = new Badge(
                 $this->translator->trans('role.pm'),
-                BadgeEnum::Success,
+                BadgeStyleEnum::Success,
                 $this->translator->trans('role.project_manager')
             );
         }
