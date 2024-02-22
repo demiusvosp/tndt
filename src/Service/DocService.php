@@ -51,7 +51,7 @@ class DocService
     {
         $this->docFiller->fillFromEditForm($request, $doc);
         if ($doc->getState()->value !== $request->getState()) {
-            $this->changeState($doc, DocStateEnum::from($request->getState()));
+            $this->changeState($doc, $request->getState());
         }
 
         $this->eventDispatcher->dispatch(new DocEvent($doc), AppEvents::DOC_EDIT);

@@ -33,6 +33,7 @@ class DocFiller
         }
 
         $doc = new Doc($project, $author);
+        $doc->setState($dto->getState());
         $doc->setCaption($dto->getCaption());
         $doc->setAbstract($dto->getAbstract());
         $doc->setBody($dto->getBody());

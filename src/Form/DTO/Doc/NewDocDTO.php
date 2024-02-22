@@ -8,7 +8,9 @@ declare(strict_types=1);
 
 namespace App\Form\DTO\Doc;
 
+use App\Entity\Doc;
 use App\Entity\Project;
+use App\Model\Enum\DocStateEnum;
 use Happyr\Validator\Constraint\EntityExist;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -21,6 +23,9 @@ class NewDocDTO
     #[Assert\NotBlank]
     #[Assert\Length(min: 1, max: 255, maxMessage: "doc.caption.to_long")]
     private string $caption = '';
+
+    #[Assert\Choice(choices: [DocStateEnum::Normal, DocStateEnum::Deprecated])]
+    private DocStateEnum $state;
 
     #[Assert\Length(max: 1000, maxMessage: "doc.abstract.to_long")]
     private string $abstract = '';
@@ -38,54 +43,50 @@ class NewDocDTO
         return $this->project;
     }
 
-    /**
-     * @return string
-     */
+    public function setProject(string $project): NewDocDTO
+    {
+        $this->project = $project;
+        return $this;
+    }
+
     public function getCaption(): string
     {
         return $this->caption;
     }
 
-    /**
-     * @param string $caption
-     * @return NewDocDTO
-     */
     public function setCaption(string $caption): NewDocDTO
     {
         $this->caption = $caption;
         return $this;
     }
 
-    /**
-     * @return string
-     */
+    public function getState(): DocStateEnum
+    {
+        return $this->state;
+    }
+
+    public function setState(DocStateEnum $state): NewDocDTO
+    {
+        $this->state = $state;
+        return $this;
+    }
+
     public function getAbstract(): string
     {
         return $this->abstract;
     }
 
-    /**
-     * @param string $abstract
-     * @return NewDocDTO
-     */
     public function setAbstract(string $abstract): NewDocDTO
     {
         $this->abstract = $abstract;
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getBody(): string
     {
         return $this->body;
     }
 
-    /**
-     * @param string $body
-     * @return NewDocDTO
-     */
     public function setBody(string $body): NewDocDTO
     {
         $this->body = $body;
