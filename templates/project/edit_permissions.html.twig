@@ -5,17 +5,26 @@
 {% endblock %}
 
 {% block edit_page_body %}
-<div class="col-xl-6 col-lg-8 col-md-12">
-    {{ form_start(form) }}
-        {{ form_start(form) }}
+{{ form_start(form) }}
+    <div class="row">
         {{ form_row(form.isPublic) }}
-        {{ form_row(form.pm) }}
-        {{ form_row(form.staff) }}
-        {{ form_row(form.visitors) }}
-</div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            {{ form_row(form.pm) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 col-md-6">
+            {{ form_row(form.staff) }}
+        </div>
+        <div class="col-12 col-md-6">
+            {{ form_row(form.visitors) }}
+        </div>
+    </div>
 {% endblock %}
 
 {% block edit_page_footer %}
-        <button type="submit" class="btn btn-success">{{ 'Edit'|trans }}</button>
-    {{ form_end(form) }}
+    <button type="submit" class="btn btn-success">{{ 'Edit'|trans }}</button>
+{{ form_end(form) }}
 {% endblock %}
