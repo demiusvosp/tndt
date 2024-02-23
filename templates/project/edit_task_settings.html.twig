@@ -1,45 +1,30 @@
 {% extends 'project/edit.base.html.twig' %}
 
-{% block edit_page_title%}{{ 'project.edit.task_settings'|trans }}{% endblock %}
+{% block title %}
+    {{- parent() -}} / {{- 'project.edit.task_settings'|trans -}}
+{% endblock %}
 
-{% block edit_page %}
-    {% form_theme form 'form_condensed_theme.html.twig' %}
+{% block edit_page_body %}
     {{ form_start(form) }}
     <div class="project-settings-blocks">
-        <div class="row">
-            <div class="col-md-6"><div class="settings-block">
-                {{ form_label(form.types) }}
-                {{ form_errors(form.types) }}
-                <div>{{ form_widget(form.types) }}</div>
-                {{ form_help(form.types, {'attr': {'class': 'help-block'}}) }}
-            </div></div>
-            <div class="col-md-6"><div class="settings-block">
-                {{ form_label(form.stages) }}
-                {{ form_errors(form.stages) }}
-                <div>{{ form_widget(form.stages) }}</div>
-                {{ form_help(form.stages, {'attr': {'class': 'help-block'}}) }}
-            </div></div>
-        </div>
-        <div class="row">
-            <div class="col-md-6"><div class="settings-block">
-                {{ form_label(form.priority) }}
-                {{ form_errors(form.priority) }}
-                <div>{{ form_widget(form.priority) }}</div>
-                {{ form_help(form.priority, {'attr': {'class': 'help-block'}}) }}
-            </div></div>
-            <div class="col-md-6"><div class="settings-block">
-                {{ form_label(form.complexity) }}
-                {{ form_errors(form.complexity) }}
-                <div>{{ form_widget(form.complexity) }}</div>
-                {{ form_help(form.complexity, {'attr': {'class': 'help-block'}}) }}
-            </div></div>
+        <div class="row row-cols-md-2">
+            <div class="col">
+                {{ form_row(form.types) }}
+            </div>
+            <div class="col-">
+                {{ form_row(form.stages) }}
+            </div>
+            <div class="col">
+                {{ form_row(form.priority) }}
+            </div>
+            <div class="col">
+                {{ form_row(form.complexity) }}
+            </div>
         </div>
     </div>
 {% endblock %}
 
-{% block box_footer %}
-    <div class="form-footer-buttons">
-        <button type="submit" class="btn btn-success">{{ 'Edit'|trans }}</button>
-    </div>
+{% block edit_page_footer %}
+    <button type="submit" class="btn btn-success">{{ 'Edit'|trans }}</button>
     {{ form_end(form) }}
 {% endblock %}
