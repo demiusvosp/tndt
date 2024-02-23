@@ -42,6 +42,7 @@ class ImageExtension extends AbstractExtension
         }
         if (str_contains($icon, '.')) {
             // icon file
+            // @deprecated - переходим на спрайт, этот удаляем
             $class = 'icon ' . $class;
             // tabler icon
             return sprintf(
@@ -50,13 +51,11 @@ class ImageExtension extends AbstractExtension
                 $this->packages->getUrl('build/icons/' . $icon)
             );
         }
+        // tabler svg icon in sprite
         return sprintf(
-            '<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler %s"></svg>',
+            '<use xlink:href="%s#tabler-%s" />',
+            $this->packages->getUrl('build/icons/tabler-sprite.svg'),
             $icon
         );
-//        return sprintf(
-//            '<svg><use xlink:href="%s"/></svg>',
-//            $this->packages->getUrl()
-//        );
     }
 }
