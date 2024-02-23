@@ -16,6 +16,7 @@ use App\Form\DTO\Doc\NewDocDTO;
 use App\Form\Type\Doc\EditDocType;
 use App\Form\Type\Doc\NewDocType;
 use App\Model\Enum\DocStateEnum;
+use App\Model\Enum\FlashMessageTypeEnum;
 use App\Model\Enum\UserPermissionsEnum;
 use App\Repository\DocRepository;
 use App\Service\DocService;
@@ -152,7 +153,7 @@ class DocController extends AbstractController
             /** @noinspection PhpParamsInspection */
             $doc = $this->docService->createDoc($formData, $this->getUser());
 
-            $this->addFlash('success', 'doc.create.success');
+            $this->addFlash(FlashMessageTypeEnum::Success->value, 'doc.create.success');
             return $this->redirectToRoute('doc.index', $doc->getUrlParams());
         }
 
@@ -182,7 +183,7 @@ class DocController extends AbstractController
         if($form->isSubmitted() && $form->isValid()) {
             $this->docService->editDoc($formData, $doc);
 
-            $this->addFlash('success', 'doc.edit.success');
+            $this->addFlash(FlashMessageTypeEnum::Success->value, 'doc.edit.success');
             return $this->redirectToRoute('doc.index', $doc->getUrlParams());
         }
 
@@ -207,7 +208,7 @@ class DocController extends AbstractController
 
         $this->docService->changeState($doc, DocStateEnum::from($state));
 
-        $this->addFlash('success', $doc->getState()->flashMessage());
+        $this->addFlash(FlashMessageTypeEnum::Success->value, $doc->getState()->flashMessage());
 
         return $this->redirectToRoute('doc.index', $doc->getUrlParams());
     }

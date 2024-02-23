@@ -12,6 +12,7 @@ use App\Form\DTO\User\EditUserDTO;
 use App\Form\DTO\User\NewUserDTO;
 use App\Form\Type\User\NewUserType;
 use App\Form\Type\User\UserManagerEditType;
+use App\Model\Enum\FlashMessageTypeEnum;
 use App\Model\Enum\UserPermissionsEnum;
 use App\Repository\UserRepository;
 use App\Service\UserService;
@@ -93,7 +94,7 @@ class UserManagerController extends AbstractController
         if($form->isSubmitted() && $form->isValid()) {
             $user = $this->userService->create($formData);
 
-            $this->addFlash('success', 'user.create.success');
+            $this->addFlash(FlashMessageTypeEnum::Success->value, 'user.create.success');
             return $this->redirectToRoute('user.index', ['username' => $user->getUsername()]);
         }
 
@@ -118,7 +119,7 @@ class UserManagerController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $this->userService->edit($formData, $user);
-            $this->addFlash('success', 'user.edit.success');
+            $this->addFlash(FlashMessageTypeEnum::Success->value, 'user.edit.success');
         }
 
         return $this->render(
