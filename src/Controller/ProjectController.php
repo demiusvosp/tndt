@@ -20,6 +20,7 @@ use App\Form\Type\Project\EditProjectPermissionsType;
 use App\Form\Type\Project\EditProjectTaskSettingsType;
 use App\Form\Type\Project\ListFilterType;
 use App\Form\Type\Project\NewProjectType;
+use App\Model\Enum\FlashMessageTypeEnum;
 use App\Model\Enum\UserPermissionsEnum;
 use App\Repository\DocRepository;
 use App\Repository\ProjectRepository;
@@ -100,6 +101,9 @@ class ProjectController extends AbstractController
         }
         $docs = $docRepository->match($docSpec);
 
+        foreach (FlashMessageTypeEnum::cases() as $case) {
+            $this->addFlash($case->value, 'hello world. type: ' . $case->name);
+        }
         return $this->render(
             'project/index.html.twig',
             ['project' => $project, 'tasks' => $tasks, 'docs' => $docs]

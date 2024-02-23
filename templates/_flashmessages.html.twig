@@ -1,0 +1,19 @@
+{% for item in flashmessages() %}
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="alert {{ item.type ? 'alert-' ~ item.type.value }} alert-dismissible" role="alert">
+                <div class="d-flex">
+                    <div>
+                        <svg width="24" height="24">
+                            <use xlink:href="{{- asset('build/icons/tabler-sprite.svg') -}}#tabler-activity" />
+                        </svg>
+                    </div>
+                    <div>
+                        {{ item.message|trans({}, 'flashmessages') }}
+                    </div>
+                </div>
+                <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
+            </div>
+        </div>
+    </div>
+{% endfor %}

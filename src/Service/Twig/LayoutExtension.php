@@ -9,22 +9,41 @@ namespace App\Service\Twig;
 
 use App\Event\Menu\BreadcrumbEvent;
 use App\Event\Menu\MenuEvent;
+use App\Model\Enum\FlashMessageTypeEnum;
+use App\ViewModel\FlashMessage;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Session\FlashBagAwareSessionInterface;
+use Twig\Environment;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
+use function dump;
 
 class LayoutExtension extends AbstractExtension
 {
+    private RequestStack $requestStack;
     private EventDispatcherInterface $eventDispatcher;
+    private LoggerInterface $logger;
 
-    public function __construct(EventDispatcherInterface $eventDispatcher)
-    {
+    public function __construct(
+        RequestStack $requestStack,
+        EventDispatcherInterface $eventDispatcher,
+        LoggerInterface $logger
+    ) {
+        $this->requestStack = $requestStack;
         $this->eventDispatcher = $eventDispatcher;
+        $this->logger = $logger;
     }
 
     public function getFunctions(): array
     {
         return [
+            new TwigFunction(
+                'flashmessages',
+                [$this, 'fetchFlashmessages'],
+                ['is_safe' => ['html']]
+            ),
             new TwigFunction(
                 'breadcrumbs',
                 [$this, 'buildBreadcrumbs'],
@@ -41,6 +60,26 @@ class LayoutExtension extends AbstractExtension
                 ['is_safe' => ['html']]
             ),
         ];
+    }
+
+    public function fetchFlashmessages(): array
+    {
+        $session = $this->requestStack->getMainRequest()?->getSession();
+        if (!$session || !$session instanceof FlashBagAwareSessionInterface) {
+            return [];
+        }
+        $result = [];
+
+        foreach ($session->getFlashBag()->all() as $type => $messages) {
+            if (! ($type = FlashMessageTypeEnum::tryFrom($type))) {
+                $this->logger->error('Flash message with unknow type', ['type' => $type]);
+                continue;
+            }
+            foreach ($messages as $message) {
+                $result[] = new FlashMessage($type, $message);
+            }
+        }
+        return $result;
     }
 
     public function buildBreadcrumbs(): ?array

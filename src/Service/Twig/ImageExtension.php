@@ -12,6 +12,7 @@ use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 use function sprintf;
 use function str_starts_with;
+use function strpos;
 
 class ImageExtension extends AbstractExtension
 {
@@ -39,12 +40,23 @@ class ImageExtension extends AbstractExtension
             // font-awesome icon
             return sprintf('<span class="%s"><i class="fa-icon %s"></i></span>', $class, $icon);
         }
-        $class = 'icon ' . $class;
-        // tabler icon
+        if (str_contains($icon, '.')) {
+            // icon file
+            $class = 'icon ' . $class;
+            // tabler icon
+            return sprintf(
+                '<img class="%s" src="%s">',
+                $class,
+                $this->packages->getUrl('build/icons/' . $icon)
+            );
+        }
         return sprintf(
-            '<img class="%s" src="%s">',
-            $class,
-            $this->packages->getUrl('build/icons/' . $icon)
+            '<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler %s"></svg>',
+            $icon
         );
+//        return sprintf(
+//            '<svg><use xlink:href="%s"/></svg>',
+//            $this->packages->getUrl()
+//        );
     }
 }
