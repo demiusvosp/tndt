@@ -178,3 +178,58 @@ form {
     width: 50%;
   }
 }
+
+/* Help right sidebar */
+.help-sidebar {
+  position: fixed;
+  width: 40%;
+  height: 100%;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 2000;
+  transform: translateX(100%);
+  transition: 0.5s;
+  margin: 0;
+  padding: 0;
+  background-color: $bg-surface;
+
+  .nav {
+    position: relative;
+    top: 60%;
+    bottom: -5em;
+    left: -3.3em;
+    z-index: 2010;
+    margin: 0;
+    padding: 0;
+    writing-mode: vertical-lr;
+    .help-toggle {
+      cursor: pointer;
+      background-color: $bg-surface;
+      border: 1px solid $border-color;
+      border-right-color: transparent;
+      border-radius: 4px 0 0 4px;
+      padding: 3em 1em 3em 1em;
+    }
+  }
+  .nav-tabs {
+    border: 0;
+  }
+  .help-container {
+    position: fixed;
+    top: 0;
+    height: 100%;
+    overflow: auto;
+    padding: 1em;
+    border-left: 1px solid $border-color;
+    margin: 0 0.2em;
+  }
+}
+#md-help-toggle {
+  display: none;
+}
+#md-help-toggle:checked ~ .help-sidebar {
+  -webkit-transform: translateX(0);
+  -moz-transform: translateX(0);
+  transform: translateX(0);
+}

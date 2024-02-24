@@ -52,7 +52,7 @@
 
             {% include '_modals.html.twig' %}
             {% if app.request.get('addMdHelp') %}
-{#                {{ render(controller('App\\Controller\\HomeController::helpMd')) }}#}
+                {{ render(controller('App\\Controller\\HomeController::helpMd')) }}
             {% endif %}
             {% block javascripts %}
                 {{ encore_entry_script_tags('app') }}
