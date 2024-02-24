@@ -199,14 +199,14 @@ class DocController extends AbstractController
     #[IsGranted(UserPermissionsEnum::PERM_DOC_CHANGE_STATE)]
     public function changeState(
         #[MapEntity(expr: 'repository.getBySlug(slug)')] Doc $doc,
-        int $state,
+        DocStateEnum $state,
         Project $project
     ): Response {
         if ($doc->getSuffix() !== $project->getSuffix()) {
             throw $this->createNotFoundException($this->translator->trans('doc.not_found'));
         }
 
-        $this->docService->changeState($doc, DocStateEnum::from($state));
+        $this->docService->changeState($doc, $state);
 
         $this->addFlash(FlashMessageTypeEnum::Success->value, $doc->getState()->flashMessage());
 

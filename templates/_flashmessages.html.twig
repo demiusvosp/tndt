@@ -4,9 +4,7 @@
             <div class="alert {{ item.type ? ('alert-' ~ item.type.value ~ (item.type.important ? ' alert-important')) }} alert-dismissible" role="alert">
                 <div class="d-flex">
                     <div>
-                        <svg class="icon me-1" width="24" height="24">
-                            {{ icon(item.type.icon) }}
-                        </svg>
+                        {{ icon(item.type.icon, 'me-1') }}
                     </div>
                     <div>
                         {{ item.message|trans({}, 'flashmessages') }}

@@ -124,14 +124,14 @@
                         <a class="nav-link {{ currentTab == 'comments' ? 'active' : '' -}}"
                            href="{{ path('task.index', {'taskId': task.taskId, 'tab': 'comments'}) }}"
                         >
-                            {{ icon('messages.svg')}} {{ 'Works.comments'|trans }}
+                            {{ icon('tabler-messages', 'me-1')}} {{ 'Works.comments'|trans }}
                         </a>
                     </li>
                     <li class="nav-item">
                         <a  class="nav-link {{ currentTab == 'activity' ? 'active' : '' -}}"
                             href="{{ path('task.index', {'taskId': task.taskId, 'tab': 'activity'}) }}"
                         >
-                            {{ icon('activity.svg')}} {{ 'Works.activity'|trans }}
+                            {{ icon('tabler-activity')}} {{ 'Works.activity'|trans }}
                         </a>
                     </li>
                 </ul>

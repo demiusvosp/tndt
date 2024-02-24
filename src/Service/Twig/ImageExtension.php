@@ -7,20 +7,23 @@
 
 namespace App\Service\Twig;
 
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Asset\Packages;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
+use function implode;
 use function sprintf;
 use function str_starts_with;
-use function strpos;
 
 class ImageExtension extends AbstractExtension
 {
     private Packages $packages;
+    private LoggerInterface $logger;
 
-    public function __construct(Packages $packages)
+    public function __construct(Packages $packages, LoggerInterface $logger)
     {
         $this->packages = $packages;
+        $this->logger = $logger;
     }
 
     public function getFunctions(): array
@@ -40,22 +43,23 @@ class ImageExtension extends AbstractExtension
             // font-awesome icon
             return sprintf('<span class="%s"><i class="fa-icon %s"></i></span>', $class, $icon);
         }
-        if (str_contains($icon, '.')) {
-            // icon file
-            // @deprecated - переходим на спрайт, этот удаляем
-            $class = 'icon ' . $class;
-            // tabler icon
+        // tabler svg icon in sprite
+        if (str_starts_with($icon, 'tabler-')) {
             return sprintf(
-                '<img class="%s" src="%s">',
-                $class,
-                $this->packages->getUrl('build/icons/' . $icon)
+                '<svg class="%s"><use xlink:href="%s#%s" /></svg>',
+                implode(' ', ['icon', $class]),
+                $this->packages->getUrl('build/icons/tabler-sprite.svg'),
+                $icon
             );
         }
-        // tabler svg icon in sprite
+        $this->logger->notice('use separate svg icon ' . $icon);
+        // icon file
+        $class = 'icon ' . $class;
+        // tabler icon
         return sprintf(
-            '<use xlink:href="%s#tabler-%s" />',
-            $this->packages->getUrl('build/icons/tabler-sprite.svg'),
-            $icon
+            '<img class="%s" src="%s">',
+            $class,
+            $this->packages->getUrl('build/icons/' . $icon)
         );
     }
 }

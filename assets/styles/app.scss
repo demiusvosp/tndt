@@ -1,5 +1,8 @@
+@import "~bootstrap/scss/_functions.scss";
 @import "~@tabler/core/src/scss/_variables.scss";
 
+$font-size-base: 0.875rem;
+$line-height-base: divide(1.25rem, $font-size-base);
 :root {
   --#{$prefix}font-size-h2: 1.25rem;
   --tblr-breadcrumb-font-size: 0.85rem;
@@ -28,8 +31,7 @@ $icon-size: 1rem;
 }
 
 .icon {
-  $icon-stroke-width: 1;
-  $icon-size: 1rem;
+  stroke-width: 1;
   vertical-align: text-bottom;
 }
 .fa-icon {
@@ -51,6 +53,11 @@ form {
   font-family: $font-family-monospace;
 }
 
+.filter-button {
+  --#{$prefix}icon-size: #{$font-size-base * $line-height-base};
+  width: calc(var(--#{$prefix}icon-size) * 1.1);
+  height: calc(var(--#{$prefix}icon-size) * 1.1);
+}
 .sortable {
   padding-right: 2em;
 }

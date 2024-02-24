@@ -17,10 +17,10 @@ enum FlashMessageTypeEnum: string
     public function icon(): ?string
     {
         return match ($this) {
-            self::Success => 'check',
-            self::Warning => 'alert-triangle',
-            self::Danger => 'alert-circle-filled',
-            self::Info => 'info-circle',
+            self::Success => 'tabler-check',
+            self::Warning => 'tabler-alert-triangle',
+            self::Danger => 'tabler-alert-circle-filled',
+            self::Info => 'tabler-info-circle',
         };
     }
 
