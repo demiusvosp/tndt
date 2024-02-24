@@ -23,4 +23,12 @@ enum FlashMessageTypeEnum: string
             self::Info => 'info-circle',
         };
     }
+
+    public function important(): bool
+    {
+        return match ($this) {
+            self::Success, self::Warning, self::Danger => true,
+            default => false,
+        };
+    }
 }
