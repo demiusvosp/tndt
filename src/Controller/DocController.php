@@ -208,7 +208,12 @@ class DocController extends AbstractController
 
         $this->docService->changeState($doc, $state);
 
-        $this->addFlash(FlashMessageTypeEnum::Success->value, $doc->getState()->flashMessage());
+        if ($state === DocStateEnum::Normal) {
+            $flashType = FlashMessageTypeEnum::Success;
+        } else {
+            $flashType = FlashMessageTypeEnum::Warning;
+        }
+        $this->addFlash($flashType->value, $doc->getState()->flashMessage());
 
         return $this->redirectToRoute('doc.index', $doc->getUrlParams());
     }
