@@ -52,55 +52,14 @@ $('.confirm-close').on('click', function (event) {
     })
 });
 
-/**
- *  AdminLTE sidebar state saved in cookie
- */
-
-$.AdminLTESidebarTweak = {};
-
-$.AdminLTESidebarTweak.options = {
-    EnableRemember: true,
-    NoTransitionAfterReload: false
-    //Removes the transition after page reload.
-};
-
-$("body").on("collapsed.pushMenu", function(){
-    if($.AdminLTESidebarTweak.options.EnableRemember){
-        document.cookie = "toggleSidebar=closed";
-        console.log('save open sidemenu state');
-    }
-}).on("expanded.pushMenu", function(){
-    if($.AdminLTESidebarTweak.options.EnableRemember){
-        document.cookie = "toggleSidebar=opened";
-        console.log('save open sidemenu state');
-    }
-});
-
-if($.AdminLTESidebarTweak.options.EnableRemember){
-    var re = new RegExp('toggleSidebar' + "=([^;]+)");
-    var value = re.exec(document.cookie);
-    var toggleSidebar = (value != null) ? unescape(value[1]) : null;
-    console.log('side menu loaded state = ' + toggleSidebar);
-
-    if (toggleSidebar !== 'closed') {
-        $("body").removeClass("sidebar-collapse")
-    } else {
-        if ($.AdminLTESidebarTweak.options.NoTransitionAfterReload) {
-            $("body").addClass('sidebar-collapse hold-transition').delay(100).queue(function () {
-                $(this).removeClass('hold-transition');
-            });
-        } else {
-            $("body").addClass('sidebar-collapse');
-        }
-    }
-}
-
-/* Dictionary Edit */
 
 /* Activity widget */
-new Vue({
-    el: '#activity-widget',
+var activityWidgetVue = new Vue({
     components: {
         ActivityTimeline
     }
 });
+var activityWidgetPlaceholder = document.getElementById('activity-widget');
+if (activityWidgetPlaceholder) {
+    activityWidgetVue.$mount('#activity-widget');
+}

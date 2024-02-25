@@ -1,18 +1,30 @@
 {% extends 'project/edit.base.html.twig' %}
 
-{% block edit_page_title%}{{ 'project.edit.permsions'|trans }}{% endblock %}
-
-{% block edit_page %}
-    {{ form_start(form) }}
-    {{ form_row(form.isPublic) }}
-    {{ form_row(form.pm) }}
-    {{ form_row(form.staff) }}
-    {{ form_row(form.visitors) }}
+{% block title %}
+    {{- parent() }} / {{ 'project.edit.permsions'|trans -}}
 {% endblock %}
 
-{% block box_footer %}
-    <div class="form-footer-buttons">
-        <button type="submit" class="btn btn-success">{{ 'Edit'|trans }}</button>
+{% block edit_page_body %}
+{{ form_start(form) }}
+    <div class="row">
+        {{ form_row(form.isPublic) }}
     </div>
-    {{ form_end(form) }}
+    <div class="row">
+        <div class="col-md-6">
+            {{ form_row(form.pm) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 col-md-6">
+            {{ form_row(form.staff) }}
+        </div>
+        <div class="col-12 col-md-6">
+            {{ form_row(form.visitors) }}
+        </div>
+    </div>
+{% endblock %}
+
+{% block edit_page_footer %}
+    <button type="submit" class="btn btn-success">{{ 'Edit'|trans }}</button>
+{{ form_end(form) }}
 {% endblock %}

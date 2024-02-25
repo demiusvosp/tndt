@@ -1,28 +1,29 @@
-<ul class="list-unstyled comment-list">
+<div class="container divide-y">
     {% import 'user/_macro.html.twig' as mUser %}
-    <li>
+    <div class="row">
         {% if form is not null %}
-            <div class="comment-form">
-                {{ form_start(form) }}
-                <div class="form-group">
-                    {{ form_widget(form.message) }}
+            {{ form_start(form) }}
+                <div class="col">
+                    {{ form_row(form.message) }}
                 </div>
-                <div class="form-group">
-                    <button type="submit" class="btn btn-success">{{ 'Post'|trans }}</button>
+
+                <div class="text-end">
+                    <button type="submit" class="btn btn-outline-success">{{ 'Post'|trans }}</button>
                 </div>
-                {{ form_end(form) }}
-            </div>
+            {{ form_end(form) }}
         {% else %}
-            <div class="text-warning center-block">{{ 'Only_for_authorized.comment'|trans }}</div>
+            <div class="card card-body">
+                <div class="text-danger center-block">{{ 'Only_for_authorized.comment'|trans }}</div>
+            </div>
         {% endif %}
-    </li>
+    </div>
     {% for comment in comments %}
-        <li>
+        <div class="row">
             <span class="comment-head">
-                {{ 'comment.author.label'|trans }}: {{ mUser.badge(comment.author) }};
-                {{ 'comment.createdAt.in_widget'|trans }} {{ comment.createdAt|ago }};
+                <strong class="me-1">{{ mUser.badge(comment.author) }}</strong>
+                <span class="text-secondary">{{ 'comment.createdAt.in_widget'|trans }} {{ comment.createdAt|ago }}</span>
             </span>
-            <div class="comment-message">{{ comment.message|markdown_to_html }}</div>
-        </li>
+            <div class="card-body comment-message markdown">{{ comment.message|markdown_to_html }}</div>
+        </div>
     {% endfor %}
-</ul>
+</div>

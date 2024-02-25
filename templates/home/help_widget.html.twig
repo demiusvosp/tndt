@@ -1,11 +1,16 @@
 <aside class="help-sidebar-container">
     <input type="checkbox" id="md-help-toggle" hidden>
-    <section class="help-sidebar">
+    <section class="help-sidebar" >
         <ul class="nav nav-tabs">
-            <li><label for="md-help-toggle" class="help-toggle">{{ 'MdHelp'|trans }}</label></li>
+            <li>
+                <label for="md-help-toggle" class="help-toggle">
+                        {{ 'MdHelp'|trans }}
+
+                </label>
+            </li>
         </ul>
         <div class="help-container">
-            {{ text|markdown_to_html }}
+                {{ text|markdown_to_html }}
         </div>
     </section>
 </aside>

@@ -16,6 +16,7 @@ use App\Form\DTO\Doc\NewDocDTO;
 use App\Form\Type\Doc\EditDocType;
 use App\Form\Type\Doc\NewDocType;
 use App\Model\Enum\DocStateEnum;
+use App\Model\Enum\FlashMessageTypeEnum;
 use App\Model\Enum\UserPermissionsEnum;
 use App\Repository\DocRepository;
 use App\Service\DocService;
@@ -29,6 +30,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use function dump;
 
 #[InProjectContext]
 class DocController extends AbstractController
@@ -82,6 +84,8 @@ class DocController extends AbstractController
         #[MapEntity(expr: 'repository.getBySlug(slug)')] Doc $doc,
         Project $project,
     ): Response {
+dump($doc);
+dump($project->getSuffix());
         if ($doc->getSuffix() !== $project->getSuffix()) {
             throw $this->createNotFoundException($this->translator->trans('doc.not_found'));
         }
@@ -104,7 +108,7 @@ class DocController extends AbstractController
                         'doc.change_state',
                         $doc->getUrlParams(['state' => DocStateEnum::Normal->value])
                     ),
-                    'btn-success'
+                    'btn-outline-success'
                 );
             }
             if ($doc->getState() !== DocStateEnum::Deprecated) {
@@ -114,7 +118,7 @@ class DocController extends AbstractController
                         'doc.change_state',
                         $doc->getUrlParams(['state' => DocStateEnum::Deprecated->value])
                     ),
-                    'btn-info'
+                    'btn-outline-info'
                 );
             }
             if ($doc->getState() !== DocStateEnum::Archived) {
@@ -124,7 +128,7 @@ class DocController extends AbstractController
                         'doc.change_state',
                         $doc->getUrlParams(['state' => DocStateEnum::Archived->value])
                     ),
-                    'btn-secondary btn-warning',
+                    'btn-outline-warning',
                     $this->translator->trans('doc.state.archived.confirm')
                 );
             }
@@ -152,7 +156,7 @@ class DocController extends AbstractController
             /** @noinspection PhpParamsInspection */
             $doc = $this->docService->createDoc($formData, $this->getUser());
 
-            $this->addFlash('success', 'doc.create.success');
+            $this->addFlash(FlashMessageTypeEnum::Success->value, 'doc.create.success');
             return $this->redirectToRoute('doc.index', $doc->getUrlParams());
         }
 
@@ -182,7 +186,7 @@ class DocController extends AbstractController
         if($form->isSubmitted() && $form->isValid()) {
             $this->docService->editDoc($formData, $doc);
 
-            $this->addFlash('success', 'doc.edit.success');
+            $this->addFlash(FlashMessageTypeEnum::Success->value, 'doc.edit.success');
             return $this->redirectToRoute('doc.index', $doc->getUrlParams());
         }
 
@@ -198,16 +202,21 @@ class DocController extends AbstractController
     #[IsGranted(UserPermissionsEnum::PERM_DOC_CHANGE_STATE)]
     public function changeState(
         #[MapEntity(expr: 'repository.getBySlug(slug)')] Doc $doc,
-        int $state,
+        DocStateEnum $state,
         Project $project
     ): Response {
         if ($doc->getSuffix() !== $project->getSuffix()) {
             throw $this->createNotFoundException($this->translator->trans('doc.not_found'));
         }
 
-        $this->docService->changeState($doc, DocStateEnum::from($state));
+        $this->docService->changeState($doc, $state);
 
-        $this->addFlash('success', $doc->getState()->flashMessage());
+        if ($state === DocStateEnum::Normal) {
+            $flashType = FlashMessageTypeEnum::Success;
+        } else {
+            $flashType = FlashMessageTypeEnum::Warning;
+        }
+        $this->addFlash($flashType->value, $doc->getState()->flashMessage());
 
         return $this->redirectToRoute('doc.index', $doc->getUrlParams());
     }

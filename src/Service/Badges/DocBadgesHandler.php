@@ -10,7 +10,7 @@ namespace App\Service\Badges;
 
 use App\Entity\Doc;
 use App\Model\Dto\Badge;
-use App\Model\Enum\BadgeEnum;
+use App\Model\Enum\BadgeStyleEnum;
 use App\Model\Enum\DocStateEnum;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -47,15 +47,15 @@ class DocBadgesHandler implements BadgeHandlerInterface
         if ($doc->getState() === DocStateEnum::Deprecated && !in_array('deprecated', $excepts, true)) {
             $badges[] = new Badge(
                 $this->translator->trans('doc.state.deprecated.label'),
-                BadgeEnum::Warning,
+                BadgeStyleEnum::Warning,
                 $this->translator->trans('doc.state.deprecated.help')
             );
         }
         if ($doc->getState() === DocStateEnum::Archived && !in_array('archived', $excepts, true)) {
             $badges[] = new Badge(
-                $this->translator->trans('doc.state.archive.label'),
-                null,
-                $this->translator->trans('doc.state.archive.help')
+                $this->translator->trans('doc.state.archived.label'),
+                BadgeStyleEnum::Secondary,
+                $this->translator->trans('doc.state.archived.help')
             );
         }
 

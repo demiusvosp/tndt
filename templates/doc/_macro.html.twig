@@ -20,7 +20,7 @@
     {% if doc.isArchived %}
         <span class="text-muted">
     {% endif %}
-            <i class="far fa-file-alt"></i>
+            <i class="far fa-file-alt me-2"></i>
             {% import _self as this %}
             {{ doc.docId }}
             {% if withName %}
@@ -33,25 +33,4 @@
     {% if link %}
         </a>
     {% endif %}
-{% endmacro %}
-
-{% macro table(docs) %}
-    {% import _self as this %}
-    {% import 'user/_macro.html.twig' as mUser %}
-    <table class="table table-condensed doc-table-small">
-        <tr>
-            <th class="no">#</th>
-            <th class="caption">{{ 'doc.caption.label'|trans }}</th>
-            <th>{{ 'doc.updatedBy.label'|trans }}</th>
-            <th>{{ 'doc.updated.label'|trans }}</th>
-        </tr>
-        {%  for doc in docs %}
-            <tr>
-                <td class="no"><a class="invisible_link" href="{{ path('doc.index', doc.getUrlParams) }}">{{ doc.no }}</a></td>
-                <td class="caption">{{ this.caption(doc, 80) }}</td>
-                <td>{{ mUser.badge(doc.updatedBy) }}</td>
-                <td>{{ doc.updatedAt|ago }}</td> {# localizeddate('medium', 'medium') #}
-            </tr>
-        {% endfor %}
-    </table>
 {% endmacro %}

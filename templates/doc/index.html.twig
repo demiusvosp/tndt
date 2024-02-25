@@ -1,99 +1,96 @@
 {% extends 'base_layout.html.twig' %}
-
+{% import 'doc/_macro.html.twig' as mDoc %}
 
 {% block title %} {{ doc.docId }} - {{ doc.caption }} {% endblock %}
-{% block page_title%} {% endblock %}
-{% block page_subtitle %}{% endblock %}
+{% block page_title%}{{ mDoc.badge(doc, true) }}{% endblock %}
+
+{% block page_head_control %}
+    {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+        <div class="btn-group" role="toolbar" aria-label="{{ 'ControlPanel'|trans }}">
+            {% for control in controls %}
+                {% if control.needConfirm %}
+                    <button
+                            class="btn {{ control.class }} need-confirm"
+                            data-action="{{ control.action }}"
+                            data-text="{{ control.needConfirm }}"
+                    >
+                        {{ control.label }}
+                    </button>
+                {% else %}
+                    <a class="btn {{ control.class }}" href="{{ control.action }}">{{ control.label }}</a>
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endblock%}
 
 {% block page_content %}
-    <div class="row">
-        <div class="col-md-10">
-            {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
-                {% import 'doc/_macro.html.twig' as mDoc %}
-                {% import 'user/_macro.html.twig' as mUser %}
-
-                {% block box_title %}
-                    {{ mDoc.badge(doc, true) }}
-                {% endblock %}
-                {% block box_body %}
-                    <div class="row">
-                        <div class="col-md-6 doc-property-string">
-                            {{ 'doc.createdBy.label'|trans }} {{ mUser.badge(doc.createdBy, true, false) }}
-                            {{ doc.createdAt|ago }};
-                            {{ 'doc.updatedBy.label'|trans }} {{ doc.updatedBy ? mUser.badge(doc.updatedBy, true, false) : mUser.nobody('instrumental') }}
-                            {{ doc.updatedAt|ago }}
+<div class="row row-cards">
+    <div class="col col-xxl-10">
+        <div class="card h-100">
+            {% import 'doc/_macro.html.twig' as mDoc %}
+            {% import 'user/_macro.html.twig' as mUser %}
+            <div class="card-status-top bg-blue"></div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6 doc-property-string">
+                        {{ 'doc.createdBy.label'|trans }} {{ mUser.badge(doc.createdBy, true, false) }}
+                        {{ doc.createdAt|ago }};
+                        {{ 'doc.updatedBy.label'|trans }} {{ doc.updatedBy ? mUser.badge(doc.updatedBy, true, false) : mUser.nobody('instrumental') }}
+                        {{ doc.updatedAt|ago }}
+                    </div>
+                </div>
+                {% if doc.abstract %}
+                    <div class="hr-text doc-abstract-ctrl" >
+                        <a data-bs-toggle="collapse" data-bs-target="#abstract" href="#abstract">{{ 'Abstract'|trans }}</a>
+                    </div>
+                    <div id="abstract" class="collapse">
+                        <div class="card card-body markdown">
+                            {{ doc.abstract|markdown_to_html }}
                         </div>
                     </div>
-                    {% if doc.abstract %}
-                        <div class="panel panel-default">
-                            <a data-toggle="collapse" data-parent="#accordion" href="#abstract-panel"><div class="panel-heading">
-                                <h3 class="panel-title">{{ 'Abstract'|trans }}</h3>
-                            </div></a>
-                            <div id="abstract-panel" class="panel-collapse collapse">
-                                <div class="panel-body">
-                                    {{ doc.abstract|markdown_to_html }}
-                                </div>
-                            </div>
+                {% endif %}
+                <span class="markdown">{{ doc.body|markdown_to_html }}</span>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row row-cards">
+    <div class="col-xl-8 col-lg-10 col-sm-12">
+        <div class="card">
+            <div class="card-header">
+                <ul class="nav nav-tabs card-header-tabs">
+                    {% set currentTab = app.request.query.get('tab', 'comments') %}
+                    <li class="nav-item">
+                        <a class="nav-link {{ currentTab == 'comments' ? 'active' : '' -}}"
+                           href="{{ path('doc.index', doc.getUrlParams({'tab': 'comments'})) }}"
+                        >
+                            {{ icon('tabler-messages', 'me-1')}} {{ 'Works.comments'|trans }}
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a  class="nav-link {{ currentTab == 'activity' ? 'active' : '' -}}"
+                            href="{{ path('doc.index', doc.getUrlParams({'tab': 'activity'})) }}"
+                        >
+                            {{ icon('tabler-activity', 'me-1')}} {{ 'Works.activity'|trans }}
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="card-body">
+                <div class="tab-content">
+                    <div class="tab-pane active show">
+                    {% if currentTab == 'comments' %}
+                        {{ comment_widget(doc) }}
+                    {% elseif currentTab == 'activity' %}
+                        <div id="activity-widget">
+                            <activity-timeline action="{{ path('activity.list', {'type': 'doc', 'id': doc.id})}}"></activity-timeline>
                         </div>
                     {% endif %}
-                    <p>{{ doc.body|markdown_to_html }}</p>
-                {% endblock %}
-            {% endembed %}
-        </div>
-        <div class="col-md-2">
-            {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-            {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
-                {% block box_title %}
-                    {{ 'ControlPanel'|trans }}
-                {% endblock  %}
-                {% block box_body %}
-                    <div class="btn-group-vertical" role="toolbar" aria-label="{{ 'ControlPanel'|trans }}">
-                        {% for control in controls %}
-                            {% if control.needConfirm %}
-                                <button
-                                        class="btn btn-secondary {{ control.class }} need-confirm"
-                                        data-action="{{ control.action }}"
-                                        data-text="{{ control.needConfirm }}"
-                                >
-                                    {{ control.label }}
-                                </button>
-                            {% else %}
-                                <a class="btn btn-default {{ control.class }}" href="{{ control.action }}">{{ control.label }}</a>
-                            {% endif %}
-                        {% endfor %}
                     </div>
-                {% endblock %}
-            {% endembed %}
-            {% endif %}
+                </div>
+            </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-md-10">
-            {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
-                {% block box_title %}
-                    {{ 'Works.title'|trans }}
-                {% endblock %}
-                {% block box_body %}
-                    <ul class="nav nav-tabs">
-                        {% set currentTab = app.request.query.get('tab', 'comments') %}
-                        <li {% if currentTab == 'comments' %}class="active"{% endif %}>
-                            <a href="{{ path('doc.index', doc.getUrlParams({'tab': 'comments'})) }}">{{ 'Works.comments'|trans }}</a>
-                        </li>
-                        <li {% if currentTab == 'activity' %}class="active"{% endif %}>
-                            <a href="{{ path('doc.index', doc.getUrlParams({'tab': 'activity'})) }}">{{ 'Works.activity'|trans }}</a>
-                        </li>
-                    </ul>
-                    <div class="one-block-content">
-                        {% if currentTab == 'comments' %}
-                            {{ comment_widget(doc) }}
-                        {% elseif currentTab == 'activity' %}
-                            <div id="activity-widget">
-                                <activity-timeline action="{{ path('activity.list', {'type': 'doc', 'id': doc.id})}}"></activity-timeline>
-                            </div>
-                        {% endif %}
-                    </div>
-                {% endblock %}
-            {% endembed %}
-        </div>
-    </div>
+</div>
 {% endblock %}

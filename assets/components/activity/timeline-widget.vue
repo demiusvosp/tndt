@@ -1,7 +1,7 @@
 <template>
 <div class="activity-timeline">
-  <ul class="list-unstyled">
-    <li v-for="item in items">
+  <ul class="steps steps-vertical">
+    <li class="step-item" v-for="item in items">
       <timeline-item v-bind="item" v-bind:key="item.id"></timeline-item>
     </li>
     <li v-if="loaded">
@@ -65,10 +65,8 @@ export default {
 
 <style scoped lang="scss">
 @import "~bootstrap/scss/bootstrap";
-  ul {
-    margin-left: 1em;
-  }
-  .loading {
-    font-size: $h3-font-size;
-  }
+
+.loading {
+  font-size: $h3-font-size;
+}
 </style>

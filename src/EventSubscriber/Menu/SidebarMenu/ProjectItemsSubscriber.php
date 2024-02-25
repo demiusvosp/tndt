@@ -53,7 +53,7 @@ class ProjectItemsSubscriber implements EventSubscriberInterface
             $this->router->generate('project.list'),
             $route === 'project.list',
             $this->translator->trans('menu.projects'),
-            'fa fa-project-diagram'
+            'tabler-books'
         ));
 
         /** @var Project $project */

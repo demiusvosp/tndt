@@ -1,12 +1,18 @@
+@import "~bootstrap/scss/_functions.scss";
 @import "~@tabler/core/src/scss/_variables.scss";
 
+$font-size-base: 0.875rem;
+$line-height-base: divide(1.25rem, $font-size-base);
+:root {
+  --#{$prefix}font-size-h2: 1.25rem;
+  --tblr-breadcrumb-font-size: 0.85rem;
+}
 $icon-stroke-width: 1;
 $icon-size: 1rem;
 
-
 /* grid */
 .card {
-  margin-top: 1rem;
+  margin-bottom: 1rem;
 }
 .row-cards {
   margin-top: 0;
@@ -25,8 +31,7 @@ $icon-size: 1rem;
 }
 
 .icon {
-  $icon-stroke-width: 1;
-  $icon-size: 1rem;
+  stroke-width: 1;
   vertical-align: text-bottom;
 }
 .fa-icon {
@@ -40,15 +45,29 @@ $icon-size: 1rem;
   font-size: $h6-font-size;
 }
 
+/* forms */
 form {
   margin: 0;
 }
+.code-edit {
+  font-family: $font-family-monospace;
+}
 
+.filter-button {
+  --#{$prefix}icon-size: #{$font-size-base * $line-height-base};
+  width: calc(var(--#{$prefix}icon-size) * 1.1);
+  height: calc(var(--#{$prefix}icon-size) * 1.1);
+}
 .sortable {
   padding-right: 2em;
 }
 
 /* layout blocks */
+.breadcrumb-item {
+  a {
+    vertical-align: text-top;
+  }
+}
 .breadcrumb-item.active a {
   color: inherit;
   pointer-events: all !important;
@@ -75,24 +94,59 @@ form {
   }
 }
 
-/* project task&docs small tables */
-.dashboard-middle-table {
+/* tables */
+.table {
   tbody {
     font-size: $font-size-100;
   }
 
+  thead .no {
+    font-weight: $font-weight-bold;
+    font-size: $font-size-200;
+  }
   .no {
-    font-weight: bold;
+    font-weight: $font-weight-bold;
     text-align: right;
   }
   .caption {
     width: 60%;
   }
-}
-.table {
   .bool {
     text-align: center;
   }
+}
+ /* Tasks */
+.task-table {
+  min-width: 1000px;
+  td {
+    padding: 0.25rem 0.75rem;
+  }
+
+  .caption {
+    width: 50%;
+  }
+}
+
+/* Docs */
+.doc-table {
+  min-width: 1000px;
+}
+
+.doc-property-string {
+  font-style: italic;
+  color: $text-secondary;
+  margin: -0.5em 0.5em 1em 1em;
+
+  span.label {
+    margin-right: 0.5em;
+  }
+
+  a, &:hover {
+    color: $text-secondary;
+  }
+}
+.doc-abstract-ctrl {
+  margin-top: 1rem;
 }
 
 /* user */
@@ -102,4 +156,60 @@ form {
 .locked {
   text-decoration: line-through;
   font-weight: normal;
+}
+
+
+/* Help right sidebar */
+.help-sidebar {
+  position: fixed;
+  width: 40%;
+  height: 100%;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 2000;
+  transform: translateX(100%);
+  transition: 0.5s;
+  margin: 0;
+  padding: 0;
+  background-color: $bg-surface;
+
+  .nav {
+    position: relative;
+    top: 60%;
+    bottom: -5em;
+    left: -3.3em;
+    z-index: 2010;
+    margin: 0;
+    padding: 0;
+    writing-mode: vertical-lr;
+    .help-toggle {
+      cursor: pointer;
+      background-color: $bg-surface;
+      border: 1px solid $border-color;
+      border-right-color: transparent;
+      border-radius: 4px 0 0 4px;
+      padding: 3em 1em 3em 1em;
+    }
+  }
+  .nav-tabs {
+    border: 0;
+  }
+  .help-container {
+    position: fixed;
+    top: 0;
+    height: 100%;
+    overflow: auto;
+    padding: 1em;
+    border-left: 1px solid $border-color;
+    margin: 0 0.2em;
+  }
+}
+#md-help-toggle {
+  display: none;
+}
+#md-help-toggle:checked ~ .help-sidebar {
+  -webkit-transform: translateX(0);
+  -moz-transform: translateX(0);
+  transform: translateX(0);
 }

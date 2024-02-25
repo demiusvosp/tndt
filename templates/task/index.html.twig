@@ -3,99 +3,91 @@
 
 
 {% block title %} {{ task.taskId }} - {{ task.caption }} {% endblock %}
-{% block page_title%}{% endblock %}
-{% block page_subtitle %}{% endblock %}
+{% block page_title%}<b>{{ task.taskId }}</b> - {{ task.caption }}{% endblock %}
 
 {% block page_content %}
-    <div class="row">
-        <div class="col-md-10">
-            {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
-                {% import 'project/_macro.html.twig' as mProject %}
-                {% import 'task/_macro.html.twig' as mTask %}
-                {% import 'user/_macro.html.twig' as mUser %}
-
-                {% block box_title %}
-                    <b>{{ task.taskId }}</b> - {{ task.caption }}
-                {% endblock %}
-                {% block box_body %}
+<div class="row row-cards row-cols-xl-2 row-cols-lg-1">
+    <div class="col-xxl-10 col-xl-8 col-lg-12">
+        <div class="card h-100">
+            {% import 'project/_macro.html.twig' as mProject %}
+            {% import 'task/_macro.html.twig' as mTask %}
+            {% import 'user/_macro.html.twig' as mUser %}
+            <div class="card-status-top bg-blue"></div>
+            <div class="card-body">
+                <div class="row">
                     <div class="task-properties">
-                        <div class="row">
-                            <div class="col-md-4 task-property-item">
-                                {{ 'task.project.label'|trans }}: {{ mProject.badge(task.project, true, true) }}
+                        <div class="row datagrid">
+                            <div class="datagrid-item">
+                                <div class="datagrid-title">{{ 'task.project.label'|trans }}</div>
+                                <div class="datagrid-content">{{ mProject.badge(task.project, true, true) }}</div>
                             </div>
-                            <div class="col-md-4 task-property-item">
-                                {% if dictionary_enabled(task, 'stage') %}
-                                    {{ 'task.stage.label'|trans }}: {{ dictionary_name(task, 'stage') }}
-                                {% endif %}
-                                {# хз возможно этап сюда, в левее к проекту категорию/Систему #}
+                            {% if dictionary_enabled(task, 'stage') %}
+                            <div class="datagrid-item">
+                                <div class="datagrid-title">{{ 'task.stage.label'|trans }}</div>
+                                <div class="datagrid-content">{{ dictionary_name(task, 'stage') }}</div>
                             </div>
-                            <div class="col-md-4 task-property-item">
-                                {% if dictionary_enabled(task, 'type') %}
-                                    {{ 'task.type.label'|trans }}: {{ dictionary_name(task, 'type') }}
-                                {% endif %}
+                            {% endif %}
+                            {% if dictionary_enabled(task, 'type') %}
+                            <div class="datagrid-item">
+                                <div class="datagrid-title">{{ 'task.type.label'|trans }}</div>
+                                <div class="datagrid-content">{{ dictionary_name(task, 'type') }}</div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-4 task-property-item">
-                                {{ 'task.createdBy.label'|trans }}: {{ mUser.badge(task.createdBy, true, true, 'instrumental') }}
+                            {% endif %}
+                            {% if dictionary_enabled(task, 'priority') %}
+                                <div class="datagrid-item">
+                                    <div class="datagrid-title">{{ 'task.priority.label'|trans }}</div>
+                                    <div class="datagrid-content">{{ dictionary_name(task, 'priority') }}</div>
+                                </div>
+                            {% endif %}
+                            {% if dictionary_enabled(task, 'complexity') %}
+                                <div class="datagrid-item">
+                                    <div class="datagrid-title">{{ 'task.complexity.label'|trans }}</div>
+                                    <div class="datagrid-content">{{ dictionary_name(task, 'complexity') }}</div>
+                                </div>
+                            {% endif %}
+                            <div class="datagrid-item">
+                                <div class="datagrid-title">{{ 'task.createdBy.label'|trans }}</div>
+                                <div class="datagrid-content">{{ mUser.badge(task.createdBy, true, true, 'instrumental') }}</div>
                             </div>
-                            <div class="col-md-4 task-property-item">
-                                {{ 'task.created.label'|trans }}: {{ task.createdAt|ago }}
+                            <div class="datagrid-item">
+                                <div class="datagrid-title">{{ 'task.created.label'|trans }}</div>
+                                <div class="datagrid-content">{{ task.createdAt|ago }}</div>
                             </div>
-                            <div class="col-md-4 task-property-item">
-                                {% if dictionary_enabled(task, 'priority') %}
-                                    {{ 'task.priority.label'|trans }}: {{ dictionary_name(task, 'priority') }}
-                                {% endif %}
+                            <div class="datagrid-item">
+                                <div class="datagrid-title">{{ 'task.assignedTo.label'|trans }}</div>
+                                <div class="datagrid-content">{{ mUser.badge(task.assignedTo, true, true, 'dative') }}</div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-4 task-property-item">
-                                {{ 'task.assignedTo.label'|trans }}: {{ mUser.badge(task.assignedTo, true, true, 'dative') }}
-                            </div>
-                            <div class="col-md-4 task-property-item">
-                                {{ 'task.updated.label'|trans }}: {{ task.updatedAt|ago }}
-                            </div>
-                            <div class="col-md-4 task-property-item">
-                                {% if dictionary_enabled(task, 'complexity') %}
-                                    {{ 'task.complexity.label'|trans }}: {{ dictionary_name(task, 'complexity') }}
-                                {% endif %}
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-4 task-property-item">
-
-                            </div>
-                            <div class="col-md-4 task-property-item">
-
-                            </div>
-                            <div class="col-md-4 task-property-item">
-
+                            <div class="datagrid-item">
+                                <div class="datagrid-title">{{ 'task.updated.label'|trans }}</div>
+                                <div class="datagrid-content">{{ task.updatedAt|ago }}</div>
                             </div>
                         </div>
                     </div>
-                    <hr>
-                    <p>
+                    <hr class="mt-3">
+                    <p class="markdown">
                         {{ task.description|markdown_to_html }}
                     </p>
-                {% endblock %}
-            {% endembed %}
+                </div>
+            </div>
         </div>
-        <div class="col-md-2">
-            {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-            {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
-                {% import 'task/_macro.html.twig' as mTask %}
-                {% block box_title %}
+    </div>
+    <div class="col-xxl-2 col-xl-4">
+        <div class="card">
+            <div class="card-body">
+                <h3 class="card-title">
                     {{ 'ControlPanel'|trans }}
-                {% endblock  %}
-                {% block box_body %}
+                </h3>
+                {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
                     <form action="{{ controls.stages.action }}" method="post">
-                    <div class="btn-group-vertical" role="toolbar" aria-label="{{ 'ControlPanel'|trans }}">
-                        {% if controls.edit %}
-                            <a class="btn btn-default btn-secondary" href="{{ controls.edit.action }}">{{ controls.edit.label }}</a>
-                        {% endif %}
+                        <div class="btn-group-vertical w-100" role="toolbar">
+                            {% if controls.edit %}
+                                <a class="btn btn-outline-primary" href="{{ controls.edit.action }}">{{ controls.edit.label }}</a>
+                            {% endif %}
+                        </div>
+                        <div class="btn-group-vertical w-100 mt-3" role="toolbar">
                             {% for stage in controls.stages.items %}
                                 <button
-                                    class="btn btn-default btn-secondary"
+                                    class="btn btn-outline-secondary"
                                     type="submit"
                                     name="new_stage"
                                     value="{{ stage.value }}"
@@ -104,51 +96,60 @@
                                 </button>
                             {% endfor %}
                             <input type="hidden" name="_token" value="{{ controls.stages.token }}">
-                        {% if controls.close %}
-                            <button
-                                    class="btn btn-secondary btn-warning confirm-close"
-                                    data-action="{{ controls.close.action }}"
-                            >
-                                {{ 'Close'|trans }}
-                            </button>
-                        {% endif %}
-                    </div>
+                            {% if controls.close %}
+                                <button
+                                        class="btn btn-outline-success confirm-close"
+                                        data-action="{{ controls.close.action }}"
+                                >
+                                    {{ 'Close'|trans }}
+                                </button>
+                            {% endif %}
+                        </div>
                     </form>
                     {% if controls.close %}
                         {{ mTask.close_task_modal(task) }}
                     {% endif %}
-                {% endblock %}
-            {% endembed %}
-            {% endif %}
+                {% endif %}
+            </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-md-10">
-            {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
-            {% block box_title %}
-                {{ 'Works.title'|trans }}
-            {% endblock %}
-            {% block box_body %}
-                <ul class="nav nav-tabs">
+</div>
+<div class="row row-cards">
+    <div class="col-xl-8 col-lg-10 col-sm-12">
+        <div class="card">
+            <div class="card-header">
+                <ul class="nav nav-tabs card-header-tabs">
                     {% set currentTab = app.request.query.get('tab', 'comments') %}
-                    <li {% if currentTab == 'comments' %}class="active"{% endif %}>
-                        <a href="{{ path('task.index', {'taskId': task.taskId, 'tab': 'comments'}) }}">{{ 'Works.comments'|trans }}</a>
+                    <li class="nav-item">
+                        <a class="nav-link {{ currentTab == 'comments' ? 'active' : '' -}}"
+                           href="{{ path('task.index', {'taskId': task.taskId, 'tab': 'comments'}) }}"
+                        >
+                            {{ icon('tabler-messages', 'me-1')}} {{ 'Works.comments'|trans }}
+                        </a>
                     </li>
-                    <li {% if currentTab == 'activity' %}class="active"{% endif %}>
-                        <a href="{{ path('task.index', {'taskId': task.taskId, 'tab': 'activity'}) }}">{{ 'Works.activity'|trans }}</a>
+                    <li class="nav-item">
+                        <a  class="nav-link {{ currentTab == 'activity' ? 'active' : '' -}}"
+                            href="{{ path('task.index', {'taskId': task.taskId, 'tab': 'activity'}) }}"
+                        >
+                            {{ icon('tabler-activity')}} {{ 'Works.activity'|trans }}
+                        </a>
                     </li>
                 </ul>
-                <div class="one-block-content">
-                    {% if currentTab == 'comments' %}
-                        {{ comment_widget(task) }}
-                    {% elseif currentTab == 'activity' %}
-                        <div id="activity-widget">
-                            <activity-timeline action="{{ path('activity.list', {'type': 'task', 'id': task.id})}}"></activity-timeline>
-                        </div>
-                    {% endif %}
+            </div>
+            <div class="card-body">
+                <div class="tab-content">
+                    <div class="tab-pane active show">
+                        {% if currentTab == 'comments' %}
+                            {{ comment_widget(task) }}
+                        {% elseif currentTab == 'activity' %}
+                            <div id="activity-widget">
+                                <activity-timeline action="{{ path('activity.list', {'type': 'task', 'id': task.id})}}"></activity-timeline>
+                            </div>
+                        {% endif %}
+                    </div>
                 </div>
-            {% endblock %}
-            {% endembed %}
+            </div>
         </div>
     </div>
+</div>
 {% endblock %}

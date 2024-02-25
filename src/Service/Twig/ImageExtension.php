@@ -7,19 +7,23 @@
 
 namespace App\Service\Twig;
 
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Asset\Packages;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
+use function implode;
 use function sprintf;
 use function str_starts_with;
 
 class ImageExtension extends AbstractExtension
 {
     private Packages $packages;
+    private LoggerInterface $logger;
 
-    public function __construct(Packages $packages)
+    public function __construct(Packages $packages, LoggerInterface $logger)
     {
         $this->packages = $packages;
+        $this->logger = $logger;
     }
 
     public function getFunctions(): array
@@ -39,6 +43,17 @@ class ImageExtension extends AbstractExtension
             // font-awesome icon
             return sprintf('<span class="%s"><i class="fa-icon %s"></i></span>', $class, $icon);
         }
+        // tabler svg icon in sprite
+        if (str_starts_with($icon, 'tabler-')) {
+            return sprintf(
+                '<svg class="%s"><use xlink:href="%s#%s" /></svg>',
+                implode(' ', ['icon', $class]),
+                $this->packages->getUrl('build/icons/tabler-sprite.svg'),
+                $icon
+            );
+        }
+        $this->logger->notice('use separate svg icon ' . $icon);
+        // icon file
         $class = 'icon ' . $class;
         // tabler icon
         return sprintf(
