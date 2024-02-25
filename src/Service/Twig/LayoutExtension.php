@@ -15,10 +15,8 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\FlashBagAwareSessionInterface;
-use Twig\Environment;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
-use function dump;
 
 class LayoutExtension extends AbstractExtension
 {
@@ -68,10 +66,10 @@ class LayoutExtension extends AbstractExtension
         if (!$session || !$session instanceof FlashBagAwareSessionInterface) {
             return [];
         }
-        $result = [];
 
+        $result = [];
         foreach ($session->getFlashBag()->all() as $type => $messages) {
-            if (! ($type = FlashMessageTypeEnum::tryFrom($type))) {
+            if (!($type = FlashMessageTypeEnum::tryFrom($type))) {
                 $this->logger->error('Flash message with unknow type', ['type' => $type]);
                 continue;
             }

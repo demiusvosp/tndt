@@ -30,6 +30,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use function dump;
 
 #[InProjectContext]
 class DocController extends AbstractController
@@ -83,6 +84,8 @@ class DocController extends AbstractController
         #[MapEntity(expr: 'repository.getBySlug(slug)')] Doc $doc,
         Project $project,
     ): Response {
+dump($doc);
+dump($project->getSuffix());
         if ($doc->getSuffix() !== $project->getSuffix()) {
             throw $this->createNotFoundException($this->translator->trans('doc.not_found'));
         }

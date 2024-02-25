@@ -158,26 +158,6 @@ form {
   font-weight: normal;
 }
 
-/* Comments */
-.comment-list {
-  .comment-head {
-    padding: 0 5em 2px 1em;
-    border-bottom: $border-color 1px solid;
-  }
-  .comment-message {
-    text-align: left;
-    margin-bottom: 1em;
-  }
-  .comment-form {
-    textarea {
-      margin-bottom: 1em;
-    }
-    button {
-      margin-bottom: 1em;
-    }
-    width: 50%;
-  }
-}
 
 /* Help right sidebar */
 .help-sidebar {
