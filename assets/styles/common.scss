@@ -1,0 +1,94 @@
+/* grid */
+.card {
+  margin-bottom: 1rem;
+}
+.row-cards {
+  margin-top: 0;
+}
+.card-title a, .card-title a:hover {
+  color: $black;
+  text-decoration: none;
+  outline: none;
+}
+
+/* common blocks */
+.invisible_link {
+  color: $black;
+  text-decoration: none;
+  outline: none;
+}
+
+.icon {
+  stroke-width: 1;
+  vertical-align: text-bottom;
+}
+.fa-icon {
+  padding-top: 0.1rem;
+}
+.nav-link .btn {
+  padding: 0.5rem 0.7rem;
+}
+
+/* Badges */
+.badge {
+  font-size: $h6-font-size;
+}
+.user-badge {
+  white-space: nowrap;
+}
+
+/* layout blocks */
+.breadcrumb-item {
+  a {
+    vertical-align: text-top;
+  }
+}
+.breadcrumb-item.active a {
+  color: inherit;
+  pointer-events: all !important;
+}
+
+/* forms */
+form {
+  margin: 0;
+}
+.code-edit {
+  font-family: $font-family-monospace;
+}
+
+.filter-button {
+  --#{$prefix}icon-size: #{$font-size-base * $line-height-base};
+  width: calc(var(--#{$prefix}icon-size) * 1.1);
+  height: calc(var(--#{$prefix}icon-size) * 1.1);
+}
+
+/* tables */
+.table {
+  tbody {
+    font-size: $font-size-100;
+  }
+
+  thead .no {
+    font-weight: $font-weight-bold;
+    font-size: $font-size-200;
+  }
+  .no {
+    font-weight: $font-weight-bold;
+    text-align: right;
+  }
+  .caption {
+    width: 60%;
+  }
+  .bool {
+    text-align: center;
+  }
+}
+
+.locked {
+  text-decoration: line-through;
+  font-weight: normal;
+}
+
+.sortable {
+  padding-right: 2em;
+}

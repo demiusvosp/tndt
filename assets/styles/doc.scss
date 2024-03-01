@@ -1,0 +1,21 @@
+/* Docs */
+.doc-table {
+  min-width: 1000px;
+}
+
+.doc-property-string {
+  font-style: italic;
+  color: $text-secondary;
+  margin: -0.5em 0.5em 1em 1em;
+
+  span.label {
+    margin-right: 0.5em;
+  }
+
+  a, &:hover {
+    color: $text-secondary;
+  }
+}
+.doc-abstract-ctrl {
+  margin-top: 1rem;
+}

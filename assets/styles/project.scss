@@ -1,0 +1,20 @@
+/* project */
+.project-block {
+  .security-row {
+    color: $text-secondary;
+    font-size: 0.75rem;
+    .right-col {
+      text-align: right;
+    }
+  }
+  .date-row {
+    color: $text-secondary;
+    font-size: $font-size-75;
+  }
+  .description-row {
+    font-size: $font-size-100;
+  }
+  hr {
+    margin: 0.25em 0;
+  }
+}
