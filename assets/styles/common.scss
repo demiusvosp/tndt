@@ -92,3 +92,13 @@ form {
 .sortable {
   padding-right: 2em;
 }
+
+/* comments */
+.comment-widget {
+  .comment-message {
+    margin-bottom: 1em;
+    hr {
+      margin: 1rem 2rem;
+    }
+  }
+}

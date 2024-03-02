@@ -1,6 +1,10 @@
 /* Docs */
 .doc-table {
   min-width: 1000px;
+
+  td {
+    padding: 0.25rem 0.7rem;
+  }
 }
 
 .doc-property-string {

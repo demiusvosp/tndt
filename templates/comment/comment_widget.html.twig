@@ -1,4 +1,4 @@
-<div class="container divide-y">
+<div class="container divide-y-2 comment-widget">
     {% import 'user/_macro.html.twig' as mUser %}
     <div class="row">
         {% if form is not null %}
@@ -23,7 +23,7 @@
                 <strong class="me-1">{{ mUser.badge(comment.author) }}</strong>
                 <span class="text-secondary">{{ 'comment.createdAt.in_widget'|trans }} {{ comment.createdAt|ago }}</span>
             </span>
-            <div class="card-body comment-message markdown">{{ comment.message|markdown_to_html }}</div>
+            <div class="comment-message markdown">{{ comment.message|markdown_to_html }}</div>
         </div>
     {% endfor %}
 </div>
