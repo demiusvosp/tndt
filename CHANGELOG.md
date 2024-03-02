@@ -14,6 +14,7 @@
 - **[tndt-143](http://tasks.demius.ru/p/tndt-143)**, [tndt-141](http://tasks.demius.ru/p/tndt-141), [tndt-146](http://tasks.demius.ru/p/tndt-146), [tndt-147](http://tasks.demius.ru/p/tndt-147), [tndt-149](http://tasks.demius.ru/p/tndt-149) - Переход от AdminLTE на Tabler. Переписывание почти всей верстки и больше половины стилей 
 ### Bugfixes
 - [tndt-30](http://tasks.demius.ru/p/tndt-30) - Обновлять дату проекта, когда в нем совершается работа
+- [tndt-35](http://tasks.demius.ru/p/tndt-35) - В sidebar пункты вылезают за границу панели
 - [tndt-91](http://tasks.demius.ru/p/tndt-91) - У баджа secondary не отображается фон.
 - [tndt-115](http://tasks.demius.ru/p/tndt-115) - Смена статуса документа не обновляет его дату
 

@@ -10,7 +10,7 @@
             {% set projects = projects|merge(['create']) %}
         {% endif %}
         {% for project in projects %}
-            <div class="col">
+            <div class="col-xs-12">
                 {% if project != 'create' %}
                     {% include 'project/_project_block.twig' with { 'project':project, 'descriptionLength': 500 } %}
                 {% else %}
@@ -45,7 +45,7 @@
     {% endif %}
 
     <div class="row row-cards row-cols-xl-3 row-cols-lg-2 row-cols-md-1 row-cols-sm-1 row-cols-xs-1">
-        <div class="col">
+        <div class="col-xs-12">
             <div class="card">
                 {% import 'task/_macro.html.twig' as mTask %}
                 <div class="card-body">
@@ -63,7 +63,7 @@
                 </div>
             </div>
         </div>
-        <div class="col">
+        <div class="col-xs-12">
             <div class="card">
                 {% import 'doc/_macro.html.twig' as mDoc %}
                 <div class="card-body">
@@ -83,7 +83,7 @@
                 </div>
             </div>
         </div>
-        <div class="col">
+        <div class="col-xs-12">
             <div class="card">
                 {% import 'user/_macro.html.twig' as mUser %}
                 <div class="card-body">
