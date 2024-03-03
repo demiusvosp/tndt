@@ -39,9 +39,9 @@ class HomeController extends AbstractController
         if (count($projects) > 0) {
             $tasks = $taskRepository->getPopularTasks(self::TASK_LENGTH, $currentUser);
             $docs = $docRepository->getPopularDocs(self::DOC_LENGTH, $currentUser);
-            if ($currentUser) {
-                $users = $userRepository->getPopularUsers(self::USER_LENGTH);
-            }
+//            if ($currentUser) {
+//                $users = $userRepository->getPopularUsers(self::USER_LENGTH);
+//            }
 
             $hasMoreProjects = count($projects) > self::PROJECT_LENGTH;
             if ($hasMoreProjects) {

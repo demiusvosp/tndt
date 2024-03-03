@@ -12,7 +12,7 @@
         {% for project in projects %}
             <div class="col-xs-12">
                 {% if project != 'create' %}
-                    {% include 'project/_project_block.twig' with { 'project':project, 'descriptionLength': 500 } %}
+                    {% include 'project/_project_block.twig' with { 'project':project, 'descriptionLength': 250 } %}
                 {% else %}
                     <div class="card">
                         <div class="card-status-top bg-green"></div>
@@ -44,66 +44,97 @@
         </div>
     {% endif %}
 
-    <div class="row row-cards row-cols-xl-3 row-cols-lg-2 row-cols-md-1 row-cols-sm-1 row-cols-xs-1">
-        <div class="col-xs-12">
+    <div class="row row-cards ">
+        <div class="col-lg-6 col-md-12">
             <div class="card">
                 {% import 'task/_macro.html.twig' as mTask %}
-                <div class="card-body">
+                <div class="card-header">
                     <h3 class="card-title">
                         {% trans %}Tasks{% endtrans %}:
                     </h3>
-                    <ul class="list-unstyled">
+                </div>
+                <div class="card-table table-responsive condensed-table">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th class="no">#</th>
+                                <th class="caption">{{ 'task.caption.label'|trans }}</th>
+                                <th>{{ 'task.updated.label'|trans }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
                         {%  for task in tasks %}
-                            <li class="text-truncate">{{ mTask.taskLink(task) }}</li>
+                            <tr>
+                                <td class="no">{{ mTask.no(task) }}</td>
+                                <td class="caption">
+                                    {{ mTask.caption(task, 80) }}
+                                    {{ badges(task, ['task.type']) }}
+                                </td>
+                                <td>{{ task.updatedAt|ago }}</td>
+                            </tr>
                         {% endfor %}
-                    </ul>
-                    {% if tasks|length == 0 %}
-                        <div style="height: 4rem;">&nbsp;</div>
-                    {% endif%}
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
-        <div class="col-xs-12">
+        <div class="col-lg-6 col-md-12">
             <div class="card">
                 {% import 'doc/_macro.html.twig' as mDoc %}
-                <div class="card-body">
+                <div class="card-header">
                     <h3 class="card-title">
                         {% trans %}Documents{% endtrans %}:
                     </h3>
-                    <ul class="list-unstyled">
+                </div>
+                <div class="card-table table-responsive condensed-table">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th class="no">#</th>
+                                <th class="caption">{{ 'doc.caption.label'|trans }}</th>
+                                <th>{{ 'doc.updated.label'|trans }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
                         {% for doc in docs %}
-                            <li class="text-truncate">
-                                <b>{{ doc.docId }}</b> - {{ mDoc.caption(doc, 60) }}
-                            </li>
+                            <tr>
+                                <td class="no">
+                                    <a class="invisible_link"
+                                       href="{{ path('doc.index', doc.getUrlParams) }}"
+                                    >
+                                        {{ doc.no }}
+                                    </a>
+                                </td>
+                                <td class="caption">{{ mDoc.caption(doc, 80) }}</td>
+                                <td>{{ doc.updatedAt|ago }}</td>
+                            </tr>
                         {% endfor %}
-                    </ul>
-                    {% if docs|length == 0 %}
-                        <div style="height: 4rem;">&nbsp;</div>
-                    {% endif%}
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
-        <div class="col-xs-12">
-            <div class="card">
-                {% import 'user/_macro.html.twig' as mUser %}
-                <div class="card-body">
-                    <h3 class="card-title">
-                        {% trans %}Users{% endtrans %}:
-                    </h3>
-                    {% if app.user %}
-                        <ul class="list-unstyled">
-                            {% for user in users %}
-                                <li>
-                                    <b>{{ mUser.badge(user) }}</b> - {{ role_label_list(user.roles, 100) }}
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    {% endif %}
-                    {% if users|length == 0 %}
-                        <div style="height: 4rem;">&nbsp;</div>
-                    {% endif%}
-                </div>
-            </div>
-        </div>
+{#        <div class="col-lg-2 col-xs-12">#}
+{#            <div class="card">#}
+{#                {% import 'user/_macro.html.twig' as mUser %}#}
+{#                <div class="card-body">#}
+{#                    <h3 class="card-title">#}
+{#                        {% trans %}Users{% endtrans %}:#}
+{#                    </h3>#}
+{#                    {% if app.user %}#}
+{#                        <ul class="list-unstyled">#}
+{#                            {% for user in users %}#}
+{#                                <li>#}
+{#                                    <b>{{ mUser.badge(user) }}</b> - {{ role_label_list(user.roles, 100) }}#}
+{#                                </li>#}
+{#                            {% endfor %}#}
+{#                        </ul>#}
+{#                    {% endif %}#}
+{#                    {% if users|length == 0 %}#}
+{#                        <div style="height: 4rem;">&nbsp;</div>#}
+{#                    {% endif%}#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
     </div>
 {% endblock %}

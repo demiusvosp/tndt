@@ -77,10 +77,18 @@ form {
     text-align: right;
   }
   .caption {
-    width: 60%;
+    min-width: 60%;
   }
   .bool {
     text-align: center;
+  }
+}
+.condensed-table {
+  tr td,
+  tr td:first-child,
+  tr td:last-child {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
   }
 }
 

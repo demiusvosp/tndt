@@ -90,7 +90,7 @@
                         <a href="{{ path('task.list', {'suffix': project.suffix}) }}">{{ 'Tasks'|trans }}</a>
                     </h3>
                 </div>
-                <div class="card-table table-responsive dashboard-middle-table">
+                <div class="card-table table-responsive condensed-table">
                     <table class="table">
                         <thead>
                             <tr>
@@ -115,7 +115,7 @@
                                     <td>{{ dictionary_name(task, 'type') }}</td>
                                 {% endif %}
                                 <td>{{ mUser.badge(task.assignedTo) }}</td>
-                                <td>{{ task.updatedAt|ago }}</td>{# localizeddate('medium', 'medium') #}
+                                <td>{{ task.updatedAt|ago }}</td>
                             </tr>
                         {% endfor%}
                         </tbody>
@@ -131,7 +131,7 @@
                         <a href="{{ path('doc.list', {'suffix': project.suffix}) }}">{{ 'Docs'|trans }}</a>
                     </h3>
                 </div>
-                <div class="card-table table-responsive dashboard-middle-table">
+                <div class="card-table table-responsive condensed-table">
                     <table class="table">
                         <thead>
                             <tr>
