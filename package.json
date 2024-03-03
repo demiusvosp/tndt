@@ -20,12 +20,12 @@
         "build": "encore production --progress"
     },
     "dependencies": {
-        "bootstrap": "^5.3",
         "@fortawesome/fontawesome-free": "^5",
         "@tabler/core": "1.0.0-beta20",
         "@tabler/icons": "^3.0.0-alpha.1",
         "autosize": "^6.0.1",
         "axios": "^1.6.5",
+        "bootstrap": "^5.3",
         "core-js": "^3.17.2",
         "imask": "^7.4.0",
         "vue": "^2.5"
