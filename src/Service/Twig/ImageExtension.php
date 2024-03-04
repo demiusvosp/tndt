@@ -48,10 +48,20 @@ class ImageExtension extends AbstractExtension
             return sprintf(
                 '<svg class="%s"><use xlink:href="%s#%s" /></svg>',
                 implode(' ', ['icon', $class]),
-                $this->packages->getUrl('build/icons/tabler-sprite.svg'),
+                $this->packages->getUrl('build/images/tabler-sprite.svg'),
                 $icon
             );
         }
+        // tndt svg icon in sprite
+        if (str_starts_with($icon, 'app-')) {
+            return sprintf(
+                '<svg class="%s"><use xlink:href="%s#%s" /></svg>',
+                implode(' ', ['icon', $class]),
+                $this->packages->getUrl('build/images/app-sprite.svg'),
+                $icon
+            );
+        }
+
         $this->logger->notice('use separate svg icon ' . $icon);
         // icon file
         $class = 'icon ' . $class;

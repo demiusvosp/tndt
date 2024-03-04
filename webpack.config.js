@@ -37,16 +37,11 @@ Encore
         to: 'images/[path][name].[ext]',
         // if versioning is enabled, add the file hash too
         //to: 'images/[path][name].[hash:8].[ext]',
-        pattern: /\.(png|ico|jpg)$/
-    })
-    .copyFiles({
-        from: './node_modules/@tabler/icons/icons',
-        to: 'icons/[path][name].[ext]',
-        pattern: /\.(svg)$/
+        pattern: /\.(png|svg|ico|jpg)$/
     })
     .copyFiles({
         from: './node_modules/@tabler/icons/',
-        to: 'icons/[path][name].[ext]',
+        to: 'images/[path][name].[ext]',
         pattern: /tabler-sprite.svg$/
     })
 

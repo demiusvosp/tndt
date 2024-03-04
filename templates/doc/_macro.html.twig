@@ -13,7 +13,7 @@
     {% if link %}
         <a class="doc-link" href="{{ path('doc.index', doc.getUrlParams) }}">
     {% endif %}
-        <i class="far fa-file-alt me-2"></i>
+        {{ icon('tabler-file-text') }}
         {% import _self as this %}
         {{ doc.docId }} - {{ doc.caption|u.truncate(100, '...') }}
         {{ badges(doc) }}

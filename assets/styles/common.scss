@@ -25,8 +25,10 @@
 .fa-icon {
   padding-top: 0.1rem;
 }
-.nav-link {
-  padding: 0.5rem 0.7rem;
+
+.btn {
+  --tblr-btn-padding-x: 0.75rem;
+  --tblr-btn-padding-y: 0.5rem;
 }
 
 /* Badges */
@@ -71,11 +73,13 @@ form {
 
   thead .no {
     font-weight: $font-weight-bold;
-    font-size: $font-size-200;
   }
   .no {
     font-weight: $font-weight-bold;
     text-align: right;
+    .sortable {
+      font-weight: normal;
+    }
   }
   .full-id {
     font-weight: $font-weight-bold;

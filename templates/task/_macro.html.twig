@@ -24,7 +24,7 @@
     {% if link %}
         <a class="task-link" href="{{ path('task.index', {'taskId': task.taskId}) }}">
     {% endif %}
-        <i class="fa fa-bars-progress"></i>
+        {{ icon('app-task') }}
         {% import _self as this %}
         <b>{{ task.taskId }}</b>
             - {{ task.caption}}

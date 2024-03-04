@@ -52,16 +52,18 @@
                     {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
                         <div class="btn-group-vertical w-100" role="group" aria-label="{{ 'Common'|trans }}">
                             {% if is_granted('PERM_TASK_CREATE') and not project.isArchived() %}
-                                <a class="btn btn-outline-primary"
+                                <a class="btn btn-outline-success"
                                    href="{{ path('task.project_create', {'suffix':project.suffix}) }}"
                                 >
+                                    {{ icon('tabler-plus') }}
                                     {{ 'Create_task'|trans }}
                                 </a>
                             {% endif %}
                             {% if is_granted('PERM_DOC_CREATE') and not project.isArchived() %}
-                                <a class="btn btn-outline-primary"
+                                <a class="btn btn-outline-success"
                                    href="{{ path('doc.project_create', {'suffix':project.suffix}) }}"
                                 >
+                                    {{ icon('tabler-file-plus') }}
                                     {{ 'Create_doc'|trans }}
                                 </a>
                             {% endif %}
@@ -69,9 +71,10 @@
 
                         <div class="btn-group-vertical w-100 mt-3" role="group" aria-label="{{ 'Maintenance'|trans }}">
                             {% if is_granted('PERM_PROJECT_SETTINGS') %}
-                                <a class="btn btn-outline-primary"
+                                <a class="btn btn-outline-secondary"
                                    href="{{ path('project.edit', {'suffix':project.suffix}) }}"
                                 >
+                                    {{ icon('tabler-settings') }}
                                     {{ 'Edit_project'|trans }}
                                 </a>
                             {% endif %}
