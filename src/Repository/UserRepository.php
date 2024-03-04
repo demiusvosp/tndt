@@ -126,6 +126,9 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 
     public function findAllByUsername(array $usernameList): array
     {
-        return $this->match(Spec::in('username', $usernameList));
+        return $this->match(Spec::andX(
+            Spec::in('username', $usernameList),
+            Spec::indexBy('username')
+        ));
     }
 }

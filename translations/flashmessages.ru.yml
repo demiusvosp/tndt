@@ -7,7 +7,9 @@ doc:
 project:
   archive.success: Проект архивирован
   create.success: Проект создан
-  edit.success: Проект отредактирован
+  edit:
+    user_not_found: Пользователь не найден
+    success: Проект отредактирован
 task:
   change_stage:
     success: Задача перешла на новый этап

@@ -5,6 +5,7 @@
 - [tndt-11](http://tasks.demius.ru/p/tndt-11) - Система активности работы над задачей.
 #### Minor features
 - [tndt-121](http://tasks.demius.ru/p/tndt-121) - Отображать на дашборде проекта когда он создан и обновлен
+- [tndt-123](http://tasks.demius.ru/p/tndt-123) - Списки задач и документов на главной странице
 ### Refactoring
 - [tndt-26](http://tasks.demius.ru/p/tndt-26), [tndt-94](http://tasks.demius.ru/p/tndt-94) - Обновление системы до php8, Symfony6.4
 - [tndt-39](http://tasks.demius.ru/p/tndt-39) - Получение главной сущности страницы через MapEntity, и использование её через Request

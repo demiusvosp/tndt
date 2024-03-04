@@ -10,6 +10,7 @@ namespace App\Controller;
 
 use App\Entity\Project;
 use App\Exception\DictionaryException;
+use App\Exception\DomainException;
 use App\Form\DTO\Project\EditProjectCommonDTO;
 use App\Form\DTO\Project\EditProjectPermissionsDTO;
 use App\Form\DTO\Project\EditTaskSettingsDTO;
@@ -39,6 +40,7 @@ use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use function dump;
 
 class ProjectController extends AbstractController
 {
@@ -164,8 +166,9 @@ class ProjectController extends AbstractController
         if($form->isSubmitted() && $form->isValid()) {
             try {
                 $this->projectService->editPermissions($formData, $project);
-            } catch (InvalidArgumentException $e) {
-                $form->addError(new FormError($e->getMessage()));
+                $this->addFlash(FlashMessageTypeEnum::Success->value, 'project.edit.success');
+            } catch (DomainException $e) {
+                $this->addFlash(FlashMessageTypeEnum::Danger->value, $e->getMessage());
             }
         }
 
@@ -189,8 +192,9 @@ class ProjectController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             try {
                 $this->projectService->editTaskSettings($formData, $project);
-            } catch (DictionaryException $e) {
-                $form->addError(new FormError($e->getMessage()));
+                $this->addFlash(FlashMessageTypeEnum::Success->value, 'project.edit.success');
+            } catch (DomainException $e) {
+                $this->addFlash(FlashMessageTypeEnum::Danger->value, $e->getMessage());
             }
         }
 
