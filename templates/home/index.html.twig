@@ -50,14 +50,14 @@
                 {% import 'task/_macro.html.twig' as mTask %}
                 <div class="card-header">
                     <h3 class="card-title">
-                        {% trans %}Tasks{% endtrans %}:
+                        {% trans %}Tasks{% endtrans %}
                     </h3>
                 </div>
                 <div class="card-table table-responsive condensed-table">
                     <table class="table">
                         <thead>
                             <tr>
-                                <th class="no">#</th>
+                                <th class="full-id">#</th>
                                 <th class="caption">{{ 'task.caption.label'|trans }}</th>
                                 <th>{{ 'task.updated.label'|trans }}</th>
                             </tr>
@@ -65,10 +65,10 @@
                         <tbody>
                         {%  for task in tasks %}
                             <tr>
-                                <td class="no">{{ mTask.no(task) }}</td>
+                                <td class="full-id">{{ mTask.badge(task) }}</td>
                                 <td class="caption">
                                     {{ mTask.caption(task, 80) }}
-                                    {{ badges(task, ['task.type']) }}
+                                    {{ badges(task) }}
                                 </td>
                                 <td>{{ task.updatedAt|ago }}</td>
                             </tr>
@@ -83,14 +83,14 @@
                 {% import 'doc/_macro.html.twig' as mDoc %}
                 <div class="card-header">
                     <h3 class="card-title">
-                        {% trans %}Documents{% endtrans %}:
+                        {% trans %}Documents{% endtrans %}
                     </h3>
                 </div>
                 <div class="card-table table-responsive condensed-table">
                     <table class="table">
                         <thead>
                             <tr>
-                                <th class="no">#</th>
+                                <th class="full-id">#</th>
                                 <th class="caption">{{ 'doc.caption.label'|trans }}</th>
                                 <th>{{ 'doc.updated.label'|trans }}</th>
                             </tr>
@@ -98,14 +98,11 @@
                         <tbody>
                         {% for doc in docs %}
                             <tr>
-                                <td class="no">
-                                    <a class="invisible_link"
-                                       href="{{ path('doc.index', doc.getUrlParams) }}"
-                                    >
-                                        {{ doc.no }}
-                                    </a>
+                                <td class="full-id">{{ mDoc.badge(doc) }}</td>
+                                <td class="caption">
+                                    {{ mDoc.caption(doc, 80) }}
+                                    {{ badges(doc) }}
                                 </td>
-                                <td class="caption">{{ mDoc.caption(doc, 80) }}</td>
                                 <td>{{ doc.updatedAt|ago }}</td>
                             </tr>
                         {% endfor %}

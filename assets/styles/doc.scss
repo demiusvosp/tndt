@@ -1,4 +1,19 @@
 /* Docs */
+
+.doc {
+  a.doc-link {
+    color: $black;
+    outline: none;
+  }
+}
+.doc-archived {
+  --tblr-text-opacity: 1;
+  color: rgba(var(--tblr-muted-rgb), var(--tblr-text-opacity)) !important;
+  a {
+    color: rgba(var(--tblr-muted-rgb), var(--tblr-text-opacity)) !important;
+  }
+}
+
 .doc-table {
   min-width: 1000px;
 

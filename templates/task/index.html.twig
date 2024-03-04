@@ -3,7 +3,7 @@
 
 
 {% block title %} {{ task.taskId }} - {{ task.caption }} {% endblock %}
-{% block page_title%}<b>{{ task.taskId }}</b> - {{ task.caption }}{% endblock %}
+{% block page_title%}{{ mTask.taskString(task, false) }}{% endblock %}
 
 {% block page_content %}
 <div class="row row-cards row-cols-xl-2 row-cols-lg-1">

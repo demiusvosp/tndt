@@ -151,7 +151,10 @@
                                         {{ doc.no }}
                                     </a>
                                 </td>
-                                <td class="caption">{{ mDoc.caption(doc, 80) }}</td>
+                                <td class="caption">
+                                    {{ mDoc.caption(doc, 80) }}
+                                    {{ badges(doc) }}
+                                </td>
                                 <td>{{ mUser.badge(doc.updatedBy) }}</td>
                                 <td>{{ doc.updatedAt|ago }}</td> {# localizeddate('medium', 'medium') #}
                             </tr>

@@ -13,8 +13,10 @@ use App\Exception\DictionaryException;
 use App\Model\Dto\Badge;
 use App\Model\Dto\Dictionary\Task\TaskStageItem;
 use App\Model\Enum\BadgeStyleEnum;
+use App\Model\Enum\DictionaryTypeEnum;
 use App\Service\Dictionary\Fetcher;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use function dump;
 
 class TaskBadgesHandler implements BadgeHandlerInterface
 {
@@ -64,9 +66,10 @@ class TaskBadgesHandler implements BadgeHandlerInterface
             }
             $label = null;
             $itemBadge = $item->getUseBadge();
-            if ($item instanceof TaskStageItem && !$item->getId() && $task->isClosed()) {
+            if ($type == DictionaryTypeEnum::TASK_STAGE() && !$item->getId() && $task->isClosed()) {
                 // если справочника этапа нет, а задача закрыта, создаем бадж об этом состоянии
                 $label = $this->translator->trans('task.close.label');
+                $itemBadge = BadgeStyleEnum::Success;
 
             } elseif ($itemBadge) {
                 $label = $item->getName();

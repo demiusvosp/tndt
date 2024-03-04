@@ -57,8 +57,8 @@ class BadgesExtension extends AbstractExtension
     {
         $class = [
             'badge',
-            'bg-' . $badge->getStyle()->value,
-            'text-' . $badge->getStyle()->value . '-fg'
+            'bg-' . $badge->getStyle()->value . '-lt',
+//            'text-' . $badge->getStyle()->value . '-fg'
         ];
 
         return sprintf(

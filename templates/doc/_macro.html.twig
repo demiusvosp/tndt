@@ -1,36 +1,36 @@
 {% macro caption(doc, limit = null) %}
-    <a class="invisible_link" href="{{ path('doc.index', doc.getUrlParams) }}">
-        {% if doc.isArchived %}
-            <span class="text-muted">
-        {% endif %}
-            {% set label = doc.caption %}
-            {% if limit %}{% set label = label|u.truncate(limit, '...') %}{% endif %}
-            {{ label }}
-            {{ badges(doc) }}
-        {% if doc.isArchived %}
-            </span>
-        {% endif %}
+<span class="doc {{ doc.isArchived ? 'doc-archived'}}">
+    <a class="doc-link" href="{{ path('doc.index', doc.getUrlParams) }}">
+        {% set label = doc.caption %}
+        {% if limit %}{% set label = label|u.truncate(limit, '...') %}{% endif %}
+        {{ label }}
     </a>
+</span>
 {% endmacro %}
 
-{% macro badge(doc, withName = false, link = false) %}
+{% macro docString(doc, link = true) %}
+<span class="doc {{ doc.isArchived ? 'doc-archived'}}">
     {% if link %}
-        <a class="invisible_link" href="{{ path('doc.index', doc.getUrlParams) }}">
+        <a class="doc-link" href="{{ path('doc.index', doc.getUrlParams) }}">
     {% endif %}
-    {% if doc.isArchived %}
-        <span class="text-muted">
-    {% endif %}
-            <i class="far fa-file-alt me-2"></i>
-            {% import _self as this %}
-            {{ doc.docId }}
-            {% if withName %}
-                - {{ doc.caption|u.truncate(100, '...') }}
-            {% endif %}
-            {{ badges(doc) }}
-    {% if doc.isArchived %}
-        </span>
-    {% endif %}
+        <i class="far fa-file-alt me-2"></i>
+        {% import _self as this %}
+        {{ doc.docId }} - {{ doc.caption|u.truncate(100, '...') }}
+        {{ badges(doc) }}
     {% if link %}
         </a>
     {% endif %}
+</span>
+{% endmacro %}
+
+{% macro badge(doc, link = true) %}
+<span class="doc {{ doc.isArchived ? 'doc-archived'}}">
+    {% if link %}
+        <a class="doc-link" href="{{ path('doc.index', doc.getUrlParams) }}">
+    {% endif %}
+        {{ doc.docId }}
+    {% if link %}
+        </a>
+    {% endif %}
+</span>
 {% endmacro %}

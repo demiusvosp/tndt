@@ -1,4 +1,14 @@
 /* Tasks */
+.task {
+  a.task-link {
+    color: $black;
+    outline: none;
+  }
+}
+.task-closed {
+  text-decoration: line-through;
+}
+
 .task-table {
   min-width: 1000px;
   td {

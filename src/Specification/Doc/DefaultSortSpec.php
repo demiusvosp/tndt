@@ -16,7 +16,7 @@ class DefaultSortSpec extends BaseSpecification
     protected function getSpec(): Specification
     {
         return Spec::andX(
-            Spec::orderBy('state', 'ASC'),
+//            Spec::orderBy('state', 'ASC'), все таки будем выводить, будет поводом их обновить
             Spec::orderBy('updatedAt', 'DESC')
         );
     }
