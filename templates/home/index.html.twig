@@ -50,7 +50,7 @@
                 {% import 'task/_macro.html.twig' as mTask %}
                 <div class="card-header">
                     <h3 class="card-title">
-                        {% trans %}Tasks{% endtrans %}
+                        {{ icon('fa fa-tasks', 'me-1') }}{% trans %}Tasks{% endtrans %}
                     </h3>
                 </div>
                 <div class="card-table table-responsive condensed-table">
@@ -83,7 +83,7 @@
                 {% import 'doc/_macro.html.twig' as mDoc %}
                 <div class="card-header">
                     <h3 class="card-title">
-                        {% trans %}Documents{% endtrans %}
+                        {{ icon('tabler-files', 'me-1') }}{% trans %}Documents{% endtrans %}
                     </h3>
                 </div>
                 <div class="card-table table-responsive condensed-table">

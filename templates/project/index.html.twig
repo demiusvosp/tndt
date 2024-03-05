@@ -90,7 +90,7 @@
                 {% import 'task/_macro.html.twig' as mTask %}
                 <div class="card-header">
                     <h3 class="card-title">
-                        <a href="{{ path('task.list', {'suffix': project.suffix}) }}">{{ 'Tasks'|trans }}</a>
+                        <a href="{{ path('task.list', {'suffix': project.suffix}) }}">{{ icon('fa fa-tasks', 'me-1') }}{{ 'Tasks'|trans }}</a>
                     </h3>
                 </div>
                 <div class="card-table table-responsive condensed-table">
@@ -131,7 +131,7 @@
                 {% import 'doc/_macro.html.twig' as mDoc %}
                 <div class="card-header">
                     <h3 class="card-title">
-                        <a href="{{ path('doc.list', {'suffix': project.suffix}) }}">{{ 'Docs'|trans }}</a>
+                        <a href="{{ path('doc.list', {'suffix': project.suffix}) }}">{{ icon('tabler-files', 'me-1') }}{{ 'Docs'|trans }}</a>
                     </h3>
                 </div>
                 <div class="card-table table-responsive condensed-table">

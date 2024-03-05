@@ -20,13 +20,13 @@
 {% endmacro %}
 
 {% macro taskString(task, link = true) %}
-<span class="task {{ task.isClosed ? 'task-closed' }}">
+<span class="task">
     {% if link %}
         <a class="task-link" href="{{ path('task.index', {'taskId': task.taskId}) }}">
     {% endif %}
         {{ icon('app-task') }}
         {% import _self as this %}
-        <b>{{ task.taskId }}</b>
+        <b {{ task.isClosed ? 'class="task-closed"' }}>{{ task.taskId }}</b>
             - {{ task.caption}}
 {#                {{ badges(task) }}#}
     {% if link %}
