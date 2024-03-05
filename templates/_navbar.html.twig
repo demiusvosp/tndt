@@ -4,13 +4,13 @@
     {% for item in navbar() %}
         {% if item.type == 'link' %}
             <div class="nav-item" {{ item.isActive ? 'active' : '' }}>
-                <a class="nav-link" href="{{ item.action }}">
+                <a class="nav-link me-2 me-md-0" href="{{ item.action }}">
                     <span class="nav-link-title">{{ item.label }}</span>
                 </a>
             </div>
         {% elseif item.type == 'button' %}
             <div class="nav-item" {{ item.isActive ? 'active' : '' }}>
-                <a class="nav-link" href="{{ item.action }}">
+                <a class="nav-link me-2 me-md-0" href="{{ item.action }}">
                     <span class="btn {{ item.buttonClass }}">
                         <span class="nav-link-title">{{ item.label }}</span>
                     </span>
@@ -18,7 +18,7 @@
             </div>
         {% elseif item.type == 'tree' %}
             <div class="nav-item dropdown {{ item.isActive ? 'active' : '' }}">
-                <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" data-bs-autoclose="outside" role="button">
+                <a class="nav-link dropdown-toggle  me-2 me-md-0" href="#" data-bs-toggle="dropdown" data-bs-autoclose="outside" role="button">
                     <span class="nav-link-title">{{ item.label }}</span>
                 </a>
                 <div class="dropdown-menu">
