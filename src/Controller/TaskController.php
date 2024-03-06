@@ -17,6 +17,7 @@ use App\Form\DTO\Task\NewTaskDTO;
 use App\Form\Type\Task\CloseTaskForm;
 use App\Form\Type\Task\EditTaskType;
 use App\Form\Type\Task\NewTaskType;
+use App\Model\Enum\FlashMessageTypeEnum;
 use App\Model\Enum\TaskStageTypeEnum;
 use App\Model\Enum\UserPermissionsEnum;
 use App\Repository\TaskRepository;
@@ -153,7 +154,7 @@ class TaskController extends AbstractController
             /** @noinspection PhpParamsInspection */
             $task = $this->taskService->open($formData, $this->getUser());
 
-            $this->addFlash('success', 'task.create.success');
+            $this->addFlash(FlashMessageTypeEnum::Success->value, 'task.create.success');
             return $this->redirectToRoute('task.index', ['taskId' => $task->getTaskId()]);
         }
 
@@ -175,7 +176,7 @@ class TaskController extends AbstractController
         if($form->isSubmitted() && $form->isValid()) {
             $this->taskService->edit($formData, $task);
 
-            $this->addFlash('success', 'task.edit.success');
+            $this->addFlash(FlashMessageTypeEnum::Success->value, 'task.edit.success');
             return $this->redirectToRoute('task.index', ['taskId' => $task->getTaskId()]);
         }
 
@@ -197,11 +198,11 @@ class TaskController extends AbstractController
             /** @noinspection PhpParamsInspection */
             $this->taskService->close($formData, $task, $this->getUser());
 
-            $this->addFlash('warning', 'task.close.success');
+            $this->addFlash(FlashMessageTypeEnum::Success->value, 'task.close.success');
             return $this->redirectToRoute('task.list', ['suffix' => $task->getSuffix()]);
         }
 
-        $this->addFlash('error', 'task.close.error');
+        $this->addFlash(FlashMessageTypeEnum::Danger->value, 'task.close.error');
         return $this->redirectToRoute('task.index', ['taskId' => $task->getTaskId()]);
     }
 
@@ -219,7 +220,7 @@ class TaskController extends AbstractController
         }
 
         $this->taskStagesService->changeStage($task, $request->request->get('new_stage'));
-        $this->addFlash('success', 'task.change_stage.success');
+        $this->addFlash(FlashMessageTypeEnum::Success->value, 'task.change_stage.success');
 
         return $this->redirectToRoute('task.index', ['taskId' => $task->getTaskId()]);
     }

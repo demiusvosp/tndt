@@ -1,68 +1,50 @@
 {% macro no(task, style = null) %}
-    {% if task.isClosed() %}<s>{% endif %}
-    <a class="invisible_link"
+    <span class="task {{ task.isClosed ? 'task-closed' }}">
+    <a class="task-link"
        {{ (style ? 'style="'~style~'"' : '')|raw }}
        href="{{ path('task.index', {'taskId': task.taskId}) }}"
     >
         {{ task.no }}
     </a>
-    {% if task.isClosed() %}</s>{% endif %}
+    </span>
 {% endmacro %}
 
 {% macro caption(task, limit = null) %}
-    {% if task.isClosed() %}<s>{% endif %}
-        <a class="invisible_link" href="{{ path('task.index', {'taskId': task.taskId}) }}">
+    <span class="task {{ task.isClosed ? 'task-closed' }}">
+        <a class="task-link" href="{{ path('task.index', {'taskId': task.taskId}) }}">
             {% set label = task.caption %}
             {% if limit %}{% set label = label|u.truncate(limit, '...') %}{% endif %}
             {{ label }}
         </a>
-    {% if task.isClosed() %}</s>{% endif %}
+    </span>
 {% endmacro %}
 
-{% macro badge(task, withName = false, link = false, limit = 100) %}
+{% macro taskString(task, link = true) %}
+<span class="task">
     {% if link %}
-        <a class="invisible_link" href="{{ path('task.index', {'taskId': task.taskId}) }}">
+        <a class="task-link" href="{{ path('task.index', {'taskId': task.taskId}) }}">
     {% endif %}
-    <span {{ task.isClosed ? 'class="task-closed"' }}>
-{#        <i class="fa-solid fa-bars-progress"></i> не работает, ждет font-awesome 5.7 и значит и adminlte3#}
+        {{ icon('app-task') }}
         {% import _self as this %}
-        <b>{{ task.taskId }}</b>
-        {% if withName %}
-            - {{ this.caption(task, limit) }}
-            {{ badges(task) }}
-        {% endif %}
-    </span>
+        <b {{ task.isClosed ? 'class="task-closed"' }}>{{ task.taskId }}</b>
+            - {{ task.caption}}
+{#                {{ badges(task) }}#}
     {% if link %}
         </a>
     {% endif %}
+    </span>
 {% endmacro %}
 
-{% macro table(tasks, project) %}
-    {% import _self as this %}
-    {% import 'user/_macro.html.twig' as mUser %}
-    {% set project = project ?? project_context.project %}
-    <table class="table table-condensed task-table-small">
-        <tr>
-            <th class="no">#</th>
-            <th class="name">{{ 'task.caption.label'|trans }}</th>
-            {% if project and dictionary_enabled(project, 'task.type') %}
-                <th>{{ 'task.type.label'|trans }}</th>
-            {% endif %}
-            <th>{{ 'task.assignedTo.label'|trans }}</th>
-            <th>{{ 'task.updated.label'|trans }}</th>
-        </tr>
-        {% for task in tasks %}
-            <tr>
-                <td class="no">{{ this.no(task) }}</td>
-                <td class="caption">{{ this.caption(task, 80) }}{{ badges(task, ['task.type']) }}</td>
-                {% if project and dictionary_enabled(project, 'task.type') %}
-                    <td>{{ dictionary_name(task, 'type') }}</td>
-                {% endif %}
-                <td>{{ mUser.badge(task.assignedTo) }}</td>
-                <td>{{ task.updatedAt|ago }}</td>{# localizeddate('medium', 'medium') #}
-            </tr>
-        {% endfor %}
-    </table>
+{% macro badge(task, link = true) %}
+    <span class="task {{ task.isClosed ? 'task-closed' }}">
+        {%- if link -%}
+            <a class="task-link" href="{{ path('task.index', {'taskId': task.taskId}) }}">
+        {%- endif -%}
+            <b>{{- task.taskId -}}</b>
+        {%- if link -%}
+            </a>
+        {%- endif -%}
+    </span>
 {% endmacro %}
 
 {% macro close_task_modal(task) %}
@@ -71,9 +53,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">{{ 'confirm.title'|trans }}</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 {% set form = task_close_form(task) %}
                 {% form_theme form 'form_condensed_theme.html.twig' %}
@@ -90,8 +70,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-success" data-dismiss="modal">{{ 'confirm.yes'|trans }}</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ 'confirm.no'|trans }}</button>
+                    <button type="button" class="btn me-auto" data-bs-dismiss="modal">{{ 'confirm.no'|trans }}</button>
+                    <button type="submit" class="btn btn-success" data-bs-dismiss="modal">{{ 'confirm.yes'|trans }}</button>
                 </div>
                 {{ form_end(form) }}
             </div>

@@ -10,6 +10,7 @@ namespace App\Service\Filler;
 
 use App\Entity\Project;
 use App\Entity\ProjectUser;
+use App\Exception\BadUserException;
 use App\Exception\DictionaryException;
 use App\Form\DTO\Project\EditProjectCommonDTO;
 use App\Form\DTO\Project\EditProjectPermissionsDTO;
@@ -21,6 +22,7 @@ use App\Model\Enum\UserRolesEnum;
 use App\Repository\UserRepository;
 use InvalidArgumentException;
 use JsonException;
+use function array_merge;
 
 class ProjectFiller
 {
@@ -70,14 +72,14 @@ class ProjectFiller
         );
 
         if (empty($newUsers[$dto->getPm()])) {
-            throw new InvalidArgumentException('project.pm.error.not_found');
+            throw new BadUserException('project.edit.user_not_found');
         }
         $project->setPm($newUsers[$dto->getPm()]);
 
         $projectStaff = [];
         foreach ($dto->getStaff() as $user) {
             if (empty($newUsers[$user])) {
-                throw new InvalidArgumentException('project.staff.error.not_found');
+                throw new BadUserException('project.edit.user_not_found');
             }
             $projectUser = new ProjectUser($project, $newUsers[$user]);
             $projectUser->setRole(UserRolesEnum::PROLE_STAFF());
@@ -88,7 +90,7 @@ class ProjectFiller
         $projectVisitors = [];
         foreach ($dto->getVisitors() as $user) {
             if (empty($newUsers[$user])) {
-                throw new InvalidArgumentException('project.visitors.error.not_found');
+                throw new BadUserException('project.edit.user_not_found');
             }
             $projectUser = new ProjectUser($project, $newUsers[$user]);
             $projectUser->setRole(UserRolesEnum::PROLE_VISITOR());

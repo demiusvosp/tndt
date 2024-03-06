@@ -1,38 +1,38 @@
 {% extends 'project/edit.base.html.twig' %}
 
-{% block edit_page_title%}{{ 'project.edit.common'|trans }}{% endblock %}
+{% block title %}
+    {{- parent() }} / {{ 'project.edit.common'|trans -}}
+{% endblock %}
 
-{% block edit_page %}
+{% block edit_page_body %}
+<div class="col-xl-6 col-lg-8 col-md-12">
     {{ form_start(form) }}
         {{ form_row(form.name) }}
         {{ form_row(form.icon) }}
         {{ form_row(form.description) }}
+</div>
 {% endblock %}
 
-{% block box_footer %}
-    <div class="form-footer-buttons">
+{% block edit_page_footer %}
         <button type="submit" class="btn btn-success">{{ 'Edit'|trans }}</button>
-    </div>
     {{ form_end(form) }}
 {% endblock %}
 
-{% block box_after %}
-    {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
-        {% block box_title %}
+{% block edit_page_after %}
+<div class="card">
+    <div class="card-body">
+        <div class="card-title">
             {{ 'SpecialActions'|trans }}
-        {% endblock  %}
-        {% block box_body %}
-            <div class="form-footer-buttons">
-            {% if is_granted('PERM_PROJECT_ARCHIVE') and not project.isArchived() %}
-                <button
-                        class="btn btn-secondary btn-danger need-confirm"
-                        data-action="{{ path('project.archive', {'suffix':project.suffix}) }}"
-                        data-text="{{ 'project.archive.confirm'|trans|nl2br }}"
-                >
-                    {{ 'Archive'|trans }}
-                </button>
-            {% endif %}
-            </div>
-        {% endblock %}
-    {% endembed %}
+        </div>
+        <div class="btn-group-vertical w-100">
+            <button
+                    class="btn btn-secondary btn-danger need-confirm"
+                    data-action="{{ path('project.archive', {'suffix':project.suffix}) }}"
+                    data-text="{{ 'project.archive.confirm'|trans|nl2br }}"
+            >
+                {{ 'Archive'|trans }}
+            </button>
+        </div>
+    </div>
+</div>
 {% endblock %}

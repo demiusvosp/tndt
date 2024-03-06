@@ -1,0 +1,17 @@
+{% for item in flashmessages() %}
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="alert {{ item.type ? ('alert-' ~ item.type.value ~ (item.type.important ? ' alert-important')) }} alert-dismissible" role="alert">
+                <div class="d-flex">
+                    <div>
+                        {{ icon(item.type.icon, 'me-1') }}
+                    </div>
+                    <div>
+                        {{ item.message|trans({}, 'flashmessages') }}
+                    </div>
+                </div>
+                <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
+            </div>
+        </div>
+    </div>
+{% endfor %}

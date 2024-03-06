@@ -6,7 +6,6 @@ if (!Encore.isRuntimeEnvironmentConfigured()) {
     Encore.configureRuntimeEnvironment(process.env.NODE_ENV || 'dev');
 }
 const { VueLoaderPlugin } = require('vue-loader');
-const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
 
 Encore
     // directory where compiled assets will be stored
@@ -24,8 +23,6 @@ Encore
      */
     .addEntry('app', './assets/app.js')
 
-    .addPlugin(MomentLocalesPlugin({localesToKeep: ['ru']}))
-
     .addLoader({
         test: /\.vue$/,
         loader: 'vue-loader'
@@ -40,7 +37,12 @@ Encore
         to: 'images/[path][name].[ext]',
         // if versioning is enabled, add the file hash too
         //to: 'images/[path][name].[hash:8].[ext]',
-        pattern: /\.(png|ico|jpg)$/
+        pattern: /\.(png|svg|ico|jpg)$/
+    })
+    .copyFiles({
+        from: './node_modules/@tabler/icons/',
+        to: 'images/[path][name].[ext]',
+        pattern: /tabler-sprite.svg$/
     })
 
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
@@ -79,15 +81,10 @@ Encore
     // enables Sass/SCSS support
     .enableSassLoader()
 
-    // uncomment if you use TypeScript
-    //.enableTypeScriptLoader()
-
     // uncomment to get integrity="..." attributes on your script & link tags
     // requires WebpackEncoreBundle 1.4 or higher
     //.enableIntegrityHashes(Encore.isProduction())
 
-    // uncomment if you're having problems with a jQuery plugin
-    //.autoProvidejQuery()
 ;
 
 module.exports = Encore.getWebpackConfig();

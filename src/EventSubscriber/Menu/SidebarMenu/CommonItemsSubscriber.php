@@ -40,8 +40,8 @@ class CommonItemsSubscriber implements EventSubscriberInterface
     {
         $route = $this->requestStack->getMainRequest()?->get('_route');
         $event->addItem(new MenuItem(
-            $this->router->generate('about'),
-            $route === 'about',
+            $this->router->generate('static', ['page' => 'about']),
+            $route === 'static',
             $this->translator->trans('menu.dashboard.about'),
             'fa fa-info fa-fw'
         ));

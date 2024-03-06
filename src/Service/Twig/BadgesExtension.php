@@ -12,6 +12,8 @@ use App\Model\Dto\Badge;
 use App\Service\Badges\BadgeHandlerInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
+use function implode;
+use function sprintf;
 
 class BadgesExtension extends AbstractExtension
 {
@@ -53,15 +55,17 @@ class BadgesExtension extends AbstractExtension
 
     public function badgeHtml(Badge $badge): string
     {
-        $badgeHtml = '<span class="label label-' . $badge->getStyle()->value . '"';
-        if ($badge->getAlt()) {
-            $badgeHtml .= ' title="' . $badge->getAlt() . '"';
-        }
+        $class = [
+            'badge',
+            'bg-' . $badge->getStyle()->value . '-lt',
+//            'text-' . $badge->getStyle()->value . '-fg'
+        ];
 
-        $badgeHtml .= '>'
-            . $badge->getLabel()
-            . '</span>';
-
-        return $badgeHtml;
+        return sprintf(
+            '<span class="%s"%s>%s</span>',
+            implode(' ', $class),
+            $badge->getAlt() ? ' title="' . $badge->getAlt() . '"' : '',
+            $badge->getLabel()
+        );
     }
 }

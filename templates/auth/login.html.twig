@@ -1,73 +1,44 @@
 {% extends 'auth/base.html.twig' %}
 
-{% block login_box_msg %}
-    {{ 'Login'|trans([], 'security') }}
-{% endblock %}
+{% block title %}TnDT - {{ 'Login'|trans }}{% endblock %}
 
-{% block login_box_error %}
-    {% if error %}
-        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-    {% endif %}
-{% endblock %}
-
-{% block login_form %}
-<form action="{{ path('app.login'|route_alias) }}" method="post">
-    {% if app.user %}
-        <div class="mb-3">
-            {{ 'You are logged in as'|trans([], 'security') }}{{ app.user.userIdentifier }},
-            <a href="{{ path('app.login') }}">{{ 'Logout'|trans([], 'security') }}</a>,
-            <a href="{{ path('home') }}">{{ 'Home'|trans([], 'security') }}</a>
-        </div>
-    {% endif %}
-
-    <div class="form-group has-feedback">
-        <input type="text" name="_username" id="inputUsername" class="form-control" placeholder="{{ 'user.username.label'|trans }}" value="{{ last_username|default('') }}">
-        <label for="inputUsername">
-            <span class="fa fa-user form-control-feedback"></span>
-        </label>
+{% block page_content %}
+<div class="card card-md">
+    <div class="card-body">
+        <h2 class="h2 text-center mb-4">{{ 'LoginTo'|trans }}</h2>
+        <form action="{{ path('app.login') }}" method="post" autocomplete="off" novalidate="">
+            <div class="mb-3">
+                <label class="form-label">{{ 'user.username.label'|trans }}</label>
+                <input name="_username" type="text" class="form-control" placeholder="{{ 'user.password.label'|trans }}" autocomplete="off" value="{{ last_username|default('') }}">
+            </div>
+            <div class="mb-2">
+                <label class="form-label">
+                    {{ 'user.password.label'|trans }}
+                    <span class="form-label-description">
+{#                    <a href="./forgot-password.html">I forgot password</a> после добавления mailer и писем #}
+                  </span>
+                </label>
+                <div class="input-group input-group-flat">
+                    <input name="_password" type="password" class="form-control" placeholder="{{ 'user.password.label'|trans }}" autocomplete="off">
+                    <span class="input-group-text">
+                    <a href="#" class="link-secondary" data-bs-toggle="tooltip" aria-label="Show password" data-bs-original-title="Show password"><!-- Download SVG icon from http://tabler-icons.io/i/eye -->
+                      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"></path><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6"></path></svg>
+                    </a>
+                  </span>
+                </div>
+            </div>
+            <div class="mb-2">
+{#                <label class="form-check"> @todo tndt-18 #}
+{#                    <input type="checkbox" class="form-check-input">#}
+{#                    <span class="form-check-label">Remember me on this device</span>#}
+{#                </label>#}
+            </div>
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+            <div class="form-footer">
+                <button type="submit" class="btn btn-primary w-100">{{ 'Login'|trans }}</button>
+            </div>
+        </form>
     </div>
 
-    <div class="form-group has-feedback">
-        <input name="_password" type="password" id="inputPassword" class="form-control" placeholder="{{ 'user.password.label'|trans }}">
-        <label for="inputPassword">
-            <span class="glyphicon glyphicon-lock form-control-feedback"></span>
-        </label>
-    </div>
-
-    <input type="hidden" name="_csrf_token"
-           value="{{ csrf_token('authenticate') }}"
-    >
-
-    {#
-        Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
-        See https://symfony.com/doc/current/security/remember_me.html
-        <div class="form-group">
-            <input id="remember_me" name="_remember_me" type="checkbox">
-            <label for="remember_me">{{ 'Remember Me'|trans({}, 'AdminLTEBundle') }}</label>
-        </div>
-    #}
-
-    <div class="form-group">
-        <button type="submit" class="btn btn-primary btn-block">{{ 'Login'|trans({}, 'security') }}</button>
-    </div>
-</form>
-{% endblock %}
-
-{% block login_social_auth %}
-    {# Пока не реализуем #}
-{% endblock %}
-
-{% block login_actions %}
-{# @TODO когда будет майлер, - реализовтаь эти роуты #}
-{#    {% if 'adminlte_password_reset'|route_alias != 'adminlte_password_reset' %}#}
-{#        <a href="{{ path('adminlte_password_reset'|route_alias) }}">#}
-{#            {{ 'I forgot my password'|trans({}, 'AdminLTEBundle') }}#}
-{#        </a>#}
-{#        <br>#}
-{#    {% endif %}#}
-{#    {% if 'adminlte_registration'|route_alias != 'adminlte_registration' %}#}
-{#        <a href="{{ path('adminlte_registration'|route_alias) }}" class="text-center">#}
-{#            {{ 'Register a new account'|trans({}, 'AdminLTEBundle') }}#}
-{#        </a>#}
-{#    {% endif %}#}
+</div>
 {% endblock %}

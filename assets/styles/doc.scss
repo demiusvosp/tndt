@@ -1,0 +1,40 @@
+/* Docs */
+
+.doc {
+  a.doc-link {
+    color: $black;
+    outline: none;
+  }
+}
+.doc-archived {
+  --tblr-text-opacity: 1;
+  color: rgba(var(--tblr-muted-rgb), var(--tblr-text-opacity)) !important;
+  a {
+    color: rgba(var(--tblr-muted-rgb), var(--tblr-text-opacity)) !important;
+  }
+}
+
+.doc-table {
+  min-width: 1000px;
+
+  td {
+    padding: 0.25rem 0.7rem;
+  }
+}
+
+.doc-property-string {
+  font-style: italic;
+  color: $text-secondary;
+  margin: -0.5em 0.5em 1em 1em;
+
+  span.label {
+    margin-right: 0.5em;
+  }
+
+  a, &:hover {
+    color: $text-secondary;
+  }
+}
+.doc-abstract-ctrl {
+  margin-top: 1rem;
+}

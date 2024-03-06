@@ -1,57 +1,36 @@
 {% macro caption(doc, limit = null) %}
-    <a class="invisible_link" href="{{ path('doc.index', doc.getUrlParams) }}">
-        {% if doc.isArchived %}
-            <span class="text-muted">
-        {% endif %}
-            {% set label = doc.caption %}
-            {% if limit %}{% set label = label|u.truncate(limit, '...') %}{% endif %}
-            {{ label }}
-            {{ badges(doc) }}
-        {% if doc.isArchived %}
-            </span>
-        {% endif %}
+<span class="doc {{ doc.isArchived ? 'doc-archived'}}">
+    <a class="doc-link" href="{{ path('doc.index', doc.getUrlParams) }}">
+        {% set label = doc.caption %}
+        {% if limit %}{% set label = label|u.truncate(limit, '...') %}{% endif %}
+        {{ label }}
     </a>
+</span>
 {% endmacro %}
 
-{% macro badge(doc, withName = false, link = false) %}
+{% macro docString(doc, link = true) %}
+<span class="doc {{ doc.isArchived ? 'doc-archived'}}">
     {% if link %}
-        <a class="invisible_link" href="{{ path('doc.index', doc.getUrlParams) }}">
+        <a class="doc-link" href="{{ path('doc.index', doc.getUrlParams) }}">
     {% endif %}
-    {% if doc.isArchived %}
-        <span class="text-muted">
-    {% endif %}
-            <i class="far fa-file-alt"></i>
-            {% import _self as this %}
-            {{ doc.docId }}
-            {% if withName %}
-                - {{ doc.caption|u.truncate(100, '...') }}
-            {% endif %}
-            {{ badges(doc) }}
-    {% if doc.isArchived %}
-        </span>
-    {% endif %}
+        {{ icon('tabler-file-text') }}
+        {% import _self as this %}
+        {{ doc.docId }} - {{ doc.caption|u.truncate(100, '...') }}
+        {{ badges(doc) }}
     {% if link %}
         </a>
     {% endif %}
+</span>
 {% endmacro %}
 
-{% macro table(docs) %}
-    {% import _self as this %}
-    {% import 'user/_macro.html.twig' as mUser %}
-    <table class="table table-condensed doc-table-small">
-        <tr>
-            <th class="no">#</th>
-            <th class="caption">{{ 'doc.caption.label'|trans }}</th>
-            <th>{{ 'doc.updatedBy.label'|trans }}</th>
-            <th>{{ 'doc.updated.label'|trans }}</th>
-        </tr>
-        {%  for doc in docs %}
-            <tr>
-                <td class="no"><a class="invisible_link" href="{{ path('doc.index', doc.getUrlParams) }}">{{ doc.no }}</a></td>
-                <td class="caption">{{ this.caption(doc, 80) }}</td>
-                <td>{{ mUser.badge(doc.updatedBy) }}</td>
-                <td>{{ doc.updatedAt|ago }}</td> {# localizeddate('medium', 'medium') #}
-            </tr>
-        {% endfor %}
-    </table>
+{% macro badge(doc, link = true) %}
+<span class="doc {{ doc.isArchived ? 'doc-archived'}}">
+    {% if link %}
+        <a class="doc-link" href="{{ path('doc.index', doc.getUrlParams) }}">
+    {% endif %}
+        {{ doc.docId }}
+    {% if link %}
+        </a>
+    {% endif %}
+</span>
 {% endmacro %}

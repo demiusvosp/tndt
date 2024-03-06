@@ -28,10 +28,6 @@ class Doc implements NoInterface, WithProjectInterface, ActivitySubjectInterface
 {
     public const DOCID_SEPARATOR = '#';
 
-    public const STATE_NORMAL = 0;
-    public const STATE_DEPRECATED = 1;
-    public const STATE_ARCHIVED = 2;
-
     private const ABSTRACT_FROM_BODY_LIMIT = 1000;
 
 
@@ -70,8 +66,8 @@ class Doc implements NoInterface, WithProjectInterface, ActivitySubjectInterface
     #[ORM\JoinColumn(name: "updated_by", referencedColumnName: "username", nullable: true)]
     private ?User $updatedBy = null;
 
-    #[ORM\Column(type: "smallint", nullable: false)]
-    private int $state;
+    #[ORM\Column(type: "smallint", nullable: false, enumType: DocStateEnum::class)]
+    private DocStateEnum $state;
 
     #[ORM\Column(type: "string", length: 255)]
     #[Assert\NotBlank]
@@ -101,7 +97,7 @@ class Doc implements NoInterface, WithProjectInterface, ActivitySubjectInterface
         $this->createdAt = $this->updatedAt = new DateTime();
         $this->createdBy = $author;
         $this->updatedBy = null;
-        $this->state = self::STATE_NORMAL;
+        $this->state = DocStateEnum::Normal;
     }
 
     public function __toString(): string
@@ -264,12 +260,12 @@ class Doc implements NoInterface, WithProjectInterface, ActivitySubjectInterface
 
     public function getState(): DocStateEnum
     {
-        return DocStateEnum::from($this->state);
+        return $this->state;
     }
 
     public function setState(DocStateEnum $state): Doc
     {
-        $this->state = $state->value;
+        $this->state = $state;
         return $this;
     }
 

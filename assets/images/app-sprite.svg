@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg"><defs>
+    <symbol id="app-task" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="m1.62504,10.89585l1.85421,1.85421l3.70841,-3.70841" stroke="null"/>
+        <rect x="8.68754" y="10.87501" width="13.87482" height="3.18746" stroke="null"/>
+        <line stroke="null" x1="12.49999" y1="11.06251" x2="12.49999" y2="14.06247" fill="none"/>
+        <rect stroke-width="0.5" x="8.75004" y="16.68743" width="13.87482" height="3.18746" stroke="null"/>
+        <line stroke-width="0.5" stroke="null" x1="12.56249" y1="16.87493" x2="12.56249" y2="19.87489" fill="none"/>
+    </symbol>
+</defs></svg>

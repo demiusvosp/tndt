@@ -1,23 +1,39 @@
-<ul class="sidebar-menu" data-widget="tree">
-    {% for item in sidebar() %}
-        <li class="{{ item.isActive ? 'active' : '' }} {{ item.isTree ? 'treeview' : '' }}">
-            <a href="{{ item.isTree ? '#' : item.action }}">
-                {% if item.icon %} <i class="{{ item.icon }}"></i> {% endif %}
-                <span>{{ item.label }}</span>
-                {% if item.isTree %}<i class="fas fa-angle-left pull-right"></i>{% endif %}
-            </a>
-            {% if item.isTree %}
-                <ul class="treeview-menu">
+<div class="container-fluid">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar-menu" aria-controls="sidebar-menu" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <h1 class="navbar-brand navbar-brand-autodark">
+        <a href="{{ path('home') }}">
+            Task & Doc Tracker
+        </a>
+    </h1>
+    <div class="navbar-collapse collapse" id="sidebar-menu">
+        <ul class="navbar-nav pt-lg-3">
+        {% for item in sidebar() %}
+            {% if item.isTree == false %}
+                <li class="nav-item {{ item.isActive ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ item.action }}">
+                        {{ item.icon ? icon(item.icon, 'nav-link-icon') : '' }}
+                        <span class="nav-link-title">{{ item.label }}</span>
+                    </a>
+                </li>
+            {% else %}
+                <li class="nav-item dropdown {{ item.isActive ? 'active' : '' }}">
+                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="true">
+                        {{ item.icon ? icon(item.icon, 'nav-link-icon') : '' }}
+                        <span class="nav-link-title">{{ item.label }}</span>
+                    </a>
+                    <div class="dropdown-menu {{ item.isActive ? 'show' : '' }}">
                     {% for child in item.children %}
-                        <li class="{{ child.isActive ? 'active': ''}}">
-                            <a href="{{ child.action }}">
-                                {% if child.icon %} <i class="{{ child.icon }}"></i> {% endif %}
-                                {{ child.label }}
-                            </a>
-                        </li>
+                        <a class="dropdown-item {{ child.isActive ? 'active': ''}}" href="{{ child.action }}">
+                            {{ child.icon ? icon(child.icon, 'nav-link-icon') : '' }}
+                            {{ child.label }}
+                        </a>
                     {% endfor %}
-                </ul>
+                    </div>
+                </li>
             {% endif %}
-        </li>
-    {% endfor %}
-</ul>
+        {% endfor %}
+        </ul>
+    </div>
+</div>

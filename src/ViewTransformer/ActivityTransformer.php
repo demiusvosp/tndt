@@ -10,17 +10,23 @@ namespace App\ViewTransformer;
 use App\Entity\Activity;
 use App\Model\Enum\ActivityTypeEnum;
 use App\Model\Enum\DocStateEnum;
+use App\Service\Twig\TimeExtension;
 use DateTimeInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ActivityTransformer
 {
     private TranslatorInterface $translator;
+    private TimeTransformer $timeTransformer;
     private UserTransformer $userTransformer;
 
-    public function __construct(TranslatorInterface $translator, UserTransformer $userTransformer)
-    {
+    public function __construct(
+        TranslatorInterface $translator,
+        TimeTransformer $timeTransformer,
+        UserTransformer $userTransformer
+    ) {
         $this->translator = $translator;
+        $this->timeTransformer = $timeTransformer;
         $this->userTransformer = $userTransformer;
     }
 
@@ -42,7 +48,7 @@ class ActivityTransformer
 
         return [
             'id' => $activity->getUuid(),
-            'created' => $activity->getCreatedAt()->format(DateTimeInterface::W3C),
+            'created' => $this->timeTransformer->ago($activity->getCreatedAt()),
             'type' => [
                 'id' => $activity->getType()->value,
                 'label' => $typeLabel

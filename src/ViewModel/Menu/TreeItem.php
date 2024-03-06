@@ -16,6 +16,7 @@ class TreeItem extends AbstractMenuItem
     public function __construct(string $id, bool $active, string $label, ?string $icon)
     {
         $this->id = $id;
+        $this->children = [];
         parent::__construct($active, $label, $icon);
     }
 

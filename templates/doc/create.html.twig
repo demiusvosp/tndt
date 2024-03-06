@@ -1,22 +1,40 @@
-{% extends 'one_block_layout.html.twig' %}
+{% extends 'base_layout.html.twig' %}
 {% import 'project/_macro.html.twig' as mProject %}
 
 {% block title %}{{ 'Create_doc'|trans }}{% endblock %}
 {% block page_title%}
-    {% if project_context.isProjectContext %}{{ mProject.badge(project_context.project) }} - {% endif %}
-    {{ 'Create_doc'|trans }}
+    {{ mProject.badge(project_context.project) }} - {{ 'Create_doc'|trans }}
 {% endblock %}
-{% block page_subtitle %}{% endblock %}
 
-{% block box_title %}
-    {# пока это повторяет заголовок, но может это будет многостраницчный мастер, и десь будет описание шага #}
-{% endblock %}
-{% block box_body %}
-    {{ form_start(form) }}
-    {{ form_row(form.caption) }}
-    {{ form_row(form.project) }}
-    {{ form_row(form.abstract) }}
-    {{ form_row(form.body) }}
+{% block page_content %}
+<div class="row row-cards">
+    <div class="col-xl-9 col-lg-12">
+        <div class="card">
+            {{ form_start(form) }}
+            <div class="card-body">
+                <div class="col-md-12">
+                    {{ form_row(form.caption) }}
+                </div>
+                <div class="row">
+                    <div class="col-md-8">
+                        {{ form_row(form.abstract) }}
+                    </div>
+                    <div class="col-md-4">
+                        {{ form_row(form.project) }}
+                        {{ form_row(form.state) }}
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    {{ form_row(form.body) }}
+                </div>
+            </div>
+            <div class="card-footer">
+                <button type="submit" class="btn btn-success">{{ 'Create'|trans }}</button>
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+</div>
 {% endblock %}
 
 {% block box_footer %}

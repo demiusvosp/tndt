@@ -33,6 +33,7 @@ breadcrumb:
     home: Users
   user.management:
     home: User management
+Changelog: Changelog
 Close: Закрыть
 closed: закрыта
 comment:
@@ -120,8 +121,11 @@ doc:
     label: Обновлен
 Edit: Редактировать
 Edit_project: Настроить проект
-Edit_user: Редактировать профиль
 Hidden: hidden
+License: License
+Login: Login
+LoginTo: Login to task tracker
+Logout: Logout
 Maintenance: Обслуживание
 menu:
   dashboard.about: О системе
@@ -236,7 +240,7 @@ task:
   complexity:
     label: Трудоемкость
     help: Трудоемкость, сложость задачи, то сколько времени и сил придется затратить на её решение. Можно мерить в балах, днях, размерах
-  create: Создать задачу
+  create: New task...
   created:
     label: Дата создания
   createdBy:
@@ -281,20 +285,22 @@ To_archive: Убрать в архив
 To_deprecated: Отметить устаревшим
 UpdatedAt: Обновлена
 user:
+  about: About user
   controls:
     label: Действия
   createdAt:
     label: Зарегистрирован
   edit: User edit
+  edit_profile: Edit profile
   email:
     label: E-mail
     help: Опционален. По нему можно авторизовываться, для проектов где не приняты логины/ники
   lastLogin:
     label: Заходил
   locked:
-    label: Пользователь заблокирован
-    short: заблокирован
-    help: Заблокированый пользователь больше не сможет входить и совершать какие-либо действия. Если необходимо забрать доступ пользователя к проекту, оставив возможность быть посетителем, стоит исключить его и проекта, а не блокировать
+    label: Locked
+    table_head: status
+    help: Locked user won't be able to do anything. Если необходимо забрать доступ пользователя к проекту, оставив возможность быть посетителем, стоит исключить его и проекта, а не блокировать
   management:
     edit:
       title: User manager

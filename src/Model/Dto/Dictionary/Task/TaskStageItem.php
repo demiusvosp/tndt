@@ -10,7 +10,7 @@ namespace App\Model\Dto\Dictionary\Task;
 
 use App\Exception\DictionaryException;
 use App\Model\Dto\Dictionary\DictionaryItem;
-use App\Model\Enum\BadgeEnum;
+use App\Model\Enum\BadgeStyleEnum;
 use App\Model\Enum\TaskStageTypeEnum;
 
 class TaskStageItem extends DictionaryItem
@@ -55,12 +55,12 @@ class TaskStageItem extends DictionaryItem
         return $this;
     }
 
-    public function getUseBadge(): ?BadgeEnum
+    public function getUseBadge(): ?BadgeStyleEnum
     {
         $useBadge = parent::getUseBadge();
 
         if (!$useBadge && $this->type->equals(TaskStageTypeEnum::STAGE_ON_CLOSED())) {
-            $useBadge = BadgeEnum::Default;
+            $useBadge = BadgeStyleEnum::Default;
         }
 
         return $useBadge;

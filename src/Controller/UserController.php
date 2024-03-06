@@ -11,6 +11,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\DTO\User\SelfEditUserDTO;
 use App\Form\Type\User\EditProfileType;
+use App\Model\Enum\FlashMessageTypeEnum;
 use App\Model\Enum\UserPermissionsEnum;
 use App\Repository\UserRepository;
 use App\Service\UserService;
@@ -86,7 +87,7 @@ class UserController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $userService->selfEdit($formData);
 
-            $this->addFlash('success', 'user.edit.success');
+            $this->addFlash(FlashMessageTypeEnum::Success->value, 'user.edit.success');
         }
 
         return $this->render(

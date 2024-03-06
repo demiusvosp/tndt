@@ -2,24 +2,24 @@
 
 {% block title %}{{ parent() }} - {% trans %}project.create{% endtrans %}{% endblock %}
 {% block page_title%}{% trans %}project.new_project{% endtrans %}{% endblock %}
-{% block page_subtitle %}{% endblock %}
 
 {% block page_content %}
+    <div class="card">
     {{ form_start(form) }}
-    {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
-        {% block box_title %}
-            {# пока это повторяет заголовок, но может это будет многостраницчный мастер, и десь будет описание шага #}
-        {% endblock %}
-        {% block box_body %}
-                {{ form_row(form.suffix) }}
-                {{ form_row(form.name) }}
-                {{ form_row(form.icon) }}
-                {{ form_row(form.pm) }}
-                {{ form_row(form.isPublic) }}
-                {{ form_row(form.description) }}
-            <hr>
+        <div class="card-body">
+{#            <div class="card-title">#}
+{#  пока это повторяет заголовок, но может это будет многостраницчный мастер, и десь будет описание шага #}
+{#            </div>#}
+            {{ form_row(form.suffix) }}
+            {{ form_row(form.name) }}
+            {{ form_row(form.icon) }}
+            {{ form_row(form.pm) }}
+            {{ form_row(form.isPublic) }}
+            {{ form_row(form.description) }}
+        </div>
+        <div class="card-footer">
             <button type="submit" class="btn btn-success">{{ 'Create'|trans }}</button>
-        {% endblock %}
-    {% endembed %}
+        </div>
     {{ form_end(form) }}
+    </div>
 {% endblock %}

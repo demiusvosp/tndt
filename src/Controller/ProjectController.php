@@ -9,7 +9,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\Project;
-use App\Exception\DictionaryException;
+use App\Exception\DomainException;
 use App\Form\DTO\Project\EditProjectCommonDTO;
 use App\Form\DTO\Project\EditProjectPermissionsDTO;
 use App\Form\DTO\Project\EditTaskSettingsDTO;
@@ -20,6 +20,7 @@ use App\Form\Type\Project\EditProjectPermissionsType;
 use App\Form\Type\Project\EditProjectTaskSettingsType;
 use App\Form\Type\Project\ListFilterType;
 use App\Form\Type\Project\NewProjectType;
+use App\Model\Enum\FlashMessageTypeEnum;
 use App\Model\Enum\UserPermissionsEnum;
 use App\Repository\DocRepository;
 use App\Repository\ProjectRepository;
@@ -32,9 +33,7 @@ use App\Specification\Doc\NotArchivedSpec;
 use App\Specification\InProjectSpec;
 use App\Specification\Project\VisibleByUserSpec;
 use Happyr\DoctrineSpecification\Spec;
-use InvalidArgumentException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
@@ -67,7 +66,7 @@ class ProjectController extends AbstractController
             if ($filterForm->isValid()) {
                 $listFilterApplier->applyListFilter($spec, $filterData);
             } else {
-                $this->addFlash('warning', 'filterForm.error');
+                $this->addFlash(FlashMessageTypeEnum::Warning->value, 'filterForm.error');
             }
         }
         $projects = $projectRepository->match($spec);
@@ -119,7 +118,7 @@ class ProjectController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $project = $this->projectService->createProject($formData);
-            $this->addFlash('success', 'project.create.success');
+            $this->addFlash(FlashMessageTypeEnum::Success->value, 'project.create.success');
             return $this->redirectToRoute('project.index', ['suffix' => $project->getSuffix()]);
         }
 
@@ -141,7 +140,7 @@ class ProjectController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $this->projectService->editCommonSetting($formData, $project);
-            $this->addFlash('success', 'project.edit.success');
+            $this->addFlash(FlashMessageTypeEnum::Success->value, 'project.edit.success');
         }
 
         return $this->render('project/edit_common.html.twig', ['project' => $project, 'form' => $form->createView()]);
@@ -163,8 +162,9 @@ class ProjectController extends AbstractController
         if($form->isSubmitted() && $form->isValid()) {
             try {
                 $this->projectService->editPermissions($formData, $project);
-            } catch (InvalidArgumentException $e) {
-                $form->addError(new FormError($e->getMessage()));
+                $this->addFlash(FlashMessageTypeEnum::Success->value, 'project.edit.success');
+            } catch (DomainException $e) {
+                $this->addFlash(FlashMessageTypeEnum::Danger->value, $e->getMessage());
             }
         }
 
@@ -188,8 +188,9 @@ class ProjectController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             try {
                 $this->projectService->editTaskSettings($formData, $project);
-            } catch (DictionaryException $e) {
-                $form->addError(new FormError($e->getMessage()));
+                $this->addFlash(FlashMessageTypeEnum::Success->value, 'project.edit.success');
+            } catch (DomainException $e) {
+                $this->addFlash(FlashMessageTypeEnum::Danger->value, $e->getMessage());
             }
         }
 
@@ -209,7 +210,7 @@ class ProjectController extends AbstractController
     public function archive(Project $project, ProjectService $projectService): Response
     {
         $projectService->archiveProject($project);
-        $this->addFlash('warning', 'project.archive.success');
+        $this->addFlash(FlashMessageTypeEnum::Warning->value, 'project.archive.success');
 
         return $this->redirectToRoute('project.list');
     }

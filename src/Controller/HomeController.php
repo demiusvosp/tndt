@@ -21,9 +21,9 @@ class HomeController extends AbstractController
 {
     private const STATIC_PAGE_CACHE_TTL = 3600;
     private const PROJECT_LENGTH = 4;
-    private const TASK_LENGTH = 10;
-    private const DOC_LENGTH = 10;
-    private const USER_LENGTH = 10;
+    private const TASK_LENGTH = 15;
+    private const DOC_LENGTH = 15;
+    private const USER_LENGTH = 15;
 
     public function index(
         ProjectRepository $projectRepository,
@@ -39,9 +39,9 @@ class HomeController extends AbstractController
         if (count($projects) > 0) {
             $tasks = $taskRepository->getPopularTasks(self::TASK_LENGTH, $currentUser);
             $docs = $docRepository->getPopularDocs(self::DOC_LENGTH, $currentUser);
-            if ($currentUser) {
-                $users = $userRepository->getPopularUsers(self::USER_LENGTH);
-            }
+//            if ($currentUser) {
+//                $users = $userRepository->getPopularUsers(self::USER_LENGTH);
+//            }
 
             $hasMoreProjects = count($projects) > self::PROJECT_LENGTH;
             if ($hasMoreProjects) {
@@ -61,11 +61,17 @@ class HomeController extends AbstractController
         );
     }
 
-    public function about(): Response
+    public function static(string $page): Response
     {
-        $about = file_get_contents($this->getParameter('kernel.project_dir') . '/README.md');
+        [$title, $file] = match ($page) {
+            'changelog' => ['Changelog', '/CHANGELOG.md'],
+            'license' => ['License', '/LICENSE'],
+            default => ['About', '/README.md']
+        };
 
-        return $this->render('home/about.html.twig', ['about_text' => $about])
+        $text = file_get_contents($this->getParameter('kernel.project_dir') . $file);
+
+        return $this->render('home/static.html.twig', ['title' => $title, 'text' => $text])
             ->setPublic()
             ->setMaxAge(self::STATIC_PAGE_CACHE_TTL);
     }

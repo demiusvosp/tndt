@@ -51,4 +51,4 @@ services:
       context: './docker/'
       dockerfile: './npm.dockerfile'
     volumes:
-      - './:/var/www'
+      - './:/app'

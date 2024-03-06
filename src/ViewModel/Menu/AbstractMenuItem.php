@@ -11,6 +11,7 @@ namespace App\ViewModel\Menu;
 abstract class AbstractMenuItem
 {
     public const TYPE_LINK = 'link';
+    public const TYPE_BUTTON = 'button';
     public const TYPE_TREE = 'tree';
     public const TYPE_USER = 'user';
 

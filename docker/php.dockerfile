@@ -66,7 +66,8 @@ COPY ./translations /app/translations
 COPY ./vendor /app/vendor
 COPY ./.env /app/.env
 # для работы страницы about
-COPY ./README.md /app/README.md
+COPY ./*.md /app/
+COPY ./LICENSE /app/
 
 RUN mkdir -p /app/var/log && mkdir -p /app/var/cache
 VOLUME ["/app/var/log", "/app/var/cache"]

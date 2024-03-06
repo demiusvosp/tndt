@@ -53,7 +53,7 @@ class ProjectItemsSubscriber implements EventSubscriberInterface
             $this->router->generate('project.list'),
             $route === 'project.list',
             $this->translator->trans('menu.projects'),
-            'fa fa-project-diagram'
+            'tabler-books'
         ));
 
         /** @var Project $project */
@@ -65,7 +65,7 @@ class ProjectItemsSubscriber implements EventSubscriberInterface
             'project-' . $project->getSuffix(),
             true,
             $project->getName(),
-            $project->getIcon() . ' fa-fw'
+            $project->getIcon()
         );
         $event->addItem($projectMenu);
 
@@ -86,21 +86,21 @@ class ProjectItemsSubscriber implements EventSubscriberInterface
                 $this->router->generate('task.project_create', ['suffix' => $project->getSuffix()]),
                 $route === 'task.project_create',
                 $this->translator->trans('menu.task.create'),
-                'fa fa-plus-square fa-fw'
+                'tabler-plus'
             ));
         }
         $projectMenu->addChild(new MenuItem(
             $this->router->generate('doc.list', ['suffix' => $project->getSuffix()]),
             $route === 'doc.list',
             $this->translator->trans('menu.project.docs'),
-            'far fa-copy fa-fw'
+            'tabler-files'
         ));
         if ($this->security->isGranted(UserPermissionsEnum::PERM_DOC_CREATE)) {
             $projectMenu->addChild(new MenuItem(
                 $this->router->generate('doc.project_create', ['suffix' => $project->getSuffix()]),
                 $route === 'doc.project_create',
                 $this->translator->trans('menu.doc.create'),
-                'fa fa-plus-square fa-fw'
+                'tabler-plus'
             ));
         }
         if ($this->security->isGranted(UserPermissionsEnum::PERM_PROJECT_SETTINGS)) {

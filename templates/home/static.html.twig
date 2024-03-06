@@ -1,0 +1,17 @@
+{% extends 'base_layout.html.twig' %}
+
+{% block title %}{{ parent() }} - {{ title|trans }}{% endblock %}
+{% block page_title%}{{ title|trans }}{% endblock %}
+
+{% block page_content %}
+    <div class="row row-cards">
+        <div class="col">
+            <div class="card card-lg">
+                <div class="card-body">
+                    {{ text|markdown_to_html }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="height: 20em;">&nbsp;</div>
+{% endblock %}

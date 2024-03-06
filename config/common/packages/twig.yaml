@@ -4,9 +4,8 @@ twig:
     strict_variables: '%kernel.debug%'
     exception_controller: null
     form_themes:
-        - '@AdminLTE/layout/form-theme-horizontal.html.twig'
+        - 'bootstrap_5_layout.html.twig'
         - 'form_types_theme.html.twig'
-#        - '@TetranzSelect2Entity/Form/fields.html.twig'
 
     globals:
         app_version: '%app.version%'
