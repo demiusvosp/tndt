@@ -1,6 +1,6 @@
 <div class="container-xl">
     <div class="navbar-collapse collapse" id="navbar-menu">&nbsp;</div>
-    <div class="navbar-nav flex-row order-md-last">
+    <div class="navbar-nav flex-row  order-last">
     {% for item in navbar() %}
         {% if item.type == 'link' %}
             <div class="nav-item" {{ item.isActive ? 'active' : '' }}>
@@ -21,7 +21,7 @@
                 <a class="nav-link dropdown-toggle  me-2 me-md-0" href="#" data-bs-toggle="dropdown" data-bs-autoclose="outside" role="button">
                     <span class="nav-link-title">{{ item.label }}</span>
                 </a>
-                <div class="dropdown-menu">
+                <div class="dropdown-menu dropdown-menu-arrow">
                     {% for child in item.children %}
                         <a class="dropdown-item {{ child.isActive ? 'active' : '' }}" href="{{ child.action }}">
                             {{ child.label }}
@@ -33,11 +33,11 @@
             <div class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
                     <span class="avatar avatar-sm" style="background-image: url({{ asset(item.avatar) }})"></span>
-                    <div class="d-none d-xl-block ps-2">
+                    <div class="d-none d-lg-block ps-2">
                         <div>{{ item.label }}</div>
                     </div>
                 </a>
-                <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                <div class="dropdown-menu dropdown-menu-arrow">
                         <a class="dropdown-item" href="{{ path('user.index', {'username' : item.user.username }) }}">
                             {{ 'Profile'|trans }}
                         </a>
