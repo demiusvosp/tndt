@@ -3,16 +3,18 @@
 ## [master] - present
 ### New feature
 - [tndt-11](http://tasks.demius.ru/p/tndt-11) - Система активности работы над задачей.
+- **[tndt-143](http://tasks.demius.ru/p/tndt-143)**, [tndt-141](http://tasks.demius.ru/p/tndt-141), [tndt-146](http://tasks.demius.ru/p/tndt-146), [tndt-147](http://tasks.demius.ru/p/tndt-147), [tndt-149](http://tasks.demius.ru/p/tndt-149) - Переход от AdminLTE на Tabler. Переписывание почти всей верстки и больше половины стилей
 #### Minor features
 - [tndt-121](http://tasks.demius.ru/p/tndt-121) - Отображать на дашборде проекта когда он создан и обновлен
 - [tndt-123](http://tasks.demius.ru/p/tndt-123), [tndt-125](http://tasks.demius.ru/p/tndt-125) - Списки задач и документов на главной странице
+- [tndt-150](http://tasks.demius.ru/p/tndt-150) - Иконки в виде SVG-спрайтов. На выбор tabler-icons, самонарисованные, и да, font-awesome тоже доступен
 ### Refactoring
 - [tndt-26](http://tasks.demius.ru/p/tndt-26), [tndt-94](http://tasks.demius.ru/p/tndt-94) - Обновление системы до php8, Symfony6.4
 - [tndt-39](http://tasks.demius.ru/p/tndt-39) - Получение главной сущности страницы через MapEntity, и использование её через Request
 - [tndt-42](http://tasks.demius.ru/p/tndt-42), [tndt-104](http://tasks.demius.ru/p/tndt-104) - Перераспределить файлы конфигурации, расположение моделей, сервисов. (теперь все конфиги одного окружения в одной папке, и их легче подменять для каждого инстанса)
+- [tndt-102](http://tasks.demius.ru/p/tndt-102), [tndt-112](http://tasks.demius.ru/p/tndt-112) - Адаптивность под небольшой ноут и под мобилку
 - [tndt-108](http://tasks.demius.ru/p/tndt-108) - Рефакторинг TaskSettings и получения справочников из проекта
 - [tndt-109](http://tasks.demius.ru/p/tndt-109) - Комментарии прицеплять к типу, а не классу
-- **[tndt-143](http://tasks.demius.ru/p/tndt-143)**, [tndt-141](http://tasks.demius.ru/p/tndt-141), [tndt-146](http://tasks.demius.ru/p/tndt-146), [tndt-147](http://tasks.demius.ru/p/tndt-147), [tndt-149](http://tasks.demius.ru/p/tndt-149) - Переход от AdminLTE на Tabler. Переписывание почти всей верстки и больше половины стилей 
 ### Bugfixes
 - [tndt-30](http://tasks.demius.ru/p/tndt-30) - Обновлять дату проекта, когда в нем совершается работа
 - [tndt-35](http://tasks.demius.ru/p/tndt-35) - В sidebar пункты вылезают за границу панели
