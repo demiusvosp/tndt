@@ -86,6 +86,8 @@ FROM prod AS prod_stage
 COPY ./bin /app/bin
 # для работы страницы about
 COPY ./README.md /app/README.md
+COPY ./CHANGELOG.md /app/CHANGELOG.md
+COPY ./LICENSE /app/LICENSE
 COPY ./vendor /app/vendor
 COPY ./.env /app/.env
 COPY ./config /app/config
