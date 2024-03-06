@@ -28,10 +28,6 @@ class Doc implements NoInterface, WithProjectInterface, ActivitySubjectInterface
 {
     public const DOCID_SEPARATOR = '#';
 
-    public const STATE_NORMAL = 0;
-    public const STATE_DEPRECATED = 1;
-    public const STATE_ARCHIVED = 2;
-
     private const ABSTRACT_FROM_BODY_LIMIT = 1000;
 
 

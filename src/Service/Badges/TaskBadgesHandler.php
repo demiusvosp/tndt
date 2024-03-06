@@ -11,12 +11,10 @@ namespace App\Service\Badges;
 use App\Entity\Task;
 use App\Exception\DictionaryException;
 use App\Model\Dto\Badge;
-use App\Model\Dto\Dictionary\Task\TaskStageItem;
 use App\Model\Enum\BadgeStyleEnum;
 use App\Model\Enum\DictionaryTypeEnum;
 use App\Service\Dictionary\Fetcher;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use function dump;
 
 class TaskBadgesHandler implements BadgeHandlerInterface
 {

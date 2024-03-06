@@ -17,6 +17,7 @@ use App\Form\DTO\Project\EditProjectCommonDTO;
 use App\Form\DTO\Project\EditProjectPermissionsDTO;
 use App\Form\DTO\Project\EditTaskSettingsDTO;
 use App\Form\DTO\Project\NewProjectDTO;
+use App\Model\Enum\DocStateEnum;
 use App\Repository\DocRepository;
 use App\Repository\TaskRepository;
 use App\Service\Filler\ProjectFiller;
@@ -116,7 +117,7 @@ class ProjectService
         $docs = $this->docRepository->match(new InProjectSpec($project));
         /** @var Doc $doc */
         foreach ($docs as $doc) {
-            $doc->setState(Doc::STATE_ARCHIVED);
+            $doc->setState(DocStateEnum::Archived);
         }
 
         $this->eventDispatcher->dispatch(new ProjectEvent($project), AppEvents::PROJECT_ARCHIVE);
