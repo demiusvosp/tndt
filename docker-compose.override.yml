@@ -24,7 +24,7 @@ services:
       - './:/app'
     environment:
       APP_ENV: 'dev'
-      APP_DEBUG: true
+      APP_DEBUG: 'true'
 
   mysql:
     volumes:
