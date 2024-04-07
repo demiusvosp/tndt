@@ -30,7 +30,7 @@ help:
 
 up:
 	$(info Up $(env) environment stack)
-	docker compose $(compose_file) $(profiles) -d up
+	docker compose $(compose_file) $(profiles) up -d
 
 down:
 	docker compose $(compose_file) $(profiles)  stop
