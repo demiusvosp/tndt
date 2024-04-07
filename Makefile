@@ -8,8 +8,10 @@ pwd = $(shell pwd)
 
 ifeq ($(env), dev)
 	compose_file =
+	profiles = --profile dev
 else
-	compose_file = -f docker-compose.yml -f docker-compose.$(env).yml
+	compose_file = -f compose.yml -f compose.$(env).yml
+	profiles =
 endif
 
 help:
@@ -28,37 +30,37 @@ help:
 
 up:
 	$(info Up $(env) environment stack)
-	docker-compose  $(compose_file) up -d
+	docker compose $(compose_file) $(profiles) -d up
 
 down:
-	docker-compose $(compose_file)  stop
+	docker compose $(compose_file) $(profiles)  stop
 
 ps:
-	docker-compose $(compose_file)  ps
+	docker compose $(compose_file)  ps
 
 back_exec:
-	docker-compose exec php $(filter-out $@,$(MAKECMDGOALS))
+	docker compose exec php $(filter-out $@,$(MAKECMDGOALS))
 
 back_bash:
-	docker-compose exec php /bin/bash
+	docker compose exec php /bin/bash
 
 front_exec:
-	docker-compose run --rm front_builder $(filter-out $@,$(MAKECMDGOALS))
+	docker compose run --rm front_builder $(filter-out $@,$(MAKECMDGOALS))
 
 front_build:
-	docker-compose run --rm front_builder yarn install
-	docker-compose run --rm front_builder yarn encore dev $(filter-out $@,$(MAKECMDGOALS))
+	docker compose run front_builder yarn install
+	docker compose run --rm front_builder yarn encore dev $(filter-out $@,$(MAKECMDGOALS))
 %:
 
 init:
-	docker-compose exec php composer install # пока мы используем dev контейнер все ок, но в будущем для этого надо готовить отдельный контейнер с композером, git и yarn
-	docker-compose exec php bin/console doctrine:schema:create -vv
-	docker-compose exec php bin/console doctrine:migrations:migrate --allow-no-migration -n -vv
+	docker compose exec php composer install # пока мы используем dev контейнер все ок, но в будущем для этого надо готовить отдельный контейнер с композером, git и yarn
+	docker compose exec php bin/console doctrine:schema:create -vv
+	docker compose exec php bin/console doctrine:migrations:migrate --allow-no-migration -n -vv
 
 tests:
 ifeq ($(type), behat)
-	docker-compose exec php ./vendor/bin/behat
+	docker compose exec php ./vendor/bin/behat
 else
-	docker-compose exec php bin/console doctrine:fixtures:load -n -vv
-	docker-compose exec php ./vendor/bin/phpunit
+	docker compose exec php bin/console doctrine:fixtures:load -n -vv
+	docker compose exec php ./vendor/bin/phpunit
 endif
