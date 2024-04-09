@@ -1,9 +1,8 @@
 {
-    "name": "demius/yatt",
-    "description": "Yet Another Task Tracker",
+    "name": "demiusvosp/tndt",
+    "description": "Task and Doc Task Tracker",
     "type": "project",
     "license": "MIT",
-    "version": "0.3",
     "require": {
         "php": "8.2.*",
         "ext-ctype": "*",

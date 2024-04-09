@@ -5,6 +5,7 @@
 env = dev
 type = unit
 pwd = $(shell pwd)
+user_id = $(shell id -u)
 
 ifeq ($(env), dev)
 	compose_file =
@@ -39,13 +40,13 @@ ps:
 	docker compose $(compose_file)  ps
 
 back_exec:
-	docker compose exec php $(filter-out $@,$(MAKECMDGOALS))
+	docker compose exec -u$(user_id) php '$(filter-out $@,$(MAKECMDGOALS))'
 
 back_bash:
-	docker compose exec php /bin/bash
+	docker compose exec -u$(user_id) php  /bin/bash
 
 front_exec:
-	docker compose run --rm front_builder $(filter-out $@,$(MAKECMDGOALS))
+	docker compose run --rm -u$(user_id)  front_builder $(filter-out $@,$(MAKECMDGOALS))
 
 front_build:
 	docker compose run front_builder yarn install

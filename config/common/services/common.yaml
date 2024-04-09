@@ -22,10 +22,10 @@ services:
     App\EventSubscriber\:
         resource: '%kernel.project_dir%/src/EventSubscriber'
 
-    App\EventSubscriber\NoGeneratorListener:
-        class: App\EventSubscriber\NoGeneratorListener
-        tags:
-            - { name: doctrine.event_listener, event: prePersist }
+#    App\EventSubscriber\NoGeneratorListener:
+#        class: App\EventSubscriber\NoGeneratorListener
+#        tags:
+#            - { name: doctrine.event_listener, event: prePersist }
 
 
     # Services @todo separate to different config in tndt-85

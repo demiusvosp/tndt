@@ -12,6 +12,7 @@ use App\Contract\CommentableInterface;
 use App\Contract\HasClosedStatusInterface;
 use App\Contract\NoInterface;
 use App\Contract\WithProjectInterface;
+use App\EventSubscriber\NoGeneratorListener;
 use App\Repository\TaskRepository;
 use App\Service\Constraints\DictionaryValue;
 use DateTime;
@@ -22,6 +23,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass:TaskRepository::class)]
 #[ORM\Table(name: "task")]
+#[ORM\EntityListeners([NoGeneratorListener::class])]
 #[ORM\UniqueConstraint(name: "idx_full_no", columns: ["suffix","no"])]
 #[ORM\Index(columns: ["is_closed"], name: "isClosed")]
 class Task implements NoInterface, WithProjectInterface, ActivitySubjectInterface, CommentableInterface, HasClosedStatusInterface
