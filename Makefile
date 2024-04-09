@@ -49,7 +49,7 @@ front_exec:
 	docker compose run --rm -u$(user_id)  front_builder $(filter-out $@,$(MAKECMDGOALS))
 
 front_build:
-	docker compose run front_builder yarn install
+	docker compose run --rm front_builder yarn install
 	docker compose run --rm front_builder yarn encore dev $(filter-out $@,$(MAKECMDGOALS))
 %:
 
