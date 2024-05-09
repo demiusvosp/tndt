@@ -22,7 +22,7 @@ RUN apt-get install -y libicu-dev \
   && docker-php-ext-install intl
 
 # install zip
-RUN apt-get update && apt-get install -y \
+RUN apt-get install -y \
     zlib1g-dev \
     libzip-dev \
     unzip \
