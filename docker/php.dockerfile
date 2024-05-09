@@ -22,7 +22,7 @@ RUN apt-get install -y libicu-dev \
   && docker-php-ext-install intl
 
 # install zip
-RUN apt-get update && apt-get install -y \
+RUN apt-get install -y \
     zlib1g-dev \
     libzip-dev \
     unzip \
@@ -33,6 +33,8 @@ RUN apt-get install libonig-dev -y \
 
 RUN docker-php-ext-install opcache
 
+RUN mkdir -p /app/var/log && mkdir -p /app/var/cache  \
+    && chown www-data:www-data -R /app/var && chmod 775 -R /app/var
 
 
 ### DEV Stage
@@ -69,7 +71,6 @@ COPY ./.env /app/.env
 COPY ./*.md /app/
 COPY ./LICENSE /app/
 
-RUN mkdir -p /app/var/log && mkdir -p /app/var/cache
 VOLUME ["/app/var/log", "/app/var/cache"]
 
 
@@ -82,6 +83,8 @@ RUN chmod 550 -R /usr/local/etc/php
 
 ### PROD Stage
 FROM prod AS prod_stage
+
+VOLUME ["/app/var/cache"]
 
 COPY ./bin /app/bin
 # для работы страницы about
@@ -97,9 +100,3 @@ COPY ./public/index.php /app/public/index.php
 COPY ./templates /app/templates
 COPY ./public/build /app/public/build
 COPY ./src /app/src
-
-RUN mkdir -p /app/var/cache
-
-VOLUME ["/app/var/cache"]
-
-RUN chmod 775 /app/var/cache

@@ -12,6 +12,7 @@ use App\Contract\ActivitySubjectInterface;
 use App\Contract\CommentableInterface;
 use App\Contract\NoInterface;
 use App\Contract\WithProjectInterface;
+use App\EventSubscriber\NoGeneratorListener;
 use App\Model\Enum\DocStateEnum;
 use App\Repository\DocRepository;
 use DateTime;
@@ -24,6 +25,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 #[ORM\Entity(repositoryClass: DocRepository::class)]
 #[ORM\Table(name: "doc")]
+#[ORM\EntityListeners([NoGeneratorListener::class])]
 class Doc implements NoInterface, WithProjectInterface, ActivitySubjectInterface, CommentableInterface
 {
     public const DOCID_SEPARATOR = '#';

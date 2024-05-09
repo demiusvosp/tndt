@@ -13,7 +13,7 @@ VOLUME /app/public
 VOLUME /var/log/nginx
 
 
-FROM base as prod
+FROM base as prod_stage
 
 COPY ./docker/prod.nginx.conf /etc/nginx/conf.d/default.conf
 COPY ./public /app/public

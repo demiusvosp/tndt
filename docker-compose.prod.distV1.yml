@@ -1,0 +1,39 @@
+version: '3.4'
+#Настройки продового стейджа по умолчанию, например для сборки контейнеров перед деплоем
+
+services:
+  nginx:
+    build:
+      dockerfile: './docker/nginx.dockerfile'
+      target: 'prod_stage'
+    volumes:
+      - './docker/prod.nginx.conf:/etc/nginx/conf.d/default.conf'
+    links:
+      - php
+    ports:
+      - 4001:80 # or we can use traefik or another reverse proxy
+
+  php:
+    build:
+      dockerfile: './docker/php.dockerfile'
+      target: 'prod_stage'
+    environment:
+      APP_ENV: 'prod'
+      APP_DEBUG: 'false'
+    links:
+      - mysql
+
+  mysql:
+    image: mysql:5.7
+    volumes:
+      - 'storage:/var/lib/mysql:rw'
+    environment:
+      TZ: Europe/Moscow
+      MYSQL_ROOT_PASSWORD: '${DB_ROOT_PASSWORD}'
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'no'
+      MYSQL_USER: '${DB_USER}'
+      MYSQL_PASSWORD: '${DB_PASSWORD}'
+      MYSQL_DATABASE: '${DB_NAME}'
+
+volumes:
+  storage:
