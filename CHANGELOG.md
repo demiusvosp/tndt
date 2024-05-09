@@ -1,5 +1,10 @@
 # Changelog
 
+## [current]
+- **Refactoring**
+ - [tndt-160](http://tasks.demius.ru/p/tndt-160) - Обновить docker-compose and node container
+
+----
 
 ## [0.3] - 2024.03.07
 - **New feature**
