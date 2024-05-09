@@ -46,14 +46,29 @@ INSTALLATION
 5. `make build_front`
 6. check write permission for ./var directory
 
-### Стейдж
-1. Собрать образы для стейджей
-2. Подготовить БД
-3. Создать файл описания сервиса на стейдже ищ docker-compose.prod.distV1.yml для docker-compose v1
-4. 
+### prod Стейдж
+1. Скопировать compose.prod.distV2.yml в место разворачивания стейджа
+2. Отредактировать по необзодимости
+3. `docker compose up -d`
+4. `docker-compose exec php ./bin/console cache:clear`
+5. `docker-compose exec php ./bin/console cache:warmup`
+6. `docker-compose exec php bin/console doctrine:schema:create -vv` # для первого запуска
+6. `docker-compose exec php ./bin/console doctrine:migrations:migrate`
+7. `docker-compose exec php chmod 777 -R /app/var/cache/prod`
 
 UPDATE
 ------------
+### dev-stage
+1. обновление php-пакетов `make back_exec composer install`
+2. обновлние фронтенд `make front_build`
+
+### prod-stage
+1. `docker compose pull`
+2. `docker-compose up -d`
+3. `docker-compose exec php ./bin/console cache:clear`
+4. `docker-compose exec php ./bin/console cache:warmup`
+5. `docker-compose exec php ./bin/console doctrine:migrations:migrate`
+6. `docker-compose exec php chmod 777 -R /app/var/cache/prod`
 
 Особенности обслуживания системы
 -------
@@ -78,6 +93,8 @@ UPDATE
 
 TESTING
 -------
+
+Забили пока на тесты, будем делать ближе к версии 1.0
 
 1. `make up env=test`
 
