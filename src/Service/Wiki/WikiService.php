@@ -17,6 +17,7 @@ use Happyr\DoctrineSpecification\Exception\NoResultException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use function implode;
 use function preg_match;
 
 /**
@@ -44,6 +45,11 @@ class WikiService
         $this->taskRepository = $taskRepository;
         $this->docRepository = $docRepository;
         $this->logger = $logger;
+    }
+
+    public function getWikiLinkRegEx()
+    {
+        return implode('|', [Task::TASKID_REGEX, Doc::DOCID_REGEX]);
     }
 
     public function getLink(string $linkTag): ?WikiLink

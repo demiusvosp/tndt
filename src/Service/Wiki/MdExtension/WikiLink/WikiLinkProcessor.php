@@ -7,12 +7,14 @@
 
 namespace App\Service\Wiki\MdExtension\WikiLink;
 
+use App\Entity\Doc;
 use App\Model\Enum\Wiki\LinkStyleEnum;
 use App\Service\Wiki\WikiService;
 use League\CommonMark\Extension\CommonMark\Node\Inline\Link;
 use League\CommonMark\Parser\Inline\InlineParserInterface;
 use League\CommonMark\Parser\Inline\InlineParserMatch;
 use League\CommonMark\Parser\InlineParserContext;
+use function implode;
 
 class WikiLinkProcessor implements InlineParserInterface
 {
@@ -25,7 +27,12 @@ class WikiLinkProcessor implements InlineParserInterface
 
     public function getMatchDefinition(): InlineParserMatch
     {
-        return InlineParserMatch::regex('\[(\w+-\d+|\w+#\w+)\]');
+        $tagRegex = implode('', [
+            '\[(',
+            $this->wikiService->getWikiLinkRegEx(),
+            ')\]'
+        ]);
+        return InlineParserMatch::regex($tagRegex);
     }
 
     public function parse(InlineParserContext $inlineContext): bool

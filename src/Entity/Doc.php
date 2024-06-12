@@ -29,6 +29,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Doc implements NoInterface, WithProjectInterface, ActivitySubjectInterface, CommentableInterface
 {
     public const DOCID_SEPARATOR = '#';
+    public const DOCID_REGEX = '\w+#[\w\-]+';
+    public const SLUG_REGEX = '[\w\-]+';
 
     private const ABSTRACT_FROM_BODY_LIMIT = 1000;
 
@@ -139,8 +141,8 @@ class Doc implements NoInterface, WithProjectInterface, ActivitySubjectInterface
     }
 
     /**
-     * @param string $docId - prj#123
-     * @return array [<string>, <int>]
+     * @param string $docId - prj#123 или prj#slug-documenta
+     * @return array [<string>, <int|string>]
      */
     public static function explodeDocId(string $docId): array
     {
