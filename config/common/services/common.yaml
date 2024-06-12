@@ -79,8 +79,11 @@ services:
     League\CommonMark\Extension\Strikethrough\StrikethroughExtension:
         tags: [ 'wiki.extension' ]
 
+    League\CommonMark\Extension\SmartPunct\SmartPunctExtension:
+        tags: [ 'wiki.extension' ]
+
     League\CommonMark\Extension\ExternalLink\ExternalLinkExtension:
         tags: [ 'wiki.extension' ]
 
-    League\CommonMark\Extension\SmartPunct\SmartPunctExtension:
+    App\Service\Wiki\Extension\WikiLink\WikiLinkExtension:
         tags: [ 'wiki.extension' ]
