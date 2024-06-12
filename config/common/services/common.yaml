@@ -85,5 +85,5 @@ services:
     League\CommonMark\Extension\ExternalLink\ExternalLinkExtension:
         tags: [ 'wiki.extension' ]
 
-    App\Service\Wiki\Extension\WikiLink\WikiLinkExtension:
+    App\Service\Wiki\MdExtension\WikiLink\WikiLinkExtension:
         tags: [ 'wiki.extension' ]

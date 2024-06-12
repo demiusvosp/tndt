@@ -5,7 +5,7 @@
  * Time: 15:38
  */
 
-namespace App\Service\Wiki\Extension\WikiLink;
+namespace App\Service\Wiki\MdExtension\WikiLink;
 
 use League\CommonMark\Environment\EnvironmentBuilderInterface;
 use League\CommonMark\Extension\ExtensionInterface;

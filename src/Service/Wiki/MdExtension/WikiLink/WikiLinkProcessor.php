@@ -5,17 +5,15 @@
  * Time: 15:54
  */
 
-namespace App\Service\Wiki\Extension\WikiLink;
+namespace App\Service\Wiki\MdExtension\WikiLink;
 
-use App\Entity\Doc;
 use App\Entity\Task;
 use App\Service\Wiki\WikiService;
 use League\CommonMark\Extension\CommonMark\Node\Inline\Link;
 use League\CommonMark\Parser\Inline\InlineParserInterface;
 use League\CommonMark\Parser\Inline\InlineParserMatch;
 use League\CommonMark\Parser\InlineParserContext;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use function substr;
+use function dump;
 
 class WikiLinkProcessor implements InlineParserInterface
 {
@@ -41,16 +39,5 @@ class WikiLinkProcessor implements InlineParserInterface
             return true;
         }
         return false;
-    }
-
-    private function createLink(string $suffix, string $type, string $id): ?Link
-    {
-        return match ($type) {
-            Task::TASKID_SEPARATOR => new Link(
-                $this->router->generate('task.index', ['taskId' => $suffix . Task::TASKID_SEPARATOR . $id]),
-                $suffix . Task::TASKID_SEPARATOR . $id
-            ),
-            default => null,
-        };
     }
 }

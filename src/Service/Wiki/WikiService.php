@@ -7,11 +7,16 @@
 
 namespace App\Service\Wiki;
 
+use App\Entity\Doc;
+use App\Entity\Task;
 use App\Model\Dto\WikiLink;
+use App\Model\Enum\Wiki\LinkStyleEnum;
 use App\Repository\DocRepository;
+use App\Repository\TaskRepository;
 use Happyr\DoctrineSpecification\Exception\NoResultException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use function preg_match;
 
 /**
@@ -20,12 +25,21 @@ use function preg_match;
 class WikiService
 {
     private UrlGeneratorInterface $router;
+    private TranslatorInterface $translator;
+    private TaskRepository $taskRepository;
     private DocRepository $docRepository;
     private LoggerInterface $logger;
 
-    public function __construct(UrlGeneratorInterface $router, DocRepository $docRepository, LoggerInterface $logger)
-    {
+    public function __construct(
+        UrlGeneratorInterface $router,
+        TranslatorInterface $translator,
+        TaskRepository $taskRepository,
+        DocRepository $docRepository,
+        LoggerInterface $logger
+    ) {
         $this->router = $router;
+        $this->translator = $translator;
+        $this->taskRepository = $taskRepository;
         $this->docRepository = $docRepository;
         $this->logger = $logger;
     }
@@ -33,23 +47,47 @@ class WikiService
     public function getLink(string $linkTag): ?WikiLink
     {
         if (preg_match('/(\w+)-(\d+)/', $linkTag, $matches)) {
-            return new WikiLink(
-                $this->router->generate('task.index', ['taskId' => $linkTag]),
-                ''
-            );
+            return $this->createTaskLink($linkTag, $matches[1], $matches[2]);
         }
         if (preg_match('/(\w+)#(\w+)/', $linkTag, $matches)) {
-            try {
-                $doc = $this->docRepository->getByDocId($linkTag);
-            } catch (NoResultException $e) {
-                $this->logger->warning('Document not found', ['docId' => $linkTag]);
-                return null;
-            }
-            return new WikiLink(
-                $this->router->generate('doc.index', ['suffix' => $matches[1], 'slug' => $doc->getSlug()]),
-                $doc->getCaption()
-            );
+            return $this->createDocLink($linkTag, $matches[1], $matches[2]);
         }
         return null;
+    }
+
+    private function createTaskLink(string $linkTag, string $suffix, string $taskNo)
+    {
+        $task = $this->taskRepository->findByTaskId($linkTag);
+        if (!$task) {
+            $this->logger->warning('Task not found', ['link' => $linkTag]);
+            return new WikiLink(
+                $this->router->generate('task.project_create', ['suffix' => $suffix]),
+                LinkStyleEnum::NotFound,
+                $this->translator->trans('task.not_found')
+            );
+        }
+        return new WikiLink(
+            $this->router->generate('task.index', ['taskId' => $linkTag]),
+            $task->isClosed() ? LinkStyleEnum::Strike : LinkStyleEnum::Normal,
+            $task->getCaption()
+        );
+    }
+
+    private function createDocLink(string $linkTag, string $suffix, string $docNo): ?WikiLink
+    {
+        $doc = $this->docRepository->findByDocId($linkTag);
+        if (!$doc) {
+            $this->logger->warning('Document not found', ['link' => $linkTag]);
+            return new WikiLink(
+                $this->router->generate('doc.project_create', ['suffix' => $suffix]),
+                LinkStyleEnum::NotFound,
+                $this->translator->trans('doc.not_found')
+            );
+        }
+        return new WikiLink(
+            $this->router->generate('doc.index', ['suffix' => $suffix, 'slug' => $doc->getSlug()]),
+            LinkStyleEnum::Normal,
+            $doc->getCaption()
+        );
     }
 }
