@@ -61,3 +61,5 @@ services:
         alias: App\Service\Twig\TimeExtension
         public: true
 
+    twig.markdown.default:
+        class: App\Service\Wiki\MarkdownConverter
