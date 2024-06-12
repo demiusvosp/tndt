@@ -20,9 +20,10 @@ class MarkdownConverter implements MarkdownInterface
 {
     private LeagueCommonMarkConverter $converter;
 
-    public function __construct()
+    public function __construct(array $config = [])
     {
-        $environment = new Environment();
+dump($config);
+        $environment = new Environment($config);
         $this->initializeEnvironment($environment);
 
         $this->converter = new LeagueCommonMarkConverter($environment);

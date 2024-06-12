@@ -63,3 +63,7 @@ services:
 
     twig.markdown.default:
         class: App\Service\Wiki\MarkdownConverter
+        arguments:
+            $config:
+                html_input: escape
+                allow_unsafe_links: false
