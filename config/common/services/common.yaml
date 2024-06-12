@@ -54,8 +54,7 @@ services:
     App\Service\Twig\TimeExtension:
         class: App\Service\Twig\TimeExtension
         arguments: ['@time.datetime_formatter', '@translator',  '@twig.extension.intl']
-        tags:
-            - { name: twig.extension }
+        tags: ['twig.extension']
 
     time.twig.extension.time:
         alias: App\Service\Twig\TimeExtension
@@ -67,3 +66,10 @@ services:
             $config:
                 html_input: escape
                 allow_unsafe_links: false
+            $extensions: !tagged_iterator wiki.extension
+
+    League\CommonMark\Extension\CommonMark\CommonMarkCoreExtension:
+        tags: [ 'wiki.extension' ]
+
+    League\CommonMark\Extension\Strikethrough\StrikethroughExtension:
+        tags: [ 'wiki.extension' ]

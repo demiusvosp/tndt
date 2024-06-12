@@ -20,11 +20,10 @@ class MarkdownConverter implements MarkdownInterface
 {
     private LeagueCommonMarkConverter $converter;
 
-    public function __construct(array $config = [])
+    public function __construct(array $config = [], iterable $extensions = [])
     {
-dump($config);
         $environment = new Environment($config);
-        $this->initializeEnvironment($environment);
+        $this->configureEnvironment($environment, $extensions);
 
         $this->converter = new LeagueCommonMarkConverter($environment);
     }
@@ -38,8 +37,10 @@ dump($config);
         }
     }
 
-    private function initializeEnvironment(Environment $environment): void
+    private function configureEnvironment(Environment $environment, iterable $extensions): void
     {
-        $environment->addExtension(new CommonMarkCoreExtension());
+        foreach ($extensions as $extension) {
+            $environment->addExtension($extension);
+        }
     }
 }
