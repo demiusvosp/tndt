@@ -22,6 +22,7 @@ class MarkdownConverter implements MarkdownInterface
 
     public function __construct(array $config = [], iterable $extensions = [])
     {
+dump($config);
         $environment = new Environment($config);
         $this->configureEnvironment($environment, $extensions);
 
