@@ -30,6 +30,8 @@ class WikiService
     private DocRepository $docRepository;
     private LoggerInterface $logger;
 
+    private array $entityCache;
+
     public function __construct(
         UrlGeneratorInterface $router,
         TranslatorInterface $translator,
@@ -57,7 +59,10 @@ class WikiService
 
     private function createTaskLink(string $linkTag, string $suffix, string $taskNo)
     {
-        $task = $this->taskRepository->findByTaskId($linkTag);
+        if (!isset($this->entityCache[$linkTag])) {
+            $this->entityCache[$linkTag] = $this->taskRepository->findByTaskId($linkTag);
+        }
+        $task = $this->entityCache[$linkTag];
         if (!$task) {
             $this->logger->warning('Task not found', ['link' => $linkTag]);
             return new WikiLink(
@@ -75,7 +80,10 @@ class WikiService
 
     private function createDocLink(string $linkTag, string $suffix, string $docNo): ?WikiLink
     {
-        $doc = $this->docRepository->findByDocId($linkTag);
+        if (!isset($this->entityCache[$linkTag])) {
+            $this->entityCache[$linkTag] = $this->docRepository->findByDocId($linkTag);
+        }
+        $doc = $this->entityCache[$linkTag];
         if (!$doc) {
             $this->logger->warning('Document not found', ['link' => $linkTag]);
             return new WikiLink(
