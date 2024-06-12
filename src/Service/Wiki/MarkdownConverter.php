@@ -10,11 +10,8 @@ namespace App\Service\Wiki;
 use App\Exception\WikiConvertException;
 use League\CommonMark\Environment\Environment;
 use League\CommonMark\Exception\CommonMarkException;
-use League\CommonMark\Extension\CommonMark\CommonMarkCoreExtension;
 use Twig\Extra\Markdown\MarkdownInterface;
 use League\CommonMark\MarkdownConverter as LeagueCommonMarkConverter;
-use function dump;
-use function get_class;
 
 class MarkdownConverter implements MarkdownInterface
 {

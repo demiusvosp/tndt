@@ -7,7 +7,6 @@
 
 namespace App\Service\Wiki\MdExtension\WikiLink;
 
-use App\Entity\Doc;
 use App\Model\Enum\Wiki\LinkStyleEnum;
 use App\Service\Wiki\WikiService;
 use League\CommonMark\Extension\CommonMark\Node\Inline\Link;
@@ -41,6 +40,7 @@ class WikiLinkProcessor implements InlineParserInterface
         $wikiLink = $this->wikiService->getLink($linkTag);
         if ($wikiLink) {
             $inlineContext->getCursor()->advanceBy($inlineContext->getFullMatchLength());
+
             $link = new Link($wikiLink->getUrl(), $linkTag, $wikiLink->getAlt());
             if ($wikiLink->getStyle() != LinkStyleEnum::Normal) {
                 $link->data->set('attributes/class', $wikiLink->getStyle()->getCssClass());

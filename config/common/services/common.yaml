@@ -54,7 +54,10 @@ services:
 
     App\Service\Twig\TimeExtension:
         class: App\Service\Twig\TimeExtension
-        arguments: ['@time.datetime_formatter', '@translator',  '@twig.extension.intl']
+        arguments:
+            - '@time.datetime_formatter'
+            - '@translator'
+            - '@twig.extension.intl'
         tags: ['twig.extension']
 
     time.twig.extension.time:
