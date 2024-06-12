@@ -66,14 +66,14 @@ class WikiService
         if (!$task) {
             $this->logger->warning('Task not found', ['link' => $linkTag]);
             return new WikiLink(
-                $this->router->generate('task.project_create', ['suffix' => $suffix]),
+                $this->router->generate('task.list', ['suffix' => $suffix]),
                 LinkStyleEnum::NotFound,
                 $this->translator->trans('task.not_found')
             );
         }
         return new WikiLink(
             $this->router->generate('task.index', ['taskId' => $linkTag]),
-            $task->isClosed() ? LinkStyleEnum::Strike : LinkStyleEnum::Normal,
+            $task->isClosed() ? LinkStyleEnum::TaskClosed : LinkStyleEnum::Normal,
             $task->getCaption()
         );
     }
@@ -94,7 +94,7 @@ class WikiService
         }
         return new WikiLink(
             $this->router->generate('doc.index', ['suffix' => $suffix, 'slug' => $doc->getSlug()]),
-            LinkStyleEnum::Normal,
+            $doc->isArchived() ? LinkStyleEnum::DocArchived : LinkStyleEnum::Normal,
             $doc->getCaption()
         );
     }

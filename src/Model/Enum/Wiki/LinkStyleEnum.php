@@ -10,7 +10,19 @@ namespace App\Model\Enum\Wiki;
 enum LinkStyleEnum: string
 {
     case Normal = 'normal';
-    case Strike = 'strikethrough';
+    case TaskClosed = 'task_closed';
+
+    case DocArchived = 'doc_archived';
 
     case NotFound = 'not_found';
+
+    public function getCssClass(): string
+    {
+        return match ($this) {
+            self::TaskClosed => 'task-closed',
+            self::DocArchived => 'doc-archived',
+            self::NotFound => 'not_found',
+            default => '',
+        };
+    }
 }

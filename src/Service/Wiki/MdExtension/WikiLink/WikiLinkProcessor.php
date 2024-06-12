@@ -7,13 +7,12 @@
 
 namespace App\Service\Wiki\MdExtension\WikiLink;
 
-use App\Entity\Task;
+use App\Model\Enum\Wiki\LinkStyleEnum;
 use App\Service\Wiki\WikiService;
 use League\CommonMark\Extension\CommonMark\Node\Inline\Link;
 use League\CommonMark\Parser\Inline\InlineParserInterface;
 use League\CommonMark\Parser\Inline\InlineParserMatch;
 use League\CommonMark\Parser\InlineParserContext;
-use function dump;
 
 class WikiLinkProcessor implements InlineParserInterface
 {
@@ -32,10 +31,14 @@ class WikiLinkProcessor implements InlineParserInterface
     public function parse(InlineParserContext $inlineContext): bool
     {
         $linkTag = $inlineContext->getSubMatches()[0];
-        $link = $this->wikiService->getLink($linkTag);
-        if ($link) {
+        $wikiLink = $this->wikiService->getLink($linkTag);
+        if ($wikiLink) {
             $inlineContext->getCursor()->advanceBy($inlineContext->getFullMatchLength());
-            $inlineContext->getContainer()->appendChild(new Link($link->getUrl(), $linkTag, $link->getAlt()));
+            $link = new Link($wikiLink->getUrl(), $linkTag, $wikiLink->getAlt());
+            if ($wikiLink->getStyle() != LinkStyleEnum::Normal) {
+                $link->data->set('attributes/class', $wikiLink->getStyle()->getCssClass());
+            }
+            $inlineContext->getContainer()->appendChild($link);
             return true;
         }
         return false;
