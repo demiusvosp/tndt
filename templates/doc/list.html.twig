@@ -36,7 +36,7 @@
                                 </a>
                             </td>
                             <td class="caption">
-                                {{ mDoc.caption(doc, 160) }}
+                                {{ mDoc.caption(doc, 160) }}{{ badges(doc) }}
                             </td>
                             <td>{{ doc.createdAt|ago }}</td>
                             <td>{{ mUser.badge(doc.createdBy, true, false) }}</td>
