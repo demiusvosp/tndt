@@ -31,9 +31,13 @@ class DocRepository extends ServiceEntityRepository implements NoEntityRepositor
         parent::__construct($registry, Doc::class);
     }
 
-    public function getByDocId(string $docId)
+    public function findByDocId(string $docId): ?Doc
     {
-        return $this->matchSingleResult(new ByDocIdSpec($docId));
+        try {
+            return $this->matchSingleResult(new ByDocIdSpec($docId));
+        } catch (NoResultException) {
+            return null;
+        }
     }
 
     public function getBySlug(string $slug)

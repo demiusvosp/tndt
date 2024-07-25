@@ -28,6 +28,7 @@ class ErrorCodesEnum extends Enum
     public const TASK_STAGE_ERROR = 830;
     public const ACTIVITY_ERROR = 840;
     public const ACTIVITY_ADD_ERROR = 841;
+    public const WIKI_ERROR = 850;
 
     public static function labels(): array
     {
@@ -44,6 +45,7 @@ class ErrorCodesEnum extends Enum
             self::TASK_STAGE_ERROR => 'task_stage_error',
             self::ACTIVITY_ERROR => 'activity_error',
             self::ACTIVITY_ADD_ERROR => 'activity_add_error',
+            self::WIKI_ERROR => 'wiki_error',
         ];
     }
 

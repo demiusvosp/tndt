@@ -29,6 +29,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Task implements NoInterface, WithProjectInterface, ActivitySubjectInterface, CommentableInterface, HasClosedStatusInterface
 {
     public const TASKID_SEPARATOR = '-';
+    public const TASKID_REGEX = '\w+-\d+';
 
 
     #[ORM\Id]

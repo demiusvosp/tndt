@@ -18,6 +18,7 @@
         "happyr/entity-exists-validation-constraint": "1.*",
         "knplabs/knp-paginator-bundle": "5.*",
         "knplabs/knp-time-bundle": "1.19.*",
+        "league/commonmark": "^2.4",
         "myclabs/php-enum": "^1.8",
         "ramsey/uuid-doctrine": "^2.0",
         "stof/doctrine-extensions-bundle": "^1.6",

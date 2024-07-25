@@ -6,6 +6,7 @@
 parameters:
     app.version: 0.3
     app.version_year: 2024
+    app.host: '%env(APP_HOST)%'
     app.support_url: http://tasks.demius.ru/p/tndt
 
     mail.sender_user: service@tasks.demius.ru
@@ -15,7 +16,6 @@ services:
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
-
 
 
     # Event Subscribers and Listeners
@@ -33,7 +33,6 @@ services:
 
     app.project_context:
         alias: App\Service\ProjectContext
-
 
     App\Service\Badges\DocBadgesHandler:
         class: 'App\Service\Badges\DocBadgesHandler'
@@ -54,8 +53,40 @@ services:
             - !tagged_iterator app.badges_handler
 
     App\Service\Twig\TimeExtension:
-        class: 'App\Service\Twig\TimeExtension'
+        class: App\Service\Twig\TimeExtension
         arguments:
             - '@time.datetime_formatter'
-            - '@translator.default'
+            - '@translator'
             - '@twig.extension.intl'
+        tags: ['twig.extension']
+
+    time.twig.extension.time:
+        alias: App\Service\Twig\TimeExtension
+        public: true
+
+    twig.markdown.default:
+        class: App\Service\Wiki\MarkdownConverter
+        arguments:
+            $config:
+                html_input: escape
+                allow_unsafe_links: false
+                external_link:
+                    internal_hosts: '%app.host%'
+                    open_in_new_window: true
+
+            $extensions: !tagged_iterator wiki.extension
+
+    League\CommonMark\Extension\CommonMark\CommonMarkCoreExtension:
+        tags: [ 'wiki.extension' ]
+
+    League\CommonMark\Extension\Strikethrough\StrikethroughExtension:
+        tags: [ 'wiki.extension' ]
+
+    League\CommonMark\Extension\SmartPunct\SmartPunctExtension:
+        tags: [ 'wiki.extension' ]
+
+    League\CommonMark\Extension\ExternalLink\ExternalLinkExtension:
+        tags: [ 'wiki.extension' ]
+
+    App\Service\Wiki\MdExtension\WikiLink\WikiLinkExtension:
+        tags: [ 'wiki.extension' ]

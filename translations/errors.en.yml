@@ -29,3 +29,6 @@ not_in_project_context:
 task_stage_error:
   label: Error when working with task lifecycle
   description: When moving a task through its lifecycle, an error occurred. {message}
+wiki_error:
+  label: Error on render wiki to html
+  description: An error occurred when rendering wiki markdown to html document. Check the correctness of the wiki document
