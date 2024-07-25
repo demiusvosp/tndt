@@ -80,9 +80,9 @@ class WikiService
         }
         return new WikiLink(
             $this->router->generate('task.index', ['taskId' => $linkTag]),
-            $task->getCaption(),
+            $task->getTaskId(),
             $task->isClosed() ? LinkStyleEnum::TaskClosed : LinkStyleEnum::Normal,
-            $linkTag
+            $task->getCaption()
         );
     }
 
@@ -105,7 +105,7 @@ class WikiService
             $this->router->generate('doc.index', ['suffix' => $suffix, 'slug' => $doc->getSlug()]),
             $doc->getCaption(),
             $doc->isArchived() ? LinkStyleEnum::DocArchived : LinkStyleEnum::Normal,
-            $linkTag
+            $doc->getDocId()
         );
     }
 }
