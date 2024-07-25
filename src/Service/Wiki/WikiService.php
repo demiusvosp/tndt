@@ -73,14 +73,16 @@ class WikiService
             $this->logger->warning('Task not found', ['link' => $linkTag]);
             return new WikiLink(
                 $this->router->generate('task.list', ['suffix' => $suffix]),
+                $linkTag,
                 LinkStyleEnum::NotFound,
                 $this->translator->trans('task.not_found')
             );
         }
         return new WikiLink(
             $this->router->generate('task.index', ['taskId' => $linkTag]),
+            $task->getCaption(),
             $task->isClosed() ? LinkStyleEnum::TaskClosed : LinkStyleEnum::Normal,
-            $task->getCaption()
+            $linkTag
         );
     }
 
@@ -94,14 +96,16 @@ class WikiService
             $this->logger->warning('Document not found', ['link' => $linkTag]);
             return new WikiLink(
                 $this->router->generate('doc.project_create', ['suffix' => $suffix]),
+                $linkTag,
                 LinkStyleEnum::NotFound,
                 $this->translator->trans('doc.not_found')
             );
         }
         return new WikiLink(
             $this->router->generate('doc.index', ['suffix' => $suffix, 'slug' => $doc->getSlug()]),
+            $doc->getCaption(),
             $doc->isArchived() ? LinkStyleEnum::DocArchived : LinkStyleEnum::Normal,
-            $doc->getCaption()
+            $linkTag
         );
     }
 }

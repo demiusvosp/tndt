@@ -41,7 +41,7 @@ class WikiLinkProcessor implements InlineParserInterface
         if ($wikiLink) {
             $inlineContext->getCursor()->advanceBy($inlineContext->getFullMatchLength());
 
-            $link = new Link($wikiLink->getUrl(), $linkTag, $wikiLink->getAlt());
+            $link = new Link($wikiLink->getUrl(), $wikiLink->getTitle(), $wikiLink->getAlt());
             if ($wikiLink->getStyle() != LinkStyleEnum::Normal) {
                 $link->data->set('attributes/class', $wikiLink->getStyle()->getCssClass());
             }

@@ -12,12 +12,15 @@ use App\Model\Enum\Wiki\LinkStyleEnum;
 class WikiLink
 {
     private string $url;
+
+    private string $title;
     private string $alt;
     private LinkStyleEnum $style;
 
-    public function __construct(string $url, LinkStyleEnum $style = LinkStyleEnum::Normal, string $alt = '')
+    public function __construct(string $url, string $title, LinkStyleEnum $style = LinkStyleEnum::Normal, string $alt = '')
     {
         $this->url = $url;
+        $this->title = $title;
         $this->style = $style;
         $this->alt = $alt;
     }
@@ -25,6 +28,11 @@ class WikiLink
     public function getUrl(): string
     {
         return $this->url;
+    }
+
+    public function getTitle(): string
+    {
+        return $this->title;
     }
 
     public function getStyle(): LinkStyleEnum
