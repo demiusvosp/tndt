@@ -226,15 +226,16 @@ search: Search
 SpecialActions: Additional actions
 Support: Support
 SystemStat:
+  activity_count: count of activity items
+  comment_count: count of comments
+  doc_count: count of documents
+  from_start_working: from start working
+  none: none
+  projects_count: count of projects
+  task_count: count of tasks
   title: System statistics
   uptime: Uptime
   version: version
-  from_start_working: from start working
-  projects_count: count of projects
-  task_count: count of tasks
-  doc_count: count of documents
-  comment_count: count of comments
-  activity_count: count of activity items
 Tasks: Задачи
 task:
   assignedTo:

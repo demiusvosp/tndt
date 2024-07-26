@@ -227,15 +227,16 @@ search: Поиск
 SpecialActions: Особые действия
 Support: Поддержка
 SystemStat:
+  activity_count: зафиксировано активности
+  comment_count: количество комментариев
+  doc_count: Количество документов
+  from_start_working: С начала работы
+  none: нет
+  projects_count: Количество проектов
+  task_count: Количество задач
   title: Общая статистика
   uptime: Uptime
   version: версия
-  from_start_working: С начала работы
-  projects_count: Количество проектов
-  task_count: Количество задач
-  doc_count: Количество документов
-  comment_count: количество комментариев
-  activity_count: зафиксировано активности
 Tasks: Задачи
 task:
   assignedTo:

@@ -15,31 +15,31 @@
                         </div>
                         <div class="datagrid-item">
                             <div class="datagrid-title">{{ 'SystemStat.uptime'|trans }}</div>
-                            <div class="datagrid-content">{{ statistics.uptime|ago }}</div>
+                            <div class="datagrid-content">{{ stat.uptime ? stat.uptime|ago : 'SystemStat.none'|trans }}</div>
                         </div>
                         <div class="datagrid-item">
                             <div class="datagrid-title">{{ 'SystemStat.from_start_working'|trans }}</div>
-                            <div class="datagrid-content">{{ statistics.fromStartWorking|ago }}</div>
+                            <div class="datagrid-content">{{ stat.fromStartWorking ? stat.fromStartWorking|ago : 'SystemStat.none'|trans }}</div>
                         </div>
                         <div class="datagrid-item">
                             <div class="datagrid-title">{{ 'SystemStat.projects_count'|trans }}</div>
-                            <div class="datagrid-content">{{ statistics.projectCount }}</div>
+                            <div class="datagrid-content">{{ statistics.projectCount ?? 'SystemStat.none'|trans }}</div>
                         </div>
                         <div class="datagrid-item">
                             <div class="datagrid-title">{{ 'SystemStat.task_count'|trans }}</div>
-                            <div class="datagrid-content">{{ statistics.taskCount }}</div>
+                            <div class="datagrid-content">{{ statistics.taskCount ?? 'SystemStat.none'|trans }}</div>
                         </div>
                         <div class="datagrid-item">
                             <div class="datagrid-title">{{ 'SystemStat.doc_count'|trans }}</div>
-                            <div class="datagrid-content">{{ statistics.docCount }}</div>
+                            <div class="datagrid-content">{{ statistics.docCount ?? 'SystemStat.none'|trans }}</div>
                         </div>
                         <div class="datagrid-item">
                             <div class="datagrid-title">{{ 'SystemStat.comment_count'|trans }}</div>
-                            <div class="datagrid-content">{{ statistics.commentsCount }}</div>
+                            <div class="datagrid-content">{{ statistics.commentsCount ?? 'SystemStat.none'|trans }}</div>
                         </div>
                         <div class="datagrid-item">
                             <div class="datagrid-title">{{ 'SystemStat.activity_count'|trans }}</div>
-                            <div class="datagrid-content">{{ statistics.activityCount }}</div>
+                            <div class="datagrid-content">{{ statistics.activityCount ?? 'SystemStat.none'|trans }}</div>
                         </div>
                     </div>
                 </div>

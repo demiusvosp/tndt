@@ -82,7 +82,7 @@ class HomeController extends AbstractController
     #[IsGranted(UserRolesEnum::ROLE_USER)]
     public function systemStat(StatisticsService $statisticsService): Response
     {
-        return $this->render('home/system_stat.html.twig', ['statistics' => $statisticsService->commonStat()]);
+        return $this->render('home/system_stat.html.twig', ['stat' => $statisticsService->commonStat()]);
     }
 
     public function helpMd(): Response

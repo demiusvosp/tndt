@@ -7,26 +7,26 @@
 
 namespace App\Model\Dto\Statistics;
 
-use DateTime;
+use DateTimeImmutable;
 
 class CommonStat
 {
-    private DateTime $uptime;
-    private DateTime $fromStartWorking;
-    private int $projectCount;
-    private int $taskCount;
-    private int $docCount;
-    private int $commentsCount;
-    private int $activityCount;
+    private ?DateTimeImmutable $uptime;
+    private ?DateTimeImmutable $fromStartWorking;
+    private ?int $projectCount;
+    private ?int $taskCount;
+    private ?int $docCount;
+    private ?int $commentsCount;
+    private ?int $activityCount;
 
     public function __construct(
-        DateTime $uptime,
-        DateTime $fromStartWorking,
-        int $projectCount,
-        int $taskCount,
-        int $docCount,
-        int $commentsCount,
-        int $activityCount
+        ?DateTimeImmutable $uptime,
+        ?DateTimeImmutable $fromStartWorking,
+        ?int $projectCount,
+        ?int $taskCount,
+        ?int $docCount,
+        ?int $commentsCount,
+        ?int $activityCount
     ) {
         $this->uptime = $uptime;
         $this->fromStartWorking = $fromStartWorking;
@@ -37,37 +37,37 @@ class CommonStat
         $this->activityCount = $activityCount;
     }
 
-    public function getUptime(): DateTime
+    public function getUptime(): ?DateTimeImmutable
     {
         return $this->uptime;
     }
 
-    public function getFromStartWorking(): DateTime
+    public function getFromStartWorking(): ?DateTimeImmutable
     {
         return $this->fromStartWorking;
     }
 
-    public function getProjectCount(): int
+    public function getProjectCount(): ?int
     {
         return $this->projectCount;
     }
 
-    public function getTaskCount(): int
+    public function getTaskCount(): ?int
     {
         return $this->taskCount;
     }
 
-    public function getDocCount(): int
+    public function getDocCount(): ?int
     {
         return $this->docCount;
     }
 
-    public function getCommentsCount(): int
+    public function getCommentsCount(): ?int
     {
         return $this->commentsCount;
     }
 
-    public function getActivityCount(): int
+    public function getActivityCount(): ?int
     {
         return $this->activityCount;
     }

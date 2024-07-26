@@ -22,6 +22,8 @@ framework:
             # системный кеш, хранит предварительно вычисленные данные, например плоскую иерархию полномочий
             cache.app.system:
                 adapter: cache.adapter.system
+            statistics.cache:
+                adapter: cache.app
 
             doctrine.result_cache_pool:
                 adapter: cache.app
