@@ -5,6 +5,8 @@
   - [tndt-9](http://tasks.demius.ru/p/tndt-9) - wiki-разметка. Этап 0. Элементарная система гиперссылок
 - **Refactoring**
   - [tndt-160](http://tasks.demius.ru/p/tndt-160) - Обновить docker-compose and node container
+- **Bugfixes**
+  - [tndt-168](http://tasks.demius.ru/p/tndt-168) - Потеряли из сборки tabler-icons
 - ** Замечания к обновлению**
   - Необходимо в env php-контейнера добавить переменную APP_HOST с доменом на котором развернута система
     Например: 
