@@ -5,6 +5,9 @@ home:
 static:
     path: /static/{page<\w+>}
     controller: App\Controller\HomeController::static
+system_stat:
+    path: /system/stat
+    controller: App\Controller\HomeController::systemStat
 
 #Auth
 app.login:

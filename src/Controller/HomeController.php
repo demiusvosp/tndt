@@ -9,12 +9,14 @@ namespace App\Controller;
 
 
 use App\Entity\User;
+use App\Model\Enum\UserRolesEnum;
 use App\Repository\DocRepository;
 use App\Repository\ProjectRepository;
 use App\Repository\TaskRepository;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 
 class HomeController extends AbstractController
@@ -74,6 +76,12 @@ class HomeController extends AbstractController
         return $this->render('home/static.html.twig', ['title' => $title, 'text' => $text])
             ->setPublic()
             ->setMaxAge(self::STATIC_PAGE_CACHE_TTL);
+    }
+
+    #[IsGranted(UserRolesEnum::ROLE_USER)]
+    public function systemStat(): Response
+    {
+        return $this->render('home/system_stat.html.twig');
     }
 
     public function helpMd(): Response
