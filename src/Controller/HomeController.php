@@ -14,6 +14,7 @@ use App\Repository\DocRepository;
 use App\Repository\ProjectRepository;
 use App\Repository\TaskRepository;
 use App\Repository\UserRepository;
+use App\Service\Statistics\StatisticsService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
@@ -79,9 +80,9 @@ class HomeController extends AbstractController
     }
 
     #[IsGranted(UserRolesEnum::ROLE_USER)]
-    public function systemStat(): Response
+    public function systemStat(StatisticsService $statisticsService): Response
     {
-        return $this->render('home/system_stat.html.twig');
+        return $this->render('home/system_stat.html.twig', ['statistics' => $statisticsService->commonStat()]);
     }
 
     public function helpMd(): Response

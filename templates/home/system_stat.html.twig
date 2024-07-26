@@ -1,14 +1,47 @@
 {% extends 'base_layout.html.twig' %}
 
-{% block title %}{{ parent() }} - {{ 'SystemStat'|trans }}{% endblock %}
-{% block page_title%}{{ icon('tabler-traffic-lights', 'me-1') }}{{ 'SystemStat'|trans }}{% endblock %}
+{% block title %}{{ parent() }} - {{ 'SystemStat.title'|trans }}{% endblock %}
+{% block page_title%}{{ icon('tabler-traffic-lights', 'me-1') }}{{ 'SystemStat.title'|trans }}{% endblock %}
 
 {% block page_content %}
     <div class="row row-cards">
         <div class="col">
             <div class="card card-lg">
                 <div class="card-body">
-                    Здесь будет разная статистика
+                    <div class="row datagrid">
+                        <div class="datagrid-item">
+                            <div class="datagrid-title">{{ 'SystemStat.version'|trans }}</div>
+                            <div class="datagrid-content">{{ app_version }}</div>
+                        </div>
+                        <div class="datagrid-item">
+                            <div class="datagrid-title">{{ 'SystemStat.uptime'|trans }}</div>
+                            <div class="datagrid-content">{{ statistics.uptime|ago }}</div>
+                        </div>
+                        <div class="datagrid-item">
+                            <div class="datagrid-title">{{ 'SystemStat.from_start_working'|trans }}</div>
+                            <div class="datagrid-content">{{ statistics.fromStartWorking|ago }}</div>
+                        </div>
+                        <div class="datagrid-item">
+                            <div class="datagrid-title">{{ 'SystemStat.projects_count'|trans }}</div>
+                            <div class="datagrid-content">{{ statistics.projectCount }}</div>
+                        </div>
+                        <div class="datagrid-item">
+                            <div class="datagrid-title">{{ 'SystemStat.task_count'|trans }}</div>
+                            <div class="datagrid-content">{{ statistics.taskCount }}</div>
+                        </div>
+                        <div class="datagrid-item">
+                            <div class="datagrid-title">{{ 'SystemStat.doc_count'|trans }}</div>
+                            <div class="datagrid-content">{{ statistics.docCount }}</div>
+                        </div>
+                        <div class="datagrid-item">
+                            <div class="datagrid-title">{{ 'SystemStat.comment_count'|trans }}</div>
+                            <div class="datagrid-content">{{ statistics.commentsCount }}</div>
+                        </div>
+                        <div class="datagrid-item">
+                            <div class="datagrid-title">{{ 'SystemStat.activity_count'|trans }}</div>
+                            <div class="datagrid-content">{{ statistics.activityCount }}</div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
