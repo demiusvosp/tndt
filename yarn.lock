@@ -1146,15 +1146,22 @@
     "@tabler/icons" "^2.32.0"
     bootstrap "5.3.1"
 
+"@tabler/icons-sprite@^3.11.0":
+  version "3.11.0"
+  resolved "https://registry.yarnpkg.com/@tabler/icons-sprite/-/icons-sprite-3.11.0.tgz#762a0927ce9dd129c1b51bbfefb782cda30ac058"
+  integrity sha512-sGwGNdHMWiJ//MRxAuZJ4as7C3mTHJ8s3RAzZ3ikLk6KD5kWRodxi1RPaZPXrT+lXbA3dGY3G804pkjnpsze2Q==
+  dependencies:
+    "@tabler/icons" "3.11.0"
+
+"@tabler/icons@3.11.0":
+  version "3.11.0"
+  resolved "https://registry.yarnpkg.com/@tabler/icons/-/icons-3.11.0.tgz#63dde1cd024f0652ab08ff2589d2b26070594cfa"
+  integrity sha512-/vZinJNvCYhdAB+RUsyCpanSPuOEKHHIZi4Uu0Bw7ilewHnQhCWUPrT704uHCRli2ROl7spADPmWzAqOganA5A==
+
 "@tabler/icons@^2.32.0":
   version "2.47.0"
   resolved "https://registry.yarnpkg.com/@tabler/icons/-/icons-2.47.0.tgz#c41c680d1947e3ab2d60af3febc4132287c60596"
   integrity sha512-4w5evLh+7FUUiA1GucvGj2ReX2TvOjEr4ejXdwL/bsjoSkof6r1gQmzqI+VHrE2CpJpB3al7bCTulOkFa/RcyA==
-
-"@tabler/icons@^3.0.0-alpha.1":
-  version "3.3.0"
-  resolved "https://registry.yarnpkg.com/@tabler/icons/-/icons-3.3.0.tgz#ae7194d44a3808d97e8fcd47439eb8772d138659"
-  integrity sha512-PLVe9d7b59sKytbx00KgeGhQG3N176Ezv8YMmsnSz4s0ifDzMWlp/h2wEfQZ0ZNe8e377GY2OW6kovUe3Rnd0g==
 
 "@tootallnate/once@1":
   version "1.1.2"

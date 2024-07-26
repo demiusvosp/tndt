@@ -40,9 +40,9 @@ Encore
         pattern: /\.(png|svg|ico|jpg)$/
     })
     .copyFiles({
-        from: './node_modules/@tabler/icons/',
+        from: './node_modules/@tabler/icons-sprite/dist/',
         to: 'images/[path][name].[ext]',
-        pattern: /tabler-sprite.svg$/
+        pattern: /tabler-sprite*.svg$/
     })
 
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
