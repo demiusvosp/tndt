@@ -7,6 +7,7 @@
 
 namespace App\Service\Statistics\Processor;
 
+use App\Model\Dto\Statistics\DateTimeStatItem;
 use App\Model\Enum\StatisticProcessorEnum;
 use App\Service\Statistics\ProcessorInterface;
 use DateTimeImmutable;
@@ -24,6 +25,6 @@ class UptimeProcessor implements ProcessorInterface
         $output = shell_exec('stat /proc/1');
         preg_match('/Modify: ([\d\-: .]+)/', $output, $uptimeDate);
 
-        return new DateTimeImmutable($uptimeDate[1]);
+        return new DateTimeStatItem(StatisticProcessorEnum::Uptime, new DateTimeImmutable($uptimeDate[1]));
     }
 }

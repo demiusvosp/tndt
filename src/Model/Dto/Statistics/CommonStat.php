@@ -20,16 +20,16 @@ class CommonStat
     private ?int $activityCount;
 
     public function __construct(
-        ?DateTimeImmutable $uptime,
-        ?DateTimeImmutable $fromStartWorking,
+        DateTimeStatItem $uptime,
+        DateTimeStatItem $fromStartWorking,
         ?int $projectCount,
         ?int $taskCount,
         ?int $docCount,
         ?int $commentsCount,
         ?int $activityCount
     ) {
-        $this->uptime = $uptime;
-        $this->fromStartWorking = $fromStartWorking;
+        $this->uptime = $uptime->getValue();
+        $this->fromStartWorking = $fromStartWorking->getValue();
         $this->projectCount = $projectCount;
         $this->taskCount = $taskCount;
         $this->docCount = $docCount;
