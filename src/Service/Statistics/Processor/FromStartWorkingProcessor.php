@@ -36,7 +36,7 @@ class FromStartWorkingProcessor implements ProcessorInterface
                 Spec::andX(
                     Spec::select('createdAt'),
                     Spec::orderBy('createdAt', 'ASC'),
-                    Spec::limit(0)
+                    Spec::limit(1)
                 ));
         } catch (NoResultException $e) {
             return null;
