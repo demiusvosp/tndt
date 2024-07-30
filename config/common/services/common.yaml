@@ -46,12 +46,9 @@ services:
         class: 'App\Service\Badges\UserBadgesHandler'
         tags: ['app.badges_handler']
 
-    App\Service\Statistics\Calculator\UptimeCalculator:
-        tags: [{name: 'app.statistic.calculator', item: 'uptime'}]
-
     App\Service\Statistics\StatisticsService:
         arguments:
-            $statCalculators: !tagged_locator {tag: app.statistic.calculator, index_by: 'item'}
+            $statProcessors: !tagged_locator {tag: app.statistic.processor, index_by: 'item'}
 
     # @todo move to presentation in tndt-85
     App\Service\Twig\BadgesExtension:

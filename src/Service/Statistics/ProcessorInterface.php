@@ -7,10 +7,10 @@
 
 namespace App\Service\Statistics;
 
-interface CalculatorInterface
+interface ProcessorInterface
 {
     /**
      * @return mixed - хотелось бы более определенного вывода
      */
-    public function calculate();
+    public function execute();
 }

@@ -8,6 +8,7 @@
 namespace App\Service\Statistics;
 
 use App\Model\Dto\Statistics\CommonStat;
+use App\Model\Enum\StatisticProcessorEnum;
 use DateTime;
 use DateTimeImmutable;
 use Psr\Log\LoggerInterface;
@@ -18,36 +19,33 @@ use function dump;
 
 class StatisticsService
 {
-    private ServiceLocator $statCalculators;
+    private ServiceLocator $statProcessors;
     private CacheInterface $statisticsCache;
     private LoggerInterface $logger;
 
-    public function __construct(ServiceLocator $statCalculators, CacheInterface $statisticsCache)
+    public function __construct(ServiceLocator $statProcessors, CacheInterface $statisticsCache)
     {
-        $this->statCalculators = $statCalculators;
+        $this->statProcessors = $statProcessors;
         $this->statisticsCache = $statisticsCache;
     }
 
-    /**
-     * @param string $item
-     * @return DateTimeImmutable|int|null - хотелось бы более конкретно
-     */
-    public function getStat(string $item)
+
+    public function getStat(StatisticProcessorEnum $item)
     {
         try {
-            $calculator = $this->statCalculators->get($item);
+            $processor = $this->statProcessors->get($item->value);
         } catch (RuntimeException $e) {
-            $this->logger->error('Cannot get statistics for ' . $item, ['calculator' => $item, 'exception' => $e]);
+            $this->logger->error('Cannot get statistics for ' . $item->name, ['processor' => $item, 'exception' => $e]);
             return null;
         }
 
-        return $calculator->calculate() ?? null;
+        return $processor->execute() ?? null;
     }
 
     public function commonStat(): CommonStat
     {
         return new CommonStat(
-            $this->getStat('uptime'),
+            $this->getStat(StatisticProcessorEnum::Uptime),
             null,
             null,
             null,
