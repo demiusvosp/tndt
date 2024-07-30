@@ -7,10 +7,12 @@
 
 namespace App\Service\Statistics;
 
+use App\Model\Dto\Statistics\StatItemInterface;
+
 interface ProcessorInterface
 {
     /**
      * @return mixed - хотелось бы более определенного вывода
      */
-    public function execute();
+    public function execute(): StatItemInterface;
 }

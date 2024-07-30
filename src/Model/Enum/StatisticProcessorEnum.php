@@ -10,4 +10,5 @@ namespace App\Model\Enum;
 enum StatisticProcessorEnum: string
 {
     case Uptime = 'uptime';
+    case FromStartWorking = 'from_start_working';
 }

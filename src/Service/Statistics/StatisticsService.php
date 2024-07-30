@@ -46,7 +46,7 @@ class StatisticsService
     {
         return new CommonStat(
             $this->getStat(StatisticProcessorEnum::Uptime),
-            null,
+            $this->getStat(StatisticProcessorEnum::FromStartWorking),
             null,
             null,
             null,

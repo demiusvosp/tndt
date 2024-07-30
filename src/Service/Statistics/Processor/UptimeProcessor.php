@@ -20,7 +20,7 @@ use function shell_exec;
 #[AsTaggedItem(index: StatisticProcessorEnum::Uptime->value)]
 class UptimeProcessor implements ProcessorInterface
 {
-    public function execute()
+    public function execute(): DateTimeStatItem
     {
         $output = shell_exec('stat /proc/1');
         preg_match('/Modify: ([\d\-: .]+)/', $output, $uptimeDate);
