@@ -10,13 +10,16 @@ namespace App\Service\Statistics\Calculator;
 use App\Service\Statistics\CalculatorInterface;
 use DateTimeImmutable;
 use function file_get_contents;
+use function preg_match;
+use function shell_exec;
 
 class UptimeCalculator implements CalculatorInterface
 {
     public function calculate()
     {
-        [$seconds, ] = explode(' ', file_get_contents('/proc/uptime'));
+        $output = shell_exec('stat /proc/1');
+        preg_match('/Modify: ([\d\-: .]+)/', $output, $uptimeDate);
 
-        return DateTimeImmutable::createFromFormat('U', time() - (int)$seconds);
+        return new DateTimeImmutable($uptimeDate[1]);
     }
 }
