@@ -12,6 +12,7 @@ use App\Model\Enum\StatisticProcessorEnum;
 use App\Repository\ProjectRepository;
 use App\Service\Statistics\ProcessorInterface;
 use DateTimeImmutable;
+use Doctrine\ORM\NoResultException;
 use Happyr\DoctrineSpecification\Spec;
 use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
@@ -28,15 +29,22 @@ class FromStartWorkingProcessor implements ProcessorInterface
         $this->projectRepository = $projectRepository;
     }
 
-    public function execute(): DateTimeStatItem
+    public function execute(): ?DateTimeStatItem
     {
-        $earlierProjectDate = $this->projectRepository->matchSingleScalarResult(
-            Spec::andX(
-                Spec::select('createdAt'),
-                Spec::orderBy('createdAt', 'ASC'),
-                Spec::limit(1)
-        ));
+        try {
+            $earlierProjectDate = $this->projectRepository->matchSingleScalarResult(
+                Spec::andX(
+                    Spec::select('createdAt'),
+                    Spec::orderBy('createdAt', 'ASC'),
+                    Spec::limit(0)
+                ));
+        } catch (NoResultException $e) {
+            return null;
+        }
 
-        return new DateTimeStatItem(StatisticProcessorEnum::FromStartWorking, new DateTimeImmutable($earlierProjectDate));
+        return new DateTimeStatItem(
+            StatisticProcessorEnum::FromStartWorking,
+            new DateTimeImmutable($earlierProjectDate)
+        );
     }
 }

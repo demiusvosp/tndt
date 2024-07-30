@@ -20,21 +20,21 @@ class CommonStat
     private ?int $activityCount;
 
     public function __construct(
-        DateTimeStatItem $uptime,
-        DateTimeStatItem $fromStartWorking,
+        ?DateTimeStatItem $uptime,
+        ?DateTimeStatItem $fromStartWorking,
         ?int $projectCount,
         ?int $taskCount,
         ?int $docCount,
-        ?int $commentsCount,
-        ?int $activityCount
+        ?SingleCountStatItem $commentsCount,
+        ?SingleCountStatItem $activityCount
     ) {
-        $this->uptime = $uptime->getValue();
-        $this->fromStartWorking = $fromStartWorking->getValue();
+        $this->uptime = $uptime?->getValue();
+        $this->fromStartWorking = $fromStartWorking?->getValue();
         $this->projectCount = $projectCount;
         $this->taskCount = $taskCount;
         $this->docCount = $docCount;
-        $this->commentsCount = $commentsCount;
-        $this->activityCount = $activityCount;
+        $this->commentsCount = $commentsCount?->getValue();
+        $this->activityCount = $activityCount?->getValue();
     }
 
     public function getUptime(): ?DateTimeImmutable

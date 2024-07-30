@@ -10,19 +10,14 @@ namespace App\Model\Dto\Statistics;
 use App\Model\Enum\StatisticProcessorEnum;
 use DateTimeImmutable;
 
-class DateTimeStatItem implements StatItemInterface
+class DateTimeStatItem extends StatItem
 {
     private ?DateTimeImmutable $value;
 
     public function __construct(StatisticProcessorEnum $id, ?DateTimeImmutable $value)
     {
-        $this->id = $id;
+        parent::__construct($id);
         $this->value = $value;
-    }
-
-    public function getId(): StatisticProcessorEnum
-    {
-        return $this->id;
     }
 
     public function getValue(): ?DateTimeImmutable

@@ -11,8 +11,5 @@ use App\Model\Dto\Statistics\StatItemInterface;
 
 interface ProcessorInterface
 {
-    /**
-     * @return mixed - хотелось бы более определенного вывода
-     */
-    public function execute(): StatItemInterface;
+    public function execute(): ?StatItemInterface;
 }
