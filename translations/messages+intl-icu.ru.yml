@@ -228,9 +228,9 @@ SpecialActions: Особые действия
 Support: Поддержка
 SystemStat:
   active: Активных
-  activity_count: зафиксировано активности
+  activity_count: Зафиксировано активности
   closed: Закрытых
-  comment_count: количество комментариев
+  comment_count: Количество комментариев
   doc_count: Количество документов
   none: нет
   projects_count: Количество проектов
@@ -239,7 +239,7 @@ SystemStat:
   title: Общая статистика
   total: Всего
   uptime: Uptime
-  version: версия
+  version: Версия
 Tasks: Задачи
 task:
   assignedTo:

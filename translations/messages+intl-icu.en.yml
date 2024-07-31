@@ -227,18 +227,18 @@ SpecialActions: Additional actions
 Support: Support
 SystemStat:
   active: Active
-  activity_count: count of activity items
+  activity_count: Count of activity items
   closed: Closed
-  comment_count: count of comments
+  comment_count: Count of comments
   doc_count: count of documents
   none: none
-  projects_count: count of projects
+  projects_count: Count of projects
   start_working: Start working at
   task_count: count of tasks
   title: System statistics
   total: Total
   uptime: Uptime
-  version: version
+  version: Version
 Tasks: Задачи
 task:
   assignedTo:
