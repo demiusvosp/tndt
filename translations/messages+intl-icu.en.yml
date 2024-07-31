@@ -228,6 +228,7 @@ Support: Support
 SystemStat:
   active: Active
   activity_count: count of activity items
+  closed: Closed
   comment_count: count of comments
   doc_count: count of documents
   from_start_working: from start working

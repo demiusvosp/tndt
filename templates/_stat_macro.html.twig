@@ -5,7 +5,7 @@
     <div class="progress">
         {% for part in stat.parts %}
             <div
-                class="progress-bar"
+                class="progress-bar {{ part.color ? 'bg-'~part.color : '' }}"
                 style="width: {{ part.value }}%"
                 role="progressbar"
             >

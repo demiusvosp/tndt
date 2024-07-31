@@ -229,6 +229,7 @@ Support: Поддержка
 SystemStat:
   active: Активных
   activity_count: зафиксировано активности
+  closed: Закрытых
   comment_count: количество комментариев
   doc_count: Количество документов
   from_start_working: С начала работы
