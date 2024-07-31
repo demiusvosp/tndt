@@ -18,8 +18,8 @@ use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 
 #[AutoconfigureTag("app.statistic.processor",)]
-#[AsTaggedItem(index: StatisticProcessorEnum::FromStartWorking->value)]
-class FromStartWorkingProcessor implements ProcessorInterface
+#[AsTaggedItem(index: StatisticProcessorEnum::StartWorking->value)]
+class StartWorkingProcessor implements ProcessorInterface
 {
     private ProjectRepository $projectRepository;
 
@@ -42,7 +42,7 @@ class FromStartWorkingProcessor implements ProcessorInterface
         }
 
         return new DateTimeStatItem(
-            StatisticProcessorEnum::FromStartWorking,
+            StatisticProcessorEnum::StartWorking,
             new DateTimeImmutable($earlierProjectDate)
         );
     }

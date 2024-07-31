@@ -12,7 +12,7 @@ use DateTimeImmutable;
 class CommonStat
 {
     private ?DateTimeImmutable $uptime;
-    private ?DateTimeImmutable $fromStartWorking;
+    private ?DateTimeImmutable $startWorking;
     private ?ProgressStatItem $projectCount;
     private ?ProgressStatItem $taskCount;
     private ?ProgressStatItem $docCount;
@@ -21,7 +21,7 @@ class CommonStat
 
     public function __construct(
         ?DateTimeStatItem $uptime,
-        ?DateTimeStatItem $fromStartWorking,
+        ?DateTimeStatItem $startWorking,
         ?ProgressStatItem $projectCount,
         ?ProgressStatItem $taskCount,
         ?ProgressStatItem $docCount,
@@ -29,7 +29,7 @@ class CommonStat
         ?SingleCountStatItem $activityCount
     ) {
         $this->uptime = $uptime?->getValue();
-        $this->fromStartWorking = $fromStartWorking?->getValue();
+        $this->startWorking = $startWorking?->getValue();
         $this->projectCount = $projectCount;
         $this->taskCount = $taskCount;
         $this->docCount = $docCount;
@@ -42,9 +42,9 @@ class CommonStat
         return $this->uptime;
     }
 
-    public function getFromStartWorking(): ?DateTimeImmutable
+    public function getStartWorking(): ?DateTimeImmutable
     {
-        return $this->fromStartWorking;
+        return $this->startWorking;
     }
 
     public function getProjectCount(): ?ProgressStatItem

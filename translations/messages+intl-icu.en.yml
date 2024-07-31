@@ -231,9 +231,9 @@ SystemStat:
   closed: Closed
   comment_count: count of comments
   doc_count: count of documents
-  from_start_working: from start working
   none: none
   projects_count: count of projects
+  start_working: Start working at
   task_count: count of tasks
   title: System statistics
   total: Total

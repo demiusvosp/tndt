@@ -232,9 +232,9 @@ SystemStat:
   closed: Закрытых
   comment_count: количество комментариев
   doc_count: Количество документов
-  from_start_working: С начала работы
   none: нет
   projects_count: Количество проектов
+  start_working: Работа началась
   task_count: Количество задач
   title: Общая статистика
   total: Всего
