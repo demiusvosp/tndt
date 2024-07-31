@@ -12,9 +12,12 @@ use App\Model\Enum\StatisticProcessorEnum;
 class ProgressStatItem extends StatItem
 {
     private int $total;
-    /** @var array - [<name> => <value>] */
+    /** @var ProgressPartItem[] */
     private array $parts;
 
+    /**
+     * @param ProgressPartItem[] $parts
+     */
     public function __construct(StatisticProcessorEnum $id, int $total, array $parts = [])
     {
         parent::__construct($id);
@@ -32,6 +35,9 @@ class ProgressStatItem extends StatItem
         return $this->total;
     }
 
+    /**
+     * @return ProgressPartItem[]
+     */
     public function getParts(): array
     {
         return $this->parts;

@@ -11,7 +11,6 @@ use App\Model\Dto\Statistics\SingleCountStatItem;
 use App\Model\Dto\Statistics\StatItemInterface;
 use App\Model\Enum\StatisticProcessorEnum;
 use App\Repository\ActivityRepository;
-use App\Repository\CommentRepository;
 use App\Service\Statistics\ProcessorInterface;
 use Happyr\DoctrineSpecification\Spec;
 use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;

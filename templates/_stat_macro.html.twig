@@ -1,0 +1,16 @@
+{% macro progress(stat) %}
+    <div class="d-flex justify-content-between">
+        <div>{{ 'SystemStat.total'|trans }}: {{ stat.total }}</div>
+    </div>
+    <div class="progress">
+        {% for part in stat.parts %}
+            <div
+                class="progress-bar"
+                style="width: {{ part.value }}%"
+                role="progressbar"
+            >
+                {{ ('SystemStat.'~part.name)|trans }}: {{ part.value }}%
+            </div>
+        {% endfor %}
+    </div>
+{% endmacro %}

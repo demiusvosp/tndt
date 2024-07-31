@@ -4,6 +4,7 @@
 {% block page_title%}{{ icon('tabler-traffic-lights', 'me-1') }}{{ 'SystemStat.title'|trans }}{% endblock %}
 
 {% block page_content %}
+    {% import '_stat_macro.html.twig' as widgets %}
     <div class="row row-cards">
         <div class="col">
             <div class="card card-lg">
@@ -24,18 +25,14 @@
                         <div class="datagrid-item">
                             <div class="datagrid-title">{{ 'SystemStat.projects_count'|trans }}</div>
                             <div class="datagrid-content">
-                                <div class="d-flex justify-content-between">
-                                    <div>{{ 'SystemStat.total'|trans }}: {{ stat.projectCount.total }}</div>
-                                    <div>{{ 'SystemStat.active'|trans }} {{ stat.projectCount.parts['active'] }}%</div>
-                                </div>
-                                <div class="progress">
-                                    <div class="progress-bar" style="width: {{ stat.projectCount.parts['active'] }}%" role="progressbar" ></div>
-                                </div>
+                                {{ widgets.progress(stat.projectCount) }}
                             </div>
                         </div>
                         <div class="datagrid-item">
                             <div class="datagrid-title">{{ 'SystemStat.task_count'|trans }}</div>
-                            <div class="datagrid-content">{{ stat.taskCount ?? 'SystemStat.none'|trans }}</div>
+                            <div class="datagrid-content">
+                                {{ widgets.progress(stat.taskCount) }}
+                            </div>
                         </div>
                         <div class="datagrid-item">
                             <div class="datagrid-title">{{ 'SystemStat.doc_count'|trans }}</div>

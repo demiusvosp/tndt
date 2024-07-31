@@ -13,6 +13,8 @@ enum StatisticProcessorEnum: string
     case CommentCount = 'comment_count';
     case FromStartWorking = 'from_start_working';
     case ProjectCount = 'project_count';
+    case TaskCount = 'task_count';
+    case DocCount = 'doc_count';
     case Uptime = 'uptime';
 
 }

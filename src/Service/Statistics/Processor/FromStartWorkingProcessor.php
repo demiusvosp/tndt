@@ -16,7 +16,6 @@ use Doctrine\ORM\NoResultException;
 use Happyr\DoctrineSpecification\Spec;
 use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
-use function dump;
 
 #[AutoconfigureTag("app.statistic.processor",)]
 #[AsTaggedItem(index: StatisticProcessorEnum::FromStartWorking->value)]
