@@ -26,17 +26,17 @@ $('form.autoupdate').on('change', 'button,input', function (event) {
  * Modal - universal modal dialog for confirm danger action
  */
 $('.need-confirm').on('click', function (event) {
+console.log('need confirm');
     event.preventDefault();
     let $dialog = $('#modalConfirm');
-    $('.modal-body', $dialog).html(event.target.dataset.text);
+    let text = event.target.dataset.text.replace(/(?:\\[rn]|[\r\n])/g, "<br/>");
+    $('.modal-body', $dialog).html(text);
+    $('form', $dialog).attr('action', event.target.dataset.action);
+
     $dialog.on('hide.bs.modal', function () {
         $('modal_body', this).html('');
     });
     $dialog.modal('show');
-
-    $('.btn-success', $dialog).on('click', {'action': event.target.dataset.action}, function () {
-        document.location = event.currentTarget.dataset.action;
-    })
 });
 
 
