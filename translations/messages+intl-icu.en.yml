@@ -226,6 +226,7 @@ search: Search
 SpecialActions: Additional actions
 Support: Support
 SystemStat:
+  active: Active
   activity_count: count of activity items
   comment_count: count of comments
   doc_count: count of documents
@@ -234,6 +235,7 @@ SystemStat:
   projects_count: count of projects
   task_count: count of tasks
   title: System statistics
+  total: Total
   uptime: Uptime
   version: version
 Tasks: Задачи

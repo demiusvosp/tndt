@@ -23,7 +23,15 @@
                         </div>
                         <div class="datagrid-item">
                             <div class="datagrid-title">{{ 'SystemStat.projects_count'|trans }}</div>
-                            <div class="datagrid-content">{{ stat.projectCount ?? 'SystemStat.none'|trans }}</div>
+                            <div class="datagrid-content">
+                                <div class="d-flex justify-content-between">
+                                    <div>{{ 'SystemStat.total'|trans }}: {{ stat.projectCount.total }}</div>
+                                    <div>{{ 'SystemStat.active'|trans }} {{ stat.projectCount.parts['active'] }}%</div>
+                                </div>
+                                <div class="progress">
+                                    <div class="progress-bar" style="width: {{ stat.projectCount.parts['active'] }}%" role="progressbar" ></div>
+                                </div>
+                            </div>
                         </div>
                         <div class="datagrid-item">
                             <div class="datagrid-title">{{ 'SystemStat.task_count'|trans }}</div>

@@ -13,18 +13,18 @@ class CommonStat
 {
     private ?DateTimeImmutable $uptime;
     private ?DateTimeImmutable $fromStartWorking;
-    private ?int $projectCount;
-    private ?int $taskCount;
-    private ?int $docCount;
-    private ?int $commentsCount;
-    private ?int $activityCount;
+    private ?ProgressStatItem $projectCount;
+    private ?ProgressStatItem $taskCount;
+    private ?ProgressStatItem $docCount;
+    private ?SingleCountStatItem $commentsCount;
+    private ?SingleCountStatItem $activityCount;
 
     public function __construct(
         ?DateTimeStatItem $uptime,
         ?DateTimeStatItem $fromStartWorking,
-        ?int $projectCount,
-        ?int $taskCount,
-        ?int $docCount,
+        ?ProgressStatItem $projectCount,
+        ?ProgressStatItem $taskCount,
+        ?ProgressStatItem $docCount,
         ?SingleCountStatItem $commentsCount,
         ?SingleCountStatItem $activityCount
     ) {
@@ -33,8 +33,8 @@ class CommonStat
         $this->projectCount = $projectCount;
         $this->taskCount = $taskCount;
         $this->docCount = $docCount;
-        $this->commentsCount = $commentsCount?->getValue();
-        $this->activityCount = $activityCount?->getValue();
+        $this->commentsCount = $commentsCount;
+        $this->activityCount = $activityCount;
     }
 
     public function getUptime(): ?DateTimeImmutable
@@ -47,27 +47,27 @@ class CommonStat
         return $this->fromStartWorking;
     }
 
-    public function getProjectCount(): ?int
+    public function getProjectCount(): ?ProgressStatItem
     {
         return $this->projectCount;
     }
 
-    public function getTaskCount(): ?int
+    public function getTaskCount(): ?ProgressStatItem
     {
         return $this->taskCount;
     }
 
-    public function getDocCount(): ?int
+    public function getDocCount(): ?ProgressStatItem
     {
         return $this->docCount;
     }
 
-    public function getCommentsCount(): ?int
+    public function getCommentsCount(): ?SingleCountStatItem
     {
         return $this->commentsCount;
     }
 
-    public function getActivityCount(): ?int
+    public function getActivityCount(): ?SingleCountStatItem
     {
         return $this->activityCount;
     }

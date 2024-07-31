@@ -24,4 +24,9 @@ class DateTimeStatItem extends StatItem
     {
         return $this->value;
     }
+
+    public function __toString(): string
+    {
+        return $this->value->format('Y-m-d H:i:s');
+    }
 }

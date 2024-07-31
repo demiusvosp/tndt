@@ -14,4 +14,6 @@ interface StatItemInterface
     public function getId(): StatisticProcessorEnum;
 
     public function getValue(): mixed;
+
+    public function __toString(): string;
 }

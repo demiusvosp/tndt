@@ -52,7 +52,7 @@ class StatisticsService
         return new CommonStat(
             $this->getStat(StatisticProcessorEnum::Uptime),
             $this->getStat(StatisticProcessorEnum::FromStartWorking),
-            null,
+            $this->getStat(StatisticProcessorEnum::ProjectCount),
             null,
             null,
             $this->getStat(StatisticProcessorEnum::CommentCount),
