@@ -21,7 +21,6 @@ use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 #[AsTaggedItem(index: StatisticProcessorEnum::DocCount->value)]
 class DocCountProcessor implements ProcessorInterface
 {
-    private const DOC_PRECISION = 1;
     private DocRepository $docRepository;
 
     public function __construct(DocRepository $docRepository)

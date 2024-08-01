@@ -20,7 +20,6 @@ use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 #[AsTaggedItem(index: StatisticProcessorEnum::TaskCount->value)]
 class TaskCountProcessor implements ProcessorInterface
 {
-    private const TASK_PRECISION = 1;
     private TaskRepository $taskRepository;
 
     public function __construct(TaskRepository $taskRepository)
