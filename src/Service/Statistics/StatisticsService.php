@@ -9,14 +9,10 @@ namespace App\Service\Statistics;
 
 use App\Model\Dto\Statistics\CommonStat;
 use App\Model\Enum\StatisticProcessorEnum;
-use DateTime;
-use DateTimeImmutable;
 use Psr\Log\LoggerInterface;
-use RuntimeException;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Contracts\Cache\CacheInterface;
-use function dump;
 
 class StatisticsService
 {
