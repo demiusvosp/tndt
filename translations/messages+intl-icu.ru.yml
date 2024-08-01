@@ -229,10 +229,13 @@ Support: Поддержка
 SystemStat:
   active: Активных
   activity_count: Зафиксировано активности
+  archived: Архивных
   closed: Закрытых
   comment_count: Количество комментариев
+  deprecated: Устаревших
   doc_count: Количество документов
   none: нет
+  normal: Актуальных
   projects_count: Количество проектов
   start_working: Работа началась
   task_count: Количество задач

@@ -54,7 +54,7 @@ class StatisticsService
             $this->getStat(StatisticProcessorEnum::StartWorking),
             $this->getStat(StatisticProcessorEnum::ProjectCount),
             $this->getStat(StatisticProcessorEnum::TaskCount),
-            null,
+            $this->getStat(StatisticProcessorEnum::DocCount),
             $this->getStat(StatisticProcessorEnum::CommentCount),
             $this->getStat(StatisticProcessorEnum::ActivityCount)
         );

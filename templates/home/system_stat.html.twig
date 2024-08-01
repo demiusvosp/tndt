@@ -36,7 +36,9 @@
                         </div>
                         <div class="datagrid-item">
                             <div class="datagrid-title">{{ 'SystemStat.doc_count'|trans }}</div>
-                            <div class="datagrid-content">{{ stat.docCount ?? 'SystemStat.none'|trans }}</div>
+                            <div class="datagrid-content">
+                                {{ widgets.progress(stat.docCount) }}
+                            </div>
                         </div>
                         <div class="datagrid-item">
                             <div class="datagrid-title">{{ 'SystemStat.comment_count'|trans }}</div>
@@ -48,6 +50,7 @@
                         </div>
                     </div>
                 </div>
+                {{ dump(stat) }}
             </div>
         </div>
     </div>

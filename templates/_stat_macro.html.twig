@@ -8,8 +8,11 @@
                 class="progress-bar {{ part.color ? 'bg-'~part.color : '' }}"
                 style="width: {{ part.value }}%"
                 role="progressbar"
+                data-bs-toggle="tooltip"
+                data-bs-placement="bottom"
+                title="{{ ('SystemStat.'~part.name)|trans }}"
             >
-                {{ ('SystemStat.'~part.name)|trans }}: {{ part.value }}%
+                {% if part.value >= 37 %}{{ ('SystemStat.'~part.name)|trans }}: {% endif %}{{ part.value }}%
             </div>
         {% endfor %}
     </div>
