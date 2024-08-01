@@ -15,6 +15,7 @@ use Psr\Log\LoggerInterface;
 use RuntimeException;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Symfony\Component\DependencyInjection\ServiceLocator;
+use Symfony\Component\Stopwatch\Stopwatch;
 use Symfony\Contracts\Cache\CacheInterface;
 use function dump;
 
@@ -27,16 +28,19 @@ class StatisticsService
     public function __construct(
         ServiceLocator $statProcessors,
         CacheInterface $statisticsCache,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        Stopwatch $stopwatch
     ) {
         $this->statProcessors = $statProcessors;
         $this->statisticsCache = $statisticsCache;
         $this->logger = $logger;
+        $this->stopwatch = $stopwatch;
     }
 
 
     public function getStat(StatisticProcessorEnum $item)
     {
+        $this->stopwatch->start($item->value, 'statistics');
         try {
             $processor = $this->statProcessors->get($item->value);
         } catch (ServiceNotFoundException $e) {
@@ -44,12 +48,14 @@ class StatisticsService
             return null;
         }
 
-        return $processor->execute();
+        $result = $processor->execute();
+        $this->stopwatch->stop($item->value);
+        return $result;
     }
 
     public function commonStat(): CommonStat
     {
-        return new CommonStat(
+        $result = new CommonStat(
             $this->getStat(StatisticProcessorEnum::Uptime),
             $this->getStat(StatisticProcessorEnum::StartWorking),
             $this->getStat(StatisticProcessorEnum::ProjectCount),
@@ -58,5 +64,6 @@ class StatisticsService
             $this->getStat(StatisticProcessorEnum::CommentCount),
             $this->getStat(StatisticProcessorEnum::ActivityCount)
         );
+        return $result;
     }
 }
