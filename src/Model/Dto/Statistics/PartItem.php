@@ -7,7 +7,7 @@
 
 namespace App\Model\Dto\Statistics;
 
-class ProgressPartItem
+class PartItem
 {
     private string $name;
     private string $value;

@@ -7,15 +7,14 @@
 
 namespace App\Service\Statistics\Processor;
 
-use App\Model\Dto\Statistics\ProgressPartItem;
-use App\Model\Dto\Statistics\ProgressStatItem;
+use App\Model\Dto\Statistics\PartItem;
+use App\Model\Dto\Statistics\PartedStatItem;
 use App\Model\Enum\StatisticProcessorEnum;
 use App\Repository\TaskRepository;
 use App\Service\Statistics\ProcessorInterface;
 use Happyr\DoctrineSpecification\Spec;
 use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
-use function round;
 
 #[AutoconfigureTag("app.statistic.processor",)]
 #[AsTaggedItem(index: StatisticProcessorEnum::TaskCount->value)]
@@ -29,17 +28,17 @@ class TaskCountProcessor implements ProcessorInterface
         $this->taskRepository = $taskRepository;
     }
 
-    public function execute(): ?ProgressStatItem
+    public function execute(): ?PartedStatItem
     {
         $total = $this->taskRepository->matchSingleScalarResult(Spec::countOf(null));
         $closed = $this->taskRepository->matchSingleScalarResult(Spec::countOf(Spec::eq('isClosed', true)));
-        return new ProgressStatItem(
+        return new PartedStatItem(
             StatisticProcessorEnum::TaskCount,
             $total,
             [
-                new ProgressPartItem(
+                new PartItem(
                     'closed',
-                    round($closed / ($total / 100), self::TASK_PRECISION),
+                    $closed,
                     'green'
                 )
             ]

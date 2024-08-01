@@ -1,18 +1,20 @@
-{% macro progress(stat) %}
+{% macro progress(stat, precision = 0) %}
     <div class="d-flex justify-content-between">
         <div>{{ 'SystemStat.total'|trans }}: {{ stat.total }}</div>
     </div>
     <div class="progress">
         {% for part in stat.parts %}
             <div
+                {% set procent = (part.value * (100 / stat.total))|round(precision) %}
+
                 class="progress-bar {{ part.color ? 'bg-'~part.color : '' }}"
-                style="width: {{ part.value }}%"
+                style="width: {{ procent }}%"
                 role="progressbar"
                 data-bs-toggle="tooltip"
                 data-bs-placement="bottom"
-                title="{{ ('SystemStat.'~part.name)|trans }}"
+                title="{{ ('SystemStat.'~part.name)|trans }}: {{ part.value }}"
             >
-                {% if part.value >= 37 %}{{ ('SystemStat.'~part.name)|trans }}: {% endif %}{{ part.value }}%
+                {% if procent >= 37 %}{{ ('SystemStat.'~part.name)|trans }}: {% endif %}{{ procent }}%
             </div>
         {% endfor %}
     </div>

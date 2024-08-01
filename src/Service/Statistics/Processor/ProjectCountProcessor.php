@@ -7,21 +7,19 @@
 
 namespace App\Service\Statistics\Processor;
 
-use App\Model\Dto\Statistics\ProgressPartItem;
-use App\Model\Dto\Statistics\ProgressStatItem;
+use App\Model\Dto\Statistics\PartItem;
+use App\Model\Dto\Statistics\PartedStatItem;
 use App\Model\Enum\StatisticProcessorEnum;
 use App\Repository\ProjectRepository;
 use App\Service\Statistics\ProcessorInterface;
 use Happyr\DoctrineSpecification\Spec;
 use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
-use function round;
 
 #[AutoconfigureTag("app.statistic.processor",)]
 #[AsTaggedItem(index: StatisticProcessorEnum::ProjectCount->value)]
 class ProjectCountProcessor implements ProcessorInterface
 {
-    private const PROJECT_PRECISION = 0;
     private ProjectRepository $projectRepository;
 
     public function __construct(ProjectRepository $projectRepository)
@@ -29,17 +27,18 @@ class ProjectCountProcessor implements ProcessorInterface
         $this->projectRepository = $projectRepository;
     }
 
-    public function execute(): ?ProgressStatItem
+    public function execute(): ?PartedStatItem
     {
         $total = (int) $this->projectRepository->matchSingleScalarResult(Spec::countOf(null));
-        $archived = (int) $this->projectRepository->matchSingleScalarResult(Spec::countOf(Spec::eq('isArchived', true)));
-        return new ProgressStatItem(
+        $active = (int) $this->projectRepository->matchSingleScalarResult(Spec::countOf(Spec::eq('isArchived', false)));
+        return new PartedStatItem(
             StatisticProcessorEnum::ProjectCount,
             $total,
             [
-                new ProgressPartItem(
+                new PartItem(
                     'active',
-                    round(100 - $archived / ($total / 100), self::PROJECT_PRECISION)
+                    $active,
+                    'blue'
                 )
             ]
         );

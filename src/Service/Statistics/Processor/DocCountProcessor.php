@@ -7,18 +7,15 @@
 
 namespace App\Service\Statistics\Processor;
 
-use App\Model\Dto\Statistics\ProgressPartItem;
-use App\Model\Dto\Statistics\ProgressStatItem;
-use App\Model\Dto\Statistics\StatItemInterface;
+use App\Model\Dto\Statistics\PartItem;
+use App\Model\Dto\Statistics\PartedStatItem;
 use App\Model\Enum\DocStateEnum;
 use App\Model\Enum\StatisticProcessorEnum;
 use App\Repository\DocRepository;
-use App\Repository\TaskRepository;
 use App\Service\Statistics\ProcessorInterface;
 use Happyr\DoctrineSpecification\Spec;
 use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
-use function round;
 
 #[AutoconfigureTag("app.statistic.processor",)]
 #[AsTaggedItem(index: StatisticProcessorEnum::DocCount->value)]
@@ -32,7 +29,7 @@ class DocCountProcessor implements ProcessorInterface
         $this->docRepository = $docRepository;
     }
 
-    public function execute(): ?ProgressStatItem
+    public function execute(): ?PartedStatItem
     {
         $total = $this->docRepository->matchSingleScalarResult(Spec::countOf(null));
         $deprecated = $this->docRepository->matchSingleScalarResult(
@@ -42,23 +39,23 @@ class DocCountProcessor implements ProcessorInterface
             Spec::countOf(Spec::eq('state', DocStateEnum::Archived->value))
         );
 
-        return new ProgressStatItem(
+        return new PartedStatItem(
             StatisticProcessorEnum::TaskCount,
             $total,
             [
-                new ProgressPartItem(
+                new PartItem(
                     'normal',
-                    round(($total - $deprecated - $archived) / ($total / 100), self::DOC_PRECISION),
+                    $total - $deprecated - $archived,
                     'green'
                 ),
-                new ProgressPartItem(
+                new PartItem(
                     'deprecated',
-                    round($deprecated / ($total / 100), self::DOC_PRECISION),
+                    $deprecated,
                     'primary'
                 ),
-                new ProgressPartItem(
+                new PartItem(
                     'archived',
-                    round($archived / ($total / 100), self::DOC_PRECISION),
+                    $archived,
                     'orange'
                 )
             ]

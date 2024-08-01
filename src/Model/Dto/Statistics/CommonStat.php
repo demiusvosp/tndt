@@ -13,18 +13,18 @@ class CommonStat
 {
     private ?DateTimeImmutable $uptime;
     private ?DateTimeImmutable $startWorking;
-    private ?ProgressStatItem $projectCount;
-    private ?ProgressStatItem $taskCount;
-    private ?ProgressStatItem $docCount;
+    private ?PartedStatItem $projectCount;
+    private ?PartedStatItem $taskCount;
+    private ?PartedStatItem $docCount;
     private ?SingleCountStatItem $commentsCount;
     private ?SingleCountStatItem $activityCount;
 
     public function __construct(
-        ?DateTimeStatItem $uptime,
-        ?DateTimeStatItem $startWorking,
-        ?ProgressStatItem $projectCount,
-        ?ProgressStatItem $taskCount,
-        ?ProgressStatItem $docCount,
+        ?DateTimeStatItem    $uptime,
+        ?DateTimeStatItem    $startWorking,
+        ?PartedStatItem      $projectCount,
+        ?PartedStatItem      $taskCount,
+        ?PartedStatItem      $docCount,
         ?SingleCountStatItem $commentsCount,
         ?SingleCountStatItem $activityCount
     ) {
@@ -47,17 +47,17 @@ class CommonStat
         return $this->startWorking;
     }
 
-    public function getProjectCount(): ?ProgressStatItem
+    public function getProjectCount(): ?PartedStatItem
     {
         return $this->projectCount;
     }
 
-    public function getTaskCount(): ?ProgressStatItem
+    public function getTaskCount(): ?PartedStatItem
     {
         return $this->taskCount;
     }
 
-    public function getDocCount(): ?ProgressStatItem
+    public function getDocCount(): ?PartedStatItem
     {
         return $this->docCount;
     }

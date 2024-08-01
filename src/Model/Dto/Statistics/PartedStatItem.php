@@ -9,14 +9,14 @@ namespace App\Model\Dto\Statistics;
 
 use App\Model\Enum\StatisticProcessorEnum;
 
-class ProgressStatItem extends StatItem
+class PartedStatItem extends StatItem
 {
     private int $total;
-    /** @var ProgressPartItem[] */
+    /** @var PartItem[] */
     private array $parts;
 
     /**
-     * @param ProgressPartItem[] $parts
+     * @param PartItem[] $parts
      */
     public function __construct(StatisticProcessorEnum $id, int $total, array $parts = [])
     {
