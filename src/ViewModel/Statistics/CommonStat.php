@@ -5,8 +5,11 @@
  * Time: 23:09
  */
 
-namespace App\Model\Dto\Statistics;
+namespace App\ViewModel\Statistics;
 
+use App\Model\Dto\Statistics\DateTimeStatItem;
+use App\Model\Dto\Statistics\PartedStatItem;
+use App\Model\Dto\Statistics\SingleCountStatItem;
 use DateTimeImmutable;
 
 class CommonStat

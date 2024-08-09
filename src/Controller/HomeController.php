@@ -9,12 +9,14 @@ namespace App\Controller;
 
 
 use App\Entity\User;
+use App\Model\Enum\StatisticProcessorEnum;
 use App\Model\Enum\UserRolesEnum;
 use App\Repository\DocRepository;
 use App\Repository\ProjectRepository;
 use App\Repository\TaskRepository;
 use App\Repository\UserRepository;
 use App\Service\Statistics\StatisticsService;
+use App\ViewModel\Statistics\CommonStat;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
@@ -82,7 +84,16 @@ class HomeController extends AbstractController
     #[IsGranted(UserRolesEnum::ROLE_USER)]
     public function systemStat(StatisticsService $statisticsService): Response
     {
-        return $this->render('home/system_stat.html.twig', ['stat' => $statisticsService->commonStat()]);
+        $commonStat = new CommonStat(
+            $statisticsService->getStat(StatisticProcessorEnum::Uptime),
+            $statisticsService->getStat(StatisticProcessorEnum::StartWorking),
+            $statisticsService->getStat(StatisticProcessorEnum::ProjectCount),
+            $statisticsService->getStat(StatisticProcessorEnum::TaskCount),
+            $statisticsService->getStat(StatisticProcessorEnum::DocCount),
+            $statisticsService->getStat(StatisticProcessorEnum::CommentCount),
+            $statisticsService->getStat(StatisticProcessorEnum::ActivityCount)
+        );
+        return $this->render('home/system_stat.html.twig', ['stat' => $commonStat]);
     }
 
     public function helpMd(): Response

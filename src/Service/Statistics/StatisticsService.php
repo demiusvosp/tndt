@@ -7,8 +7,8 @@
 
 namespace App\Service\Statistics;
 
-use App\Model\Dto\Statistics\CommonStat;
 use App\Model\Enum\StatisticProcessorEnum;
+use App\ViewModel\Statistics\CommonStat;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Symfony\Component\DependencyInjection\ServiceLocator;
@@ -34,6 +34,7 @@ class StatisticsService
     public function getStat(StatisticProcessorEnum $item)
     {
         try {
+            /** @var ProcessorInterface $processor */
             $processor = $this->statProcessors->get($item->value);
         } catch (ServiceNotFoundException $e) {
             $this->logger->error('Cannot get statistics for ' . $item->name, ['processor' => $item, 'exception' => $e]);
@@ -41,18 +42,5 @@ class StatisticsService
         }
 
         return $processor->execute();
-    }
-
-    public function commonStat(): CommonStat
-    {
-        return new CommonStat(
-            $this->getStat(StatisticProcessorEnum::Uptime),
-            $this->getStat(StatisticProcessorEnum::StartWorking),
-            $this->getStat(StatisticProcessorEnum::ProjectCount),
-            $this->getStat(StatisticProcessorEnum::TaskCount),
-            $this->getStat(StatisticProcessorEnum::DocCount),
-            $this->getStat(StatisticProcessorEnum::CommentCount),
-            $this->getStat(StatisticProcessorEnum::ActivityCount)
-        );
     }
 }
