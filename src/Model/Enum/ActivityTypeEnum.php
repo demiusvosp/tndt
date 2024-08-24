@@ -7,8 +7,6 @@
 
 namespace App\Model\Enum;
 
-use App\Event\AppEvents;
-
 enum ActivityTypeEnum: string
 {
     case TaskCreate = 'task.create';

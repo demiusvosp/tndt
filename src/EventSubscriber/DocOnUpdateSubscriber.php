@@ -9,9 +9,9 @@ declare(strict_types=1);
 namespace App\EventSubscriber;
 
 use App\Entity\Doc;
-use App\Event\AppEvents;
 use App\Event\CommentEvent;
 use App\Event\DocEvent;
+use App\Model\Enum\AppEvents;
 use DateTime;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

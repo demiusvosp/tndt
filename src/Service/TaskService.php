@@ -10,13 +10,13 @@ namespace App\Service;
 
 use App\Entity\Task;
 use App\Entity\User;
-use App\Event\AppEvents;
 use App\Event\TaskChangeStageEvent;
 use App\Event\TaskEvent;
 use App\Form\DTO\Task\CloseTaskDTO;
 use App\Form\DTO\Task\EditTaskDTO;
 use App\Form\DTO\Task\NewTaskDTO;
 use App\Model\Dto\Dictionary\Task\TaskStageItem;
+use App\Model\Enum\AppEvents;
 use App\Model\Enum\DictionaryTypeEnum;
 use App\Model\Enum\TaskStageTypeEnum;
 use App\Service\Dictionary\Fetcher;

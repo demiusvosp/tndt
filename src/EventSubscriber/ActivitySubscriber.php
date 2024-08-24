@@ -8,7 +8,7 @@
 namespace App\EventSubscriber;
 
 use App\Contract\ActivityEventInterface;
-use App\Event\AppEvents;
+use App\Model\Enum\AppEvents;
 use App\Service\ActivityFactory;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\SecurityBundle\Security;

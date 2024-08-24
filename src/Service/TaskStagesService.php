@@ -10,11 +10,11 @@ namespace App\Service;
 
 use App\Entity\Project;
 use App\Entity\Task;
-use App\Event\AppEvents;
 use App\Event\TaskChangeStageEvent;
 use App\Exception\TaskStageException;
 use App\Model\Dto\Dictionary\Task\TaskStage;
 use App\Model\Dto\Dictionary\Task\TaskStageItem;
+use App\Model\Enum\AppEvents;
 use App\Model\Enum\DictionaryTypeEnum;
 use App\Model\Enum\TaskStageTypeEnum;
 use App\Service\Dictionary\Fetcher;
