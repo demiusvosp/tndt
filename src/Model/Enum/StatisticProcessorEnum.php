@@ -17,8 +17,17 @@ enum StatisticProcessorEnum: string
     case DocCount = 'doc_count';
     case Uptime = 'uptime';
 
+    public function cacheKey(): string
+    {
+        return 'statistic.' . $this->value;
+    }
+
     public function ttl(): ?int
     {
+        /*
+         * int - seconds to expire
+         * null - store permanently
+         */
         return match ($this) {
             self::ActivityCount => 60,// 1min
             self::CommentCount => 60,
@@ -26,7 +35,7 @@ enum StatisticProcessorEnum: string
             self::ProjectCount => 86400,// 1day
             self::TaskCount => 3600, // 1hour
             self::DocCount => 3600,
-            self::Uptime => null,
+            self::Uptime => 1,
         };
     }
 }

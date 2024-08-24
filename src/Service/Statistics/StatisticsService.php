@@ -37,7 +37,7 @@ class StatisticsService
      */
     public function getStat(StatisticProcessorEnum $type): ?StatItemInterface
     {
-        $item = $this->statisticsCache->getItem($type->value);
+        $item = $this->statisticsCache->getItem($type->cacheKey());
 
         if (!$item->isHit()) {
             try {
