@@ -24,4 +24,5 @@ class AppEvents
     public const DOC_CHANGE_STATE = 'app.doc.change_state';
 
     public const COMMENT_ADD = 'app.comment.add';
+    public const ACTIVITY_ADD = 'app.activity.add';
 }

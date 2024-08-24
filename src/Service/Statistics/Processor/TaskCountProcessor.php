@@ -9,7 +9,7 @@ namespace App\Service\Statistics\Processor;
 
 use App\Model\Dto\Statistics\PartItem;
 use App\Model\Dto\Statistics\PartedStatItem;
-use App\Model\Enum\StatisticProcessorEnum;
+use App\Model\Enum\StatisticItemEnum;
 use App\Repository\TaskRepository;
 use App\Service\Statistics\ProcessorInterface;
 use Happyr\DoctrineSpecification\Spec;
@@ -17,7 +17,7 @@ use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 
 #[AutoconfigureTag("app.statistic.processor",)]
-#[AsTaggedItem(index: StatisticProcessorEnum::TaskCount->value)]
+#[AsTaggedItem(index: StatisticItemEnum::TaskCount->value)]
 class TaskCountProcessor implements ProcessorInterface
 {
     private TaskRepository $taskRepository;
@@ -32,7 +32,7 @@ class TaskCountProcessor implements ProcessorInterface
         $total = $this->taskRepository->matchSingleScalarResult(Spec::countOf(null));
         $closed = $this->taskRepository->matchSingleScalarResult(Spec::countOf(Spec::eq('isClosed', true)));
         return new PartedStatItem(
-            StatisticProcessorEnum::TaskCount,
+            StatisticItemEnum::TaskCount,
             $total,
             [
                 new PartItem(

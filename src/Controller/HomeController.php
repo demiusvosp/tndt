@@ -9,7 +9,7 @@ namespace App\Controller;
 
 
 use App\Entity\User;
-use App\Model\Enum\StatisticProcessorEnum;
+use App\Model\Enum\StatisticItemEnum;
 use App\Model\Enum\UserRolesEnum;
 use App\Repository\DocRepository;
 use App\Repository\ProjectRepository;
@@ -85,13 +85,13 @@ class HomeController extends AbstractController
     public function systemStat(StatisticsService $statisticsService): Response
     {
         $commonStat = new CommonStat(
-            $statisticsService->getStat(StatisticProcessorEnum::Uptime),
-            $statisticsService->getStat(StatisticProcessorEnum::StartWorking),
-            $statisticsService->getStat(StatisticProcessorEnum::ProjectCount),
-            $statisticsService->getStat(StatisticProcessorEnum::TaskCount),
-            $statisticsService->getStat(StatisticProcessorEnum::DocCount),
-            $statisticsService->getStat(StatisticProcessorEnum::CommentCount),
-            $statisticsService->getStat(StatisticProcessorEnum::ActivityCount)
+            $statisticsService->getStat(StatisticItemEnum::Uptime),
+            $statisticsService->getStat(StatisticItemEnum::StartWorking),
+            $statisticsService->getStat(StatisticItemEnum::ProjectCount),
+            $statisticsService->getStat(StatisticItemEnum::TaskCount),
+            $statisticsService->getStat(StatisticItemEnum::DocCount),
+            $statisticsService->getStat(StatisticItemEnum::CommentCount),
+            $statisticsService->getStat(StatisticItemEnum::ActivityCount)
         );
         return $this->render('home/system_stat.html.twig', ['stat' => $commonStat]);
     }

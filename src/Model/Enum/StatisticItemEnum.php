@@ -7,7 +7,7 @@
 
 namespace App\Model\Enum;
 
-enum StatisticProcessorEnum: string
+enum StatisticItemEnum: string
 {
     case ActivityCount = 'activity_count';
     case CommentCount = 'comment_count';
@@ -29,12 +29,12 @@ enum StatisticProcessorEnum: string
          * null - store permanently
          */
         return match ($this) {
-            self::ActivityCount => 60,// 1min
-            self::CommentCount => 60,
+            self::ActivityCount => 86400,// 1 day
+            self::CommentCount => 86400,
             self::StartWorking => null,
-            self::ProjectCount => 86400,// 1day
-            self::TaskCount => 3600, // 1hour
-            self::DocCount => 3600,
+            self::ProjectCount => 2592000,// 1 month
+            self::TaskCount => 86400, // 1 day
+            self::DocCount => 86400,
             self::Uptime => 1,
         };
     }

@@ -10,7 +10,7 @@ namespace App\Service\Statistics\Processor;
 use App\Model\Dto\Statistics\PartItem;
 use App\Model\Dto\Statistics\PartedStatItem;
 use App\Model\Enum\DocStateEnum;
-use App\Model\Enum\StatisticProcessorEnum;
+use App\Model\Enum\StatisticItemEnum;
 use App\Repository\DocRepository;
 use App\Service\Statistics\ProcessorInterface;
 use Happyr\DoctrineSpecification\Spec;
@@ -18,7 +18,7 @@ use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 
 #[AutoconfigureTag("app.statistic.processor",)]
-#[AsTaggedItem(index: StatisticProcessorEnum::DocCount->value)]
+#[AsTaggedItem(index: StatisticItemEnum::DocCount->value)]
 class DocCountProcessor implements ProcessorInterface
 {
     private DocRepository $docRepository;
@@ -39,7 +39,7 @@ class DocCountProcessor implements ProcessorInterface
         );
 
         return new PartedStatItem(
-            StatisticProcessorEnum::TaskCount,
+            StatisticItemEnum::TaskCount,
             $total,
             [
                 new PartItem(

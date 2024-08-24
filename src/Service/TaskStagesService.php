@@ -93,8 +93,8 @@ class TaskStagesService
      */
     public function changeStage(Task $task, int $newStageId): void
     {
-        $oldStage = $task->getStage();
-        if ($oldStage === $newStageId) {
+        $oldStageId = $task->getStage();
+        if ($oldStageId === $newStageId) {
             return; // состояние не изменилось
         }
 
@@ -110,15 +110,20 @@ class TaskStagesService
 
         if (!$task->isClosed() && $newStage->getType()->equals(TaskStageTypeEnum::STAGE_ON_CLOSED())) {
             $task->setIsClosed(true);// новый этап закрывает задачу
-        }
-        if ($task->isClosed() && !$newStage->getType()->equals(TaskStageTypeEnum::STAGE_ON_CLOSED())) {
-            $task->setIsClosed(false);// новый этап открывает задачу
-        }
+            $this->eventDispatcher->dispatch(
+                new TaskChangeStageEvent($task, $stagesDictionary->getItem($oldStageId), $newStage),
+                AppEvents::TASK_CLOSE
+            );
+        } else {
+            if ($task->isClosed() && !$newStage->getType()->equals(TaskStageTypeEnum::STAGE_ON_CLOSED())) {
+                $task->setIsClosed(false);// новый этап открывает задачу
+            }
 
-        $this->eventDispatcher->dispatch(
-            new TaskChangeStageEvent($task, $stagesDictionary->getItem($oldStage), $newStage),
-            AppEvents::TASK_CHANGE_STAGE
-        );
+            $this->eventDispatcher->dispatch(
+                new TaskChangeStageEvent($task, $stagesDictionary->getItem($oldStageId), $newStage),
+                AppEvents::TASK_CHANGE_STAGE
+            );
+        }
         $this->entityManager->flush();
     }
 }

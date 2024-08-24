@@ -7,12 +7,12 @@
 
 namespace App\Model\Dto\Statistics;
 
-use App\Model\Enum\StatisticProcessorEnum;
+use App\Model\Enum\StatisticItemEnum;
 use DateInterval;
 
 interface StatItemInterface
 {
-    public function getId(): StatisticProcessorEnum;
+    public function getId(): StatisticItemEnum;
 
     public function getTTL(): ?int;
 

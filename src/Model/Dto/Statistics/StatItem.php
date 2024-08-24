@@ -7,20 +7,20 @@
 
 namespace App\Model\Dto\Statistics;
 
-use App\Model\Enum\StatisticProcessorEnum;
+use App\Model\Enum\StatisticItemEnum;
 use DateInterval;
 use Exception;
 
 abstract class StatItem implements StatItemInterface
 {
-    private StatisticProcessorEnum $id;
+    private StatisticItemEnum $id;
 
-    public function __construct(StatisticProcessorEnum $id)
+    public function __construct(StatisticItemEnum $id)
     {
         $this->id = $id;
     }
 
-    public function getId(): StatisticProcessorEnum
+    public function getId(): StatisticItemEnum
     {
         return $this->id;
     }

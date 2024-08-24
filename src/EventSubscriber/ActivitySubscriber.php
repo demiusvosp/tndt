@@ -8,23 +8,31 @@
 namespace App\EventSubscriber;
 
 use App\Contract\ActivityEventInterface;
+use App\Event\ActivityEvent;
 use App\Model\Enum\AppEvents;
 use App\Service\ActivityFactory;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class ActivitySubscriber implements EventSubscriberInterface
 {
     private ActivityFactory $activityFactory;
     private Security $security;
     private EntityManagerInterface $entityManager;
+    private EventDispatcherInterface $eventDispatcher;
 
-    public function __construct(ActivityFactory $activityFactory, Security $security, EntityManagerInterface $entityManager)
-    {
+    public function __construct(
+        ActivityFactory $activityFactory,
+        Security $security,
+        EntityManagerInterface $entityManager,
+        EventDispatcherInterface $eventDispatcher
+    ) {
         $this->activityFactory = $activityFactory;
         $this->security = $security;
         $this->entityManager = $entityManager;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     public static function getSubscribedEvents(): array
@@ -52,5 +60,6 @@ class ActivitySubscriber implements EventSubscriberInterface
             $this->security->getUser()
         );
         $this->entityManager->persist($activity);
+        $this->eventDispatcher->dispatch(new ActivityEvent($activity), AppEvents::ACTIVITY_ADD);
     }
 }

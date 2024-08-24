@@ -7,7 +7,7 @@
 
 namespace App\Model\Dto\Statistics;
 
-use App\Model\Enum\StatisticProcessorEnum;
+use App\Model\Enum\StatisticItemEnum;
 
 class PartedStatItem extends StatItem
 {
@@ -18,7 +18,7 @@ class PartedStatItem extends StatItem
     /**
      * @param PartItem[] $parts
      */
-    public function __construct(StatisticProcessorEnum $id, int $total, array $parts = [])
+    public function __construct(StatisticItemEnum $id, int $total, array $parts = [])
     {
         parent::__construct($id);
         $this->total = $total;

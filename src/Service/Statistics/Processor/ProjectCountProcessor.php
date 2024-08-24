@@ -9,7 +9,7 @@ namespace App\Service\Statistics\Processor;
 
 use App\Model\Dto\Statistics\PartItem;
 use App\Model\Dto\Statistics\PartedStatItem;
-use App\Model\Enum\StatisticProcessorEnum;
+use App\Model\Enum\StatisticItemEnum;
 use App\Repository\ProjectRepository;
 use App\Service\Statistics\ProcessorInterface;
 use Happyr\DoctrineSpecification\Spec;
@@ -17,7 +17,7 @@ use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 
 #[AutoconfigureTag("app.statistic.processor",)]
-#[AsTaggedItem(index: StatisticProcessorEnum::ProjectCount->value)]
+#[AsTaggedItem(index: StatisticItemEnum::ProjectCount->value)]
 class ProjectCountProcessor implements ProcessorInterface
 {
     private ProjectRepository $projectRepository;
@@ -32,7 +32,7 @@ class ProjectCountProcessor implements ProcessorInterface
         $total = (int) $this->projectRepository->matchSingleScalarResult(Spec::countOf(null));
         $active = (int) $this->projectRepository->matchSingleScalarResult(Spec::countOf(Spec::eq('isArchived', false)));
         return new PartedStatItem(
-            StatisticProcessorEnum::ProjectCount,
+            StatisticItemEnum::ProjectCount,
             $total,
             [
                 new PartItem(

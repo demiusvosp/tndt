@@ -8,7 +8,7 @@
 namespace App\Service\Statistics\Processor;
 
 use App\Model\Dto\Statistics\DateTimeStatItem;
-use App\Model\Enum\StatisticProcessorEnum;
+use App\Model\Enum\StatisticItemEnum;
 use App\Service\Statistics\ProcessorInterface;
 use DateTimeImmutable;
 use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
@@ -17,7 +17,7 @@ use function preg_match;
 use function shell_exec;
 
 #[AutoconfigureTag("app.statistic.processor",)]
-#[AsTaggedItem(index: StatisticProcessorEnum::Uptime->value)]
+#[AsTaggedItem(index: StatisticItemEnum::Uptime->value)]
 class UptimeProcessor implements ProcessorInterface
 {
     public function execute(): DateTimeStatItem
@@ -25,6 +25,6 @@ class UptimeProcessor implements ProcessorInterface
         $output = shell_exec('stat /proc/1');
         preg_match('/Modify: ([\d\-: .]+)/', $output, $uptimeDate);
 
-        return new DateTimeStatItem(StatisticProcessorEnum::Uptime, new DateTimeImmutable($uptimeDate[1]));
+        return new DateTimeStatItem(StatisticItemEnum::Uptime, new DateTimeImmutable($uptimeDate[1]));
     }
 }

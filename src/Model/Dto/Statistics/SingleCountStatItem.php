@@ -7,13 +7,13 @@
 
 namespace App\Model\Dto\Statistics;
 
-use App\Model\Enum\StatisticProcessorEnum;
+use App\Model\Enum\StatisticItemEnum;
 
 class SingleCountStatItem extends StatItem
 {
     private ?int $value;
 
-    public function __construct(StatisticProcessorEnum $id, ?int $value)
+    public function __construct(StatisticItemEnum $id, ?int $value)
     {
         parent::__construct($id);
         $this->value = $value;

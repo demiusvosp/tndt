@@ -8,7 +8,7 @@
 namespace App\Service\Statistics\Processor;
 
 use App\Model\Dto\Statistics\DateTimeStatItem;
-use App\Model\Enum\StatisticProcessorEnum;
+use App\Model\Enum\StatisticItemEnum;
 use App\Repository\ProjectRepository;
 use App\Service\Statistics\ProcessorInterface;
 use DateTimeImmutable;
@@ -18,7 +18,7 @@ use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 
 #[AutoconfigureTag("app.statistic.processor",)]
-#[AsTaggedItem(index: StatisticProcessorEnum::StartWorking->value)]
+#[AsTaggedItem(index: StatisticItemEnum::StartWorking->value)]
 class StartWorkingProcessor implements ProcessorInterface
 {
     private ProjectRepository $projectRepository;
@@ -42,7 +42,7 @@ class StartWorkingProcessor implements ProcessorInterface
         }
 
         return new DateTimeStatItem(
-            StatisticProcessorEnum::StartWorking,
+            StatisticItemEnum::StartWorking,
             new DateTimeImmutable($earlierProjectDate)
         );
     }

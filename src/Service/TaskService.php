@@ -92,18 +92,12 @@ class TaskService
             $newStage = current($this->stagesService->availableStages($task, [TaskStageTypeEnum::STAGE_ON_CLOSED()]));
         }
 
-        $task->setIsClosed(true);
-        $task->setStage($newStage->getId());
-        // Теоретически этап стоит менять только через доменный метод, чтобы сработал и другая бизнес-логика,
-        //   помимо смены атрибута в задаче. Но на данный момент там только та бизнес-логика, которая не должна быть
-        //   выполнена при закрытии задачи. (например создание активности смены статуса, когда мы уже создаем активность
-        //   задача закрыта)
-        // $this->stagesService->changeStage($task, $stage);
+//        $task->setIsClosed(true);
+//        $task->setStage($newStage->getId());
+        // устанавливать флаги состояния и закрытости будет специализированный сервис
+        $this->stagesService->changeStage($task, $newStage->getId());
 
-        $this->eventDispatcher->dispatch(
-            new TaskChangeStageEvent($task, $oldStage, $newStage),
-            AppEvents::TASK_CLOSE
-        );
+
         $this->entityManager->flush();
     }
 }

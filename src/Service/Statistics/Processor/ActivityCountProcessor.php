@@ -9,7 +9,7 @@ namespace App\Service\Statistics\Processor;
 
 use App\Model\Dto\Statistics\SingleCountStatItem;
 use App\Model\Dto\Statistics\StatItemInterface;
-use App\Model\Enum\StatisticProcessorEnum;
+use App\Model\Enum\StatisticItemEnum;
 use App\Repository\ActivityRepository;
 use App\Service\Statistics\ProcessorInterface;
 use Happyr\DoctrineSpecification\Spec;
@@ -17,7 +17,7 @@ use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 
 #[AutoconfigureTag("app.statistic.processor",)]
-#[AsTaggedItem(index: StatisticProcessorEnum::ActivityCount->value)]
+#[AsTaggedItem(index: StatisticItemEnum::ActivityCount->value)]
 class ActivityCountProcessor implements ProcessorInterface
 {
     private ActivityRepository $commentRepository;
@@ -32,6 +32,6 @@ class ActivityCountProcessor implements ProcessorInterface
         $count = $this->commentRepository->matchSingleScalarResult(
             Spec::countOf(null)
         );
-        return new SingleCountStatItem(StatisticProcessorEnum::CommentCount, $count);
+        return new SingleCountStatItem(StatisticItemEnum::ActivityCount, $count);
     }
 }
