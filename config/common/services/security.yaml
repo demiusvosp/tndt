@@ -10,8 +10,6 @@ services:
 
   App\Security\Hierarchy\HierarchyHelper:
     class: 'App\Security\Hierarchy\HierarchyHelper'
-    arguments:
-      - '@cache.permissions.adapter'
     configurator: [ '@App\Security\Hierarchy\HierarchyConfigurator', 'configure' ]
 
   App\Security\Voter\PublicProjectVoter:

@@ -19,18 +19,15 @@ framework:
 
         # Namespaced pools use the above "app" backend by default
         pools:
-            # системный кеш, хранит предварительно вычисленные данные, например плоскую иерархию полномочий
-            cache.app.system:
-                adapter: cache.adapter.system
-            statistics.cache:
+            cache.statistics:
                 adapter: cache.app
 
             doctrine.result_cache_pool:
                 adapter: cache.app
             doctrine.system_cache_pool:
                 adapter: cache.system
-            permission_map.cache:
-                adapter: cache.system
+            cache.permission_map:
+                adapter: cache.permissions.adapter
 
 services:
 

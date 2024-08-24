@@ -18,16 +18,16 @@ use Symfony\Component\DependencyInjection\ServiceLocator;
 class StatisticsService
 {
     private ServiceLocator $statProcessors;
-    private CacheItemPoolInterface $statisticsCache;
+    private CacheItemPoolInterface $cacheStatistics;
     private LoggerInterface $logger;
 
     public function __construct(
-        ServiceLocator $statProcessors,
-        CacheItemPoolInterface $statisticsCache,
-        LoggerInterface $logger
+        ServiceLocator         $statProcessors,
+        CacheItemPoolInterface $cacheStatistics,
+        LoggerInterface        $logger
     ) {
         $this->statProcessors = $statProcessors;
-        $this->statisticsCache = $statisticsCache;
+        $this->cacheStatistics = $cacheStatistics;
         $this->logger = $logger;
     }
 
@@ -37,7 +37,7 @@ class StatisticsService
      */
     public function getStat(StatisticProcessorEnum $type): ?StatItemInterface
     {
-        $item = $this->statisticsCache->getItem($type->cacheKey());
+        $item = $this->cacheStatistics->getItem($type->cacheKey());
 
         if (!$item->isHit()) {
             try {
@@ -52,7 +52,7 @@ class StatisticsService
             if ($result->getTTL() !== null) {
                 $item->expiresAfter($result->getTTL());
             }
-            $this->statisticsCache->save($item);
+            $this->cacheStatistics->save($item);
         }
 
         return $item->get();

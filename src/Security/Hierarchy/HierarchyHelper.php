@@ -11,19 +11,20 @@ namespace App\Security\Hierarchy;
 use App\Model\Enum\UserPermissionsEnum;
 use Psr\Cache\CacheItemPoolInterface;
 use Symfony\Component\Cache\Adapter\PhpArrayAdapter;
+use function dump;
 
 class HierarchyHelper
 {
-    private CacheItemPoolInterface $permissionMapCache;
+    private CacheItemPoolInterface $cachePermissionMap;
 
-    public function __construct(CacheItemPoolInterface $permissionMapCache)
+    public function __construct(CacheItemPoolInterface $cachePermissionMap)
     {
-        $this->permissionMapCache = $permissionMapCache;
+        $this->cachePermissionMap = $cachePermissionMap;
     }
 
     public function configure(): void
     {
-        if (!$this->permissionMapCache->hasItem(UserPermissionsEnum::getProjectRoles()[0])) {
+        if (!$this->cachePermissionMap->hasItem(UserPermissionsEnum::getProjectRoles()[0])) {
             $this->buildMap(UserPermissionsEnum::getHierarchy());
         }
     }
@@ -32,20 +33,20 @@ class HierarchyHelper
     {
         $cachedMap = [];
         if($rebuild) {
-            $this->permissionMapCache->clear();
+            $this->cachePermissionMap->clear();
         }
         foreach ($hierarchy as $parentItem => $children) {
             $cachedMap[$parentItem] = $this->buildItem($children, $hierarchy);
         }
 
-        if ($this->permissionMapCache instanceof PhpArrayAdapter) {
-            $this->permissionMapCache->warmUp($cachedMap);
+        if ($this->cachePermissionMap instanceof PhpArrayAdapter) {
+            $this->cachePermissionMap->warmUp($cachedMap);
         } else {
             foreach ($cachedMap as $role => $permissions) {
-                $cacheItem = $this->permissionMapCache->getItem($role);
+                $cacheItem = $this->cachePermissionMap->getItem($role);
                 if (!$cacheItem->isHit()) {
                     $cacheItem->set($permissions);
-                    $this->permissionMapCache->save($cacheItem);
+                    $this->cachePermissionMap->save($cacheItem);
                 }
             }
         }
@@ -79,7 +80,8 @@ class HierarchyHelper
              */
             return true;
         }
-        $cacheItem = $this->permissionMapCache->getItem($subjectItem);
+        $cacheItem = $this->cachePermissionMap->getItem($subjectItem);
+dump($cacheItem);
         if(!$cacheItem->isHit()) {
             return false;
         }
