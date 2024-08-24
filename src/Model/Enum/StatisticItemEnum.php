@@ -30,11 +30,11 @@ enum StatisticItemEnum: string
          */
         return match ($this) {
             self::ActivityCount => 86400,// 1 day
-            self::CommentCount => 86400,
+            self::CommentCount => 86200,
             self::StartWorking => null,
             self::ProjectCount => 2592000,// 1 month
-            self::TaskCount => 86400, // 1 day
-            self::DocCount => 86400,
+            self::TaskCount => 604800, // 1 week
+            self::DocCount => 604600,
             self::Uptime => 1,
         };
     }
