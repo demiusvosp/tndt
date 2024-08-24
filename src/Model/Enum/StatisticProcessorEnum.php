@@ -17,4 +17,16 @@ enum StatisticProcessorEnum: string
     case DocCount = 'doc_count';
     case Uptime = 'uptime';
 
+    public function ttl(): ?int
+    {
+        return match ($this) {
+            self::ActivityCount => 60,// 1min
+            self::CommentCount => 60,
+            self::StartWorking => null,
+            self::ProjectCount => 86400,// 1day
+            self::TaskCount => 3600, // 1hour
+            self::DocCount => 3600,
+            self::Uptime => null,
+        };
+    }
 }

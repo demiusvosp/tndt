@@ -7,22 +7,23 @@
 
 namespace App\Service\Statistics;
 
+use App\Model\Dto\Statistics\StatItemInterface;
 use App\Model\Enum\StatisticProcessorEnum;
-use App\ViewModel\Statistics\CommonStat;
+use Psr\Cache\CacheItemPoolInterface;
+use Psr\Cache\InvalidArgumentException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Symfony\Component\DependencyInjection\ServiceLocator;
-use Symfony\Contracts\Cache\CacheInterface;
 
 class StatisticsService
 {
     private ServiceLocator $statProcessors;
-    private CacheInterface $statisticsCache;
+    private CacheItemPoolInterface $statisticsCache;
     private LoggerInterface $logger;
 
     public function __construct(
         ServiceLocator $statProcessors,
-        CacheInterface $statisticsCache,
+        CacheItemPoolInterface $statisticsCache,
         LoggerInterface $logger
     ) {
         $this->statProcessors = $statProcessors;
@@ -31,16 +32,29 @@ class StatisticsService
     }
 
 
-    public function getStat(StatisticProcessorEnum $item)
+    /**
+     * @throws InvalidArgumentException
+     */
+    public function getStat(StatisticProcessorEnum $type): ?StatItemInterface
     {
-        try {
-            /** @var ProcessorInterface $processor */
-            $processor = $this->statProcessors->get($item->value);
-        } catch (ServiceNotFoundException $e) {
-            $this->logger->error('Cannot get statistics for ' . $item->name, ['processor' => $item, 'exception' => $e]);
-            return null;
+        $item = $this->statisticsCache->getItem($type->value);
+
+        if (!$item->isHit()) {
+            try {
+                /** @var ProcessorInterface $processor */
+                $processor = $this->statProcessors->get($type->value);
+            } catch (ServiceNotFoundException $e) {
+                $this->logger->error('Cannot get statistics for ' . $type->name, ['processor' => $type, 'exception' => $e]);
+                return null;
+            }
+            $result = $processor->execute();
+            $item->set($result);
+            if ($result->getTTL() !== null) {
+                $item->expiresAfter($result->getTTL());
+            }
+            $this->statisticsCache->save($item);
         }
 
-        return $processor->execute();
+        return $item->get();
     }
 }

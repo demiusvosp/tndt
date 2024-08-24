@@ -8,10 +8,13 @@
 namespace App\Model\Dto\Statistics;
 
 use App\Model\Enum\StatisticProcessorEnum;
+use DateInterval;
 
 interface StatItemInterface
 {
     public function getId(): StatisticProcessorEnum;
+
+    public function getTTL(): ?int;
 
     public function getValue(): mixed;
 
