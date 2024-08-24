@@ -29,6 +29,8 @@ framework:
                 adapter: cache.app
             doctrine.system_cache_pool:
                 adapter: cache.system
+            permission_map.cache:
+                adapter: cache.system
 
 services:
 
