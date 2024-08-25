@@ -30,18 +30,18 @@ class StatisticSunscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            AppEvents::ACTIVITY_ADD => 'onActivityAdd',
-            AppEvents::COMMENT_ADD => 'onCommentAdd',
+            AppEvents::ACTIVITY_ADD => ['onActivityAdd', -20],
+            AppEvents::COMMENT_ADD => ['onCommentAdd', -20],
 
-            AppEvents::DOC_CREATE => 'onDoc',
-            AppEvents::DOC_CHANGE_STATE => 'onDoc',
+            AppEvents::DOC_CREATE => ['onDoc', -20],
+            AppEvents::DOC_CHANGE_STATE => ['onDoc', -20],
 
-            AppEvents::TASK_OPEN => 'onTask',
-            AppEvents::TASK_CHANGE_STAGE => 'onTask',
-            AppEvents::TASK_CLOSE => 'onTask',
+            AppEvents::TASK_OPEN => ['onTask', -20],
+            AppEvents::TASK_CHANGE_STAGE => ['onTask', -20],
+            AppEvents::TASK_CLOSE => ['onTask', -20],
 
-            AppEvents::PROJECT_CREATE => 'onProject',
-            AppEvents::PROJECT_ARCHIVE => 'onProject'
+            AppEvents::PROJECT_CREATE => ['onProject', -20],
+            AppEvents::PROJECT_ARCHIVE => ['onProject', -20]
         ];
     }
 
