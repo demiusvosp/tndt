@@ -7,10 +7,9 @@
 
 namespace App\Specification\Activity;
 
-use App\Model\Enum\ActivitySubjectTypeEnum;
+use App\Model\Enum\Activity\ActivitySubjectTypeEnum;
 use Happyr\DoctrineSpecification\Spec;
 use Happyr\DoctrineSpecification\Specification\BaseSpecification;
-use function get_class;
 
 class BySubjectSpec extends BaseSpecification
 {

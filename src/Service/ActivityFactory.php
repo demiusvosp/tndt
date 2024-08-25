@@ -15,7 +15,7 @@ use App\Event\DocChangeStateEvent;
 use App\Event\DocEvent;
 use App\Event\TaskChangeStageEvent;
 use App\Event\TaskEvent;
-use App\Model\Enum\ActivityTypeEnum;
+use App\Model\Enum\Activity\ActivityTypeEnum;
 use App\Model\Enum\AppEvents;
 use function array_merge;
 
