@@ -13,7 +13,7 @@ use App\Form\DTO\User\NewUserDTO;
 use App\Form\Type\User\NewUserType;
 use App\Form\Type\User\UserManagerEditType;
 use App\Model\Enum\FlashMessageTypeEnum;
-use App\Model\Enum\UserPermissionsEnum;
+use App\Model\Enum\Security\UserPermissionsEnum;
 use App\Repository\UserRepository;
 use App\Service\UserService;
 use Happyr\DoctrineSpecification\Spec;

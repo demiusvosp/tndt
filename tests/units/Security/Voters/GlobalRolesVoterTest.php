@@ -8,7 +8,7 @@
 namespace App\Tests\units\Security\Voters;
 
 use App\Entity\User;
-use App\Model\Enum\UserPermissionsEnum;
+use App\Model\Enum\Security\UserPermissionsEnum;
 use App\Security\Hierarchy\HierarchyHelper;
 use App\Security\Voter\GlobalRolesVoter;
 use PHPUnit\Framework\MockObject\MockObject;

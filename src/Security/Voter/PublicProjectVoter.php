@@ -9,7 +9,7 @@ declare(strict_types=1);
 namespace App\Security\Voter;
 
 use App\Entity\Project;
-use App\Model\Enum\UserPermissionsEnum;
+use App\Model\Enum\Security\UserPermissionsEnum;
 use App\Security\ProjectSecurityRegistry;
 use App\Service\ProjectContext;
 use Psr\Log\LoggerAwareInterface;

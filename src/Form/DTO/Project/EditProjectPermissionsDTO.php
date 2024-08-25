@@ -10,7 +10,7 @@ namespace App\Form\DTO\Project;
 
 use App\Entity\Project;
 use App\Entity\User;
-use App\Model\Enum\UserRolesEnum;
+use App\Model\Enum\Security\UserRolesEnum;
 use App\Service\Constraints\UniqueInFields;
 use Doctrine\Common\Collections\ArrayCollection;
 use Happyr\Validator\Constraint\EntityExist;

@@ -10,7 +10,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Model\Enum\StatisticItemEnum;
-use App\Model\Enum\UserRolesEnum;
+use App\Model\Enum\Security\UserRolesEnum;
 use App\Repository\DocRepository;
 use App\Repository\ProjectRepository;
 use App\Repository\TaskRepository;

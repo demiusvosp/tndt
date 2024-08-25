@@ -8,7 +8,7 @@ declare(strict_types=1);
 
 namespace App\Security\Hierarchy;
 
-use App\Model\Enum\UserPermissionsEnum;
+use App\Model\Enum\Security\UserPermissionsEnum;
 use Psr\Cache\CacheItemPoolInterface;
 use Symfony\Component\Cache\Adapter\PhpArrayAdapter;
 use function dump;

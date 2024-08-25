@@ -8,7 +8,7 @@
 namespace App\EventSubscriber\Menu\SidebarMenu;
 
 use App\Event\Menu\MenuEvent;
-use App\Model\Enum\UserPermissionsEnum;
+use App\Model\Enum\Security\UserPermissionsEnum;
 use App\ViewModel\Menu\MenuItem;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
