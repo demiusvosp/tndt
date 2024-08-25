@@ -13,15 +13,18 @@ use League\CommonMark\Extension\CommonMark\Node\Inline\Link;
 use League\CommonMark\Parser\Inline\InlineParserInterface;
 use League\CommonMark\Parser\Inline\InlineParserMatch;
 use League\CommonMark\Parser\InlineParserContext;
+use Symfony\Component\Stopwatch\Stopwatch;
 use function implode;
 
 class WikiLinkProcessor implements InlineParserInterface
 {
     private WikiService $wikiService;
+    private Stopwatch $stopwatch;
 
-    public function __construct(WikiService $wikiService)
+    public function __construct(WikiService $wikiService, Stopwatch $stopwatch)
     {
         $this->wikiService = $wikiService;
+        $this->stopwatch = $stopwatch;
     }
 
     public function getMatchDefinition(): InlineParserMatch
@@ -36,6 +39,7 @@ class WikiLinkProcessor implements InlineParserInterface
 
     public function parse(InlineParserContext $inlineContext): bool
     {
+        $this->stopwatch->start('link', 'wiki.parser');
         $linkTag = $inlineContext->getSubMatches()[0];
         $wikiLink = $this->wikiService->getLink($linkTag);
         if ($wikiLink) {
@@ -46,8 +50,8 @@ class WikiLinkProcessor implements InlineParserInterface
                 $link->data->set('attributes/class', $wikiLink->getStyle()->getCssClass());
             }
             $inlineContext->getContainer()->appendChild($link);
-            return true;
         }
-        return false;
+        $this->stopwatch->stop('link');
+        return $wikiLink != null;
     }
 }

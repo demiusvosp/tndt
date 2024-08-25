@@ -15,6 +15,9 @@ use Psr\Cache\InvalidArgumentException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Symfony\Component\DependencyInjection\ServiceLocator;
+use Symfony\Component\Stopwatch\Stopwatch;
+use Symfony\Contracts\Cache\CacheInterface;
+
 
 class StatisticsService
 {
@@ -22,15 +25,18 @@ class StatisticsService
     private array $innerCache;
     private CacheItemPoolInterface $cacheStatistics;
     private LoggerInterface $logger;
+    private Stopwatch $stopwatch;
 
     public function __construct(
         ServiceLocator         $statProcessors,
         CacheItemPoolInterface $cacheStatistics,
-        LoggerInterface        $logger
+        LoggerInterface        $logger,
+        Stopwatch $stopwatch
     ) {
         $this->statProcessors = $statProcessors;
         $this->cacheStatistics = $cacheStatistics;
         $this->logger = $logger;
+        $this->stopwatch = $stopwatch;
     }
 
 
@@ -39,6 +45,7 @@ class StatisticsService
      */
     public function getStat(StatisticItemEnum $type): ?StatItemInterface
     {
+        $this->stopwatch->start($type->value, 'statistics');
         if (!isset($this->innerCache[$type->cacheKey()])) {
             $this->innerCache[$type->cacheKey()] = $this->cacheStatistics->getItem($type->cacheKey());
         }
@@ -49,12 +56,13 @@ class StatisticsService
                 /** @var ProcessorInterface $processor */
                 $processor = $this->statProcessors->get($type->value);
             } catch (ServiceNotFoundException $e) {
+                $this->stopwatch->stop($type->value);
                 $this->logger->error('Cannot get statistics for ' . $type->name, ['processor' => $type, 'exception' => $e]);
                 return null;
             }
             $this->saveCacheItem($cacheItem, $processor->execute());
         }
-
+        $this->stopwatch->stop($type->value);
         return $cacheItem->get();
     }
 
