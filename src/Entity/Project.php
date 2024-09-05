@@ -13,7 +13,7 @@ use App\Model\Dto\Dictionary\Task\TaskPriority;
 use App\Model\Dto\Dictionary\Task\TaskStage;
 use App\Model\Dto\Dictionary\Task\TaskType;
 use App\Model\Dto\Project\TaskSettings;
-use App\Model\Enum\UserRolesEnum;
+use App\Model\Enum\Security\UserRolesEnum;
 use App\Repository\ProjectRepository;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;

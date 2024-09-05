@@ -8,10 +8,8 @@
 namespace App\ViewTransformer;
 
 use App\Entity\Activity;
-use App\Model\Enum\ActivityTypeEnum;
+use App\Model\Enum\Activity\ActivityTypeEnum;
 use App\Model\Enum\DocStateEnum;
-use App\Service\Twig\TimeExtension;
-use DateTimeInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ActivityTransformer

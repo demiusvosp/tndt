@@ -5,7 +5,7 @@
  * Time: 14:03
  */
 
-namespace App\Model\Enum;
+namespace App\Model\Enum\Activity;
 
 use App\Entity\Comment;
 use App\Entity\Doc;

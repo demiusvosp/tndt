@@ -7,10 +7,8 @@
 
 namespace App\EventSubscriber\Menu\SidebarMenu;
 
-use App\Event\Menu\BreadcrumbEvent;
 use App\Event\Menu\MenuEvent;
-use App\Model\Enum\UserRolesEnum;
-use App\ViewModel\Menu\BreadcrumbItem;
+use App\Model\Enum\Security\UserRolesEnum;
 use App\ViewModel\Menu\MenuItem;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

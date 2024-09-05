@@ -7,12 +7,9 @@
 
 namespace App\Repository;
 
-use App\Contract\ActivitySubjectInterface;
 use App\Entity\Activity;
-use App\Entity\Task;
 use App\Exception\ActivityException;
-use App\Model\Enum\ActivitySubjectTypeEnum;
-use App\Specification\Activity\ByOwnerSpec;
+use App\Model\Enum\Activity\ActivitySubjectTypeEnum;
 use App\Specification\Activity\BySubjectSpec;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;

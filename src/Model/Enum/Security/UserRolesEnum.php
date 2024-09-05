@@ -6,7 +6,7 @@
  */
 declare(strict_types=1);
 
-namespace App\Model\Enum;
+namespace App\Model\Enum\Security;
 
 use MyCLabs\Enum\Enum;
 
@@ -100,7 +100,7 @@ class UserRolesEnum extends Enum
 
     /**
      * @param string $syntheticRole
-     * @return array []|[role, project]
+     * @return array -  [<role>, <project>]
      */
     public static function explodeSyntheticRole(string $syntheticRole): array
     {

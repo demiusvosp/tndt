@@ -9,8 +9,8 @@ declare(strict_types=1);
 namespace App\Security\Voter;
 
 use App\Entity\Project;
-use App\Model\Enum\UserPermissionsEnum;
-use App\Model\Enum\UserRolesEnum;
+use App\Model\Enum\Security\UserPermissionsEnum;
+use App\Model\Enum\Security\UserRolesEnum;
 use App\Security\Hierarchy\HierarchyHelper;
 use App\Service\ProjectContext;
 use Psr\Log\LoggerAwareInterface;

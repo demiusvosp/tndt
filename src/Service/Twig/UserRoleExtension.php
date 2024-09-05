@@ -8,8 +8,8 @@ declare(strict_types=1);
 
 namespace App\Service\Twig;
 
-use App\Model\Enum\UserPermissionsEnum;
-use App\Model\Enum\UserRolesEnum;
+use App\Model\Enum\Security\UserPermissionsEnum;
+use App\Model\Enum\Security\UserRolesEnum;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;

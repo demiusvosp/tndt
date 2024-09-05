@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Migrations;
 
 use App\Entity\User;
-use App\Model\Enum\UserRolesEnum;
+use App\Model\Enum\Security\UserRolesEnum;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 use DomainException;

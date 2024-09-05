@@ -8,7 +8,7 @@ declare(strict_types=1);
 
 namespace App\Security\Hierarchy;
 
-use App\Model\Enum\UserPermissionsEnum;
+use App\Model\Enum\Security\UserPermissionsEnum;
 
 class HierarchyConfigurator
 {

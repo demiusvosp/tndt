@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-use App\Model\Enum\UserRolesEnum;
+use App\Model\Enum\Security\UserRolesEnum;
 use App\Repository\UserRepository;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;

@@ -8,7 +8,7 @@
 namespace App\EventSubscriber;
 
 use App\Entity\User;
-use App\Model\Enum\UserRolesEnum;
+use App\Model\Enum\Security\UserRolesEnum;
 
 trait CurrentUserTrait
 {

@@ -9,7 +9,7 @@ namespace App\EventSubscriber\Menu\NavbarMenu;
 
 use App\Entity\Project;
 use App\Event\Menu\MenuEvent;
-use App\Model\Enum\UserPermissionsEnum;
+use App\Model\Enum\Security\UserPermissionsEnum;
 use App\Repository\ProjectRepository;
 use App\ViewModel\Menu\MenuItem;
 use App\ViewModel\Menu\TreeItem;
