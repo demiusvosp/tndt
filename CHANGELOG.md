@@ -3,6 +3,7 @@
 ## [current]
 - **New feature**
   - [tndt-9](http://tasks.demius.ru/p/tndt-9) - wiki-разметка. Этап 0. Элементарная система гиперссылок
+  - [tndt-153](http://tasks.demius.ru/p/tndt-153) - Страница общей статистики системы
 - **Refactoring**
   - [tndt-160](http://tasks.demius.ru/p/tndt-160) - Обновить docker-compose and node container
 - **Bugfixes**
