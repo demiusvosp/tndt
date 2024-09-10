@@ -11,7 +11,6 @@ namespace App\Security\Hierarchy;
 use App\Model\Enum\Security\UserPermissionsEnum;
 use Psr\Cache\CacheItemPoolInterface;
 use Symfony\Component\Cache\Adapter\PhpArrayAdapter;
-use function dump;
 
 class HierarchyHelper
 {
@@ -81,7 +80,6 @@ class HierarchyHelper
             return true;
         }
         $cacheItem = $this->cachePermissionMap->getItem($subjectItem);
-dump($cacheItem);
         if(!$cacheItem->isHit()) {
             return false;
         }
