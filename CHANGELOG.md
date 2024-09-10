@@ -8,14 +8,7 @@
   - [tndt-160](http://tasks.demius.ru/p/tndt-160) - Обновить docker-compose and node container
 - **Bugfixes**
   - [tndt-168](http://tasks.demius.ru/p/tndt-168) - tabler-icons.svg переехал в другой пакет
-- ** Замечания к обновлению**
-  - Необходимо в env php-контейнера добавить переменную APP_HOST с доменом на котором развернута система
-    Например: 
-```
-  environment:
-    APP_HOST: tasks.demius.ru
-    
-```
+- **Замечания к обновлению в [help/install/upgrade_3.1.md](help/install/upgrade_3.1.md)**
 
 ----
 

@@ -5,6 +5,12 @@ monolog:
             action_level: error
             handler: nested
             excluded_http_codes: [404, 405]
+        graylog:
+            type: gelf
+            publisher:
+                hostname: '%env(GRAYLOG_HOST)%'
+                port: '%env(GRAYLOG_PORT)%'
+            level: info
         nested:
             type: stream
             path: "php://stderr"
