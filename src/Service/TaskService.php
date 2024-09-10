@@ -10,12 +10,10 @@ namespace App\Service;
 
 use App\Entity\Task;
 use App\Entity\User;
-use App\Event\TaskChangeStageEvent;
 use App\Event\TaskEvent;
 use App\Form\DTO\Task\CloseTaskDTO;
 use App\Form\DTO\Task\EditTaskDTO;
 use App\Form\DTO\Task\NewTaskDTO;
-use App\Model\Dto\Dictionary\Task\TaskStageItem;
 use App\Model\Enum\AppEvents;
 use App\Model\Enum\DictionaryTypeEnum;
 use App\Model\Enum\TaskStageTypeEnum;
@@ -85,18 +83,16 @@ class TaskService
             $this->commentService->applyCommentFromString($task, $request->getComment(), $whoClose);
         }
         $stagesDictionary = $this->dictionaryFetcher->getDictionary(DictionaryTypeEnum::TASK_STAGE(), $task);
-        /** @var TaskStageItem $oldStage */
-        $oldStage = $stagesDictionary->getItem($task->getStage());
+
         $newStage = $stagesDictionary->getItem($request->getStage());
         if (!$newStage->isSet()) {
             $newStage = current($this->stagesService->availableStages($task, [TaskStageTypeEnum::STAGE_ON_CLOSED()]));
         }
 
-//        $task->setIsClosed(true);
-//        $task->setStage($newStage->getId());
-        // устанавливать флаги состояния и закрытости будет специализированный сервис
-        $this->stagesService->changeStage($task, $newStage->getId());
-
+        if ($newStage) {
+            // устанавливать флаги состояния и закрытости будет специализированный сервис
+            $this->stagesService->changeStage($task, $newStage->getId());
+        }
 
         $this->entityManager->flush();
     }
