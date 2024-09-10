@@ -10,15 +10,16 @@ namespace App\Security\Hierarchy;
 
 use App\Model\Enum\Security\UserPermissionsEnum;
 use Psr\Cache\CacheItemPoolInterface;
+use Psr\Cache\InvalidArgumentException;
 use Symfony\Component\Cache\Adapter\PhpArrayAdapter;
 
 class HierarchyHelper
 {
-    private CacheItemPoolInterface $cachePermissionMap;
+    private CacheItemPoolInterface $permissionMapCache;
 
-    public function __construct(CacheItemPoolInterface $cachePermissionMap)
+    public function __construct(CacheItemPoolInterface $permissionMapCache)
     {
-        $this->cachePermissionMap = $cachePermissionMap;
+        $this->permissionMapCache = $permissionMapCache;
     }
 
     public function configure(): void
@@ -32,20 +33,20 @@ class HierarchyHelper
     {
         $cachedMap = [];
         if($rebuild) {
-            $this->cachePermissionMap->clear();
+            $this->permissionMapCache->clear();
         }
         foreach ($hierarchy as $parentItem => $children) {
             $cachedMap[$parentItem] = $this->buildItem($children, $hierarchy);
         }
 
-        if ($this->cachePermissionMap instanceof PhpArrayAdapter) {
-            $this->cachePermissionMap->warmUp($cachedMap);
+        if ($this->permissionMapCache instanceof PhpArrayAdapter) {
+            $this->permissionMapCache->warmUp($cachedMap);
         } else {
             foreach ($cachedMap as $role => $permissions) {
-                $cacheItem = $this->cachePermissionMap->getItem($role);
+                $cacheItem = $this->permissionMapCache->getItem($role);
                 if (!$cacheItem->isHit()) {
                     $cacheItem->set($permissions);
-                    $this->cachePermissionMap->save($cacheItem);
+                    $this->permissionMapCache->save($cacheItem);
                 }
             }
         }
@@ -70,6 +71,7 @@ class HierarchyHelper
      * @param string $requestedItem - запрошенное полномочие
      * @param string $subjectItem - имеющееся полномочие
      * @return bool
+     * @throws InvalidArgumentException
      */
     public function has(string $requestedItem, string $subjectItem): bool
     {
@@ -79,7 +81,7 @@ class HierarchyHelper
              */
             return true;
         }
-        $cacheItem = $this->cachePermissionMap->getItem($subjectItem);
+        $cacheItem = $this->permissionMapCache->getItem($subjectItem);
         if(!$cacheItem->isHit()) {
             return false;
         }
