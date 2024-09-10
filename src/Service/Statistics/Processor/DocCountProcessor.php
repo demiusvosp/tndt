@@ -13,7 +13,6 @@ use App\Model\Enum\DocStateEnum;
 use App\Model\Enum\StatisticItemEnum;
 use App\Repository\DocRepository;
 use App\Service\Statistics\ProcessorInterface;
-use Happyr\DoctrineSpecification\Spec;
 use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 
@@ -30,31 +29,24 @@ class DocCountProcessor implements ProcessorInterface
 
     public function execute(): ?PartedStatItem
     {
-        $total = $this->docRepository->matchSingleScalarResult(Spec::countOf(null));
-        $deprecated = $this->docRepository->matchSingleScalarResult(
-            Spec::countOf(Spec::eq('state', DocStateEnum::Deprecated->value))
-        );
-        $archived = $this->docRepository->matchSingleScalarResult(
-            Spec::countOf(Spec::eq('state', DocStateEnum::Archived->value))
-        );
-
+        $data = $this->docRepository->countsByState(null);
         return new PartedStatItem(
-            StatisticItemEnum::TaskCount,
-            $total,
+            StatisticItemEnum::DocCount,
+            $data['total'],
             [
                 new PartItem(
                     'normal',
-                    $total - $deprecated - $archived,
+                    $data[DocStateEnum::Normal->value],
                     'green'
                 ),
                 new PartItem(
                     'deprecated',
-                    $deprecated,
+                    $data[DocStateEnum::Deprecated->value],
                     'primary'
                 ),
                 new PartItem(
                     'archived',
-                    $archived,
+                    $data[DocStateEnum::Archived->value],
                     'orange'
                 )
             ]

@@ -32,7 +32,7 @@ enum StatisticItemEnum: string
             self::ActivityCount => 86400,// 1 day
             self::CommentCount => 86200,
             self::StartWorking => null,
-            self::ProjectCount => 2592000,// 1 month
+            self::ProjectCount => 1,// 1 month
             self::TaskCount => 604800, // 1 week
             self::DocCount => 604600,
             self::Uptime => 1,

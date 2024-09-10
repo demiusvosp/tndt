@@ -71,4 +71,24 @@ class TaskRepository extends ServiceEntityRepository implements NoEntityReposito
         ));
     }
 
+    /**
+     * @param string|null $suffix
+     * @return array [<bool isClosed> => <int cnt>]
+     */
+    public function countByClosed(?string $suffix = null): array
+    {
+        $qb = $this->createQueryBuilder('t')
+            ->select('t.isClosed', 'COUNT(t.isClosed) as cnt')
+            ->groupBy('t.isClosed');
+        if ($suffix) {
+            $qb->andWhere('t.suffix = :project')
+                ->setParameter('project', $suffix);
+        }
+
+        $result = [];
+        foreach ($qb->getQuery()->getResult() as $row) {
+            $result[$row['isClosed']] = $row['cnt'];
+        }
+        return $result;
+    }
 }

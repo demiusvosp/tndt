@@ -29,15 +29,15 @@ class ProjectCountProcessor implements ProcessorInterface
 
     public function execute(): ?PartedStatItem
     {
-        $total = (int) $this->projectRepository->matchSingleScalarResult(Spec::countOf(null));
-        $active = (int) $this->projectRepository->matchSingleScalarResult(Spec::countOf(Spec::eq('isArchived', false)));
+        $data = $this->projectRepository->countByArchived();
+
         return new PartedStatItem(
             StatisticItemEnum::ProjectCount,
-            $total,
+            $data[false] + $data[true],
             [
                 new PartItem(
                     'active',
-                    $active,
+                    $data[false],
                     'blue'
                 )
             ]

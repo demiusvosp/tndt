@@ -12,7 +12,6 @@ use App\Model\Dto\Statistics\PartedStatItem;
 use App\Model\Enum\StatisticItemEnum;
 use App\Repository\TaskRepository;
 use App\Service\Statistics\ProcessorInterface;
-use Happyr\DoctrineSpecification\Spec;
 use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 
@@ -29,15 +28,15 @@ class TaskCountProcessor implements ProcessorInterface
 
     public function execute(): ?PartedStatItem
     {
-        $total = $this->taskRepository->matchSingleScalarResult(Spec::countOf(null));
-        $closed = $this->taskRepository->matchSingleScalarResult(Spec::countOf(Spec::eq('isClosed', true)));
+        $data = $this->taskRepository->countByClosed();
+
         return new PartedStatItem(
             StatisticItemEnum::TaskCount,
-            $total,
+            $data[false] + $data[true],
             [
                 new PartItem(
                     'closed',
-                    $closed,
+                    $data[true],
                     'green'
                 )
             ]

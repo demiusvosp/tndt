@@ -66,4 +66,17 @@ class ProjectRepository extends ServiceEntityRepository
             Spec::limit($limit)
         ));
     }
+
+    public function countByArchived(): array
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->select('p.isArchived', 'COUNT(p.isArchived) as cnt')
+            ->groupBy('p.isArchived');
+
+        $result = [];
+        foreach ($qb->getQuery()->getResult() as $row) {
+            $result[$row['isArchived']] = $row['cnt'];
+        }
+        return $result;
+    }
 }
