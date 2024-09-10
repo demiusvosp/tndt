@@ -128,7 +128,9 @@ LoginTo: Войти в систему
 Logout: Выйти
 Maintenance: Обслуживание
 menu:
-  dashboard.about: О системе
+  dashboard:
+    about: О системе
+    systemStat: Общая Статистика
   doc:
     create: Создать документ
     edit: Редактирование
@@ -224,6 +226,23 @@ role:
 search: Поиск
 SpecialActions: Особые действия
 Support: Поддержка
+SystemStat:
+  active: Активных
+  activity_count: Зафиксировано активности
+  archived: Архивных
+  closed: Закрытых
+  comment_count: Количество комментариев
+  deprecated: Устаревших
+  doc_count: Количество документов
+  none: нет
+  normal: Актуальных
+  projects_count: Количество проектов
+  start_working: Работа началась
+  task_count: Количество задач
+  title: Общая статистика
+  total: Всего
+  uptime: Uptime
+  version: Версия
 Tasks: Задачи
 task:
   assignedTo:

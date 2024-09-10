@@ -126,14 +126,16 @@ License: License
 Login: Login
 LoginTo: Login to task tracker
 Logout: Logout
-Maintenance: Обслуживание
+Maintenance: Maintenance
 menu:
-  dashboard.about: О системе
+  dashboard:
+    about: About
+    systemStat: System statistics
   doc:
-    create: Создать документ
-    edit: Редактирование
-  homepage: Главная
-  projects: Все проекты
+    create: Create document
+    edit: Edit
+  homepage: Home
+  projects: All projects
   project:
     create: Create project
     dashboard: Dashboard
@@ -143,13 +145,13 @@ menu:
     tasks: Task list
     tasks_menu: Tasks
   task:
-    create: Создать задачу
-    edit: Редактирование
+    create: Create task
+    edit: Edit
   user:
     list: Users
     management:
       list: User management
-Never_logined: Ни разу не входил
+Never_logined: was never login
 nobody: >-
   {case, select,
     nominative {никто}
@@ -220,8 +222,23 @@ role:
   staff: работник
   user: пользователь
   visitor: посетитель
-search: Поиск
-Support: Поддержка
+search: Search
+SpecialActions: Additional actions
+Support: Support
+SystemStat:
+  active: Active
+  activity_count: Count of activity items
+  closed: Closed
+  comment_count: Count of comments
+  doc_count: count of documents
+  none: none
+  projects_count: Count of projects
+  start_working: Start working at
+  task_count: count of tasks
+  title: System statistics
+  total: Total
+  uptime: Uptime
+  version: Version
 Tasks: Задачи
 task:
   assignedTo:

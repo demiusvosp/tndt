@@ -7,6 +7,13 @@ services:
   App\Security\:
     resource: '%kernel.project_dir%/src/Security'
 
+  # специализированный кеш, лежащий отдельно от пулов и настроенный по своим правилам
+  cache.permissions.adapter:
+    class: 'Symfony\Component\Cache\Adapter\PhpArrayAdapter'
+    public: false
+    arguments:
+      - '%kernel.cache_dir%/permissions_map.php'
+      - '@cache.system'
 
   App\Security\Hierarchy\HierarchyHelper:
     class: 'App\Security\Hierarchy\HierarchyHelper'

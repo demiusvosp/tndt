@@ -7,8 +7,8 @@
 
 namespace App\EventSubscriber;
 
-use App\Event\AppEvents;
 use App\Event\InProjectEvent;
+use App\Model\Enum\AppEvents;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 

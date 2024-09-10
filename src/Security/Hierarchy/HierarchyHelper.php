@@ -8,8 +8,9 @@ declare(strict_types=1);
 
 namespace App\Security\Hierarchy;
 
-use App\Model\Enum\UserPermissionsEnum;
+use App\Model\Enum\Security\UserPermissionsEnum;
 use Psr\Cache\CacheItemPoolInterface;
+use Psr\Cache\InvalidArgumentException;
 use Symfony\Component\Cache\Adapter\PhpArrayAdapter;
 
 class HierarchyHelper
@@ -23,7 +24,7 @@ class HierarchyHelper
 
     public function configure(): void
     {
-        if (!$this->permissionMapCache->hasItem(UserPermissionsEnum::getProjectRoles()[0])) {
+        if (!$this->cachePermissionMap->hasItem(UserPermissionsEnum::getProjectRoles()[0])) {
             $this->buildMap(UserPermissionsEnum::getHierarchy());
         }
     }
@@ -70,6 +71,7 @@ class HierarchyHelper
      * @param string $requestedItem - запрошенное полномочие
      * @param string $subjectItem - имеющееся полномочие
      * @return bool
+     * @throws InvalidArgumentException
      */
     public function has(string $requestedItem, string $subjectItem): bool
     {

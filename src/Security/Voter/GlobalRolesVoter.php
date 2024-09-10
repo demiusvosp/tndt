@@ -8,8 +8,8 @@ declare(strict_types=1);
 
 namespace App\Security\Voter;
 
-use App\Model\Enum\UserPermissionsEnum;
-use App\Model\Enum\UserRolesEnum;
+use App\Model\Enum\Security\UserPermissionsEnum;
+use App\Model\Enum\Security\UserRolesEnum;
 use App\Security\Hierarchy\HierarchyHelper;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;

@@ -19,24 +19,10 @@ framework:
 
         # Namespaced pools use the above "app" backend by default
         pools:
-            # системный кеш, хранит предварительно вычисленные данные, например плоскую иерархию полномочий
-            cache.app.system:
-                adapter: cache.adapter.system
+            cache.statistics:
+                adapter: cache.app
 
             doctrine.result_cache_pool:
                 adapter: cache.app
             doctrine.system_cache_pool:
                 adapter: cache.system
-
-services:
-
-    cache.permissions.adapter:
-        class: 'Symfony\Component\Cache\Adapter\PhpArrayAdapter'
-        public: false
-        arguments:
-            - '%kernel.cache_dir%/permissions_map.php'
-            - '@cache.system'
-# тег перемещает адаптер в пул, и работа с его кешем становится видна в дебаг-панельке, но зато больше не использует PhpArrayAdapter
-# Когда лучше поймем устройство пулов и как в них попадают конкретные адаптеры, сделаем выделенный пул под это дело
-#        tags:
-#            - { name: 'cache.pool', namespace: 'permissions_map'}

@@ -21,7 +21,7 @@ use App\Form\Type\Project\EditProjectTaskSettingsType;
 use App\Form\Type\Project\ListFilterType;
 use App\Form\Type\Project\NewProjectType;
 use App\Model\Enum\FlashMessageTypeEnum;
-use App\Model\Enum\UserPermissionsEnum;
+use App\Model\Enum\Security\UserPermissionsEnum;
 use App\Repository\DocRepository;
 use App\Repository\ProjectRepository;
 use App\Repository\TaskRepository;

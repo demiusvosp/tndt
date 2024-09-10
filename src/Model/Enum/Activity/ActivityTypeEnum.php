@@ -5,9 +5,7 @@
  * Time: 2:03
  */
 
-namespace App\Model\Enum;
-
-use App\Event\AppEvents;
+namespace App\Model\Enum\Activity;
 
 enum ActivityTypeEnum: string
 {

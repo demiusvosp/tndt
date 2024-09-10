@@ -6,7 +6,7 @@
  */
 declare(strict_types=1);
 
-namespace App\Event;
+namespace App\Model\Enum;
 
 class AppEvents
 {
@@ -24,4 +24,5 @@ class AppEvents
     public const DOC_CHANGE_STATE = 'app.doc.change_state';
 
     public const COMMENT_ADD = 'app.comment.add';
+    public const ACTIVITY_ADD = 'app.activity.add';
 }

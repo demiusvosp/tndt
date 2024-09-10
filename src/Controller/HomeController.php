@@ -9,12 +9,17 @@ namespace App\Controller;
 
 
 use App\Entity\User;
+use App\Model\Enum\StatisticItemEnum;
+use App\Model\Enum\Security\UserRolesEnum;
 use App\Repository\DocRepository;
 use App\Repository\ProjectRepository;
 use App\Repository\TaskRepository;
 use App\Repository\UserRepository;
+use App\Service\Statistics\StatisticsService;
+use App\ViewModel\Statistics\CommonStat;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 
 class HomeController extends AbstractController
@@ -74,6 +79,21 @@ class HomeController extends AbstractController
         return $this->render('home/static.html.twig', ['title' => $title, 'text' => $text])
             ->setPublic()
             ->setMaxAge(self::STATIC_PAGE_CACHE_TTL);
+    }
+
+    #[IsGranted(UserRolesEnum::ROLE_USER)]
+    public function systemStat(StatisticsService $statisticsService): Response
+    {
+        $commonStat = new CommonStat(
+            $statisticsService->getStat(StatisticItemEnum::Uptime),
+            $statisticsService->getStat(StatisticItemEnum::StartWorking),
+            $statisticsService->getStat(StatisticItemEnum::ProjectCount),
+            $statisticsService->getStat(StatisticItemEnum::TaskCount),
+            $statisticsService->getStat(StatisticItemEnum::DocCount),
+            $statisticsService->getStat(StatisticItemEnum::CommentCount),
+            $statisticsService->getStat(StatisticItemEnum::ActivityCount)
+        );
+        return $this->render('home/system_stat.html.twig', ['stat' => $commonStat]);
     }
 
     public function helpMd(): Response

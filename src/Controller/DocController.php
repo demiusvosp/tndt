@@ -17,7 +17,7 @@ use App\Form\Type\Doc\EditDocType;
 use App\Form\Type\Doc\NewDocType;
 use App\Model\Enum\DocStateEnum;
 use App\Model\Enum\FlashMessageTypeEnum;
-use App\Model\Enum\UserPermissionsEnum;
+use App\Model\Enum\Security\UserPermissionsEnum;
 use App\Repository\DocRepository;
 use App\Service\DocService;
 use App\Service\InProjectContext;

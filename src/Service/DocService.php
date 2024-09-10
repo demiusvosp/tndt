@@ -10,11 +10,11 @@ namespace App\Service;
 
 use App\Entity\Doc;
 use App\Entity\User;
-use App\Event\AppEvents;
 use App\Event\DocChangeStateEvent;
 use App\Event\DocEvent;
 use App\Form\DTO\Doc\EditDocDTO;
 use App\Form\DTO\Doc\NewDocDTO;
+use App\Model\Enum\AppEvents;
 use App\Model\Enum\DocStateEnum;
 use App\Service\Filler\DocFiller;
 use Doctrine\ORM\EntityManagerInterface;

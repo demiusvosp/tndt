@@ -77,4 +77,26 @@ class DocRepository extends ServiceEntityRepository implements NoEntityRepositor
             Spec::limit($limit)
         ));
     }
+
+    /**
+     * @param string|null $suffix
+     * @return array [<state|'total'> => <int cnt>]
+     */
+    public function countsByState(?string $suffix = null): array
+    {
+        $qb = $this->createQueryBuilder('d', 'd.state')
+            ->select('d.state', 'COUNT(d.id) as cnt')
+            ->groupBy('d.state');
+        if ($suffix) {
+            $qb->andWhere('d.suffix = :project')
+                ->setParameter('project', $suffix);
+        }
+
+        $result = ['total' => 0];
+        foreach ($qb->getQuery()->getResult() as $row) {
+            $result[$row['state']->value] = $row['cnt'];
+            $result['total'] += $row['cnt'];
+        }
+        return $result;
+    }
 }

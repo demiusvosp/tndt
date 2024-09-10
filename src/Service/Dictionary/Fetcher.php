@@ -17,6 +17,7 @@ use App\Model\Dto\Dictionary\DictionaryItem;
 use App\Model\Enum\DictionaryTypeEnum;
 use App\Repository\ProjectRepository;
 use App\Service\ProjectContext;
+use Symfony\Component\Stopwatch\Stopwatch;
 
 /**
  * Система справочников. Позволяет получить по типу справочника и его значению его элемент
@@ -27,11 +28,16 @@ class Fetcher
 
     private ProjectRepository $projectRepository;
     private ProjectContext $projectContext;
+    private Stopwatch $stopwatch;
 
-    public function __construct(ProjectRepository $projectRepository, ProjectContext $projectContext)
-    {
+    public function __construct(
+        ProjectRepository $projectRepository,
+        ProjectContext $projectContext,
+        Stopwatch $stopwatch
+    ) {
         $this->projectRepository = $projectRepository;
         $this->projectContext = $projectContext;
+        $this->stopwatch = $stopwatch;
     }
 
     /**
@@ -48,11 +54,13 @@ class Fetcher
      */
     public function getDictionaryItem(DictionaryTypeEnum $dictionaryType, InProjectInterface $entity): DictionaryItem
     {
+        $this->stopwatch->start('getItem', 'dictionary');
         $dictionaryObject = $this->getDictionary($dictionaryType, $entity);
 
         $valueGetter = $dictionaryType->getEntityGetter();
         $dictionaryValue = $entity->{$valueGetter}();
 
+        $this->stopwatch->stop('getItem');
         return $dictionaryObject->getItem($dictionaryValue);
     }
 
@@ -65,6 +73,7 @@ class Fetcher
      */
     public function getDictionary(DictionaryTypeEnum $dictionaryType, InProjectInterface|WithProjectInterface|string|null $entity): Dictionary
     {
+        $this->stopwatch->start('getDictionary', 'dictionary');
         $object = null;
         if (is_string($entity)) {
             $object = $this->loadProject($entity);
@@ -100,6 +109,7 @@ class Fetcher
             );
         }
 
+        $this->stopwatch->stop('getDictionary');
         return $object;
     }
 
@@ -112,12 +122,14 @@ class Fetcher
      */
     public function getDictionariesByEntityClass(string $entityClass, InProjectInterface $entity): array
     {
+        $this->stopwatch->start('getDictionariesByEntityClass', 'dictionary');
         $items = [];
         $dictionaryTypes = DictionaryTypeEnum::allFromEntity($entityClass);
         foreach ($dictionaryTypes as $type) {
             $items[$type->getValue()] = $this->getDictionary($type, $entity);
         }
 
+        $this->stopwatch->stop('getDictionariesByEntityClass');
         return $items;
     }
 
@@ -129,12 +141,14 @@ class Fetcher
      */
     public function getRelatedItems(InProjectInterface $entity): array
     {
+        $this->stopwatch->start('getRelatedItems', 'dictionary');
         $items = [];
         $dictionaryTypes = DictionaryTypeEnum::allFromEntity($entity);
         foreach ($dictionaryTypes as $type) {
             $items[$type->getValue()] = $this->getDictionaryItem($type, $entity);
         }
 
+        $this->stopwatch->stop('getRelatedItems');
         return $items;
     }
 
