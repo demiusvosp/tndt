@@ -52,7 +52,9 @@ class PrivateProjectVoter implements VoterInterface, LoggerAwareInterface
         }
 
         if(!$subject) {
-            $this->securityLogger->debug('Not given or current project - abstain');
+            $this->securityLogger->debug(
+                'Not given or current project - abstain',
+                ['userId' => $token->getUserIdentifier(), 'subject' => null]);
             // способны обработать только web-страницы с переданным project
             return VoterInterface::ACCESS_ABSTAIN;
         }

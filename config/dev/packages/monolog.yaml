@@ -1,5 +1,13 @@
 monolog:
     handlers:
+        graylog:
+            type: gelf
+            publisher:
+                hostname: '%env(GRAYLOG_HOST)%'
+                port: '%env(GRAYLOG_PORT)%'
+            formatter: 'monolog.formatter.gelf_message'
+            channels: ['!event']
+            level: info
         local_files:
             type: rotating_file
             path: "%kernel.logs_dir%/%kernel.environment%.log"
