@@ -14,7 +14,8 @@ services:
 
     App\Service\Monolog\AddServiceProcessor:
         arguments:
-            - '%env(APP_HOST)%'
+            - '%env(GRAYLOG_TAG)%'
+            - '%env(GRAYLOG_TAGNAME)%'
 
     monolog.formatter.gelf_message:
         class: Monolog\Formatter\GelfMessageFormatter

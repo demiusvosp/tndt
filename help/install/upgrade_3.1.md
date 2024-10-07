@@ -30,17 +30,17 @@ monolog:
   handlers:
     main:
       type: fingers_crossed
-      action_level: graylog
-      handler: nested
+      action_level: error
+      handler: graylog
       excluded_http_codes: [404, 405]
     graylog:
       type: gelf
-      publisher:
-        hostname: '%env(GRAYLOG_HOST)%'
-        port: '%env(GRAYLOG_PORT)%'
+      publisher: { id: 'gelf.publisher' }
+      formatter: 'monolog.formatter.gelf_message'
+      channels: ['!event']
       level: info
 ```
-Для отправки в graylog нужно установить handler в graylog. Так же там можно настроить, уровень лога, который 
+Для отправки в graylog нужно установить значение handler: graylog. Так же там можно настроить, уровень лога, который 
 отправляется, исключить какие-то из каналов. Или даже задать несколько разных хэндлеров для разных каналов или уровней, 
 отправляющий в разные хосты graylog
 
@@ -49,3 +49,15 @@ monolog:
     volumes:
       - '<your path to config>:/app/config/prod:ro'
 ```
+
+Опционально можно переопределить атрибут в который записывается информация о сервисе. По умолчанию это атрибут 'service'
+и в него кладется значение переменной `APP_HOST`. 
+```yaml
+  environment:
+      ...
+      GRAYLOG_TAG: 'tndt:php'
+      GRAYLOG_TAGNAME: 'tag'
+```
+после чего к записям лога будет добавляться атрибут 'tag' со значением 'tndt:php', это позволит использовать настроенные
+ранее правила распределения логов по streams.
+

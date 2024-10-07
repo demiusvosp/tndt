@@ -1,17 +1,19 @@
 monolog:
     handlers:
+        main:
+            type: fingers_crossed
+            action_level: error
+            handler: graylog
+            excluded_http_codes: [404, 405]
+            channels: ['!event']
         graylog:
             type: gelf
-            publisher:
-                hostname: '%env(GRAYLOG_HOST)%'
-                port: '%env(GRAYLOG_PORT)%'
+            publisher: { id: 'gelf.publisher' }
             formatter: 'monolog.formatter.gelf_message'
-            channels: ['!event']
             level: info
         local_files:
             type: rotating_file
             path: "%kernel.logs_dir%/%kernel.environment%.log"
-            channels: ['!event']
             level:    debug
             max_files: 3
 

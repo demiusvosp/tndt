@@ -14,18 +14,20 @@ use function array_merge;
 #[AutoconfigureTag("monolog.processor", ['handler' => 'graylog'])]
 class AddServiceProcessor
 {
-    private string $service;
+    private string $tag;
+    private ?string $tagName;
 
-    public function __construct(string $service)
+    public function __construct(string $tag, ?string $tagName)
     {
-        $this->service = $service;
+        $this->tag = $tag;
+        $this->tagName = $tagName;
     }
 
     public function __invoke(LogRecord $record): LogRecord
     {
         $record['extra'] = array_merge(
             $record['extra'],
-            ['service' => $this->service]
+            [$this->tagName ?? 'tag' => $this->tag]
         );
         return $record;
     }
