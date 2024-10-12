@@ -13,7 +13,7 @@
         "doctrine/doctrine-bundle": "^2",
         "doctrine/doctrine-migrations-bundle": "^3",
         "doctrine/orm": "^2",
-        "erusev/parsedown": "^1.7",
+        "graylog2/gelf-php": "^2.0",
         "happyr/doctrine-specification": "^2.0",
         "happyr/entity-exists-validation-constraint": "1.*",
         "knplabs/knp-paginator-bundle": "5.*",

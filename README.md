@@ -29,46 +29,34 @@ CRM менеджмента задач и документов, максимал�
 REQUIREMENTS
 ------------
 
+* Среда запуска контейнеризованных приложений. в репозитории описаны dockerfile и compose-файлы для запуска в классическом docker.
+
+При желании можно развернуть сразу на хосте, в таком случае потребуются
+* nginx
 * PHP 8.2
 * MySQL like db
-предпочтительный способ деплоя через docker-контейнеры. 
 
 
 INSTALLATION
 ------------
-`<ENVIRONMENT>` - prod, dev or test.
 
-### Локальный инстанс
-1. Распаковать архив git clone
-2. Настроить БД
-3. `make up env=<ENVIRONMENT>`
-4. `make init`
-5. `make build_front`
-6. check write permission for ./var directory
+подробно описано в [help/install/install.md](help/install/install.md)
 
-### prod Стейдж
-1. Скопировать compose.prod.distV2.yml в место разворачивания стейджа
-2. Отредактировать по необзодимости
-3. `docker compose up -d`
-4. `docker-compose exec php ./bin/console cache:clear`
-5. `docker-compose exec php ./bin/console cache:warmup`
-6. `docker-compose exec php bin/console doctrine:schema:create -vv` # для первого запуска
-6. `docker-compose exec php ./bin/console doctrine:migrations:migrate`
-7. `docker-compose exec php chmod 777 -R /app/var/cache/prod`
-
-UPDATE
+UPGRADE
 ------------
 ### dev-stage
 1. обновление php-пакетов `make back_exec composer install`
-2. обновлние фронтенд `make front_build`
+2. `docker-compose exec php ./bin/console doctrine:migrations:migrate` 
+3. обновлние фронтенд `make front_build`
 
 ### prod-stage
-1. `docker compose pull`
-2. `docker-compose up -d`
-3. `docker-compose exec php ./bin/console cache:clear`
-4. `docker-compose exec php ./bin/console cache:warmup`
-5. `docker-compose exec php ./bin/console doctrine:migrations:migrate`
-6. `docker-compose exec php chmod 777 -R /app/var/cache/prod`
+1. Посмотреть в диреткории `help/install` наличие заметок по особенностям обновления на устанавливаемую версию.
+2. `docker compose pull`
+3. `docker-compose up -d`
+4. `docker-compose exec php ./bin/console cache:clear`
+5. `docker-compose exec php ./bin/console cache:warmup`
+6. `docker-compose exec php ./bin/console doctrine:migrations:migrate`
+7. `docker-compose exec php chmod 777 -R /app/var/cache/prod`
 
 Особенности обслуживания системы
 -------

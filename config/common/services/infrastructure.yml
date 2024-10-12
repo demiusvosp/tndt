@@ -1,8 +1,34 @@
 services:
-  # default configuration for services in *this* file
-  _defaults:
-    autowire: true      # Automatically injects dependencies in your services.
-    autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
 
-  App\Repository\:
-    resource: '%kernel.project_dir%/src/Repository'
+    App\Repository\:
+        resource: '%kernel.project_dir%/src/Repository'
+
+    monolog.handler.graylog:
+        class: Monolog\Handler\GelfHandler
+        arguments:
+            $publisher: '@gelf.publisher'
+
+    App\Service\Monolog\AddTagProcessor:
+        arguments:
+            - '%env(GRAYLOG_TAG)%'
+            - '%env(GRAYLOG_TAGNAME)%'
+        tags:
+            - { name: 'monolog.processor', handler: 'graylog'}
+
+    monolog.formatter.gelf_message:
+        class: Monolog\Formatter\GelfMessageFormatter
+
+    gelf.publisher:
+        class: Gelf\Publisher
+        arguments:
+            $transport:  '@gelf.transport.udp'
+
+    gelf.transport.udp:
+        class: Gelf\Transport\UdpTransport
+        arguments:
+          $host: '%env(GRAYLOG_HOST)%'
+          $port: '%env(GRAYLOG_PORT)%'

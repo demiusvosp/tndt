@@ -42,20 +42,23 @@ class GlobalRolesVoter implements VoterInterface, LoggerAwareInterface
             }
             if (UserRolesEnum::isProjectRole($roleName) || UserPermissionsEnum::isProjectRole($roleName)) {
                 // project role, - skip
-                $this->securityLogger->debug('{role} is not global role - skip', ['role' => $roleName]);
+                // $this->securityLogger->debug('{role} is not global role - skip', ['role' => $roleName]);
                 continue;
             }
             if (!UserRolesEnum::isValid($roleName) && !UserPermissionsEnum::isValid($roleName)) {
                 // not valid role
-                $this->securityLogger->warning('{role} is invalid role - skip', ['role' => $roleName]);
+                $this->securityLogger->warning(
+                    "$roleName is invalid role - skip",
+                    ['role' => $roleName, 'user' => $token->getUserIdentifier()]
+                );
                 continue;
             }
 
             foreach ($attributes as $attribute) {
                 if ($this->hierarchyHelper->has($attribute, $roleName)) {
                     $this->securityLogger->debug(
-                        'Global {role} by granted {attribute} - grant',
-                        ['attribute' => $attribute, 'role' => $roleName]
+                        "Global $roleName grant $attribute",
+                        ['attribute' => $attribute, 'role' => $roleName, 'user' => $token->getUserIdentifier()]
                     );
                     return VoterInterface::ACCESS_GRANTED;
                 }
