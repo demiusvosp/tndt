@@ -16,6 +16,7 @@ doctrine:
 
         types:
             uuid: 'Ramsey\Uuid\Doctrine\UuidBinaryType'
+            uuid_binary:  'Ramsey\Uuid\Doctrine\UuidBinaryType'
             taskSettings: 'App\Service\Doctrine\Type\TaskSettingsType'
     orm:
         auto_generate_proxy_classes: true
