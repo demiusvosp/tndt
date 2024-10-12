@@ -12,7 +12,7 @@ services:
         arguments:
             $publisher: '@gelf.publisher'
 
-    App\Service\Monolog\AddServiceProcessor:
+    App\Service\Monolog\AddTagProcessor:
         arguments:
             - '%env(GRAYLOG_TAG)%'
             - '%env(GRAYLOG_TAGNAME)%'

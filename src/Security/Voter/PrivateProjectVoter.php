@@ -62,7 +62,7 @@ class PrivateProjectVoter implements VoterInterface, LoggerAwareInterface
         foreach ($token->getRoleNames() as $fullRoleName) {
             if (UserRolesEnum::isValid($fullRoleName)) {
                 // $this->securityLogger->debug('{role} is global role - skip', ['role' => $fullRoleName]);
-                // это глобальная роль, пусть с ней RoleVoter разбирается
+                // это глобальная роль, пусть с ней GlobalRolesVoter разбирается
                 continue;
             }
             [$role, $roleProject] = UserRolesEnum::explodeSyntheticRole($fullRoleName);

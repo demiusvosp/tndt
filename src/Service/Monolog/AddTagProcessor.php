@@ -12,7 +12,7 @@ use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 use function array_merge;
 
 
-class AddServiceProcessor
+class AddTagProcessor
 {
     private string $tag;
     private ?string $tagName;
