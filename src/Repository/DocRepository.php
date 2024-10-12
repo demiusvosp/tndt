@@ -10,6 +10,7 @@ namespace App\Repository;
 
 use App\Entity\Doc;
 use App\Entity\User;
+use App\Exception\NotFoundException;
 use App\Specification\Doc\ByDocIdSpec;
 use App\Specification\Doc\DefaultSortSpec;
 use App\Specification\Doc\NotArchivedSpec;
@@ -40,9 +41,16 @@ class DocRepository extends ServiceEntityRepository implements NoEntityRepositor
         }
     }
 
-    public function getBySlug(string $slug)
+    /**
+     * @throws NotFoundException
+     */
+    public function getBySlug(string $suffix, string $slug)
     {
-        return $this->findOneBy(['slug' => $slug]);
+        $doc = $this->findOneBy(['suffix' => $suffix, 'slug' => $slug]);
+        if (!$doc) {
+            throw new NotFoundException('Document not found', ['slug' => $slug]);
+        }
+        return $doc;
     }
 
     public function getLastNo($suffix): int

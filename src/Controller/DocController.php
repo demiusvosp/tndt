@@ -28,6 +28,7 @@ use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Attribute\ValueResolver;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -80,7 +81,7 @@ class DocController extends AbstractController
      */
     #[IsGranted(UserPermissionsEnum::PERM_DOC_VIEW)]
     public function index(
-        #[MapEntity(expr: 'repository.getBySlug(slug)')] Doc $doc,
+        #[ValueResolver('doc')] Doc $doc,
         Project $project,
     ): Response {
         if ($doc->getSuffix() !== $project->getSuffix()) {
@@ -167,7 +168,7 @@ class DocController extends AbstractController
      */
     #[IsGranted(UserPermissionsEnum::PERM_DOC_EDIT)]
     public function edit(
-        #[MapEntity(expr: 'repository.getBySlug(slug)')] Doc $doc,
+        #[ValueResolver('doc')] Doc $doc,
         Project $project,
         Request $request
     ): Response {
