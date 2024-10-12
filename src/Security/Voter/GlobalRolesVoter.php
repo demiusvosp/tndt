@@ -42,7 +42,7 @@ class GlobalRolesVoter implements VoterInterface, LoggerAwareInterface
             }
             if (UserRolesEnum::isProjectRole($roleName) || UserPermissionsEnum::isProjectRole($roleName)) {
                 // project role, - skip
-                $this->securityLogger->debug('{role} is not global role - skip', ['role' => $roleName]);
+                // $this->securityLogger->debug('{role} is not global role - skip', ['role' => $roleName]);
                 continue;
             }
             if (!UserRolesEnum::isValid($roleName) && !UserPermissionsEnum::isValid($roleName)) {

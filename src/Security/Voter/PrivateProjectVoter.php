@@ -52,16 +52,16 @@ class PrivateProjectVoter implements VoterInterface, LoggerAwareInterface
         }
 
         if(!$subject) {
-            $this->securityLogger->debug(
-                'Not given or current project - abstain',
-                ['userId' => $token->getUserIdentifier(), 'subject' => null]);
+//            $this->securityLogger->debug(
+//                'Not given or current project - abstain',
+//                ['userId' => $token->getUserIdentifier(), 'subject' => null]);
             // способны обработать только web-страницы с переданным project
             return VoterInterface::ACCESS_ABSTAIN;
         }
 
         foreach ($token->getRoleNames() as $fullRoleName) {
             if (UserRolesEnum::isValid($fullRoleName)) {
-                $this->securityLogger->debug('{role} is global role - skip', ['role' => $fullRoleName]);
+                // $this->securityLogger->debug('{role} is global role - skip', ['role' => $fullRoleName]);
                 // это глобальная роль, пусть с ней RoleVoter разбирается
                 continue;
             }
