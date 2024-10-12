@@ -67,7 +67,9 @@ class PrivateProjectVoter implements VoterInterface, LoggerAwareInterface
             }
             [$role, $roleProject] = UserRolesEnum::explodeSyntheticRole($fullRoleName);
             if (empty($role) || empty($roleProject)) {
-                $this->securityLogger->warning('{role} is incorrect project role - skip', ['role' => $fullRoleName]);
+                $this->securityLogger->warning(
+                    '{role} is incorrect project role - skip',
+                    ['role' => $fullRoleName, 'user' => $token->getUserIdentifier()]);
                 // это не роль в проекте
                 continue;
             }
@@ -75,7 +77,12 @@ class PrivateProjectVoter implements VoterInterface, LoggerAwareInterface
             if ($roleProject !== $subject) {
                 $this->securityLogger->debug(
                     'It [{role} - {roleProject}] is not subject {subjectProject} project - skip',
-                    ['role' => $role, 'roleProject' => $roleProject, 'subjectProject' => $subject]
+                    [
+                        'role' => $role,
+                        'roleProject' => $roleProject,
+                        'subjectProject' => $subject,
+                        'user' => $token->getUserIdentifier()
+                    ]
                 );
                 // роль не этого проекта
                 continue;
@@ -90,8 +97,13 @@ class PrivateProjectVoter implements VoterInterface, LoggerAwareInterface
                 if (UserPermissionsEnum::isValid($attribute) || UserRolesEnum::isProjectRole($attribute)) {
                     if ($this->hierarchyHelper->has($attribute, $role)) {
                         $this->securityLogger->debug(
-                            'Project {project} use {role} by granted {attribute} - grant',
-                            ['project' => $roleProject, 'attribute' => $attribute, 'role' => $role]
+                            'Project {project} use {role} by granted {attribute} - grant to  {user}',
+                            [
+                                'project' => $roleProject,
+                                'attribute' => $attribute,
+                                'role' => $role,
+                                'user' => $token->getUserIdentifier()
+                            ]
                         );
                         return VoterInterface::ACCESS_GRANTED;
                     }
