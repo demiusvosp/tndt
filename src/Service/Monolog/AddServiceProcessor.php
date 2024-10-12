@@ -11,7 +11,7 @@ use Monolog\LogRecord;
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 use function array_merge;
 
-#[AutoconfigureTag("monolog.processor", ['handler' => 'graylog'])]
+
 class AddServiceProcessor
 {
     private string $tag;

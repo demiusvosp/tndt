@@ -16,6 +16,8 @@ services:
         arguments:
             - '%env(GRAYLOG_TAG)%'
             - '%env(GRAYLOG_TAGNAME)%'
+        tags:
+            - { name: 'monolog.processor', handler: 'graylog'}
 
     monolog.formatter.gelf_message:
         class: Monolog\Formatter\GelfMessageFormatter

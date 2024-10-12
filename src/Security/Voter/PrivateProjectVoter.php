@@ -68,27 +68,27 @@ class PrivateProjectVoter implements VoterInterface, LoggerAwareInterface
             [$role, $roleProject] = UserRolesEnum::explodeSyntheticRole($fullRoleName);
             if (empty($role) || empty($roleProject)) {
                 $this->securityLogger->warning(
-                    '{role} is incorrect project role - skip',
+                    "$fullRoleName is incorrect project role - skip",
                     ['role' => $fullRoleName, 'user' => $token->getUserIdentifier()]);
                 // это не роль в проекте
                 continue;
             }
 
             if ($roleProject !== $subject) {
-                $this->securityLogger->debug(
-                    'It [{role} - {roleProject}] is not subject {subjectProject} project - skip',
-                    [
-                        'role' => $role,
-                        'roleProject' => $roleProject,
-                        'subjectProject' => $subject,
-                        'user' => $token->getUserIdentifier()
-                    ]
-                );
+//                $this->securityLogger->debug(
+//                    'It [{role} - {roleProject}] is not subject {subjectProject} project - skip',
+//                    [
+//                        'role' => $role,
+//                        'roleProject' => $roleProject,
+//                        'subjectProject' => $subject,
+//                        'user' => $token->getUserIdentifier()
+//                    ]
+//                );
                 // роль не этого проекта
                 continue;
             }
             if (!UserRolesEnum::isValid($role)) {
-                $this->securityLogger->error('{role} is invalid self project role - critical error', ['role' => $role]);
+                $this->securityLogger->error("$role is invalid self project role - critical error", ['role' => $role]);
                 // неизвестная роль
                 throw new \DomainException('Неизвестная роль ' . $role);
             }
@@ -97,7 +97,7 @@ class PrivateProjectVoter implements VoterInterface, LoggerAwareInterface
                 if (UserPermissionsEnum::isValid($attribute) || UserRolesEnum::isProjectRole($attribute)) {
                     if ($this->hierarchyHelper->has($attribute, $role)) {
                         $this->securityLogger->debug(
-                            'Project {project} use {role} by granted {attribute} - grant to  {user}',
+                            "$role in project $roleProject grant $attribute permission",
                             [
                                 'project' => $roleProject,
                                 'attribute' => $attribute,

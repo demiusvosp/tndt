@@ -61,7 +61,7 @@ class PublicProjectVoter implements VoterInterface, LoggerAwareInterface
         foreach ($attributes as $attribute) {
             if (in_array($attribute, $publicPermissions, true)) {
                 $this->securityLogger->debug(
-                    'Public project {project} grant permission {attribute} to {user}',
+                    "Public project $subject grant permission $attribute",
                     ['project' => $subject, 'attribute' => $attribute, 'user' => $token->getUserIdentifier()]);
                 return VoterInterface::ACCESS_GRANTED;
             }
