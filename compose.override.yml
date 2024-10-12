@@ -18,6 +18,11 @@ services:
     environment:
       APP_ENV: 'dev'
       APP_DEBUG: 'true'
+      GRAYLOG_HOST: '192.168.100.15'
+      GRAYLOG_PORT: 12201
+      GRAYLOG_TAGNAME: tag
+      GRAYLOG_TAG: 'tndt_dev:php'
+
 
   mysql:
     volumes:
