@@ -30,8 +30,8 @@ class TaskOnUpdateSubscriber implements EventSubscriberInterface
     {
         return [
             AppEvents::TASK_EDIT => ['onTaskChange', 0],
-            AppEvents::TASK_CLOSE => ['onTaskChange', 0],
             AppEvents::TASK_CHANGE_STAGE => ['onTaskChange', 0],
+            AppEvents::TASK_CLOSE => ['onTaskClose', 0],
             AppEvents::COMMENT_ADD => ['onCommentAdd', 0],
         ];
     }
@@ -44,6 +44,16 @@ class TaskOnUpdateSubscriber implements EventSubscriberInterface
         if ($event->isObjectArchived()) {
             return;
         }
+
+        $event->getTask()->setUpdatedAt(new \DateTime());
+    }
+
+    public function onTaskClose(TaskEvent $event): void
+    {
+        if ($this->isServiceUser()) {
+            return;
+        }
+        // при task close задача становится закрытой, поэтому проверять её статус не надо
 
         $event->getTask()->setUpdatedAt(new \DateTime());
     }
