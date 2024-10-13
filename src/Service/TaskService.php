@@ -92,8 +92,9 @@ class TaskService
         if ($newStage) {
             // устанавливать флаги состояния и закрытости будет специализированный сервис
             $this->stagesService->changeStage($task, $newStage->getId());
+        } else {
+            // changeStage сам выполнит flush
+            $this->entityManager->flush();
         }
-
-        $this->entityManager->flush();
     }
 }
