@@ -9,6 +9,8 @@ namespace App\Service\RequestResolver;
 
 use App\Entity\Doc;
 use App\Repository\DocRepository;
+use App\Specification\Doc\BySlugSpec;
+use Happyr\DoctrineSpecification\Exception\NoResultException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Attribute\AsTargetedValueResolver;
 use Symfony\Component\HttpKernel\Controller\ValueResolverInterface;
@@ -44,7 +46,12 @@ class DocResolver implements ValueResolverInterface
             return [];
         }
 
-        $doc = $this->docRepository->getBySlug($suffix, $slug);
-        return [$doc];
+        try {
+            return [
+                $this->docRepository->matchSingleResult(new BySlugSpec($suffix, $slug))
+            ];
+        } catch(NoResultException) {
+            return [];
+        }
     }
 }
