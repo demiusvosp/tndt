@@ -24,7 +24,6 @@ use App\Service\InProjectContext;
 use App\Specification\InProjectSpec;
 use App\ViewModel\Button\ControlButton;
 use Knp\Component\Pager\PaginatorInterface;
-use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -69,8 +68,7 @@ class DocController extends AbstractController
 
     #[IsGranted(UserPermissionsEnum::PERM_DOC_VIEW)]
     public function index(
-        #[ValueResolver('doc')] Doc $doc,
-        Project $project,
+        #[ValueResolver('doc')] Doc $doc
     ): Response {
         $controls = [];
         if ($this->isGranted(UserPermissionsEnum::PERM_DOC_EDIT)) {
@@ -144,7 +142,6 @@ class DocController extends AbstractController
     #[IsGranted(UserPermissionsEnum::PERM_DOC_EDIT)]
     public function edit(
         #[ValueResolver('doc')] Doc $doc,
-        Project $project,
         Request $request
     ): Response {
         $formData = new EditDocDTO($doc);
@@ -164,8 +161,7 @@ class DocController extends AbstractController
     #[IsGranted(UserPermissionsEnum::PERM_DOC_CHANGE_STATE)]
     public function changeState(
         #[ValueResolver('doc')] Doc $doc,
-        DocStateEnum $state,
-        Project $project
+        DocStateEnum $state
     ): Response {
         $this->docService->changeState($doc, $state);
 
