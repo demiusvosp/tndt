@@ -45,6 +45,10 @@
 }
 
 /* layout blocks */
+.btn .nav-link-icon {
+  color: var(--tblr-btn-color); /* $btn-color из bootstrap/buttons */
+}
+
 .breadcrumb-item {
   a {
     vertical-align: text-top;

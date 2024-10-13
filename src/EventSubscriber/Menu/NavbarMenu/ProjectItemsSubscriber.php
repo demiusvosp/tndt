@@ -11,6 +11,7 @@ use App\Entity\Project;
 use App\Event\Menu\MenuEvent;
 use App\Model\Enum\Security\UserPermissionsEnum;
 use App\Repository\ProjectRepository;
+use App\ViewModel\Menu\ButtonItem;
 use App\ViewModel\Menu\MenuItem;
 use App\ViewModel\Menu\TreeItem;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -66,20 +67,24 @@ class ProjectItemsSubscriber implements EventSubscriberInterface
         }
 
         if ($this->security->isGranted(UserPermissionsEnum::PERM_TASK_CREATE)) {
-            $event->addItem(new MenuItem(
-                $this->router->generate('task.project_create', ['suffix' => $project->getSuffix()]),
-                $route === 'task.project_create',
-                $this->translator->trans('menu.task.create'),
-                'fa fa-plus-square fa-fw'
-            ));
+            $event->addItem(
+                (new ButtonItem(
+                    $this->router->generate('task.project_create', ['suffix' => $project->getSuffix()]),
+                    $route === 'task.project_create',
+                    $this->translator->trans('menu.task.create'),
+                    'fa fa-plus fa-fw'
+                ))->setButtonClass('btn-success')
+            );
         }
         if ($this->security->isGranted(UserPermissionsEnum::PERM_DOC_CREATE)) {
-            $event->addItem(new MenuItem(
-                $this->router->generate('doc.project_create', ['suffix' => $project->getSuffix()]),
-                $route === 'doc.project_create',
-                $this->translator->trans('menu.doc.create'),
-                'fa fa-plus-square fa-fw'
-            ));
+            $event->addItem(
+                (new ButtonItem(
+                    $this->router->generate('doc.project_create', ['suffix' => $project->getSuffix()]),
+                    $route === 'doc.project_create',
+                    $this->translator->trans('menu.doc.create'),
+                    'fa fa-plus fa-fw'
+                ))->setButtonClass('btn-success')
+            );
         }
     }
 

@@ -11,7 +11,6 @@ class ButtonItem extends MenuItem
 {
     private string $buttonClass;
 
-
     public function type(): string
     {
         return self::TYPE_BUTTON;
