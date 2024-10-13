@@ -73,7 +73,7 @@ class ProjectItemsSubscriber implements EventSubscriberInterface
                     $route === 'task.project_create',
                     $this->translator->trans('menu.task.create'),
                     'fa fa-plus fa-fw'
-                ))->setButtonClass('btn-success')
+                ))->setButtonClass('btn-outline-success')
             );
         }
         if ($this->security->isGranted(UserPermissionsEnum::PERM_DOC_CREATE)) {
@@ -83,7 +83,7 @@ class ProjectItemsSubscriber implements EventSubscriberInterface
                     $route === 'doc.project_create',
                     $this->translator->trans('menu.doc.create'),
                     'fa fa-plus fa-fw'
-                ))->setButtonClass('btn-success')
+                ))->setButtonClass('btn-outline-success')
             );
         }
     }
