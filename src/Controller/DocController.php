@@ -51,12 +51,6 @@ class DocController extends AbstractController
         $this->translator = $translator;
     }
 
-    /**
-     * @param Request $request
-     * @param Project $project
-     * @param PaginatorInterface $paginator
-     * @return Response
-     */
     #[IsGranted(UserPermissionsEnum::PERM_DOC_VIEW)]
     public function list(Request $request, Project $project, PaginatorInterface $paginator): Response
     {
@@ -73,20 +67,11 @@ class DocController extends AbstractController
         );
     }
 
-    /**
-     * @param Doc $doc
-     * @param Project $project
-     * @param Request $request
-     * @return Response
-     */
     #[IsGranted(UserPermissionsEnum::PERM_DOC_VIEW)]
     public function index(
         #[ValueResolver('doc')] Doc $doc,
         Project $project,
     ): Response {
-        if ($doc->getSuffix() !== $project->getSuffix()) {
-            throw $this->createNotFoundException($this->translator->trans('doc.not_found'));
-        }
         $controls = [];
         if ($this->isGranted(UserPermissionsEnum::PERM_DOC_EDIT)) {
             // @todo В [tndt-85] или раньше этот массив превратим в viewModel
@@ -134,11 +119,6 @@ class DocController extends AbstractController
         return $this->render('doc/index.html.twig', ['doc' => $doc, 'controls' => $controls]);
     }
 
-    /**
-     * @param Request $request
-     * @param Project $project
-     * @return Response
-     */
     #[IsGranted(UserPermissionsEnum::PERM_DOC_CREATE)]
     public function create(Request $request, Project $project): Response
     {
@@ -161,22 +141,12 @@ class DocController extends AbstractController
         return $this->render('doc/create.html.twig', ['form' => $form->createView()]);
     }
 
-    /**
-     * @param Request $request
-     * @param Project $project
-     * @return Response
-     */
     #[IsGranted(UserPermissionsEnum::PERM_DOC_EDIT)]
     public function edit(
         #[ValueResolver('doc')] Doc $doc,
         Project $project,
         Request $request
     ): Response {
-        if ($doc->getSuffix() !== $project->getSuffix()) {
-            // В doc slug не содержит suffix проекта (в отличие от taskId), поэтому нам необходимо проверить
-            //   консистентность suffix и slug в реквесте.
-            throw $this->createNotFoundException($this->translator->trans('doc.not_found'));
-        }
         $formData = new EditDocDTO($doc);
         $form = $this->createForm(EditDocType::class, $formData);
 
@@ -191,22 +161,12 @@ class DocController extends AbstractController
         return $this->render('doc/edit.html.twig', ['doc' => $doc, 'form' => $form->createView()]);
     }
 
-    /**
-     * @param string $slug
-     * @param int $state
-     * @param Project $project
-     * @return Response
-     */
     #[IsGranted(UserPermissionsEnum::PERM_DOC_CHANGE_STATE)]
     public function changeState(
-        #[MapEntity(expr: 'repository.getBySlug(slug)')] Doc $doc,
+        #[ValueResolver('doc')] Doc $doc,
         DocStateEnum $state,
         Project $project
     ): Response {
-        if ($doc->getSuffix() !== $project->getSuffix()) {
-            throw $this->createNotFoundException($this->translator->trans('doc.not_found'));
-        }
-
         $this->docService->changeState($doc, $state);
 
         if ($state === DocStateEnum::Normal) {

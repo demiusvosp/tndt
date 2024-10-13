@@ -10,9 +10,7 @@ namespace App\Repository;
 
 use App\Entity\Doc;
 use App\Entity\User;
-use App\Exception\NotFoundException;
 use App\Specification\Doc\ByDocIdSpec;
-use App\Specification\Doc\BySlugSpec;
 use App\Specification\Doc\DefaultSortSpec;
 use App\Specification\Doc\NotArchivedSpec;
 use App\Specification\InProjectSpec;

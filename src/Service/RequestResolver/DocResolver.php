@@ -19,7 +19,6 @@ use function dump;
 use function is_subclass_of;
 
 #[AsTargetedValueResolver('doc')]
-
 class DocResolver implements ValueResolverInterface
 {
     private DocRepository $docRepository;
