@@ -31,6 +31,10 @@
   --tblr-btn-padding-y: 0.5rem;
 }
 
+.dropdown-toggle:after {
+  margin-left: 0.6rem;
+}
+
 .progress {
   height: 1.2rem;
 }
@@ -45,6 +49,14 @@
 }
 
 /* layout blocks */
+.nav-link .btn {
+  --tblr-btn-padding-x: 0.7rem;
+  --tblr-btn-padding-y: 0.4rem;
+  .nav-link-icon {
+    color: var(--tblr-btn-color); /* $btn-color из bootstrap/buttons */
+  }
+}
+
 .breadcrumb-item {
   a {
     vertical-align: text-top;

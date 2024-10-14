@@ -12,6 +12,7 @@
             <div class="nav-item" {{ item.isActive ? 'active' : '' }}>
                 <a class="nav-link me-2 me-md-0" href="{{ item.action }}">
                     <span class="btn {{ item.buttonClass }}">
+                        {{ item.icon ? icon(item.icon, 'nav-link-icon') : '' }}
                         <span class="nav-link-title">{{ item.label }}</span>
                     </span>
                 </a>
