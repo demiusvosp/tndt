@@ -14,12 +14,8 @@ use App\Specification\Doc\ByDocIdSpec;
 use App\Specification\Doc\BySlugSpec;
 use Happyr\DoctrineSpecification\Exception\NoResultException;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Attribute\AsTargetedValueResolver;
 use Symfony\Component\HttpKernel\Controller\ValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
-use function dump;
-use function is_subclass_of;
-
 
 class DocResolver implements ValueResolverInterface
 {
