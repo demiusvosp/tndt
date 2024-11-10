@@ -1,19 +1,27 @@
 # Changelog
 
 ## [current]
-- **New feature**
+
+----
+
+## [0.3.1] - 2024.11.10
+- **New features**
   - [tndt-9](http://tasks.demius.ru/p/tndt-9) - wiki-разметка. Этап 0. Элементарная система гиперссылок
   - [tndt-153](http://tasks.demius.ru/p/tndt-153) - Страница общей статистики системы
   - [tndt-167](http://tasks.demius.ru/p/tndt-167) - Отправка логов через GELF
+- **minor features**
+  - [tndt-40](http://tasks.demius.ru/p/tndt-40) - Базовый профайлинг своих сервисов
+  - [tndt-66](http://tasks.demius.ru/p/tndt-66) - Экранирование html - сущностей в md полях
+  - [tndt-174](http://tasks.demius.ru/p/tndt-174) - Кнопки создать задачу, создать документ в сайдбаре лучше заметны
 - **Refactoring**
   - [tndt-160](http://tasks.demius.ru/p/tndt-160) - Обновить docker-compose and node container
+  - [tndt-163](http://tasks.demius.ru/p/tndt-163) - В списке документов вобще нет обозначения статуса.
 - **Bugfixes**
   - [tndt-151](http://tasks.demius.ru/p/tndt-151) - Теперь slug документов уникален в пределах проекта
   - [tndt-168](http://tasks.demius.ru/p/tndt-168) - tabler-icons.svg переехал в другой пакет
   - [tndt-179](http://tasks.demius.ru/p/tndt-179) - Закрытие задачи не обновляет её время
 - **Замечания к обновлению в [help/install/upgrade_3.1.md](help/install/upgrade_3.1.md)**
 
-----
 
 ## [0.3] - 2024.03.07
 - **New feature**
