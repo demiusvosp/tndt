@@ -27,7 +27,6 @@ use App\Service\TaskStagesService;
 use App\Specification\InProjectSpec;
 use App\ViewModel\Button\ControlButton;
 use Knp\Component\Pager\PaginatorInterface;
-use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -90,7 +89,7 @@ class TaskController extends AbstractController
      */
     #[IsGranted(UserPermissionsEnum::PERM_TASK_VIEW)]
     public function index(
-        #[MapEntity(expr: 'repository.findByTaskId(taskId)')] Task $task,
+        Task $task,
         CsrfTokenManagerInterface $tokenManager
     ): Response {
         $edit = null;
@@ -161,13 +160,8 @@ class TaskController extends AbstractController
         return $this->render('task/create.html.twig', ['form' => $form->createView()]);
     }
 
-    /**
-     * @param Task $task
-     * @param Request $request
-     * @return Response
-     */
     #[IsGranted(UserPermissionsEnum::PERM_TASK_EDIT)]
-    public function edit(#[MapEntity(expr: 'repository.findByTaskId(taskId)')] Task $task, Request $request): Response
+    public function edit(Task $task, Request $request): Response
     {
         $formData = new EditTaskDTO($task);
         $form = $this->createForm(EditTaskType::class, $formData);
@@ -183,12 +177,8 @@ class TaskController extends AbstractController
         return $this->render('task/edit.html.twig', ['task' => $task, 'form' => $form->createView()]);
     }
 
-    /**
-     * @param Request $request
-     * @return Response
-     */
     #[IsGranted(UserPermissionsEnum::PERM_TASK_CLOSE)]
-    public function close(#[MapEntity(expr: 'repository.findByTaskId(taskId)')] Task $task, Request $request): Response
+    public function close(Task $task, Request $request): Response
     {
         $formData = new CloseTaskDTO($task);
         $form = $this->createForm(CloseTaskForm::class, $formData);
@@ -206,13 +196,9 @@ class TaskController extends AbstractController
         return $this->redirectToRoute('task.index', ['taskId' => $task->getTaskId()]);
     }
 
-    /**
-     * @param Request $request
-     * @return Response
-     */
     #[IsGranted(UserPermissionsEnum::PERM_TASK_EDIT)]
     public function changeStage(
-        #[MapEntity(expr: 'repository.findByTaskId(taskId)')] Task $task,
+        Task $task,
         Request $request
     ): Response {
         if (!$this->isCsrfTokenValid(self::CHANGE_STAGE_TOKEN, $request->request->get('_token'))) {

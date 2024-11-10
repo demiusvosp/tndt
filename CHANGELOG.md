@@ -8,6 +8,7 @@
 - **Refactoring**
   - [tndt-160](http://tasks.demius.ru/p/tndt-160) - Обновить docker-compose and node container
 - **Bugfixes**
+  - [tndt-151](http://tasks.demius.ru/p/tndt-151) - Теперь slug документов уникален в пределах проекта
   - [tndt-168](http://tasks.demius.ru/p/tndt-168) - tabler-icons.svg переехал в другой пакет
   - [tndt-179](http://tasks.demius.ru/p/tndt-179) - Закрытие задачи не обновляет её время
 - **Замечания к обновлению в [help/install/upgrade_3.1.md](help/install/upgrade_3.1.md)**

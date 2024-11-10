@@ -25,6 +25,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 #[ORM\Entity(repositoryClass: DocRepository::class)]
 #[ORM\Table(name: "doc")]
+#[ORM\UniqueConstraint(name: "slug", columns: ["suffix", "slug"])]
 #[ORM\EntityListeners([NoGeneratorListener::class])]
 class Doc implements NoInterface, WithProjectInterface, ActivitySubjectInterface, CommentableInterface
 {

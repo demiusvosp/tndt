@@ -8,6 +8,7 @@
 namespace App\Specification\Doc;
 
 use App\Entity\Doc;
+use App\Specification\InProjectSpec;
 use Happyr\DoctrineSpecification\Spec;
 use Happyr\DoctrineSpecification\Specification\BaseSpecification;
 use Happyr\DoctrineSpecification\Specification\Specification;
@@ -32,15 +33,14 @@ class ByDocIdSpec extends BaseSpecification
 
     protected function getSpec(): Specification
     {
-        $spec = Spec::eq('suffix', $this->suffix);
         if ($this->no) {
             return Spec::andX(
-                $spec,
+                new InProjectSpec($this->suffix),
                 Spec::eq('no', $this->no)
             );
         }
         return Spec::andX(
-            $spec,
+            new InProjectSpec($this->suffix),
             Spec::eq('slug', $this->slug)
         );
     }

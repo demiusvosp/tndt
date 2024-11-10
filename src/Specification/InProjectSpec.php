@@ -17,7 +17,7 @@ use Happyr\DoctrineSpecification\Specification\BaseSpecification;
  */
 class InProjectSpec extends BaseSpecification
 {
-    private string|Project $project;
+    private string $project;
 
     /**
      * @param string|Project $project
@@ -25,7 +25,7 @@ class InProjectSpec extends BaseSpecification
      */
     public function __construct($project, ?string $context = null)
     {
-        $this->project = $project;
+        $this->project = ($project instanceof Project) ? $project->getSuffix() : $project;
         parent::__construct($context);
     }
 

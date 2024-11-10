@@ -40,11 +40,6 @@ class DocRepository extends ServiceEntityRepository implements NoEntityRepositor
         }
     }
 
-    public function getBySlug(string $slug)
-    {
-        return $this->findOneBy(['slug' => $slug]);
-    }
-
     public function getLastNo($suffix): int
     {
         try {

@@ -8,6 +8,7 @@
 namespace App\Specification\Task;
 
 use App\Entity\Task;
+use App\Specification\InProjectSpec;
 use Happyr\DoctrineSpecification\Spec;
 use Happyr\DoctrineSpecification\Specification\BaseSpecification;
 use Happyr\DoctrineSpecification\Specification\Specification;
@@ -26,7 +27,7 @@ class ByTaskIdSpec extends BaseSpecification
     protected function getSpec(): Specification
     {
         return Spec::andX(
-            Spec::eq('suffix', $this->suffix),
+            new InProjectSpec($this->suffix),
             Spec::eq('no', $this->no)
         );
     }
