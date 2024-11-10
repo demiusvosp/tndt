@@ -7,6 +7,7 @@
 
 namespace App\Service\RequestResolver;
 use App\Entity\Task;
+use App\Exception\NotFoundException;
 use App\Repository\TaskRepository;
 use App\Specification\Task\ByTaskIdSpec;
 use Happyr\DoctrineSpecification\Exception\NoResultException;
@@ -23,6 +24,9 @@ class TaskResolver implements ValueResolverInterface
         $this->taskRepository = $taskRepository;
     }
 
+    /**
+     * @throws NotFoundException
+     */
     public function resolve(Request $request, ArgumentMetadata $argument): iterable
     {
         if ($argument->getType() !== Task::class) {
@@ -39,7 +43,7 @@ class TaskResolver implements ValueResolverInterface
                 $this->taskRepository->matchSingleResult(new ByTaskIdSpec($taskId))
             ];
         } catch (NoResultException) {
-            return [];
+            throw new NotFoundException();
         }
     }
 }

@@ -8,7 +8,9 @@
 namespace App\Service\RequestResolver;
 
 use App\Entity\Doc;
+use App\Exception\NotFoundException;
 use App\Repository\DocRepository;
+use App\Specification\Doc\ByDocIdSpec;
 use App\Specification\Doc\BySlugSpec;
 use Happyr\DoctrineSpecification\Exception\NoResultException;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,7 +20,7 @@ use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 use function dump;
 use function is_subclass_of;
 
-#[AsTargetedValueResolver('doc')]
+
 class DocResolver implements ValueResolverInterface
 {
     private DocRepository $docRepository;
@@ -28,6 +30,9 @@ class DocResolver implements ValueResolverInterface
         $this->docRepository = $docRepository;
     }
 
+    /**
+     * @throws NotFoundException
+     */
     public function resolve(Request $request, ArgumentMetadata $argument): iterable
     {
         if ($argument->getType() !== Doc::class) {
@@ -40,17 +45,22 @@ class DocResolver implements ValueResolverInterface
             return [];
         }
 
-        $slug = $request->attributes->get('slug');
-        if (!$slug) {
-            return [];
-        }
-
         try {
-            return [
-                $this->docRepository->matchSingleResult(new BySlugSpec($suffix, $slug))
-            ];
-        } catch(NoResultException) {
+            $slug = $request->attributes->get('slug');
+            if ($slug) {
+                return [
+                    $this->docRepository->matchSingleResult(new BySlugSpec($suffix, $slug))
+                ];
+            }
+            $docId = $request->attributes->get('docId');
+            if ($docId) {
+                return [
+                    $this->docRepository->matchSingleResult(new ByDocIdSpec($docId))
+                ];
+            }
             return [];
+        } catch(NoResultException) {
+            throw new NotFoundException();
         }
     }
 }

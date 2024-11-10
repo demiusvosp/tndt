@@ -68,7 +68,7 @@ class DocController extends AbstractController
 
     #[IsGranted(UserPermissionsEnum::PERM_DOC_VIEW)]
     public function index(
-        #[ValueResolver('doc')] Doc $doc
+        Doc $doc
     ): Response {
         $controls = [];
         if ($this->isGranted(UserPermissionsEnum::PERM_DOC_EDIT)) {
@@ -141,7 +141,7 @@ class DocController extends AbstractController
 
     #[IsGranted(UserPermissionsEnum::PERM_DOC_EDIT)]
     public function edit(
-        #[ValueResolver('doc')] Doc $doc,
+        Doc $doc,
         Request $request
     ): Response {
         $formData = new EditDocDTO($doc);
@@ -160,7 +160,7 @@ class DocController extends AbstractController
 
     #[IsGranted(UserPermissionsEnum::PERM_DOC_CHANGE_STATE)]
     public function changeState(
-        #[ValueResolver('doc')] Doc $doc,
+        Doc $doc,
         DocStateEnum $state
     ): Response {
         $this->docService->changeState($doc, $state);
