@@ -219,9 +219,11 @@ role:
   at_project: проекта
   pm: PM
   project_manager: Менеджер проекта
+  projects_admin: администрирование проектов
   root: root
   staff: работник
   user: пользователь
+  users_admin: администрирование пользователей
   visitor: посетитель
 search: Поиск
 SpecialActions: Особые действия
@@ -325,7 +327,7 @@ user:
   management:
     edit:
       title: Управление пользователем
-      common: Основные
+      profile: Профиль
       permission: Полномочия
   name:
     label: Имя
@@ -336,6 +338,14 @@ user:
   passwordRepeat:
     label: Подтверждение пароля
     help: Введите пароль повторно, чтобы исключить ошибку
+  project_management:
+    label: управление проектами
+    table_head: управление проектами
+    help: Пользователь может создавать, архивировать проекты
+  user_management:
+    label: управление пользователями
+    table_head: управление пользователями
+    help: Пользователь может создавать, редактировать и блокировать пользователей
   roles:
     label: Роли пользователя
   self_edit: Редактирование профиля

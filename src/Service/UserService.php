@@ -10,12 +10,16 @@ namespace App\Service;
 use App\Entity\User;
 use App\Exception\ForbiddenException;
 use App\Form\DTO\User\EditUserDTO;
+use App\Form\DTO\User\EditUserPermissionDTO;
 use App\Form\DTO\User\NewUserDTO;
 use App\Form\DTO\User\SelfEditUserDTO;
 use App\Model\Enum\Security\UserPermissionsEnum;
+use App\Model\Enum\Security\UserRolesEnum;
 use App\Service\Filler\UserFiller;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
+use function array_diff;
+use function array_walk;
 
 class UserService
 {
@@ -49,6 +53,20 @@ class UserService
         }
         $this->userFiller->fillFromEditForm($request, $user);
 
+        $this->entityManager->flush();
+        return $user;
+    }
+
+    public function editPermission(EditUserPermissionDTO $request, User $user): User
+    {
+        $roles = array_diff($user->getGlobalRoles(), [UserRolesEnum::ROLE_PROJECTS_ADMIN, UserRolesEnum::ROLE_USERS_ADMIN]);
+        if ($request->isProjectManagement()) {
+            $roles[] = UserRolesEnum::ROLE_PROJECTS_ADMIN;
+        }
+        if ($request->isUserManagement()) {
+            $roles[] = UserRolesEnum::ROLE_USERS_ADMIN;
+        }
+        $user->setGlobalRoles($roles);
         $this->entityManager->flush();
         return $user;
     }

@@ -47,7 +47,7 @@ class UserItemsSubscriber implements EventSubscriberInterface
             $username = $this->requestStack->getMainRequest()?->get('username');
             if ($route !== 'user.management.index' && $username) {
                 $event->addItem(new BreadcrumbItem(
-                    $this->translator->trans($username),
+                    $username,
                     $this->router->generate('user.management.index', ['username' => $username]),
                     'user.svg'
                 ));

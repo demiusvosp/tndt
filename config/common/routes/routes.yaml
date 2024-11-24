@@ -38,9 +38,12 @@ user.management.create:
 user.management.index:
     path: /user/managment/{username<[\w\d\.-]+>}
     controller: App\Controller\UserManagerController::index
-user.management.edit:
-    path: /user/managment/{username<[\w\d\.-]+>}/edit
-    controller: App\Controller\UserManagerController::edit
+user.management.edit.profile:
+    path: /user/managment/{username<[\w\d\.-]+>}/edit/profile
+    controller: App\Controller\UserManagerController::editProfile
+user.management.edit.permission:
+    path: /user/managment/{username<[\w\d\.-]+>}/edit/permission
+    controller: App\Controller\UserManagerController::editPermission
 
 #Projects
 project.index:

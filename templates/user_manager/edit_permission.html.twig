@@ -1,0 +1,19 @@
+{% extends 'user_manager/edit_base.html.twig' %}
+
+{% block subtitle %}{{ 'user.management.edit.permission'|trans }}{% endblock %}
+{% block page_subtitle %}{{ 'user.management.edit.permission'|trans }}{% endblock %}
+
+{% block edit_page_body %}
+    <div class="col-xl-6 col-lg-8 col-md-12">
+        {{ form_start(form) }}
+        {{ form_row(form.project_management) }}
+        {{ form_row(form.user_management) }}
+    </div>
+{% endblock %}
+
+{% block edit_page_footer %}
+    <div class="form-footer-buttons">
+        <button type="submit" class="btn btn-success">{{ 'Edit'|trans }}</button>
+    </div>
+    {{ form_end(form) }}
+{% endblock %}

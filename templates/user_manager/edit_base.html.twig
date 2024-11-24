@@ -1,7 +1,7 @@
 {% extends 'base_layout.html.twig' %}
 
-{% block title %} {{ user.username }} - {{ 'user.management.edit.title'|trans }}/{% block page_subtitle %}{% endblock %}{% endblock %}
-{% block page_title%}{{ 'user.management.edit.title'|trans }}{% endblock %}
+{% block title %} {{ user.username }} - {{ 'user.management.edit.title'|trans }}/{% block subtitle %}{% endblock %}{% endblock %}
+{% block page_title%}{% block page_subtitle %}{% endblock %} - {{ user.username }}{% endblock %}
 
 {% block page_content %}
 <div class="row row-cards">
@@ -11,16 +11,19 @@
                 <ul class="nav nav-tabs card-header-tabs">
                     {% set currentPage = app.request.attributes.get('_route') %}
                     <li class="nav-item">
-                        <a class="nav-link {{ currentPage == 'user.management.edit' ? 'active': '' -}}"
-                           href="{{ path('user.management.edit', {'username':user.username}) }}"
+                        <a class="nav-link {{ currentPage == 'user.management.edit.profile' ? 'active': '' -}}"
+                           href="{{ path('user.management.edit.profile', {'username':user.username}) }}"
                         >
-                            {{ 'user.management.edit.common'|trans }}
+                            {{ 'user.management.edit.profile'|trans }}
                         </a>
                     </li>
-                    {# добавим в [tndt-46] c появлением глобальных полномочий. Впрочем полномочия проекта возможно и тут продублируем #}
-{#                    <li class="nav-item {{ currentPage == 'user.management.permission' ? 'active': '' -}}">#}
-{#                        <a href="{{ path('user.management.permission', {'username':user.username}) }}">{{ 'user.management.edit.permission'|trans }}</a>#}
-{#                    </li>#}
+                    <li class="nav-item">
+                        <a class="nav-link {{ currentPage == 'user.management.edit.permission' ? 'active': '' -}}"
+                           href="{{ path('user.management.edit.permission', {'username':user.username}) }}"
+                        >
+                            {{ 'user.management.edit.permission'|trans }}
+                        </a>
+                    </li>
                 </ul>
             </div>
             <div class="card-body">

@@ -224,7 +224,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @param string|Project|null $project
      * @return bool
      */
-    public function hasRole(string $role, $project = null): bool
+    public function hasRole(string $role, Project|string $project = null): bool
     {
         // дефолтная роль всех зарегистрированных
         if ($role === UserRolesEnum::ROLE_USER) {

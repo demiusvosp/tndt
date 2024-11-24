@@ -217,11 +217,13 @@ Profile: Профиль
 role:
   at_project: проекта
   pm: PM
-  project_manager: Менеджер проекта
+  project_manager: Project manager
+  projects_admin: Projects admin
   root: root
-  staff: работник
-  user: пользователь
-  visitor: посетитель
+  staff: staff
+  user: user
+  users_admin: User admin
+  visitor: visitor
 search: Search
 SpecialActions: Additional actions
 Support: Support
@@ -321,7 +323,7 @@ user:
   management:
     edit:
       title: User manager
-      common: Common
+      profile: Profile
       permission: Permission
   name:
     label: Имя пользователя
@@ -332,6 +334,14 @@ user:
   passwordRepeat:
     label: Подтверждение пароля
     help: Введите пароль повторно, чтобы исключить ошибку
+  project_management:
+    label: Project management
+    table_head: Project management
+    help: User can create, archive projects
+  user_management:
+    label: User management
+    table_head: User management
+    help: User can create, edit and lock users
   roles:
     label: User roles
   self_edit: Profile edit

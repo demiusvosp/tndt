@@ -27,7 +27,6 @@ class UserFiller
         $user = new User($dto->getUsername());
         $user->setName($dto->getName());
         $user->setEmail($dto->getEmail());
-        $user->setGlobalRoles(['ROLE_USER']);
         $user->setLocked(false);
         $user->setPassword($this->passwordHasher->hashPassword($user, $dto->getPassword()));
 
