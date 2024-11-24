@@ -11,6 +11,7 @@ use App\Entity\Comment;
 use App\Entity\Doc;
 use App\Entity\Project;
 use App\Entity\Task;
+use App\Entity\User;
 use App\Exception\ActivityException;
 
 enum ActivitySubjectTypeEnum: string
@@ -19,6 +20,7 @@ enum ActivitySubjectTypeEnum: string
     case Task = 'task';
     case Doc = 'doc';
     case Comment = 'comment';
+    case User = 'user';
 
     public static function classes(): array
     {
@@ -27,6 +29,7 @@ enum ActivitySubjectTypeEnum: string
             Task::class => self::Task,
             Doc::class => self::Doc,
             Comment::class => self::Comment,
+            User::class => self::User,
         ];
     }
 

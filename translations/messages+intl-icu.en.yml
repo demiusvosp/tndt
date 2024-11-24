@@ -16,6 +16,10 @@ activity:
     edit: edited the task
     changeState: changed the task stage from <b>{old}</b> to <b>{new}</b>
     close: <b>closed</b> the task on stage <b>{old}</b>. New task stage <b>{new}</b>
+  user:
+    create: created user
+    edit: edited user
+    selfEdit: edited his profile
 Administrate: Администрирование
 And_more: И еще
 Archive: Убрать в архив

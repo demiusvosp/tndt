@@ -47,7 +47,7 @@ class Activity
     private ActivitySubjectTypeEnum $subjectType;
 
     #[ORM\Column(type: 'string', length: 60, nullable: false)]
-    private int $subjectId;
+    private string $subjectId;
 
     #[ORM\ManyToOne(targetEntity: Project::class)]
     #[ORM\JoinColumn(name: 'project', referencedColumnName: 'suffix')]
@@ -113,9 +113,8 @@ class Activity
         $this->activitySubject = $activitySubject;
         try {
             $this->subjectType = ActivitySubjectTypeEnum::fromClass(get_class($activitySubject));
-            if ($activitySubject instanceof IdInterface) {
-                $this->subjectId = $activitySubject->getId();
-            }
+            $this->subjectId = $activitySubject->getId();
+
             if ($activitySubject instanceof WithProjectInterface) {
                 $this->project = $activitySubject->getProject();
             }

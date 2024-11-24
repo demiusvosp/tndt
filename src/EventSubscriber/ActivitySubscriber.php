@@ -48,6 +48,10 @@ class ActivitySubscriber implements EventSubscriberInterface
             AppEvents::DOC_CHANGE_STATE => ['addActivity', -10],
 
             AppEvents::COMMENT_ADD => ['addActivity', -10],
+
+            AppEvents::USER_CREATE => ['addActivity', -10],
+            AppEvents::USER_EDIT => ['addActivity', -10],
+            AppEvents::USER_SELF_EDIT  => ['addActivity', -10],
         ];
     }
 
