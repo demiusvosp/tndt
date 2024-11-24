@@ -54,6 +54,7 @@ class UserPermissionsEnum extends UserRolesEnum
             self::ROLE_USERS_ADMIN => [
                 self::PERM_USER_LIST,
                 self::PERM_USER_CREATE,
+                self::PERM_USER_EDIT,
                 self::PERM_USER_LOCK,
             ],
             self::ROLE_PROJECTS_ADMIN => [

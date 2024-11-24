@@ -346,7 +346,7 @@ user:
     label: User roles
   self_edit: Profile edit
   username:
-    label: username
+    label: login
     help: Main user login, use for signing and link to user from everywhere. Can't change after create
 Users: Users
 User_list: User list

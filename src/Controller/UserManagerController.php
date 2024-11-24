@@ -17,6 +17,7 @@ use App\Form\Type\User\UserManagerEditPermissionType;
 use App\Form\Type\User\UserManagerEditType;
 use App\Model\Enum\FlashMessageTypeEnum;
 use App\Model\Enum\Security\UserPermissionsEnum;
+use App\Model\Enum\Security\UserRolesEnum;
 use App\Repository\UserRepository;
 use App\Service\UserService;
 use Happyr\DoctrineSpecification\Spec;
@@ -43,7 +44,7 @@ class UserManagerController extends AbstractController
     }
 
 
-    #[IsGranted(UserPermissionsEnum::PERM_USER_EDIT)]
+    #[IsGranted(UserRolesEnum::ROLE_USERS_ADMIN)]
     public function index(Request $request): Response
     {
         if ($request->get('username')) {
@@ -61,7 +62,7 @@ class UserManagerController extends AbstractController
     }
 
 
-    #[IsGranted(UserPermissionsEnum::PERM_USER_EDIT)]
+    #[IsGranted(UserRolesEnum::ROLE_USERS_ADMIN)]
     public function list(Request $request, PaginatorInterface $paginator): Response
     {
         $query = $this->userRepository->getQuery(Spec::andX(

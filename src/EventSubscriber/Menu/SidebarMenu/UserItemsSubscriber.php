@@ -9,6 +9,7 @@ namespace App\EventSubscriber\Menu\SidebarMenu;
 
 use App\Event\Menu\MenuEvent;
 use App\Model\Enum\Security\UserPermissionsEnum;
+use App\Model\Enum\Security\UserRolesEnum;
 use App\ViewModel\Menu\MenuItem;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -45,7 +46,7 @@ class UserItemsSubscriber implements EventSubscriberInterface
     public function buildSidebar(MenuEvent $event): void
     {
         $route = $this->requestStack->getMainRequest()?->get('_route');
-        if ($this->security->isGranted(UserPermissionsEnum::PERM_USER_EDIT)
+        if ($this->security->isGranted(UserRolesEnum::ROLE_USERS_ADMIN)
         ) {
             $event->addItem(new MenuItem(
                 $this->router->generate('user.management.list'),
