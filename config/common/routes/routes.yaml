@@ -124,5 +124,5 @@ doc.change_state:
 
 #Activity
 activity.list:
-    path: /activity/list/{type<\w+>}/{id<\d+>}
+    path: /activity/list/{type<\w+>}/{id<\w+>}
     controller: App\Controller\ActivityController::listBySubject

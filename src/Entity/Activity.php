@@ -46,7 +46,7 @@ class Activity
     #[ORM\Column(type: 'string', length: 8, nullable: false, enumType: ActivitySubjectTypeEnum::class)]
     private ActivitySubjectTypeEnum $subjectType;
 
-    #[ORM\Column(type: 'integer', nullable: false)]
+    #[ORM\Column(type: 'string', length: 60, nullable: false)]
     private int $subjectId;
 
     #[ORM\ManyToOne(targetEntity: Project::class)]
