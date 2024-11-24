@@ -14,7 +14,7 @@ final class Version20241012215327 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return '';
+        return 'slug in doc table now unique per project';
     }
 
     public function up(Schema $schema): void

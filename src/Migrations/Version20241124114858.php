@@ -14,7 +14,7 @@ final class Version20241124114858 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return '';
+        return 'Alter activity subject id to string to save uuid, natural PK that username and others';
     }
 
     public function up(Schema $schema): void
