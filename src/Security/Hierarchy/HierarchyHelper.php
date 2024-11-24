@@ -12,6 +12,7 @@ use App\Model\Enum\Security\UserPermissionsEnum;
 use Psr\Cache\CacheItemPoolInterface;
 use Psr\Cache\InvalidArgumentException;
 use Symfony\Component\Cache\Adapter\PhpArrayAdapter;
+use function dump;
 
 class HierarchyHelper
 {
@@ -81,11 +82,12 @@ class HierarchyHelper
              */
             return true;
         }
+dump($subjectItem);
         $cacheItem = $this->permissionMapCache->getItem($subjectItem);
         if(!$cacheItem->isHit()) {
             return false;
         }
-
+dump($cacheItem->get());
         return in_array($requestedItem, $cacheItem->get(), true);
     }
 }

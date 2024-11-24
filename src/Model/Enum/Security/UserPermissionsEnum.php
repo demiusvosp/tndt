@@ -52,13 +52,17 @@ class UserPermissionsEnum extends UserRolesEnum
     {
         return [
             self::ROLE_USERS_ADMIN => [
+                self::PERM_USER_LIST,
                 self::PERM_USER_CREATE,
                 self::PERM_USER_LOCK,
             ],
             self::ROLE_PROJECTS_ADMIN => [
+                self::PERM_PROJECT_VIEW,
                 self::PERM_PROJECT_CREATE,
                 self::PERM_PROJECT_SETTINGS,
                 self::PERM_PROJECT_ARCHIVE,
+                self::PERM_TASK_VIEW,
+                self::PERM_DOC_VIEW
             ],
             self::PROLE_PM => [
                 self::PROLE_STAFF,

@@ -15,6 +15,7 @@ use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
+use function dump;
 
 
 /**
@@ -55,6 +56,7 @@ class GlobalRolesVoter implements VoterInterface, LoggerAwareInterface
             }
 
             foreach ($attributes as $attribute) {
+dump($attribute);
                 if ($this->hierarchyHelper->has($attribute, $roleName)) {
                     $this->securityLogger->debug(
                         "Global $roleName grant $attribute",
