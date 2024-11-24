@@ -1,6 +1,8 @@
 # Changelog
 
 ## [current]
+- **Bugfixes**
+  - [tndt-184](http://tasks.demius.ru/p/tndt-184) - Страница создания пользователя
 
 ----
 

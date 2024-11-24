@@ -1,28 +1,28 @@
 {% extends 'base_layout.html.twig' %}
 
 {% block title %}{{ 'Create_user'|trans }}{% endblock %}
-{% block page_title%}
-{% endblock %}
-{% block page_subtitle %}{% endblock %}
+{% block page_title%}{{ 'Create_user'|trans }}{% endblock %}
 
 {% block page_content %}
-    {{ form_start(form) }}
-    {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
-        {% block box_title %}
-            {{ 'Create_user'|trans }}
-        {% endblock %}
-        {% block box_body %}
-            {{ form_row(form.username) }}
-            {{ form_row(form.name) }}
-            {{ form_row(form.email) }}
-            {{ form_row(form.password) }}
-        {% endblock %}
-        {% block box_footer %}
-            <div class="form-footer-buttons">
-                <button type="submit" class="btn btn-success">{{ 'Create'|trans }}</button>
+<div class="row row-cards">
+    <div class="col-xl-8 col-lg-10 col-md-12">
+        <div class="card">
+        {{ form_start(form) }}
+            <div class="card-body">
+                <div class="col-xl-6 col-lg-8 col-md-12">
+                    {{ form_row(form.username) }}
+                    {{ form_row(form.name) }}
+                    {{ form_row(form.email) }}
+                    {{ form_row(form.password) }}
+                </div>
             </div>
-            {{ form_end(form) }}
-        {% endblock %}
-    {% endembed %}
-    {{ form_end(form) }}
+            <div class="card-footer">
+                <div class="form-footer-buttons">
+                    <button type="submit" class="btn btn-success">{{ 'Edit'|trans }}</button>
+                </div>
+            </div>
+        {{ form_end(form) }}
+        </div>
+    </div>
+</div>
 {% endblock %}
