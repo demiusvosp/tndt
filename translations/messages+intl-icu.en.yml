@@ -11,6 +11,10 @@ activity:
     create: created the document
     edit: edited the document
     changeState: changed the document state from <b>{old}</b> to <b>{new}</b>
+  project:
+    create: created the project
+    editSettings: edit project settings
+    archive: archived project
   task:
     create: created the task
     edit: edited the task

@@ -11,6 +11,10 @@ use App\Model\Enum\AppEvents;
 
 enum ActivityTypeEnum: string
 {
+    case ProjectCreate = 'project.create';
+    case ProjectEditSettings = 'project.editSettings';
+    case ProjectArchive = 'project.archive';
+
     case TaskCreate = 'task.create';
     case TaskEdit = 'task.edit';
     case TaskChangeState = 'task.changeState';
@@ -30,6 +34,10 @@ enum ActivityTypeEnum: string
     public static function fromEvent(string $eventName): self
     {
         return match ($eventName) {
+            AppEvents::PROJECT_CREATE => self::ProjectCreate,
+            AppEvents::PROJECT_EDIT_SETTINGS => self::ProjectEditSettings,
+            AppEvents::PROJECT_ARCHIVE => self::ProjectArchive,
+
             AppEvents::TASK_OPEN => self::TaskCreate,
             AppEvents::TASK_EDIT => self::TaskEdit,
             AppEvents::TASK_CHANGE_STAGE => self::TaskChangeState,
@@ -50,6 +58,7 @@ enum ActivityTypeEnum: string
     public function subjectType(): ActivitySubjectTypeEnum
     {
         return match ($this) {
+            self::ProjectCreate, self::ProjectEditSettings, self::ProjectArchive => ActivitySubjectTypeEnum::Project,
             self::TaskCreate, self::TaskEdit, self::TaskChangeState, self::TaskClose => ActivitySubjectTypeEnum::Task,
             self::DocCreate, self::DocEdit, self::DocChangeState => ActivitySubjectTypeEnum::Doc,
             self::CommentAdd => ActivitySubjectTypeEnum::Comment,

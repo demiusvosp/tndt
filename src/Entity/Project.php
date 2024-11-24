@@ -7,7 +7,9 @@
  */
 namespace App\Entity;
 
+use App\Contract\ActivitySubjectInterface;
 use App\Contract\InProjectInterface;
+use App\Contract\WithProjectInterface;
 use App\Model\Dto\Dictionary\Task\TaskComplexity;
 use App\Model\Dto\Dictionary\Task\TaskPriority;
 use App\Model\Dto\Dictionary\Task\TaskStage;
@@ -29,7 +31,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Table(name: "project")]
 #[ORM\Index(columns: ["is_archived"], name: "isArchived")]
 #[ORM\Index(columns: ["is_public"], name: "isPublic")]
-class Project implements InProjectInterface
+class Project implements InProjectInterface, WithProjectInterface, ActivitySubjectInterface
 {
     #[ORM\Id]
     #[ORM\Column(type: "string", length: 8)]
@@ -88,6 +90,22 @@ class Project implements InProjectInterface
     public function __toString(): string
     {
         return $this->getSuffix();
+    }
+
+    /**
+     * For ActivitySubjectInterface
+     */
+    public function getId(): int|string
+    {
+        return $this->suffix;
+    }
+
+    /**
+     * For ActivitySubjectInterface implement WithProjectInterface
+     */
+    public function getProject(): Project
+    {
+        return $this;
     }
 
     /**
@@ -325,5 +343,4 @@ class Project implements InProjectInterface
         $this->taskSettings = $taskSettings;
         return $this;
     }
-
 }
