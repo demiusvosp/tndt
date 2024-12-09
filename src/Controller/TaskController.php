@@ -22,6 +22,8 @@ use App\Model\Enum\Security\UserPermissionsEnum;
 use App\Model\Enum\TaskStageTypeEnum;
 use App\Repository\TaskRepository;
 use App\Service\InProjectContext;
+use App\Service\TableQuery\SpecByQueryFactory;
+use App\Service\TableQuery\TableQueryFactory;
 use App\Service\TaskService;
 use App\Service\TaskStagesService;
 use App\Specification\InProjectSpec;
@@ -33,6 +35,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use function dump;
 
 #[InProjectContext]
 class TaskController extends AbstractController
@@ -64,11 +67,22 @@ class TaskController extends AbstractController
      * @return Response
      */
     #[IsGranted(UserPermissionsEnum::PERM_TASK_VIEW)]
-    public function list(Request $request, Project $project, PaginatorInterface $paginator): Response
-    {
-        $query = $this->taskRepository->getQueryBuilder(new InProjectSpec($project), 't');
+    public function list(
+        Request $request,
+        Project $project,
+        PaginatorInterface $paginator,
+        TableQueryFactory $queryFactory,
+        SpecByQueryFactory $specFactory
+    ): Response {
+        $query = $queryFactory->createByTemplate();
+        $queryFactory->modifyFromQueryParams($query, $request->query->all());
+dump($query);
+
+        $t = $this->taskRepository->getQueryBuilder($specFactory->create($query));
+        dump($t->getDQL());
+
         $tasks = $paginator->paginate(
-            $query,
+            $this->taskRepository->getQueryBuilder(new InProjectSpec($project), 't'),
             $request->query->getInt('page', 1),
             self::TASK_PER_PAGE
         );
