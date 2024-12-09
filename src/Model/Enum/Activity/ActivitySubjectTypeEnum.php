@@ -13,6 +13,7 @@ use App\Entity\Project;
 use App\Entity\Task;
 use App\Entity\User;
 use App\Exception\ActivityException;
+use function dump;
 
 enum ActivitySubjectTypeEnum: string
 {
@@ -38,6 +39,8 @@ enum ActivitySubjectTypeEnum: string
      */
     public static function fromClass(string $classname): self
     {
+dump($classname);
+dump(self::classes());
         return self::classes()[$classname] ?? throw new ActivityException(null, $classname . ' is not activity subject');
     }
 }
