@@ -272,7 +272,8 @@ task:
   edit: Редактирование задачи
   isClosed:
     label: Статус
-  No: "№"
+  no:
+    label: "№"
   not_found: Задача не найдена
   priority:
     label: Приоритет

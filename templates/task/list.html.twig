@@ -26,7 +26,7 @@
                 <table class="table table-vcenter task-table">
                     <thead>
                         <tr>
-                            <th class="no">{{ knp_pagination_sortable(tasks, 'task.No'|trans, 't.no') }}</th>
+                            <th class="no">{{ knp_pagination_sortable(tasks, 'task.no.label'|trans, 't.no') }}</th>
                             <th class="caption">{{ knp_pagination_sortable(tasks, 'task.caption.label'|trans, 't.caption') }}</th>
                             <th>
                                 {% if dictionary_enabled(project, 'task.stage') %}

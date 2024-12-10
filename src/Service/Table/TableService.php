@@ -14,17 +14,20 @@ use App\ViewModel\Table\TableView;
 use Doctrine\ORM\EntityManagerInterface;
 use Happyr\DoctrineSpecification\Repository\EntitySpecificationRepositoryInterface;
 use Happyr\DoctrineSpecification\Spec;
-use Happyr\DoctrineSpecification\Specification\CountOf;
 use Happyr\DoctrineSpecification\Specification\Specification;
+use Symfony\Contracts\Translation\TranslatorInterface;
+use function array_map;
 use function dump;
 
 class TableService
 {
     private EntityManagerInterface $entityManager;
+    private TranslatorInterface $translator;
 
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(EntityManagerInterface $entityManager, TranslatorInterface $translator)
     {
         $this->entityManager = $entityManager;
+        $this->translator = $translator;
     }
 
     public function createTable(TableSettingsInterface $settings, TableQuery $query, ?Specification $addCondition = null): TableView
@@ -35,10 +38,13 @@ class TableService
         $spec = $this->buildSpecByQuery($settings, $query, $addCondition);
 dump($spec);
         $count = $repository->matchSingleScalarResult(Spec::countOf($spec));
-        $result = $repository->match($spec);
+        $result = [];
+        foreach ($repository->match($spec) as $item) {
+            $result[] = $settings->transformRow($item);
+        };
 
         return new TableView(
-            [],
+            $this->buildHeaders($settings),
             $result,
             new Pagination(
                 $query->getPage()->getPage(),
@@ -64,5 +70,13 @@ dump($spec);
         // а вот тут фабрике надо понимать чьё query использовать. Какие спецификации делать, задач или документов
 
         return $spec;
+    }
+
+    private function buildHeaders(TableSettingsInterface $settings): array
+    {
+        return array_map(
+            function (array $header) { return $this->translator->trans($header[0]); },
+            $settings->getHeaders()
+        );
     }
 }
