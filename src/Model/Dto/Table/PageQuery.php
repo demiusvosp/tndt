@@ -5,7 +5,7 @@
  * Time: 00:36
  */
 
-namespace App\Model\Dto\TableQuery;
+namespace App\Model\Dto\Table;
 
 class PageQuery
 {

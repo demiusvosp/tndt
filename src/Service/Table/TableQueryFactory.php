@@ -5,10 +5,10 @@
  * Time: 23:52
  */
 
-namespace App\Service\TableQuery;
+namespace App\Service\Table;
 
-use App\Model\Dto\TableQuery\SortQuery;
-use App\Model\Dto\TableQuery\TableQuery;
+use App\Model\Dto\Table\SortQuery;
+use App\Model\Dto\Table\TableQuery;
 
 class TableQueryFactory
 {

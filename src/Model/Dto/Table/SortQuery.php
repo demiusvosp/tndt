@@ -5,7 +5,7 @@
  * Time: 00:23
  */
 
-namespace App\Model\Dto\TableQuery;
+namespace App\Model\Dto\Table;
 
 class SortQuery
 {

@@ -19,11 +19,13 @@ use App\Form\Type\Task\EditTaskType;
 use App\Form\Type\Task\NewTaskType;
 use App\Model\Enum\FlashMessageTypeEnum;
 use App\Model\Enum\Security\UserPermissionsEnum;
+use App\Model\Enum\Table\TaskTable;
 use App\Model\Enum\TaskStageTypeEnum;
 use App\Repository\TaskRepository;
 use App\Service\InProjectContext;
-use App\Service\TableQuery\SpecByQueryFactory;
-use App\Service\TableQuery\TableQueryFactory;
+use App\Service\Table\SpecByQueryFactory;
+use App\Service\Table\TableQueryFactory;
+use App\Service\Table\TableService;
 use App\Service\TaskService;
 use App\Service\TaskStagesService;
 use App\Specification\InProjectSpec;
@@ -72,14 +74,14 @@ class TaskController extends AbstractController
         Project $project,
         PaginatorInterface $paginator,
         TableQueryFactory $queryFactory,
-        SpecByQueryFactory $specFactory
+        TableService $tableService
     ): Response {
         $query = $queryFactory->createByTemplate();
         $queryFactory->modifyFromQueryParams($query, $request->query->all());
 dump($query);
 
-        $t = $this->taskRepository->getQueryBuilder($specFactory->create($query));
-        dump($t->getDQL());
+        $t = $tableService->createTable(new TaskTable(), $query, new InProjectSpec($project));
+        dump($t);
 
         $tasks = $paginator->paginate(
             $this->taskRepository->getQueryBuilder(new InProjectSpec($project), 't'),
