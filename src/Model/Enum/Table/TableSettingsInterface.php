@@ -19,11 +19,4 @@ interface TableSettingsInterface
      * @return array
      */
     public function getHeaders(): array;
-
-    /**
-     * Трансформация переданного в столбцы.
-     * @param object $row
-     * @return array
-     */
-    public function transformRow(object $row): array;
 }

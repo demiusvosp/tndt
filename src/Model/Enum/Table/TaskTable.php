@@ -22,23 +22,12 @@ class TaskTable implements TableSettingsInterface
         return [
             'no' => ['task.no.label'],
             'caption' => ['task.caption.label'],
+            'stage' => ['task.stage.label'],
+            'type' => ['task.type.label'],
+            'priority' => ['task.priority.label'],
+            'complexity' => ['task.complexity.label'],
+            'created' => ['task.created.label'],
             'updated' => ['task.updated.label'],
-        ];
-    }
-
-    /**
-     * @param Task $row
-     * @return array|object
-     */
-    public function transformRow(object $row): array
-    {
-        if (!$row instanceof Task) {
-            throw new DomainException("TaskTable can render only Task row");
-        }
-        return [
-            'no' => $row->getNo(),
-            'caption' => $row->getCaption(),
-            'updated' => $row->getUpdatedAt()
         ];
     }
 }

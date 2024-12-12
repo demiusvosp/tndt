@@ -50,6 +50,10 @@ services:
         arguments:
             $statProcessors: !tagged_locator {tag: app.statistic.processor, index_by: 'item'}
 
+    App\Service\Table\TableService:
+        arguments:
+            $modelTransformers: !tagged_locator {tag: app.table.model_transformer, index_by: 'model'}
+
     # @todo move to presentation in tndt-85
     App\Service\Twig\BadgesExtension:
         class: 'App\Service\Twig\BadgesExtension'
