@@ -95,6 +95,10 @@
                     <span class="m-0">
                         {{ knp_pagination_render(tasks) }}
                     </span>
+                <hr>
+                    <span class="m-0">
+                        {{ include('table/_pagination.html.twig', {p:table.pagination}) }}
+                    </span>
             </div>
         </div>
     </div>

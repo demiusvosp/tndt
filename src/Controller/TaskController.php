@@ -78,10 +78,9 @@ class TaskController extends AbstractController
     ): Response {
         $query = $queryFactory->createByTemplate();
         $queryFactory->modifyFromQueryParams($query, $request->query->all());
-dump($query);
 
-        $t = $tableService->createTable(new TaskTable(), $query, new InProjectSpec($project));
-        dump($t);
+        $table = $tableService->createTable(new TaskTable(), $query, 'task.list', new InProjectSpec($project));
+        dump($table);
 
         $tasks = $paginator->paginate(
             $this->taskRepository->getQueryBuilder(new InProjectSpec($project), 't'),
@@ -93,6 +92,7 @@ dump($query);
             'task/list.html.twig',
             [
                 'project' => $project,
+                'table' => $table,
                 'tasks' => $tasks,
             ]
         );

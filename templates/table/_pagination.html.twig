@@ -1,0 +1,16 @@
+<nav>
+    <ul class="pagination">
+        {% set hasBack = p.currentPage > 1 %}
+        <li class="page-item{{ hasBack?'':' disabled' }}">
+            {% if hasBack %}<a class="page-link" rel="prev" href="">{% endif %}
+                <span class="page-link">&nbsp;Назад</span>
+            {% if hasBack %}</a>{% endif %}
+        </li>
+        {% set hasNext = p.currentPage < p.totalPages %}
+        <li class="page-item{{ hasNext?'':' disabled' }}">
+            {% if hasNext %}<a class="page-link" rel="next" href="">{% endif %}
+                <span class="page-link">Вперед&nbsp;</span>
+            {% if hasNext %}</a>{% endif %}
+        </li>
+    </ul>
+</nav>

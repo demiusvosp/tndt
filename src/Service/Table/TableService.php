@@ -37,14 +37,21 @@ class TableService
         $this->translator = $translator;
     }
 
-    public function createTable(TableSettingsInterface $settings, TableQuery $query, ?Specification $addCondition = null): TableView
+    public function createTable(TableSettingsInterface $settings, TableQuery $query, string $route, ?Specification $addCondition = null): TableView
     {
         /** @var EntitySpecificationRepositoryInterface $repository */
         $repository = $this->entityManager->getRepository($settings->entityClass());
 
-        $spec = $this->buildSpecByQuery($settings, $query, $addCondition);
+        if ($addCondition) {
+            $spec = $addCondition;
+        } else {
+            $spec = Spec::andX();
+        }
+        // $this->applyFilters($spec, $settings, $query);
         $count = $repository->matchSingleScalarResult(Spec::countOf($spec));
 
+        $spec = $this->applySorts($spec, $settings, $query);
+        $spec = $this->applyPagination($spec, $settings, $query);
         /** @var ModelTransformerInterface $modelTransformer */
         $modelTransformer = $this->modelTransformers->get($settings->entityClass());
         $result = [];
@@ -62,24 +69,27 @@ class TableService
         );
     }
 
-    private function buildSpecByQuery(TableSettingsInterface $settings, TableQuery $query, ?Specification $addCondition = null): Specification
+
+    private function applySorts(Specification $spec, TableSettingsInterface $settings, TableQuery $query): Specification
     {
-        $spec = Spec::andX(
+        if ($query->getSort()) {
+            $spec = Spec::andX(
+                $spec,
+                Spec::orderBy($query->getSort()->getField(), $query->getSort()->getDirection())
+            );
+        }
+        return $spec;
+    }
+
+    private function applyPagination(Specification $spec, TableSettingsInterface $settings, TableQuery $query): Specification
+    {
+        return Spec::andX(
+            $spec,
             Spec::offset($query->getPage()->getOffset()),
             Spec::limit($query->getPage()->getPerPage())
         );
-        if ($addCondition) {
-            $spec->andX($addCondition);
-        }
-
-        if ($query->getSort()) {
-            $spec->andX(Spec::orderBy($query->getSort()->getField(), $query->getSort()->getDirection()));
-        }
-
-        // а вот тут фабрике надо понимать чьё query использовать. Какие спецификации делать, задач или документов
-
-        return $spec;
     }
+
 
     private function buildHeaders(TableSettingsInterface $settings): array
     {
