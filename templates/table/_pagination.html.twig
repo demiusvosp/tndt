@@ -1,16 +1,44 @@
 <nav>
+    {% set p = table.pagination %}
     <ul class="pagination">
-        {% set hasBack = p.currentPage > 1 %}
-        <li class="page-item{{ hasBack?'':' disabled' }}">
-            {% if hasBack %}<a class="page-link" rel="prev" href="">{% endif %}
-                <span class="page-link">&nbsp;Назад</span>
-            {% if hasBack %}</a>{% endif %}
-        </li>
-        {% set hasNext = p.currentPage < p.totalPages %}
-        <li class="page-item{{ hasNext?'':' disabled' }}">
-            {% if hasNext %}<a class="page-link" rel="next" href="">{% endif %}
-                <span class="page-link">Вперед&nbsp;</span>
-            {% if hasNext %}</a>{% endif %}
-        </li>
+        {% if p.currentPage > 1 %}
+            <li class="page-item">
+                <a class="page-link" rel="prev" href="{{ table_link(table, {'page': p.currentPage - 1}) }}">
+                    «&nbsp;Назад
+                </a>
+            </li>
+        {% else %}
+            <li class="page-item disabled">
+                <span class="page-link">«&nbsp;Назад</span>
+            </li>
+        {% endif %}
+
+        {% for i in 1..p.totalPages  %}
+            {% if i == p.currentPage %}
+                <li class="page-item active">
+                    <span class="page-link">
+                        {{ i }}
+                    </span>
+                </li>
+            {% else %}
+                <li class="page-item">
+                    <a class="page-link" href="{{ table_link(table, {'page': i}) }}">
+                        {{ i }}
+                    </a>
+                </li>
+            {% endif %}
+        {% endfor %}
+
+        {% if p.currentPage < p.totalPages %}
+            <li class="page-item">
+                <a class="page-link" rel="next" href="{{ table_link(table, {'page': p.currentPage + 1}) }}">
+                    Вперед&nbsp;»
+                </a>
+            </li>
+        {% else %}
+            <li class="page-item disabled">
+                <span class="page-link">Вперед&nbsp;»</span>
+            </li>
+        {% endif %}
     </ul>
 </nav>

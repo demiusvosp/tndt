@@ -37,8 +37,13 @@ class TableService
         $this->translator = $translator;
     }
 
-    public function createTable(TableSettingsInterface $settings, TableQuery $query, string $route, ?Specification $addCondition = null): TableView
-    {
+    public function createTable(
+        TableSettingsInterface $settings,
+        TableQuery $query,
+        string $route,
+        array $routeParams,
+        ?Specification $addCondition = null
+    ): TableView {
         /** @var EntitySpecificationRepositoryInterface $repository */
         $repository = $this->entityManager->getRepository($settings->entityClass());
 
@@ -60,6 +65,9 @@ class TableService
         };
 
         return new TableView(
+            $route,
+            $routeParams,
+            $query,
             $this->buildHeaders($settings),
             $result,
             new Pagination(

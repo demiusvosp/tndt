@@ -79,7 +79,13 @@ class TaskController extends AbstractController
         $query = $queryFactory->createByTemplate();
         $queryFactory->modifyFromQueryParams($query, $request->query->all());
 
-        $table = $tableService->createTable(new TaskTable(), $query, 'task.list', new InProjectSpec($project));
+        $table = $tableService->createTable(
+            new TaskTable(),
+            $query,
+            'task.list',
+            ['suffix' => $project->getSuffix()],
+            new InProjectSpec($project)
+        );
         dump($table);
 
         $tasks = $paginator->paginate(
