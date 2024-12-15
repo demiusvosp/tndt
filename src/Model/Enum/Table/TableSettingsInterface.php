@@ -7,6 +7,8 @@
 
 namespace App\Model\Enum\Table;
 
+use App\Model\Dto\Table\SortQuery;
+
 interface TableSettingsInterface
 {
     /**
@@ -18,5 +20,7 @@ interface TableSettingsInterface
      * Набор столбцов, может быть здесь будет максимально возможный набор, а tableQuery будет менять их порядок и набор
      * @return array
      */
-    public function getHeaders(): array;
+    public function getColumns(): array;
+
+    public function getDefaultSort(): SortQuery;
 }

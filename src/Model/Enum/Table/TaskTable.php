@@ -9,6 +9,7 @@ namespace App\Model\Enum\Table;
 
 use App\Entity\Task;
 use App\Exception\DomainException;
+use App\Model\Dto\Table\SortQuery;
 
 class TaskTable implements TableSettingsInterface
 {
@@ -17,17 +18,25 @@ class TaskTable implements TableSettingsInterface
         return Task::class;
     }
 
-    public function getHeaders(): array
+    /**
+     * @return array[]
+     */
+    public function getColumns(): array
     {
         return [
-            'no' => ['task.no.label'],
-            'caption' => ['task.caption.label'],
-            'stage' => ['task.stage.label'],
-            'type' => ['task.type.label'],
-            'priority' => ['task.priority.label'],
-            'complexity' => ['task.complexity.label'],
-            'created' => ['task.created.label'],
-            'updated' => ['task.updated.label'],
+            'no' => ['task.no.label', true, 'no'],
+            'caption' => ['task.caption.label', true, 'caption'],
+            'stage' => ['task.stage.label', true],
+            'type' => ['task.type.label', true],
+            'priority' => ['task.priority.label', true],
+            'complexity' => ['task.complexity.label', true],
+            'createdAt' => ['task.created.label', true],
+            'updatedAt' => ['task.updated.label', true],
         ];
+    }
+
+    public function getDefaultSort(): SortQuery
+    {
+        return new SortQuery('updatedAt', SortQuery::DESC);
     }
 }

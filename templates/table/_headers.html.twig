@@ -1,0 +1,26 @@
+<tr>
+    {% for header in table.headers %}
+        <th {% if header.additionalClass %}class="{{ header.additionalClass }}"{% endif %}>
+            {% if header.sortable %}
+                <a class="sortable" href="{{ table_sort_link(table, header.field) }}">
+                    <span class="float-end">
+                    {% if header.sorted %}
+                        {% if header.sorted == 'asc' %}
+                                <i class="fa fa-sort-up"></i>
+                        {% else %}
+                                <i class="fa fa-sort-down"></i>
+                        {% endif %}
+                    {% else %}
+                        <i class="fa fa-sort"></i>
+                    {% endif %}
+                    </span>
+                    {{ header.label }}
+                </a>
+            {% else %}
+                <span>
+                    {{ header.label }}
+                </span>
+            {% endif %}
+        </th>
+    {% endfor %}
+</tr>

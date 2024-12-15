@@ -7,6 +7,7 @@
 
 namespace App\Service\Table;
 
+use App\Model\Dto\Table\Column;
 use App\Model\Dto\Table\TableQuery;
 use App\Model\Enum\Table\TableSettingsInterface;
 use App\ViewModel\Table\Pagination;
@@ -19,6 +20,7 @@ use Happyr\DoctrineSpecification\Specification\Specification;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use function array_map;
+use function dump;
 
 class TableService
 {
@@ -45,7 +47,7 @@ class TableService
         ?Specification $addCondition = null
     ): TableView {
         /** @var EntitySpecificationRepositoryInterface $repository */
-        $repository = $this->entityManager->getRepository($settings->entityClass());
+        $repository = $this->entityManager->getRepository($query->entityClass());
 
         if ($addCondition) {
             $spec = $addCondition;
@@ -55,20 +57,43 @@ class TableService
         // $this->applyFilters($spec, $settings, $query);
         $count = $repository->matchSingleScalarResult(Spec::countOf($spec));
 
-        $spec = $this->applySorts($spec, $settings, $query);
-        $spec = $this->applyPagination($spec, $settings, $query);
+        $spec = $this->applySorts($spec, $query);
+        $spec = $this->applyPagination($spec, $query);
         /** @var ModelTransformerInterface $modelTransformer */
-        $modelTransformer = $this->modelTransformers->get($settings->entityClass());
+        $modelTransformer = $this->modelTransformers->get($settings::class);
         $result = [];
         foreach ($repository->match($spec) as $item) {
             $result[] = $modelTransformer->transform($item);
         };
 
+
+        $columns = array_map(
+            function ($item) use ($settings, $query) {
+                $columnSettings = $settings->getColumns()[$item];
+                $sortable = $columnSettings[1];
+                if ($sortable) {
+                    $sorted = null;
+                    $sortQuery = $query->getSort();
+                    if ($sortQuery->getField() == $item) {
+                        $sorted = $sortQuery->getDirection();
+                    }
+                }
+                return new Column(
+                    $item,
+                    $this->translator->trans($columnSettings[0]),
+                    $sortable,
+                    $sorted,
+                    $columnSettings[2] ?? ''
+                );
+            },
+            $query->getColumns()
+        );
+
         return new TableView(
             $route,
             $routeParams,
             $query,
-            $this->buildHeaders($settings),
+            $columns,
             $result,
             new Pagination(
                 $query->getPage()->getPage(),
@@ -78,7 +103,7 @@ class TableService
     }
 
 
-    private function applySorts(Specification $spec, TableSettingsInterface $settings, TableQuery $query): Specification
+    private function applySorts(Specification $spec, TableQuery $query): Specification
     {
         if ($query->getSort()) {
             $spec = Spec::andX(
@@ -89,21 +114,12 @@ class TableService
         return $spec;
     }
 
-    private function applyPagination(Specification $spec, TableSettingsInterface $settings, TableQuery $query): Specification
+    private function applyPagination(Specification $spec, TableQuery $query): Specification
     {
         return Spec::andX(
             $spec,
             Spec::offset($query->getPage()->getOffset()),
             Spec::limit($query->getPage()->getPerPage())
-        );
-    }
-
-
-    private function buildHeaders(TableSettingsInterface $settings): array
-    {
-        return array_map(
-            function (array $header) { return $this->translator->trans($header[0]); },
-            $settings->getHeaders()
         );
     }
 }

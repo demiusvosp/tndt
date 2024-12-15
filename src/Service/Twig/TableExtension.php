@@ -25,14 +25,22 @@ class TableExtension extends AbstractExtension
     {
         return [
             new TwigFunction(
-                'table_link',
-                [$this, 'link'],
+                'table_sort_link',
+                [$this, 'sortLink'],
+            ),
+            new TwigFunction(
+                'table_paginate_link',
+                [$this, 'paginateLink'],
             ),
         ];
     }
 
-    public function link(TableView $tableView, $newParam): string
+    public function paginateLink(TableView $tableView, int $newPage): string
     {
-        return $this->router->link($tableView, $newParam);
+        return $this->router->paginateLink($tableView, $newPage);
+    }
+    public function sortLink(TableView $tableView, string $field): string
+    {
+        return $this->router->sortLink($tableView, $field);
     }
 }

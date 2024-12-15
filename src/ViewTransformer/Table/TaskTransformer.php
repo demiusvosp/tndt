@@ -10,12 +10,13 @@ namespace App\ViewTransformer\Table;
 use App\Entity\Task;
 use App\Exception\DomainException;
 use App\Model\Enum\DictionaryTypeEnum;
+use App\Model\Enum\Table\TaskTable;
 use App\Service\Dictionary\Fetcher;
 use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 
 #[AutoconfigureTag("app.table.model_transformer")]
-#[AsTaggedItem(index: Task::class)]
+#[AsTaggedItem(index: TaskTable::class)]
 class TaskTransformer implements ModelTransformerInterface
 {
     private Fetcher $dictionaryFetcher;

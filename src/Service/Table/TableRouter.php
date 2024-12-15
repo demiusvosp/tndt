@@ -23,12 +23,32 @@ class TableRouter
         $this->router = $router;
     }
 
-    public function link(TableView $tableView, array $newParam): string
+    public function paginateLink(TableView $tableView, int $page): string
     {
         $params = $tableView->getRouteParams();
-        // здесь будет процесс имплементации query в ссылку
-        // и модификация кнопкой вызывающей эту ссылку
-        $params = array_merge($params, $newParam);
+        $params = array_merge($params, ['page' => $page]);
+
+        return $this->router->generate(
+            $tableView->getRoute(),
+            $params
+        );
+    }
+
+    public function sortLink(TableView $tableView, string $field): string
+    {
+        $params = $tableView->getRouteParams();
+
+        // не уверен, что это должно решаться в роутере, но где ж еще
+        $newSort = ['sort' => [$field => SortQuery::ASC]];
+        $oldSort = $tableView->getQuery()->getSort();
+        if ($oldSort && $oldSort->getField() === $field) {
+            if ($oldSort->getDirection() === SortQuery::ASC) {
+                $newSort = ['sort' => [$field => SortQuery::DESC]];
+            } else {
+                $newSort = [];
+            }
+        }
+        $params = array_merge($params, $newSort);
 
         return $this->router->generate(
             $tableView->getRoute(),

@@ -25,30 +25,7 @@
             <div class="card-table table-responsive">
                 <table class="table table-vcenter task-table">
                     <thead>
-                        <tr>
-                            <th class="no">{{ knp_pagination_sortable(tasks, 'task.no.label'|trans, 't.no') }}</th>
-                            <th class="caption">{{ knp_pagination_sortable(tasks, 'task.caption.label'|trans, 't.caption') }}</th>
-                            <th>
-                                {% if dictionary_enabled(project, 'task.stage') %}
-                                    {{ knp_pagination_sortable(tasks, 'task.stage.label'|trans, 't.stage') }}
-                                {% else %}
-                                    {{ knp_pagination_sortable(tasks, 'task.isClosed.label'|trans, 't.isClosed') }}
-                                {% endif %}
-                            </th>
-                            {% if dictionary_enabled(project, 'task.type') %}
-                                <th>{{ knp_pagination_sortable(tasks, 'task.type.label'|trans, 't.type') }}</th>
-                            {% endif %}
-                            {% if dictionary_enabled(project, 'task.priority') %}
-                                <th >{{ knp_pagination_sortable(tasks, 'task.priority.label'|trans, 't.priority') }}</th>
-                            {% endif %}
-                            {% if dictionary_enabled(project, 'task.complexity') %}
-                                <th>{{ knp_pagination_sortable(tasks, 'task.complexity.label'|trans, 't.complexity') }}</th>
-                            {% endif %}
-                            {#<th>{{ knp_pagination_sortable(tasks, 'task.createdBy.label'|trans, 't.createdBy') }}</th>#}
-                            <th>{{ knp_pagination_sortable(tasks, 'task.created.label'|trans, 't.createdAt') }}</th>
-                            {#<th>{{ knp_pagination_sortable(tasks, 'task.assignedTo.label'|trans, 't.assignedTo') }}</th>#}
-                            <th>{{ knp_pagination_sortable(tasks, 'task.updated.label'|trans, 't.updatedAt') }}</th>
-                        </tr>
+                        {{ include('table/_headers.html.twig') }}
                     </thead>
                     <tbody>
                     {%  for task in tasks %}

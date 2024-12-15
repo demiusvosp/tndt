@@ -76,7 +76,7 @@ class TaskController extends AbstractController
         TableQueryFactory $queryFactory,
         TableService $tableService
     ): Response {
-        $query = $queryFactory->createByTemplate();
+        $query = $queryFactory->createByTemplate(new TaskTable());
         $queryFactory->modifyFromQueryParams($query, $request->query->all());
 
         $table = $tableService->createTable(
