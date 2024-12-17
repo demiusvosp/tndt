@@ -18,8 +18,8 @@ class TableQueryFactory
     public function createByTemplate(TableSettingsInterface $settings): TableQuery
     {
         $query = new TableQuery($settings->entityClass());
-        // Здесь необзодимо выкинуть столбцы которых нет в проекте, для этого сервис должен о проекте знать!
         $query->setColumns(array_keys($settings->getColumns()));
+        $query->setFilter($settings->getDefaultFilter());
         $query->setSort($settings->getDefaultSort());
         return $query;
     }

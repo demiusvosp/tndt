@@ -11,11 +11,13 @@ class TableQuery
 {
     private string $entityClass;
     private array $columns;
+    private ?FilterQuery $filter;
     private ?SortQuery $sort;
     private PageQuery $page;
 
-    public function __construct(string $entityClass)
+    public function __construct(string $entityClass, ?FilterQuery $defaultFilter = null)
     {
+        $this->filter = $defaultFilter;
         $this->entityClass = $entityClass;
         $this->page = new PageQuery();
     }
@@ -30,9 +32,25 @@ class TableQuery
         return $this->columns;
     }
 
+    public function hasColumn(string $column): bool
+    {
+        return in_array($column, $this->columns);
+    }
+
     public function setColumns(array $columns): TableQuery
     {
         $this->columns = $columns;
+        return $this;
+    }
+
+    public function getFilter(): ?FilterQuery
+    {
+        return $this->filter;
+    }
+
+    public function setFilter(FilterQuery $filter): TableQuery
+    {
+        $this->filter = $filter;
         return $this;
     }
 

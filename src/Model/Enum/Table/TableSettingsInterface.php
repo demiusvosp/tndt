@@ -7,6 +7,7 @@
 
 namespace App\Model\Enum\Table;
 
+use App\Model\Dto\Table\FilterQuery;
 use App\Model\Dto\Table\SortQuery;
 
 interface TableSettingsInterface
@@ -21,6 +22,8 @@ interface TableSettingsInterface
      * @return array
      */
     public function getColumns(): array;
+
+    public function getDefaultFilter(): FilterQuery;
 
     public function getDefaultSort(): SortQuery;
 }

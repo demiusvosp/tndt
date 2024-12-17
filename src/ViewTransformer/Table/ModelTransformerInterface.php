@@ -7,7 +7,9 @@
 
 namespace App\ViewTransformer\Table;
 
+use App\Model\Dto\Table\TableQuery;
+
 interface ModelTransformerInterface
 {
-    public function transform(object $model): array;
+    public function transform(object $model, TableQuery $query): array;
 }

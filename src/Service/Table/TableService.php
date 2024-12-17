@@ -43,29 +43,10 @@ class TableService
         TableSettingsInterface $settings,
         TableQuery $query,
         string $route,
-        array $routeParams,
-        ?Specification $addCondition = null
+        array $routeParams
     ): TableView {
         /** @var EntitySpecificationRepositoryInterface $repository */
         $repository = $this->entityManager->getRepository($query->entityClass());
-
-        if ($addCondition) {
-            $spec = $addCondition;
-        } else {
-            $spec = Spec::andX();
-        }
-        // $this->applyFilters($spec, $settings, $query);
-        $count = $repository->matchSingleScalarResult(Spec::countOf($spec));
-
-        $spec = $this->applySorts($spec, $query);
-        $spec = $this->applyPagination($spec, $query);
-        /** @var ModelTransformerInterface $modelTransformer */
-        $modelTransformer = $this->modelTransformers->get($settings::class);
-        $result = [];
-        foreach ($repository->match($spec) as $item) {
-            $result[] = $modelTransformer->transform($item);
-        };
-
 
         $columns = array_map(
             function ($item) use ($settings, $query) {
@@ -89,6 +70,18 @@ class TableService
             $query->getColumns()
         );
 
+        $spec = $this->buildFilters($query);
+        $count = $repository->matchSingleScalarResult(Spec::countOf($spec));
+
+        $spec = $this->applySorts($spec, $query);
+        $spec = $this->applyPagination($spec, $query);
+        /** @var ModelTransformerInterface $modelTransformer */
+        $modelTransformer = $this->modelTransformers->get($settings::class);
+        $result = [];
+        foreach ($repository->match($spec) as $item) {
+            $result[] = $modelTransformer->transform($item, $query);
+        };
+
         return new TableView(
             $route,
             $routeParams,
@@ -102,6 +95,14 @@ class TableService
         );
     }
 
+    private function buildFilters(TableQuery $query): Specification
+    {
+        $spec = Spec::andX();
+        foreach ($query->getFilter()->getFilters() as $filter) {
+            $spec->andX($filter->buildSpec());
+        }
+        return $spec;
+    }
 
     private function applySorts(Specification $spec, TableQuery $query): Specification
     {
