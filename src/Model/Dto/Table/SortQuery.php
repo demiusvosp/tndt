@@ -42,4 +42,9 @@ class SortQuery
         $this->direction = $direction;
         return $this;
     }
+
+    public function getRouteParams(): array
+    {
+        return ['sort' => [$this->field => $this->direction]];
+    }
 }

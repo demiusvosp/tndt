@@ -83,8 +83,7 @@ class TaskController extends AbstractController
         $table = $tableService->createTable(
             $template,
             $query,
-            'task.list',
-            ['suffix' => $project->getSuffix()]
+            'task.list'
         );
 dump($table);
 

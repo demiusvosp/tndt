@@ -75,4 +75,13 @@ class TableQuery
         $this->page = $page;
         return $this;
     }
+
+    public function getRouteParams(): array
+    {
+        return array_merge(
+            $this->filter->getRouteParams(),
+            $this->sort->getRouteParams(),
+            $this->page->getRouteParams()
+        );
+    }
 }

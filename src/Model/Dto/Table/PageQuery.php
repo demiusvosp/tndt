@@ -46,4 +46,9 @@ class PageQuery
     {
         return $this->perPage * ($this->page - 1);
     }
+
+    public function getRouteParams(): array
+    {
+        return ['page' => $this->page];
+    }
 }

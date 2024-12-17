@@ -27,7 +27,6 @@ class TableRouter
     public function paginateLink(TableView $tableView, int $page): string
     {
         $params = $tableView->getRouteParams();
-dump($params);
         $params = array_merge($params, ['page' => $page]);
 
         return $this->router->generate(
@@ -50,7 +49,7 @@ dump($params);
                 $newSort = [];
             }
         }
-        $params = array_merge($params, $newSort);
+        $params = array_merge($params, $newSort, ['page' => 1]);
 
         return $this->router->generate(
             $tableView->getRoute(),

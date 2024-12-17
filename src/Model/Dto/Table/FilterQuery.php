@@ -8,6 +8,7 @@
 namespace App\Model\Dto\Table;
 
 use App\Model\Dto\Table\Filter\FilterInterface;
+use function array_merge;
 
 class FilterQuery
 {
@@ -31,5 +32,14 @@ class FilterQuery
     {
         $this->filters[] = $filter;
         return $this;
+    }
+
+    public function getRouteParams(): array
+    {
+        $params = [];
+        foreach ($this->filters as $filter) {
+            $params = array_merge($params, $filter->getRouteParams());
+        }
+        return $params;
     }
 }

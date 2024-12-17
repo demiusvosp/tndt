@@ -43,7 +43,7 @@ class TableService
         TableSettingsInterface $settings,
         TableQuery $query,
         string $route,
-        array $routeParams
+        array $routeParams = []
     ): TableView {
         /** @var EntitySpecificationRepositoryInterface $repository */
         $repository = $this->entityManager->getRepository($query->entityClass());

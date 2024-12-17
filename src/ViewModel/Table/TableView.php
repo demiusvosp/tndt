@@ -8,6 +8,7 @@
 namespace App\ViewModel\Table;
 
 use App\Model\Dto\Table\TableQuery;
+use function array_merge;
 
 class TableView
 {
@@ -42,7 +43,7 @@ class TableView
 
     public function getRouteParams(): array
     {
-        return $this->routeParams;
+        return array_merge($this->routeParams, $this->query->getRouteParams());
     }
 
     public function getQuery(): TableQuery

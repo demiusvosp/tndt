@@ -20,6 +20,11 @@ class ProjectFilter implements FilterInterface
         $this->suffix = $suffix;
     }
 
+    public function getRouteParams(): array
+    {
+        return ['suffix' => $this->suffix];
+    }
+
     public function buildSpec(): Specification
     {
         return new InProjectSpec($this->suffix);

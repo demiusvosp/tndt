@@ -11,5 +11,7 @@ use Happyr\DoctrineSpecification\Specification\Specification;
 
 interface FilterInterface
 {
+    public function getRouteParams(): array;
+
     public function buildSpec(): Specification;
 }
