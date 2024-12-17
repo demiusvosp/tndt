@@ -25,7 +25,7 @@ use App\Repository\TaskRepository;
 use App\Service\InProjectContext;
 use App\Service\Table\SpecByQueryFactory;
 use App\Service\Table\TableQueryFactory;
-use App\Service\Table\TableService;
+use App\Service\Table\TableFactory;
 use App\Service\TaskService;
 use App\Service\TaskStagesService;
 use App\Specification\InProjectSpec;
@@ -74,13 +74,13 @@ class TaskController extends AbstractController
         Project $project,
         PaginatorInterface $paginator,
         TableQueryFactory $queryFactory,
-        TableService $tableService
+        TableFactory $tableFactory
     ): Response {
         $template = new ProjectTaskTable($project);
         $query = $queryFactory->createByTemplate($template);
         $queryFactory->modifyFromQueryParams($query, $request->query->all());
 
-        $table = $tableService->createTable(
+        $table = $tableFactory->createTable(
             $template,
             $query,
             'task.list'

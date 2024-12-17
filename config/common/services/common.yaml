@@ -50,7 +50,7 @@ services:
         arguments:
             $statProcessors: !tagged_locator {tag: app.statistic.processor, index_by: 'item'}
 
-    App\Service\Table\TableService:
+    App\Service\Table\TableFactory:
         arguments:
             $modelTransformers: !tagged_locator {tag: app.table.model_transformer, index_by: 'model'}
 

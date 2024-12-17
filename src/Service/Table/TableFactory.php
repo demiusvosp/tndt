@@ -20,9 +20,8 @@ use Happyr\DoctrineSpecification\Specification\Specification;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use function array_map;
-use function dump;
 
-class TableService
+class TableFactory
 {
     private EntityManagerInterface $entityManager;
 
@@ -48,28 +47,6 @@ class TableService
         /** @var EntitySpecificationRepositoryInterface $repository */
         $repository = $this->entityManager->getRepository($query->entityClass());
 
-        $columns = array_map(
-            function ($item) use ($settings, $query) {
-                $columnSettings = $settings->getColumns()[$item];
-                $sortable = $columnSettings[1];
-                if ($sortable) {
-                    $sorted = null;
-                    $sortQuery = $query->getSort();
-                    if ($sortQuery->getField() == $item) {
-                        $sorted = $sortQuery->getDirection();
-                    }
-                }
-                return new Column(
-                    $item,
-                    $this->translator->trans($columnSettings[0]),
-                    $sortable,
-                    $sorted,
-                    $columnSettings[2] ?? ''
-                );
-            },
-            $query->getColumns()
-        );
-
         $spec = $this->buildFilters($query);
         $count = $repository->matchSingleScalarResult(Spec::countOf($spec));
 
@@ -86,7 +63,7 @@ class TableService
             $route,
             $routeParams,
             $query,
-            $columns,
+            $this->calculateColumns($settings, $query),
             $result,
             new Pagination(
                 $query->getPage()->getPage(),
@@ -121,6 +98,31 @@ class TableService
             $spec,
             Spec::offset($query->getPage()->getOffset()),
             Spec::limit($query->getPage()->getPerPage())
+        );
+    }
+
+    private function calculateColumns(TableSettingsInterface $settings, TableQuery $query): array
+    {
+        return array_map(
+            function ($item) use ($settings, $query) {
+                $columnSettings = $settings->getColumns()[$item];
+                $sortable = $columnSettings[1];
+                if ($sortable) {
+                    $sorted = null;
+                    $sortQuery = $query->getSort();
+                    if ($sortQuery->getField() == $item) {
+                        $sorted = $sortQuery->getDirection();
+                    }
+                }
+                return new Column(
+                    $item,
+                    $this->translator->trans($columnSettings[0]),
+                    $sortable,
+                    $sorted,
+                    $columnSettings[2] ?? ''
+                );
+            },
+            $query->getColumns()
         );
     }
 }
