@@ -13,15 +13,15 @@ class Column
     private string $label;
     private bool $sortable;
     private ?string $sorted;
-    private string $additionalClass;
+    private string $style;
 
-    public function __construct(string $field, string $label, bool $sortable, ?string $sorted, string $additionalClass = '')
+    public function __construct(string $field, string $label, bool $sortable, ?string $sorted, string $style = '')
     {
         $this->field = $field;
         $this->label = $label;
         $this->sortable = $sortable;
         $this->sorted = $sorted;
-        $this->additionalClass = $additionalClass;
+        $this->style = $style;
     }
 
     public function getField(): string
@@ -44,8 +44,8 @@ class Column
         return $this->sorted;
     }
 
-    public function getAdditionalClass(): string
+    public function getStyle(): string
     {
-        return $this->additionalClass;
+        return $this->style;
     }
 }

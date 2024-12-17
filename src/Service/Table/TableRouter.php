@@ -13,6 +13,7 @@ use App\ViewModel\Table\TableView;
 use Symfony\Component\Routing\RouterInterface;
 use function abs;
 use function array_merge;
+use function dump;
 
 class TableRouter
 {
@@ -26,6 +27,7 @@ class TableRouter
     public function paginateLink(TableView $tableView, int $page): string
     {
         $params = $tableView->getRouteParams();
+dump($params);
         $params = array_merge($params, ['page' => $page]);
 
         return $this->router->generate(

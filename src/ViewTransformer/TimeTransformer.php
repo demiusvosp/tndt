@@ -25,7 +25,7 @@ class TimeTransformer
     /**
      * @throws \Twig\Error\RuntimeError
      */
-    public function ago(DateTime $dateTime): string
+    public function ago(?DateTime $dateTime): string
     {
         return $this->timeTwigExtension->ago($this->twigEnvironment, $dateTime);
     }

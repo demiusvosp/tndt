@@ -28,43 +28,44 @@
                         {{ include('table/_headers.html.twig') }}
                     </thead>
                     <tbody>
-                    {%  for task in tasks %}
-                        <tr style="{{ dictionary_style(task, 'list_row') }}">
-                            {# здесь проставляем класс напрямую ячейке, потому что из col он не достается  #}
-                            <td class="no">{{ mTask.no(task, dictionary_style(task, 'list_row')) }}</td>
-                            <td class="caption">
-                                {% if task.isClosed() %}<s>{% endif %}
-                                    <a class="invisible_link"
-                                       style="{{ dictionary_style(task, 'list_row') }}"
-                                       href="{{ path('task.index', {'taskId': task.taskId}) }}"
-                                    >
-                                        {% set label = task.caption|u.truncate(160, '...') %}
-                                        {{ label }}
-                                    </a>
-                                {% if task.isClosed() %}</s>{% endif %}
-                            </td>
-                            <td>
-                                {% if dictionary_enabled(project, 'task.stage') %}
-                                    {{ dictionary_name(task, 'stage') }}
-                                {% else %}
-                                    {{ (task.isClosed ? 'closed' : 'open')|trans }}
-                                {% endif %}
-                            </td>
-                            {% if dictionary_enabled(project, 'task.type') %}
-                                <td>{{ dictionary_name(task, 'type') }}</td>
-                            {% endif %}
-                            {% if dictionary_enabled(project, 'task.priority') %}
-                                <td>{{ dictionary_name(task, 'priority') }}</td>
-                            {% endif %}
-                            {% if dictionary_enabled(project, 'task.complexity') %}
-                                <td>{{ dictionary_name(task, 'complexity') }}</td>
-                            {% endif %}
-                            {# <td>{{ mUser.badge(task.createdBy, true, false) }}</td>#}
-                            <td>{{ task.createdAt|ago }}</td>
-                            {# <td>{{ mUser.badge(task.assignedTo, true, false) }}</td>#}
-                            <td>{{ task.updatedAt|ago }}</td>{# localizeddate('medium', 'medium') #}
-                        </tr>
-                    {% endfor %}
+                        {{ include('table/_rows.html.twig') }}
+{#                    {%  for task in tasks %}#}
+{#                        <tr style="{{ dictionary_style(task, 'list_row') }}">#}
+{#                            #}{# здесь проставляем класс напрямую ячейке, потому что из col он не достается  #}
+{#                            <td class="no">{{ mTask.no(task, dictionary_style(task, 'list_row')) }}</td>#}
+{#                            <td class="caption">#}
+{#                                {% if task.isClosed() %}<s>{% endif %}#}
+{#                                    <a class="invisible_link"#}
+{#                                       style="{{ dictionary_style(task, 'list_row') }}"#}
+{#                                       href="{{ path('task.index', {'taskId': task.taskId}) }}"#}
+{#                                    >#}
+{#                                        {% set label = task.caption|u.truncate(160, '...') %}#}
+{#                                        {{ label }}#}
+{#                                    </a>#}
+{#                                {% if task.isClosed() %}</s>{% endif %}#}
+{#                            </td>#}
+{#                            <td>#}
+{#                                {% if dictionary_enabled(project, 'task.stage') %}#}
+{#                                    {{ dictionary_name(task, 'stage') }}#}
+{#                                {% else %}#}
+{#                                    {{ (task.isClosed ? 'closed' : 'open')|trans }}#}
+{#                                {% endif %}#}
+{#                            </td>#}
+{#                            {% if dictionary_enabled(project, 'task.type') %}#}
+{#                                <td>{{ dictionary_name(task, 'type') }}</td>#}
+{#                            {% endif %}#}
+{#                            {% if dictionary_enabled(project, 'task.priority') %}#}
+{#                                <td>{{ dictionary_name(task, 'priority') }}</td>#}
+{#                            {% endif %}#}
+{#                            {% if dictionary_enabled(project, 'task.complexity') %}#}
+{#                                <td>{{ dictionary_name(task, 'complexity') }}</td>#}
+{#                            {% endif %}#}
+{#                            #}{# <td>{{ mUser.badge(task.createdBy, true, false) }}</td>#}
+{#                            <td>{{ task.createdAt|ago }}</td>#}
+{#                            #}{# <td>{{ mUser.badge(task.assignedTo, true, false) }}</td>#}
+{#                            <td>{{ task.updatedAt|ago }}</td>#}{# localizeddate('medium', 'medium') #}
+{#                        </tr>#}
+{#                    {% endfor %}#}
                     </tbody>
                 </table>
             </div>

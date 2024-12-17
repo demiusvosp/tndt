@@ -1,6 +1,6 @@
 <tr>
     {% for header in table.headers %}
-        <th {% if header.additionalClass %}class="{{ header.additionalClass }}"{% endif %}>
+        <th {% if header.style %}class="{{ header.style }}"{% endif %}>
             {% if header.sortable %}
                 <a class="sortable" href="{{ table_sort_link(table, header.field) }}">
                     <span class="float-end">

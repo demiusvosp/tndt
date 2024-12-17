@@ -10,6 +10,11 @@
 }
 
 .task-table {
+  a.task-link {
+    color: $black;
+    outline: none;
+  }
+
   min-width: 1000px;
   td {
     padding: 0.25rem 0.7rem;
