@@ -1,0 +1,14 @@
+<div class="row row-deck row-cards">
+    {% for filter in table.filters %}
+    <div class="filter-item col-sm-4 col-md-2">
+        <div class="card">
+            <div class="card-header">
+                {{ filter.label }}
+            </div>
+            <div class="card-body">
+                {{  include('table/filters/'~filter.template, {'filter':filter}) }}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>

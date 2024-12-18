@@ -19,7 +19,7 @@ class TableQueryFactory
     {
         $query = new TableQuery($settings->entityClass());
         $query->setColumns(array_keys($settings->getColumns()));
-        $query->setFilter($settings->getDefaultFilter());
+        $query->setFilter($settings->getDefaultFilterQuery());
         $query->setSort($settings->getDefaultSort());
         return $query;
     }

@@ -16,6 +16,10 @@ class TableView
     private array $routeParams;
 
     private TableQuery $query;
+    /**
+     * @var TableFilter[]
+     */
+    private array $filters;
     private array $headers;
     private array $rows;
     private Pagination $pagination;
@@ -24,6 +28,7 @@ class TableView
         string $route,
         array $routeParams,
         TableQuery $query,
+        array $filters,
         array $headers,
         array $rows,
         Pagination $pagination
@@ -31,6 +36,7 @@ class TableView
         $this->route = $route;
         $this->routeParams = $routeParams;
         $this->query = $query;
+        $this->filters = $filters;
         $this->headers = $headers;
         $this->rows = $rows;
         $this->pagination = $pagination;
@@ -49,6 +55,14 @@ class TableView
     public function getQuery(): TableQuery
     {
         return $this->query;
+    }
+
+    /**
+     * @return TableFilter[]
+     */
+    public function getFilters(): array
+    {
+        return $this->filters;
     }
 
     public function getHeaders(): array

@@ -11,7 +11,9 @@ use App\Model\Dto\Table\Column;
 use App\Model\Dto\Table\TableQuery;
 use App\Model\Enum\Table\TableSettingsInterface;
 use App\ViewModel\Table\Pagination;
+use App\ViewModel\Table\TableFilter;
 use App\ViewModel\Table\TableView;
+use App\ViewTransformer\Table\Filter\FilterFactoryInterface;
 use App\ViewTransformer\Table\ModelTransformerInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Happyr\DoctrineSpecification\Repository\EntitySpecificationRepositoryInterface;
@@ -26,15 +28,18 @@ class TableFactory
     private EntityManagerInterface $entityManager;
 
     private ServiceLocator $modelTransformers;
+    private ServiceLocator $filterFactories;
     private TranslatorInterface $translator;
 
     public function __construct(
         EntityManagerInterface $entityManager,
         ServiceLocator $modelTransformers,
+        ServiceLocator $filterFactories,
         TranslatorInterface $translator
     ) {
         $this->entityManager = $entityManager;
         $this->modelTransformers = $modelTransformers;
+        $this->filterFactories = $filterFactories;
         $this->translator = $translator;
     }
 
@@ -59,10 +64,14 @@ class TableFactory
             $result[] = $modelTransformer->transform($item, $query);
         };
 
+        /** @var FilterFactoryInterface $filterFactory */
+        $filterFactory = $this->filterFactories->get($settings::class);
+
         return new TableView(
             $route,
             $routeParams,
             $query,
+            $filterFactory->create($settings, $query),
             $this->calculateColumns($settings, $query),
             $result,
             new Pagination(

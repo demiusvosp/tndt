@@ -52,7 +52,8 @@ services:
 
     App\Service\Table\TableFactory:
         arguments:
-            $modelTransformers: !tagged_locator {tag: app.table.model_transformer, index_by: 'model'}
+            $modelTransformers: !tagged_locator {tag: app.table.model_transformer}
+            $filterFactories:  !tagged_locator {tag: app.table.filter_factory}
 
     # @todo move to presentation in tndt-85
     App\Service\Twig\BadgesExtension:

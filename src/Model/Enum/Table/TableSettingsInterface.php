@@ -23,7 +23,7 @@ interface TableSettingsInterface
      */
     public function getColumns(): array;
 
-    public function getDefaultFilter(): FilterQuery;
+    public function getDefaultFilterQuery(): FilterQuery;
 
     public function getDefaultSort(): SortQuery;
 }

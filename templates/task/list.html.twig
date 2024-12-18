@@ -13,25 +13,12 @@
                 </div>
                 <div id="task-filters" class="collapse">
                     <div class="row row-deck row-cards">
-                        <div class="filter-item col-sm-2 col-md-1">
-                            <div class="card card-body">
-                                Фильтр 1
-                            </div>
-                        </div>
-                        <div class="filter-item col-sm-2 col-md-1">
-                            <div class="card card-body">
-                                Фильтр 2
-                            </div>
-                        </div>
+                        {{ include('table/_filters.html.twig') }}
                     </div>
                 </div>
             </div>
         </div>
         <div class="card task-table">
-            {% import 'project/_macro.html.twig' as mProject %}
-            {% import 'task/_macro.html.twig' as mTask %}
-            {% import 'user/_macro.html.twig' as mUser %}
-
             <div class="card-status-top bg-blue"></div>
             <div class="card-table table-responsive">
                 <table class="table table-vcenter">
@@ -40,43 +27,6 @@
                     </thead>
                     <tbody>
                         {{ include('table/_rows.html.twig') }}
-{#                    {%  for task in tasks %}#}
-{#                        <tr style="{{ dictionary_style(task, 'list_row') }}">#}
-{#                            #}{# здесь проставляем класс напрямую ячейке, потому что из col он не достается  #}
-{#                            <td class="no">{{ mTask.no(task, dictionary_style(task, 'list_row')) }}</td>#}
-{#                            <td class="caption">#}
-{#                                {% if task.isClosed() %}<s>{% endif %}#}
-{#                                    <a class="invisible_link"#}
-{#                                       style="{{ dictionary_style(task, 'list_row') }}"#}
-{#                                       href="{{ path('task.index', {'taskId': task.taskId}) }}"#}
-{#                                    >#}
-{#                                        {% set label = task.caption|u.truncate(160, '...') %}#}
-{#                                        {{ label }}#}
-{#                                    </a>#}
-{#                                {% if task.isClosed() %}</s>{% endif %}#}
-{#                            </td>#}
-{#                            <td>#}
-{#                                {% if dictionary_enabled(project, 'task.stage') %}#}
-{#                                    {{ dictionary_name(task, 'stage') }}#}
-{#                                {% else %}#}
-{#                                    {{ (task.isClosed ? 'closed' : 'open')|trans }}#}
-{#                                {% endif %}#}
-{#                            </td>#}
-{#                            {% if dictionary_enabled(project, 'task.type') %}#}
-{#                                <td>{{ dictionary_name(task, 'type') }}</td>#}
-{#                            {% endif %}#}
-{#                            {% if dictionary_enabled(project, 'task.priority') %}#}
-{#                                <td>{{ dictionary_name(task, 'priority') }}</td>#}
-{#                            {% endif %}#}
-{#                            {% if dictionary_enabled(project, 'task.complexity') %}#}
-{#                                <td>{{ dictionary_name(task, 'complexity') }}</td>#}
-{#                            {% endif %}#}
-{#                            #}{# <td>{{ mUser.badge(task.createdBy, true, false) }}</td>#}
-{#                            <td>{{ task.createdAt|ago }}</td>#}
-{#                            #}{# <td>{{ mUser.badge(task.assignedTo, true, false) }}</td>#}
-{#                            <td>{{ task.updatedAt|ago }}</td>#}{# localizeddate('medium', 'medium') #}
-{#                        </tr>#}
-{#                    {% endfor %}#}
                     </tbody>
                 </table>
             </div>

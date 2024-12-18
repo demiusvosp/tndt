@@ -9,10 +9,10 @@ namespace App\Model\Enum\Table;
 
 use App\Entity\Project;
 use App\Entity\Task;
-use App\Exception\DomainException;
 use App\Model\Dto\Table\Filter\ProjectFilter;
 use App\Model\Dto\Table\FilterQuery;
 use App\Model\Dto\Table\SortQuery;
+use App\ViewModel\Table\TableFilter;
 
 class ProjectTaskTable implements TableSettingsInterface
 {
@@ -59,7 +59,7 @@ class ProjectTaskTable implements TableSettingsInterface
         return $columns;
     }
 
-    public function getDefaultFilter(): FilterQuery
+    public function getDefaultFilterQuery(): FilterQuery
     {
         return (new FilterQuery())
             ->addFilter(new ProjectFilter($this->project->getSuffix()));
@@ -68,5 +68,13 @@ class ProjectTaskTable implements TableSettingsInterface
     public function getDefaultSort(): SortQuery
     {
         return new SortQuery('updatedAt', SortQuery::DESC);
+    }
+
+    /**
+     * @return Project
+     */
+    public function getProject(): Project
+    {
+        return $this->project;
     }
 }
