@@ -6,24 +6,35 @@
 {% block page_content %}
 <div class="row row-cards">
     <div class="col">
-        <div class="card">
+        <div class="card task-table">
+            <div class="card-body">
+                <div class="hr-text task-filters-ctrl" >
+                    <a data-bs-toggle="collapse" data-bs-target="#task-filters" href="#task-filters">{{ 'Filter'|trans }}</a>
+                </div>
+                <div id="task-filters" class="collapse">
+                    <div class="row row-deck row-cards">
+                        <div class="filter-item col-sm-2 col-md-1">
+                            <div class="card card-body">
+                                Фильтр 1
+                            </div>
+                        </div>
+                        <div class="filter-item col-sm-2 col-md-1">
+                            <div class="card card-body">
+                                Фильтр 2
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card task-table">
             {% import 'project/_macro.html.twig' as mProject %}
             {% import 'task/_macro.html.twig' as mTask %}
             {% import 'user/_macro.html.twig' as mUser %}
 
             <div class="card-status-top bg-blue"></div>
-
-            {# @TODO tndt-19 будет полностью переделана на гибкий набор фильтров #}
-            {#            <nav class="navbar navbar-default">#}
-            {#                {{ form_start(filterForm, {'attr': {'class': 'autoupdate'}}) }}#}
-            {#                    <div class="col-md-2">#}
-            {#                        {{ form_widget(filterForm.addClosed) }}#}
-            {#                    </div>#}
-            {#                    <button type="submit">OK</button>#}
-            {#                {{ form_end(filterForm) }}#}
-            {#            </nav>#}
             <div class="card-table table-responsive">
-                <table class="table table-vcenter task-table">
+                <table class="table table-vcenter">
                     <thead>
                         {{ include('table/_headers.html.twig') }}
                     </thead>
