@@ -5,7 +5,7 @@ const Encore = require('@symfony/webpack-encore');
 if (!Encore.isRuntimeEnvironmentConfigured()) {
     Encore.configureRuntimeEnvironment(process.env.NODE_ENV || 'dev');
 }
-const { VueLoaderPlugin } = require('vue-loader');
+
 
 Encore
     // directory where compiled assets will be stored
@@ -22,15 +22,6 @@ Encore
      * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
      */
     .addEntry('app', './assets/app.js')
-
-    .addLoader({
-        test: /\.vue$/,
-        loader: 'vue-loader'
-    })
-    .addPlugin(new VueLoaderPlugin())
-    .addAliases({
-        vue: 'vue/dist/vue.js'
-    })
 
     .copyFiles({
         from: './assets/images',
@@ -51,9 +42,6 @@ Encore
     // will require an extra script tag for runtime.js
     // but, you probably want this, unless you're building a single-page app
     .enableSingleRuntimeChunk()
-
-    // Да, я все еще его использую, сходу заменить его на Stimulus весьма не просто
-    .autoProvidejQuery()
 
     /*
      * FEATURE CONFIG
@@ -82,9 +70,12 @@ Encore
     // enables Sass/SCSS support
     .enableSassLoader()
 
-    // uncomment to get integrity="..." attributes on your script & link tags
-    // requires WebpackEncoreBundle 1.4 or higher
-    //.enableIntegrityHashes(Encore.isProduction())
+    // @todo [tndt-152] - задача перевода всего на jquery на vue
+    .autoProvidejQuery()
+
+    .enableVueLoader(() => {}, {
+        version: 3
+    })
 ;
 
 module.exports = Encore.getWebpackConfig();

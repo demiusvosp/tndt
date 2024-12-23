@@ -11,8 +11,8 @@
         "node-sass": "^9",
         "regenerator-runtime": "^0.13.9",
         "sass-loader": "^14.0",
-        "vue-loader": "^15.2",
-        "vue-template-compiler": "^2.5",
+        "vue-loader": "^17.0",
+        "@vue/compiler-sfc": "^3.1.0",
         "webpack": "^5.74.0",
         "webpack-cli": "^4.10.0",
         "webpack-notifier": "^1.15.0"
@@ -33,6 +33,7 @@
         "axios": "^1.6.5",
         "bootstrap": "^5.3",
         "imask": "^7.4.0",
-        "vue": "^2.5"
+        "vue": "^3.1",
+        "@vue/compat": "^3.1.0"
     }
 }

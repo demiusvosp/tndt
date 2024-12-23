@@ -5,7 +5,7 @@
  * (and its CSS file) in your base layout (base.html.twig).
  */
 import './bootstrap.js';
-import Vue from "vue";
+import {createApp} from "vue";
 import ActivityTimeline from './components/activity/timeline-widget'
 
 // Собственно сам js
@@ -52,12 +52,9 @@ $('.confirm-close').on('click', function (event) {
 
 
 /* Activity widget */
-var activityWidgetVue = new Vue({
-    components: {
-        ActivityTimeline
-    }
-});
 var activityWidgetPlaceholder = document.getElementById('activity-widget');
 if (activityWidgetPlaceholder) {
-    activityWidgetVue.$mount('#activity-widget');
+    const activityWidget = createApp({});
+    activityWidget.component('activity-timeline', ActivityTimeline)
+    activityWidget.mount('#activity-widget');
 }
