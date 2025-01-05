@@ -11,12 +11,12 @@ abstract class AbstractFilter implements TableFilterInterface
 {
     private string $label;
 
-    private string $template;
+    private string $type;
 
-    public function __construct(string $label, string $template)
+    public function __construct(string $label, string $type)
     {
         $this->label = $label;
-        $this->template = $template;
+        $this->type = $type;
     }
 
     public function getLabel(): string
@@ -30,8 +30,8 @@ abstract class AbstractFilter implements TableFilterInterface
         return $this;
     }
 
-    public function getTemplate(): string
+    public function getType(): string
     {
-        return $this->template;
+        return $this->type;
     }
 }

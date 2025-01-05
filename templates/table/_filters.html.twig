@@ -1,14 +1,27 @@
-<div class="row row-deck row-cards">
-    {% for filter in table.filters %}
-    <div class="filter-item col-sm-4 col-md-2">
-        <div class="card">
-            <div class="card-header">
-                {{ filter.label }}
-            </div>
-            <div class="card-body">
-                {{  include('table/filters/'~filter.template, {'filter':filter}) }}
+<div id="table-filter-widget">
+    <div class="row row-deck row-cards">
+        {% for filter in table.filters %}
+        <div class="filter-item col-sm-4 col-md-2">
+            <div class="card">
+                <div class="card-header">
+                    {{ filter.label }}
+                </div>
+                <div class="card-body">
+                    {%  for label, value in filter.items %}
+                        <label class="form-check">
+                            <input class="form-check-input" type="checkbox" value="{{ value }}">
+                            <span class="form-check-label">{{ label }}</span>
+                        </label>
+                    {% endfor %}
+                </div>
             </div>
         </div>
+        {% endfor %}
     </div>
-    {% endfor %}
+    <div class="row">
+        <div class="">
+            <button class="btn btn-success btn-sm" type="button">Применить</button>
+            <span v-model="submitQuery"></span>
+        </div>
+    </div>
 </div>

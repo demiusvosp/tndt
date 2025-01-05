@@ -6,7 +6,7 @@
  */
 import './bootstrap.js';
 import Vue from "vue";
-import ActivityTimeline from './components/activity/timeline-widget'
+import ActivityTimeline from './components/activity/timeline-widget';
 
 // Собственно сам js
 console.log('running');
@@ -52,12 +52,23 @@ $('.confirm-close').on('click', function (event) {
 
 
 /* Activity widget */
-var activityWidgetVue = new Vue({
-    components: {
-        ActivityTimeline
-    }
-});
 var activityWidgetPlaceholder = document.getElementById('activity-widget');
 if (activityWidgetPlaceholder) {
+    var activityWidgetVue = new Vue({
+        components: {
+            ActivityTimeline
+        }
+    });
     activityWidgetVue.$mount('#activity-widget');
+}
+
+/* Table filter widget */
+var tableFilterWidgetPlaceholder = document.getElementById('table-filter-widget');
+if (tableFilterWidgetPlaceholder) {
+    var tableFilterWidgetVue = new Vue({
+        data: {
+            submitQuery: "status=closed"
+        }
+    });
+    tableFilterWidgetVue.$mount('#table-filter-widget');
 }

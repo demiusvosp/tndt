@@ -12,6 +12,7 @@ use App\Model\Dto\Table\TableQuery;
 use App\Model\Enum\Table\ProjectTaskTable;
 use App\Model\Enum\Table\TableSettingsInterface;
 use App\ViewModel\Table\Filter\StageFilter;
+use App\ViewModel\Table\Filter\ChecksFilter;
 use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -34,18 +35,21 @@ class TaskFilterFactory implements FilterFactoryInterface
         }
         $projectSettings = $settings->getProject()->getTaskSettings();
 
-        $filters['stage'] = new StageFilter(
-            $this->translator->trans('dictionaries.task_stages.label')
+        $filters['stage'] = new ChecksFilter(
+            $this->translator->trans('dictionaries.task_stages.label'),
+            'checkbox'
         );
-        if ($projectSettings->getStages()->isEnabled()) {
-            foreach ($projectSettings->getStages()->getItems() as $stage) {
-                $filters['stage']->addOption($stage->getName(), $stage->getId());
-            }
-        } else {
+        // В первой итерации делаем максимально просто
+        // @todo in [tndt-190]
+//        if ($projectSettings->getStages()->isEnabled()) {
+//            foreach ($projectSettings->getStages()->getItems() as $stage) {
+//                $filters['stage']->addItem($stage->getName(), $stage->getId());
+//            }
+//        } else {
             $filters['stage']
-                ->addOption($this->translator->trans('task.open.label'), 0)
-                ->addOption($this->translator->trans('task.close.label'), 1);
-        }
+                ->addItem($this->translator->trans('task.open.label'), 0)
+                ->addItem($this->translator->trans('task.close.label'), 1);
+//        }
 
         return $filters;
     }

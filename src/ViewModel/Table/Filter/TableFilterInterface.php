@@ -10,6 +10,6 @@ namespace App\ViewModel\Table\Filter;
 interface TableFilterInterface
 {
     public function getLabel(): string;
-    public function getTemplate(): string;
+    public function getType(): string;
 
 }
