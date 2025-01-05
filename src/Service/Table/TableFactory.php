@@ -52,7 +52,7 @@ class TableFactory
         /** @var EntitySpecificationRepositoryInterface $repository */
         $repository = $this->entityManager->getRepository($query->entityClass());
 
-        $spec = $this->buildFilters($query);
+        $spec = $query->getFilter()->buildSpec();
         $count = $repository->matchSingleScalarResult(Spec::countOf($spec));
 
         $spec = $this->applySorts($spec, $query);
@@ -79,15 +79,6 @@ class TableFactory
                 ceil($count / $query->getPage()->getPerPage())
             )
         );
-    }
-
-    private function buildFilters(TableQuery $query): Specification
-    {
-        $spec = Spec::andX();
-        foreach ($query->getFilter()->getFilters() as $filter) {
-            $spec->andX($filter->buildSpec());
-        }
-        return $spec;
     }
 
     private function applySorts(Specification $spec, TableQuery $query): Specification

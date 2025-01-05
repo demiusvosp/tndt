@@ -62,7 +62,7 @@ class ProjectTaskTable implements TableSettingsInterface
     public function getDefaultFilterQuery(): FilterQuery
     {
         return (new FilterQuery())
-            ->addFilter(new ProjectFilter($this->project->getSuffix()));
+            ->addFilter('project', new ProjectFilter($this->project->getSuffix()));
     }
 
     public function getDefaultSort(): SortQuery

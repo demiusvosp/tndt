@@ -33,11 +33,11 @@ class TaskFilterFactory implements FilterFactoryInterface
         if (!$settings instanceof ProjectTaskTable) {
             throw new DomainException("ProjectTaskTable can render only Task filters set");
         }
-        $projectSettings = $settings->getProject()->getTaskSettings();
+//        $projectSettings = $settings->getProject()->getTaskSettings();
 
-        $filters['stage'] = new ChecksFilter(
+        $filters['status'] = new ChecksFilter(
+            'status',
             $this->translator->trans('dictionaries.task_stages.label'),
-            'checkbox'
         );
         // В первой итерации делаем максимально просто
         // @todo in [tndt-190]
@@ -46,10 +46,10 @@ class TaskFilterFactory implements FilterFactoryInterface
 //                $filters['stage']->addItem($stage->getName(), $stage->getId());
 //            }
 //        } else {
-            $filters['stage']
-                ->addItem($this->translator->trans('task.open.label'), 0)
-                ->addItem($this->translator->trans('task.close.label'), 1);
-//        }
+        // здесь надо выяснить установлен ли фильтр stage, и если да, заполнить наш вью
+            $filters['status']
+                ->addItem($this->translator->trans('task.open.label'), 0, true)
+                ->addItem($this->translator->trans('task.close.label'), 1, false);
 
         return $filters;
     }

@@ -7,10 +7,10 @@
                     {{ filter.label }}
                 </div>
                 <div class="card-body">
-                    {%  for label, value in filter.items %}
+                    {%  for item in filter.items %}
                         <label class="form-check">
-                            <input class="form-check-input" type="checkbox" value="{{ value }}">
-                            <span class="form-check-label">{{ label }}</span>
+                            <input class="form-check-input" type="checkbox" name="{{ filter.name }}" value="{{ item.value }}" {{ item.checked ? "checked" : "" }}>
+                            <span class="form-check-label">{{ item.label }}</span>
                         </label>
                     {% endfor %}
                 </div>

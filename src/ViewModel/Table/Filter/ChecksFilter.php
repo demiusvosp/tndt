@@ -10,16 +10,23 @@ namespace App\ViewModel\Table\Filter;
 class ChecksFilter extends AbstractFilter
 {
     /**
-     * @var array $items - [<label> => <value>]
+     * @var CheckItem[] $items
      */
     private array $items;
 
-    public function addItem(string $label, string $value): ChecksFilter
+    public function addItem(string $label, string $value, bool $checked): ChecksFilter
     {
-        $this->items[$label] = $value;
+        $this->items[] = new CheckItem(
+            $label,
+            $value,
+            $checked
+        );
         return $this;
     }
 
+    /**
+     * @return CheckItem[]
+     */
     public function getItems(): array
     {
         return $this->items;

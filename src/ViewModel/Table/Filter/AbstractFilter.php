@@ -9,29 +9,23 @@ namespace App\ViewModel\Table\Filter;
 
 abstract class AbstractFilter implements TableFilterInterface
 {
+    private string $name;
+
     private string $label;
 
-    private string $type;
-
-    public function __construct(string $label, string $type)
+    public function __construct(string $name, string $label)
     {
+        $this->name = $name;
         $this->label = $label;
-        $this->type = $type;
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
     }
 
     public function getLabel(): string
     {
         return $this->label;
-    }
-
-    public function setLabel(string $label): TableFilterInterface
-    {
-        $this->label = $label;
-        return $this;
-    }
-
-    public function getType(): string
-    {
-        return $this->type;
     }
 }

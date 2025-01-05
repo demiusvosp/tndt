@@ -8,30 +8,26 @@
 namespace App\Model\Dto\Table;
 
 use App\Model\Dto\Table\Filter\FilterInterface;
+use Happyr\DoctrineSpecification\Spec;
+use Happyr\DoctrineSpecification\Specification\Specification;
 use function array_merge;
 
-class FilterQuery
+class FilterQuery implements FilterInterface
 {
     /**
      * @var FilterInterface[]
      */
     private array $filters;
 
-    public function getFilters(): array
+    public function addFilter(string $name, FilterInterface $filter): FilterQuery
     {
-        return $this->filters;
-    }
-
-    public function setFilters(array $filters): FilterQuery
-    {
-        $this->filters = $filters;
+        $this->filters[$name] = $filter;
         return $this;
     }
 
-    public function addFilter(FilterInterface $filter): FilterQuery
+    public function getFilter(string $name): ?FilterInterface
     {
-        $this->filters[] = $filter;
-        return $this;
+        return $this->filters[$name] ?? null;
     }
 
     public function getRouteParams(): array
@@ -41,5 +37,14 @@ class FilterQuery
             $params = array_merge($params, $filter->getRouteParams());
         }
         return $params;
+    }
+
+    public function buildSpec(): Specification
+    {
+        $spec = Spec::andX();
+        foreach ($this->filters as $filter) {
+            $spec->andX($filter->buildSpec());
+        }
+        return $spec;
     }
 }

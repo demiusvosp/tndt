@@ -9,7 +9,7 @@ namespace App\ViewModel\Table\Filter;
 
 interface TableFilterInterface
 {
-    public function getLabel(): string;
-    public function getType(): string;
+    public function getName(): string;
 
+    public function getLabel(): string;
 }
