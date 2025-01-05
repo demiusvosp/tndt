@@ -112,7 +112,7 @@ class Activity
     {
         $this->activitySubject = $activitySubject;
         try {
-            $this->subjectType = ActivitySubjectTypeEnum::fromClass(get_class($activitySubject));
+            $this->subjectType = ActivitySubjectTypeEnum::fromSubject($activitySubject);
             $this->subjectId = $activitySubject->getId();
 
             if ($activitySubject instanceof WithProjectInterface) {
