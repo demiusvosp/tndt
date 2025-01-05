@@ -23,9 +23,7 @@ class ActivityFactory
 {
     public function createFromEvent(string $eventName, ActivityEventInterface $event, User $actor): Activity
     {
-        $type = $this->fromEventName($eventName);
-
-        $activity = new Activity($type);
+        $activity = new Activity(ActivityTypeEnum::fromEvent($eventName));
         $activity->setActor($actor);
         $activity->setActivitySubject($event->getActivitySubject());
 
@@ -38,21 +36,6 @@ class ActivityFactory
         return $activity;
     }
 
-    protected function fromEventName(string $eventName): ActivityTypeEnum
-    {
-        return match ($eventName) {
-            AppEvents::TASK_OPEN => ActivityTypeEnum::TaskCreate,
-            AppEvents::TASK_EDIT => ActivityTypeEnum::TaskEdit,
-            AppEvents::TASK_CHANGE_STAGE => ActivityTypeEnum::TaskChangeState,
-            AppEvents::TASK_CLOSE => ActivityTypeEnum::TaskClose,
-
-            AppEvents::DOC_CREATE => ActivityTypeEnum::DocCreate,
-            AppEvents::DOC_EDIT => ActivityTypeEnum::DocEdit,
-            AppEvents::DOC_CHANGE_STATE => ActivityTypeEnum::DocChangeState,
-
-            AppEvents::COMMENT_ADD => ActivityTypeEnum::CommentAdd,
-        };
-    }
 
     protected function createTaskAddInfo(ActivityEventInterface $event): array
     {

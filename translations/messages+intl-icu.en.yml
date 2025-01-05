@@ -11,11 +11,19 @@ activity:
     create: created the document
     edit: edited the document
     changeState: changed the document state from <b>{old}</b> to <b>{new}</b>
+  project:
+    create: created the project
+    editSettings: edit project settings
+    archive: archived project
   task:
     create: created the task
     edit: edited the task
     changeState: changed the task stage from <b>{old}</b> to <b>{new}</b>
     close: <b>closed</b> the task on stage <b>{old}</b>. New task stage <b>{new}</b>
+  user:
+    create: created user
+    edit: edited user
+    selfEdit: edited his profile
 Administrate: Администрирование
 And_more: И еще
 Archive: Убрать в архив
@@ -217,11 +225,13 @@ Profile: Профиль
 role:
   at_project: проекта
   pm: PM
-  project_manager: Менеджер проекта
+  project_manager: Project manager
+  projects_admin: Projects admin
   root: root
-  staff: работник
-  user: пользователь
-  visitor: посетитель
+  staff: staff
+  user: user
+  users_admin: User admin
+  visitor: visitor
 search: Search
 SpecialActions: Additional actions
 Support: Support
@@ -321,7 +331,7 @@ user:
   management:
     edit:
       title: User manager
-      common: Common
+      profile: Profile
       permission: Permission
   name:
     label: Имя пользователя
@@ -332,11 +342,19 @@ user:
   passwordRepeat:
     label: Подтверждение пароля
     help: Введите пароль повторно, чтобы исключить ошибку
+  project_management:
+    label: Project management
+    table_head: Project management
+    help: User can create, archive projects
+  user_management:
+    label: User management
+    table_head: User management
+    help: User can create, edit and lock users
   roles:
     label: User roles
   self_edit: Profile edit
   username:
-    label: username
+    label: login
     help: Main user login, use for signing and link to user from everywhere. Can't change after create
 Users: Users
 User_list: User list

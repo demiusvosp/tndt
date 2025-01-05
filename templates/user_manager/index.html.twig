@@ -8,7 +8,7 @@
 
 {% block page_head_control %}
     <div class="btn-list">
-        <a class="btn btn-outline-primary" href="{{ path('user.management.edit', {'username': user.username}) }}">{{ 'user.edit'|trans }}</a>
+        <a class="btn btn-outline-primary" href="{{ path('user.management.edit.profile', {'username': user.username}) }}">{{ 'user.edit'|trans }}</a>
     </div>
 {% endblock %}
 
@@ -34,9 +34,9 @@
                                 <div class="datagrid-title">{{ 'user.locked.table_head'|trans }}</div>
                                 <div class="datagrid-content">
                                     {% if user.locked %}
-                                        {{ icon('user-off.svg') }} {{ 'user.locked.label'|trans }}
+                                        {{ icon('tabler-user-off') }} {{ 'user.locked.label'|trans }}
                                     {% else %}
-                                        {{ icon('check.svg') }}
+                                        {{ icon('tabler-check') }}
                                     {% endif %}
                                 </div>
                             </div>

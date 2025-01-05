@@ -26,7 +26,7 @@ class ByOwnerSpec extends BaseSpecification
     protected function getSpec()
     {
         return Spec::AndX(
-            Spec::eq('subjectType', ActivitySubjectTypeEnum::fromClass(get_class($this->activitySubject))),
+            Spec::eq('subjectType', ActivitySubjectTypeEnum::fromSubject($this->activitySubject)),
             Spec::eq('subjectId', $this->activitySubject->getId())
         );
     }

@@ -9,5 +9,5 @@ namespace App\Contract;
 
 interface IdInterface
 {
-    public function getId(): int;
+    public function getId(): int|string;
 }

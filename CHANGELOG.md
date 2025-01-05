@@ -1,6 +1,8 @@
 # Changelog
 
 ## [current]
+- **New features**
+  - [tndt-46](http://tasks.demius.ru/p/tndt-46) - Отдельные роли работы менеджмента проектов и пользователей
 - **Bugfixes**
   - [tndt-184](http://tasks.demius.ru/p/tndt-184) - Страница создания пользователя
 

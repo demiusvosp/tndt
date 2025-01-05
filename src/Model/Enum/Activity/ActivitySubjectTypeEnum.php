@@ -7,10 +7,12 @@
 
 namespace App\Model\Enum\Activity;
 
+use App\Contract\ActivitySubjectInterface;
 use App\Entity\Comment;
 use App\Entity\Doc;
 use App\Entity\Project;
 use App\Entity\Task;
+use App\Entity\User;
 use App\Exception\ActivityException;
 
 enum ActivitySubjectTypeEnum: string
@@ -19,22 +21,17 @@ enum ActivitySubjectTypeEnum: string
     case Task = 'task';
     case Doc = 'doc';
     case Comment = 'comment';
+    case User = 'user';
 
-    public static function classes(): array
+    public static function fromSubject(ActivitySubjectInterface $subject): self
     {
-        return [
-            Project::class => self::Project,
-            Task::class => self::Task,
-            Doc::class => self::Doc,
-            Comment::class => self::Comment,
-        ];
-    }
-
-    /**
-     * @throws ActivityException
-     */
-    public static function fromClass(string $classname): self
-    {
-        return self::classes()[$classname] ?? throw new ActivityException(null, $classname . ' is not activity subject');
+        return match (true) {
+            $subject instanceof Project => self::Project,
+            $subject instanceof Task => self::Task,
+            $subject instanceof Doc => self::Doc,
+            $subject instanceof Comment => self::Comment,
+            $subject instanceof User => self::User,
+            default => throw new ActivityException(null, $subject . ' is not activity subject')
+        };
     }
 }

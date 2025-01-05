@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Contract\ActivitySubjectInterface;
 use App\Model\Enum\Security\UserRolesEnum;
 use App\Repository\UserRepository;
 use DateTime;
@@ -16,7 +17,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass:UserRepository::class)]
 #[ORM\Table(name: "app_user")]
-class User implements UserInterface, PasswordAuthenticatedUserInterface
+class User implements UserInterface, PasswordAuthenticatedUserInterface, ActivitySubjectInterface
 {
     public const ROOT_USER = 'root';
 
@@ -68,6 +69,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function __toString(): string
     {
         return $this->getUsername();
+    }
+
+    public function getId(): int|string
+    {
+        return $this->username;
     }
 
     /**
@@ -224,7 +230,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @param string|Project|null $project
      * @return bool
      */
-    public function hasRole(string $role, $project = null): bool
+    public function hasRole(string $role, Project|string $project = null): bool
     {
         // дефолтная роль всех зарегистрированных
         if ($role === UserRolesEnum::ROLE_USER) {

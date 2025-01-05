@@ -26,8 +26,8 @@ class ProjectOnUpdateSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            // AppEvents::PROJECT_EDIT_SETTINGS => 'onUpdateProject', настройка проекта не является работой над ним
-            AppEvents::PROJECT_ARCHIVE => 'onUpdateProject',
+            AppEvents::PROJECT_EDIT_SETTINGS => 'onUpdateProject',
+            AppEvents::PROJECT_ARCHIVE => 'onArchiveProject',
 
             AppEvents::TASK_OPEN => 'onUpdateProject',
             AppEvents::TASK_EDIT => 'onUpdateProject',
@@ -48,6 +48,16 @@ class ProjectOnUpdateSubscriber implements EventSubscriberInterface
             return;
         }
         if ($event->isObjectArchived()) {
+            return;
+        }
+
+        $project = $event->getProject();
+        $project->setUpdatedAt(new \DateTime());
+    }
+
+    public function onArchiveProject(InProjectEvent $event): void
+    {
+        if ($this->isServiceUser()) {
             return;
         }
 
