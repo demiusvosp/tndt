@@ -118,6 +118,9 @@ class Activity
             if ($activitySubject instanceof WithProjectInterface) {
                 $this->project = $activitySubject->getProject();
             }
+            if ($activitySubject instanceof Project) {
+                $this->project = $activitySubject;
+            }
         } catch (ValueError $e) {
             throw new ActivityAddException($e);
         }

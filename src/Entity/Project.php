@@ -31,7 +31,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Table(name: "project")]
 #[ORM\Index(columns: ["is_archived"], name: "isArchived")]
 #[ORM\Index(columns: ["is_public"], name: "isPublic")]
-class Project implements InProjectInterface, WithProjectInterface, ActivitySubjectInterface
+class Project implements InProjectInterface, ActivitySubjectInterface
 {
     #[ORM\Id]
     #[ORM\Column(type: "string", length: 8)]
@@ -98,14 +98,6 @@ class Project implements InProjectInterface, WithProjectInterface, ActivitySubje
     public function getId(): int|string
     {
         return $this->suffix;
-    }
-
-    /**
-     * For ActivitySubjectInterface implement WithProjectInterface
-     */
-    public function getProject(): Project
-    {
-        return $this;
     }
 
     /**
