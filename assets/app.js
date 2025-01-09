@@ -66,6 +66,6 @@ $('.confirm-close').on('click', function (event) {
 var activityWidgetPlaceholder = document.getElementById('activity-widget');
 if (activityWidgetPlaceholder) {
     const activityWidget = createApp({});
-    activityWidget.component('activity-timeline', ActivityTimeline)
+    activityWidget.component('activity-timeline', ActivityTimeline);
     activityWidget.mount('#activity-widget');
 }

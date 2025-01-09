@@ -1255,15 +1255,6 @@
   dependencies:
     "@types/yargs-parser" "*"
 
-"@vue/compat@^3.1.0":
-  version "3.5.13"
-  resolved "https://registry.yarnpkg.com/@vue/compat/-/compat-3.5.13.tgz#b8f715dc4ff0b4964165d51e0023bd2631de5ae5"
-  integrity sha512-Q3xRdTPN4l+kddxU98REyUBgvc0meAo9CefCWE2lW8Fg3dyPn3vSCce52b338ihrJAx1RQQhO5wMWhJ/PAKUpA==
-  dependencies:
-    "@babel/parser" "^7.25.3"
-    estree-walker "^2.0.2"
-    source-map-js "^1.2.0"
-
 "@vue/compiler-core@3.5.13":
   version "3.5.13"
   resolved "https://registry.yarnpkg.com/@vue/compiler-core/-/compiler-core-3.5.13.tgz#b0ae6c4347f60c03e849a05d34e5bf747c9bda05"
