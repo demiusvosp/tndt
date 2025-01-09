@@ -5,8 +5,19 @@
  * (and its CSS file) in your base layout (base.html.twig).
  */
 import './bootstrap.js';
-import Vue from "vue";
+import {createApp} from "vue";
 import ActivityTimeline from './components/activity/timeline-widget'
+
+if (process.env.NODE_ENV === "development") {
+    globalThis.__VUE_OPTIONS_API__ = true
+    globalThis.__VUE_PROD_DEVTOOLS__ = true;
+    globalThis.__VUE_PROD_HYDRATION_MISMATCH_DETAILS__ = true;
+} else {
+    // different values for production.
+    globalThis.__VUE_OPTIONS_API__ = false;
+    globalThis.__VUE_PROD_DEVTOOLS__ = false;
+    globalThis.__VUE_PROD_HYDRATION_MISMATCH_DETAILS__ = false;
+}
 
 // Собственно сам js
 console.log('running');
@@ -52,12 +63,9 @@ $('.confirm-close').on('click', function (event) {
 
 
 /* Activity widget */
-var activityWidgetVue = new Vue({
-    components: {
-        ActivityTimeline
-    }
-});
 var activityWidgetPlaceholder = document.getElementById('activity-widget');
 if (activityWidgetPlaceholder) {
-    activityWidgetVue.$mount('#activity-widget');
+    const activityWidget = createApp({});
+    activityWidget.component('activity-timeline', ActivityTimeline);
+    activityWidget.mount('#activity-widget');
 }
