@@ -8,6 +8,17 @@ import './bootstrap.js';
 import {createApp} from "vue";
 import ActivityTimeline from './components/activity/timeline-widget'
 
+if (process.env.NODE_ENV === "development") {
+    globalThis.__VUE_OPTIONS_API__ = true
+    globalThis.__VUE_PROD_DEVTOOLS__ = true;
+    globalThis.__VUE_PROD_HYDRATION_MISMATCH_DETAILS__ = true;
+} else {
+    // different values for production.
+    globalThis.__VUE_OPTIONS_API__ = false;
+    globalThis.__VUE_PROD_DEVTOOLS__ = false;
+    globalThis.__VUE_PROD_HYDRATION_MISMATCH_DETAILS__ = false;
+}
+
 // Собственно сам js
 console.log('running');
 
