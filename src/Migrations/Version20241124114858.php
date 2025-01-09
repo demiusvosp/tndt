@@ -10,22 +10,22 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20241012215327 extends AbstractMigration
+final class Version20241124114858 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return 'slug in doc table now unique per project';
+        return 'Alter activity subject id to string to save uuid, natural PK that username and others';
     }
 
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('CREATE UNIQUE INDEX slug ON doc (suffix, slug)');
+        $this->addSql('ALTER TABLE activity CHANGE subject_id subject_id VARCHAR(60) NOT NULL');
     }
 
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('DROP INDEX slug ON doc');
+        $this->addSql('ALTER TABLE activity CHANGE subject_id subject_id INT NOT NULL');
     }
 }

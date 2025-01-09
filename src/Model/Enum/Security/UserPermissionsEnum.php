@@ -51,12 +51,20 @@ class UserPermissionsEnum extends UserRolesEnum
     public static function getHierarchy(): array
     {
         return [
-            // сейчас у нас нет выделенного менеджера юзеров или модератора, эти пермишены доступны только root
-//            self::ROLE_USER_MANAGER => [
-//                self::PERM_USER_CREATE,
-//                self::PERM_USER_LOCK,
-//                self::PERM_PROJECT_CREATE
-//            ],
+            self::ROLE_USERS_ADMIN => [
+                self::PERM_USER_LIST,
+                self::PERM_USER_CREATE,
+                self::PERM_USER_EDIT,
+                self::PERM_USER_LOCK,
+            ],
+            self::ROLE_PROJECTS_ADMIN => [
+                self::PERM_PROJECT_VIEW,
+                self::PERM_PROJECT_CREATE,
+                self::PERM_PROJECT_SETTINGS,
+                self::PERM_PROJECT_ARCHIVE,
+                self::PERM_TASK_VIEW,
+                self::PERM_DOC_VIEW
+            ],
             self::PROLE_PM => [
                 self::PROLE_STAFF,
                 self::PERM_PROJECT_SETTINGS,

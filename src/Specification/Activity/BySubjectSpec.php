@@ -14,9 +14,9 @@ use Happyr\DoctrineSpecification\Specification\BaseSpecification;
 class BySubjectSpec extends BaseSpecification
 {
     private ActivitySubjectTypeEnum $type;
-    private int $id;
+    private string $id;
 
-    public function __construct(ActivitySubjectTypeEnum $type, int $id, ?string $context = null)
+    public function __construct(ActivitySubjectTypeEnum $type, string $id, ?string $context = null)
     {
         $this->type = $type;
         $this->id = $id;

@@ -23,6 +23,10 @@ class AppEvents
     public const DOC_EDIT = 'app.doc.edit';
     public const DOC_CHANGE_STATE = 'app.doc.change_state';
 
+    public const USER_CREATE = 'app.user.create';
+    public const USER_EDIT = 'app.user.edit';
+    public const USER_SELF_EDIT = 'app.user.self_edit';
+
     public const COMMENT_ADD = 'app.comment.add';
     public const ACTIVITY_ADD = 'app.activity.add';
 }

@@ -9,7 +9,6 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\Project;
-use App\Exception\DomainException;
 use App\Form\DTO\Project\EditProjectCommonDTO;
 use App\Form\DTO\Project\EditProjectPermissionsDTO;
 use App\Form\DTO\Project\EditTaskSettingsDTO;
@@ -55,20 +54,15 @@ class ProjectController extends AbstractController
     {
         $filterData = new ProjectListFilterDTO();
         $filterForm = $this->createForm(ListFilterType::class, $filterData);
+        $filterForm->handleRequest($request);
+
         $spec = Spec::andX(
             new VisibleByUserSpec($this->getUser()),
             Spec::orderBy('updatedAt', 'DESC'),
             Spec::limit(self::PROJECT_BLOCKS_LIMIT)
         );
+        $listFilterApplier->applyListFilter($spec, $filterData);
 
-        $filterForm->handleRequest($request);
-        if ($filterForm->isSubmitted()) {
-            if ($filterForm->isValid()) {
-                $listFilterApplier->applyListFilter($spec, $filterData);
-            } else {
-                $this->addFlash(FlashMessageTypeEnum::Warning->value, 'filterForm.error');
-            }
-        }
         $projects = $projectRepository->match($spec);
 
         return $this->render('project/list.html.twig', ['projects' => $projects, 'filterForm' => $filterForm->createView()]);
@@ -160,12 +154,8 @@ class ProjectController extends AbstractController
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()) {
-            try {
-                $this->projectService->editPermissions($formData, $project);
-                $this->addFlash(FlashMessageTypeEnum::Success->value, 'project.edit.success');
-            } catch (DomainException $e) {
-                $this->addFlash(FlashMessageTypeEnum::Danger->value, $e->getMessage());
-            }
+            $this->projectService->editPermissions($formData, $project);
+            $this->addFlash(FlashMessageTypeEnum::Success->value, 'project.edit.success');
         }
 
         return $this->render('project/edit_permissions.html.twig', ['project' => $project, 'form' => $form->createView()]);
@@ -186,12 +176,8 @@ class ProjectController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            try {
-                $this->projectService->editTaskSettings($formData, $project);
-                $this->addFlash(FlashMessageTypeEnum::Success->value, 'project.edit.success');
-            } catch (DomainException $e) {
-                $this->addFlash(FlashMessageTypeEnum::Danger->value, $e->getMessage());
-            }
+            $this->projectService->editTaskSettings($formData, $project);
+            $this->addFlash(FlashMessageTypeEnum::Success->value, 'project.edit.success');
         }
 
         return $this->render(

@@ -38,6 +38,10 @@ class ActivitySubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
+            AppEvents::PROJECT_CREATE => ['addActivity', -10],
+            AppEvents::PROJECT_EDIT_SETTINGS => ['addActivity', -10],
+            AppEvents::PROJECT_ARCHIVE => ['addActivity', -10],
+
             AppEvents::TASK_OPEN => ['addActivity', -10],
             AppEvents::TASK_EDIT => ['addActivity', -10],
             AppEvents::TASK_CHANGE_STAGE => ['addActivity', -10],
@@ -48,6 +52,10 @@ class ActivitySubscriber implements EventSubscriberInterface
             AppEvents::DOC_CHANGE_STATE => ['addActivity', -10],
 
             AppEvents::COMMENT_ADD => ['addActivity', -10],
+
+            AppEvents::USER_CREATE => ['addActivity', -10],
+            AppEvents::USER_EDIT => ['addActivity', -10],
+            AppEvents::USER_SELF_EDIT  => ['addActivity', -10],
         ];
     }
 

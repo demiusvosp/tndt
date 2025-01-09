@@ -8,6 +8,7 @@
 namespace App\Specification\Project;
 
 use App\Entity\User;
+use App\Model\Enum\Security\UserRolesEnum;
 use App\Specification\LeftJoin;
 use Doctrine\ORM\Query\Expr;
 use Happyr\DoctrineSpecification\Filter\Comparison;
@@ -18,7 +19,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class VisibleByUserSpec extends BaseSpecification
 {
-    private ?UserInterface $user;
+    private ?User $user;
 
     public function __construct(?UserInterface $user = null, ?string $context = null)
     {
@@ -29,7 +30,7 @@ class VisibleByUserSpec extends BaseSpecification
     protected function getSpec(): Specification|Comparison|null
     {
         if ($this->user) {
-            if ($this->user->getUsername() === User::ROOT_USER) {
+            if ($this->user->getUsername() === User::ROOT_USER || $this->user->hasRole(UserRolesEnum::ROLE_PROJECTS_ADMIN)) {
                 return null;
             }
             return Spec::orX(

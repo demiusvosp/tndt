@@ -39,12 +39,12 @@
                                 </a></td>
                                 <td>{{ user.name }}</td>
                                 <td>{{ user.email }}</td>
-                                <td class="bool" title="{{ user.locked ? 'user.locked.label'|trans }}">{{ user.locked ? icon('user-off.svg') }}</td>
+                                <td class="bool" title="{{ user.locked ? 'user.locked.label'|trans }}">{{ user.locked ? icon('tabler-user-off') }}</td>
                                 <td>{{ role_label_list(user.roles) }}</td>
                                 <td>{{ user.createdAt|ago }}</td>
                                 <td>{{ user.lastLogin|ago }}</td>
                                 <td><a class="btn btn-default"
-                                       href="{{ path('user.management.edit', {'username': user.username}) }}"
+                                       href="{{ path('user.management.edit.profile', {'username': user.username}) }}"
                                        title="{{ 'user.edit'|trans }}"
                                     >
                                         <i class="fa fa-edit"></i>

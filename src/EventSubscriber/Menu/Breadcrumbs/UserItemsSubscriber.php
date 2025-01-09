@@ -37,6 +37,9 @@ class UserItemsSubscriber implements EventSubscriberInterface
     public function buildBreadcrumb(BreadcrumbEvent $event): void
     {
         $route = $this->requestStack->getMainRequest()?->get('_route');
+        if (!$route) {
+            return;
+        }
         if (str_starts_with($route, 'user.management.')) {
             $event->addItem(new BreadcrumbItem(
                 $this->translator->trans('breadcrumb.user.management.home'),
@@ -47,7 +50,7 @@ class UserItemsSubscriber implements EventSubscriberInterface
             $username = $this->requestStack->getMainRequest()?->get('username');
             if ($route !== 'user.management.index' && $username) {
                 $event->addItem(new BreadcrumbItem(
-                    $this->translator->trans($username),
+                    $username,
                     $this->router->generate('user.management.index', ['username' => $username]),
                     'user.svg'
                 ));

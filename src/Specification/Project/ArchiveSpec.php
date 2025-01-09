@@ -23,6 +23,6 @@ class ArchiveSpec extends BaseSpecification
 
     protected function getSpec(): Comparison
     {
-        return Spec::eq('isArchive', $this->isArchive);
+        return Spec::eq('isArchived', $this->isArchive);
     }
 }

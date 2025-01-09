@@ -7,9 +7,11 @@
 
 namespace App\Event;
 
+use App\Contract\ActivityEventInterface;
+use App\Contract\ActivitySubjectInterface;
 use App\Entity\Project;
 
-class ProjectEvent extends InProjectEvent
+class ProjectEvent extends InProjectEvent implements ActivityEventInterface
 {
     private Project $project;
 
@@ -19,6 +21,11 @@ class ProjectEvent extends InProjectEvent
     }
 
     public function getProject(): Project
+    {
+        return $this->project;
+    }
+
+    public function getActivitySubject(): ?ActivitySubjectInterface
     {
         return $this->project;
     }

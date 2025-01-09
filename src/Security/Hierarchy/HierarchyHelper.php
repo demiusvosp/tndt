@@ -81,6 +81,7 @@ class HierarchyHelper
              */
             return true;
         }
+
         $cacheItem = $this->permissionMapCache->getItem($subjectItem);
         if(!$cacheItem->isHit()) {
             return false;
