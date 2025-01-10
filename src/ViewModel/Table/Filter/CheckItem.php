@@ -9,9 +9,9 @@ namespace App\ViewModel\Table\Filter;
 
 class CheckItem
 {
-    private string $label;
-    private string $value;
-    private bool $checked;
+    public string $label;
+    public string $value;
+    public bool $checked;
 
     public function __construct(string $label, string $value, bool $checked = false)
     {

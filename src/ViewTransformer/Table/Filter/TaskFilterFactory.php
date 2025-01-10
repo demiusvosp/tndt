@@ -37,7 +37,7 @@ class TaskFilterFactory implements FilterFactoryInterface
 
         $filters['status'] = new ChecksFilter(
             'status',
-            $this->translator->trans('dictionaries.task_stages.label'),
+            $this->translator->trans('task.isClosed.label'),
         );
         // В первой итерации делаем максимально просто
         // @todo in [tndt-190]
