@@ -56,4 +56,14 @@ class TableRouter
             $params
         );
     }
+
+    public function filterLink(TableView $tableView): string
+    {
+        $params = $tableView->getRouteParams();
+
+        return $this->router->generate(
+            $tableView->getRoute(),
+            $params
+        );
+    }
 }

@@ -8,6 +8,7 @@
 namespace App\ViewModel\Table;
 
 use App\Model\Dto\Table\TableQuery;
+use App\ViewModel\Table\Filter\TableFilterInterface;
 use function array_merge;
 
 class TableView
@@ -17,7 +18,7 @@ class TableView
 
     private TableQuery $query;
     /**
-     * @var TableFilter[]
+     * @var TableFilterInterface[]
      */
     private array $filters;
     private array $headers;
@@ -58,7 +59,7 @@ class TableView
     }
 
     /**
-     * @return TableFilter[]
+     * @return TableFilterInterface[]
      */
     public function getFilters(): array
     {

@@ -8,6 +8,7 @@
 namespace App\ViewTransformer\Table\Filter;
 
 use App\Exception\DomainException;
+use App\Model\Dto\Table\Filter\TaskStatusFilter;
 use App\Model\Dto\Table\TableQuery;
 use App\Model\Enum\Table\ProjectTaskTable;
 use App\Model\Enum\Table\TableSettingsInterface;
@@ -46,10 +47,19 @@ class TaskFilterFactory implements FilterFactoryInterface
 //                $filters['stage']->addItem($stage->getName(), $stage->getId());
 //            }
 //        } else {
-        // здесь надо выяснить установлен ли фильтр stage, и если да, заполнить наш вью
-            $filters['status']
-                ->addItem($this->translator->trans('task.open.label'), 0, true)
-                ->addItem($this->translator->trans('task.close.label'), 1, false);
+        /** @var TaskStatusFilter $queryFilter */
+        $queryFilter = $query->getFilter()->getFilter('status');
+        $filters['status']
+            ->addItem(
+                $this->translator->trans('task.open.label'),
+                TaskStatusFilter::OPEN,
+                $queryFilter->isSelected(TaskStatusFilter::OPEN)
+            )
+            ->addItem(
+                $this->translator->trans('task.close.label'),
+                TaskStatusFilter::CLOSE,
+                $queryFilter->isSelected(TaskStatusFilter::CLOSE)
+            );
 
         return $filters;
     }

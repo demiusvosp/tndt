@@ -10,6 +10,7 @@ namespace App\Model\Enum\Table;
 use App\Entity\Project;
 use App\Entity\Task;
 use App\Model\Dto\Table\Filter\ProjectFilter;
+use App\Model\Dto\Table\Filter\TaskStatusFilter;
 use App\Model\Dto\Table\FilterQuery;
 use App\Model\Dto\Table\SortQuery;
 use App\ViewModel\Table\TableFilter;
@@ -62,7 +63,8 @@ class ProjectTaskTable implements TableSettingsInterface
     public function getDefaultFilterQuery(): FilterQuery
     {
         return (new FilterQuery())
-            ->addFilter('project', new ProjectFilter($this->project->getSuffix()));
+            ->addFilter('project', new ProjectFilter($this->project->getSuffix()))
+            ->addFilter('status', new TaskStatusFilter());
     }
 
     public function getDefaultSort(): SortQuery

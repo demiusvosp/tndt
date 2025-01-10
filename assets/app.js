@@ -77,7 +77,7 @@ if (tableFilterWidgetPlaceholder) {
     const tableFilterWidgetVue = createApp({
         data() {
             return {
-                submitQuery: "status=closed"
+                query: "status=closed"
             }
         }
     });

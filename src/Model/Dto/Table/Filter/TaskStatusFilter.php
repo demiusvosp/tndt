@@ -12,32 +12,48 @@ use Happyr\DoctrineSpecification\Specification\Specification;
 
 class TaskStatusFilter implements FilterInterface
 {
-    private bool $excludeOpened;
-    private bool $excludeClosed;
+    public const OPEN = 'open';
+    public const CLOSE = 'close';
 
-    public function __construct(bool $excludeOpened, bool $excludeClosed)
+    private ?array $statuses;
+
+    public function __construct(?array $statuses = null)
     {
-        $this->excludeOpened = $excludeOpened;
-        $this->excludeClosed = $excludeClosed;
+        $this->statuses = $statuses;
     }
 
     public function getRouteParams(): array
     {
+        if ($this->statuses === null) { // фильтр не установлен
+            return [];
+        }
+
         return [
-            'withoutOpen' => $this->excludeOpened,
-            'withoutClosed' => $this->excludeClosed,
+            'status' => $this->statuses,
         ];
     }
 
     public function buildSpec(): Specification
     {
-        $spec = Spec::andX();
-        if ($this->excludeOpened) {
-            $spec->andX(Spec::neq('isClosed', false));
-        }
-        if ($this->excludeClosed) {
-            $spec->andX(Spec::eq('isClosed', true));
+        $spec = Spec::orX();
+        if ($this->statuses !== null) {
+            foreach ($this->statuses as $status) {
+                if ($status === self::OPEN) {
+                    $spec->orX(Spec::eq('isClosed', false));
+                }
+                if ($status === self::CLOSE) {
+                    $spec->orX(Spec::eq('isClosed', true));
+                }
+            }
         }
         return $spec;
+    }
+
+    public function isSelected(string $value): bool
+    {
+        if ($this->statuses === null) {
+            return true;
+        }
+        return in_array($value, $this->statuses);
     }
 }

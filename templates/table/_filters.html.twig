@@ -1,4 +1,8 @@
+<script language="JavaScript">
+    const query = {{ table.getRouteParams()|json_encode()|raw }};
+</script>
 <div id="table-filter-widget">
+    <form method="get" action="{{ table_filter_link(table) }}">
     <div class="row row-deck row-cards">
         {% for filter in table.filters %}
         <div class="filter-item col-sm-4 col-md-2">
@@ -20,8 +24,9 @@
     </div>
     <div class="row">
         <div class="">
-            <button class="btn btn-success btn-sm" type="button">Применить</button>
-            <span v-model="submitQuery"></span>
+            <button class="btn btn-success btn-sm" type="submit">Применить</button>
+            <span v-html="submitQuery"></span>
         </div>
     </div>
+    </form>
 </div>

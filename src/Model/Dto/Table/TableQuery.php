@@ -11,13 +11,13 @@ class TableQuery
 {
     private string $entityClass;
     private array $columns;
-    private ?FilterQuery $filter;
+    private FilterQuery $filter;
     private ?SortQuery $sort;
     private PageQuery $page;
 
-    public function __construct(string $entityClass, ?FilterQuery $defaultFilter = null)
+    public function __construct(string $entityClass)
     {
-        $this->filter = $defaultFilter;
+        $this->filter = new FilterQuery();
         $this->entityClass = $entityClass;
         $this->page = new PageQuery();
     }
