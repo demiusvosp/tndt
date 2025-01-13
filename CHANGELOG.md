@@ -2,7 +2,10 @@
 
 ## [current]
 - **New features**
+  - [tndt-19](http://tasks.demius.ru/p/tndt-19) - Фильтрация и сортировка списка задач
   - [tndt-46](http://tasks.demius.ru/p/tndt-46) - Отдельные роли работы менеджмента проектов и пользователей
+- **Refactoring**
+  - [tndt-161](http://tasks.demius.ru/p/tndt-161) - Обновить фронт до Vue3
 - **Bugfixes**
   - [tndt-184](http://tasks.demius.ru/p/tndt-184) - Страница создания пользователя
 
