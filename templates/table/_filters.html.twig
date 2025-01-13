@@ -1,11 +1,7 @@
-<script language="JavaScript">
-    const query = {{ table.getRouteParams()|json_encode()|raw }};
-    const filterData = {{ table.filterData|json_encode()|raw }};
-</script>
 <div id="table-filter-widget">
     <table-filter-widget
         submit-label="{{ 'Submit'|trans }}"
-        filter-data="{{ table.filterData|json_encode()}}"
+        filter-data="{{ table.filterData|json_encode() }}"
     >
     </table-filter-widget>
 </div>

@@ -13,11 +13,17 @@ export default {
     }
   },
   mounted() {
-    // this.checked = this.options.map(function (item) {
-    //   if (item.checked) {
-    //     return item.value;
-    //   }
-    // });
+    this.checked = this.options
+        .filter((item => item.checked))
+        .map((item) => item.value);
+  },
+  emits: [
+      'change'
+  ],
+  watch: {
+    checked(newState) {
+      this.$emit('change', {name: this.name, value: newState, multiple: true})
+    }
   }
 }
 </script>

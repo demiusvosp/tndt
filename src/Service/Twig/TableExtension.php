@@ -11,6 +11,7 @@ use App\Service\Table\TableRouter;
 use App\ViewModel\Table\TableView;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
+use function dump;
 
 class TableExtension extends AbstractExtension
 {
@@ -27,21 +28,26 @@ class TableExtension extends AbstractExtension
             new TwigFunction(
                 'table_filter_link',
                 [$this, 'filterLink'],
+                ['is_safe' => ['html']],
             ),
             new TwigFunction(
                 'table_sort_link',
                 [$this, 'sortLink'],
+                ['is_safe' => ['html']],
             ),
             new TwigFunction(
                 'table_paginate_link',
                 [$this, 'paginateLink'],
+                ['is_safe' => ['html']],
             ),
         ];
     }
 
     public function filterLink(TableView $tableView): string
     {
-        return $this->router->filterLink($tableView);
+        $t = $this->router->filterLink($tableView);
+        dump($t);
+        return $t;
     }
 
     public function sortLink(TableView $tableView, string $field): string

@@ -10,6 +10,7 @@ namespace App\Model\Dto\Table\Filter;
 use Happyr\DoctrineSpecification\Spec;
 use Happyr\DoctrineSpecification\Specification\Specification;
 use function dump;
+use function in_array;
 
 class TaskStatusFilter implements FilterInterface
 {
@@ -61,7 +62,12 @@ class TaskStatusFilter implements FilterInterface
     public function setFromParams(array $request): void
     {
         if (isset($request['status'])) {
-            dump($request['status']);
+            if (in_array(self::OPEN, $request['status'])) {
+                $this->statuses[] = self::OPEN;
+            }
+            if (in_array(self::CLOSE, $request['status'])) {
+                $this->statuses[] = self::CLOSE;
+            }
         }
     }
 }

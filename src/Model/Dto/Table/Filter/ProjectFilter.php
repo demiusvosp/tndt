@@ -10,6 +10,9 @@ namespace App\Model\Dto\Table\Filter;
 use App\Specification\InProjectSpec;
 use Happyr\DoctrineSpecification\Specification\Specification;
 
+/**
+ * Этот фильтр используется внутри проекта и не передает и не ищет в request своих параметров
+ */
 class ProjectFilter implements FilterInterface
 {
     private string $suffix;
