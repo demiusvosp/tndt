@@ -236,6 +236,7 @@ role:
   visitor: посетитель
 search: Поиск
 SpecialActions: Особые действия
+Submit: Применить
 Support: Поддержка
 SystemStat:
   active: Активных

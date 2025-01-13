@@ -34,33 +34,26 @@ class TaskFilterFactory implements FilterFactoryInterface
         if (!$settings instanceof ProjectTaskTable) {
             throw new DomainException("ProjectTaskTable can render only Task filters set");
         }
-//        $projectSettings = $settings->getProject()->getTaskSettings();
 
-        $filters['status'] = new ChecksFilter(
-            'status',
-            $this->translator->trans('task.isClosed.label'),
-        );
-        // В первой итерации делаем максимально просто
-        // @todo in [tndt-190]
-//        if ($projectSettings->getStages()->isEnabled()) {
-//            foreach ($projectSettings->getStages()->getItems() as $stage) {
-//                $filters['stage']->addItem($stage->getName(), $stage->getId());
-//            }
-//        } else {
         /** @var TaskStatusFilter $queryFilter */
         $queryFilter = $query->getFilter()->getFilter('status');
-        $filters['status']
-            ->addItem(
-                $this->translator->trans('task.open.label'),
-                TaskStatusFilter::OPEN,
-                $queryFilter->isSelected(TaskStatusFilter::OPEN)
-            )
-            ->addItem(
-                $this->translator->trans('task.close.label'),
-                TaskStatusFilter::CLOSE,
-                $queryFilter->isSelected(TaskStatusFilter::CLOSE)
-            );
-
-        return $filters;
+        return [
+            'status' => [
+                'name' => 'status',
+                'label' => $this->translator->trans('task.isClosed.label'),
+                'options' => [
+                    [
+                        'label' => $this->translator->trans('task.open.label'),
+                        'value' => TaskStatusFilter::OPEN,
+                        'checked' => $queryFilter->isSelected(TaskStatusFilter::OPEN)
+                    ],
+                    [
+                        'label' => $this->translator->trans('task.close.label'),
+                        'value' => TaskStatusFilter::CLOSE,
+                        'checked' => $queryFilter->isSelected(TaskStatusFilter::CLOSE)
+                    ],
+                ],
+            ],
+        ];
     }
 }

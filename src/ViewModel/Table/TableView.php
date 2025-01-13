@@ -18,9 +18,9 @@ class TableView
 
     private TableQuery $query;
     /**
-     * @var TableFilterInterface[]
+     * @var array for table-filter-widget.vue
      */
-    private array $filters;
+    private array $filterData;
     private array $headers;
     private array $rows;
     private Pagination $pagination;
@@ -29,7 +29,7 @@ class TableView
         string $route,
         array $routeParams,
         TableQuery $query,
-        array $filters,
+        array $filterData,
         array $headers,
         array $rows,
         Pagination $pagination
@@ -37,7 +37,7 @@ class TableView
         $this->route = $route;
         $this->routeParams = $routeParams;
         $this->query = $query;
-        $this->filters = $filters;
+        $this->filterData = $filterData;
         $this->headers = $headers;
         $this->rows = $rows;
         $this->pagination = $pagination;
@@ -58,12 +58,9 @@ class TableView
         return $this->query;
     }
 
-    /**
-     * @return TableFilterInterface[]
-     */
-    public function getFilters(): array
+    public function getFilterData(): array
     {
-        return $this->filters;
+        return $this->filterData;
     }
 
     public function getHeaders(): array

@@ -235,6 +235,7 @@ role:
   visitor: visitor
 search: Search
 SpecialActions: Additional actions
+Submit: Submit
 Support: Support
 SystemStat:
   active: Active

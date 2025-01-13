@@ -1,32 +1,11 @@
 <script language="JavaScript">
     const query = {{ table.getRouteParams()|json_encode()|raw }};
+    const filterData = {{ table.filterData|json_encode()|raw }};
 </script>
 <div id="table-filter-widget">
-    <form method="get" action="{{ table_filter_link(table) }}">
-    <div class="row row-deck row-cards">
-        {% for filter in table.filters %}
-        <div class="filter-item col-sm-4 col-md-2">
-            <div class="card">
-                <div class="card-header">
-                    {{ filter.label }}
-                </div>
-                <div class="card-body">
-                    {%  for item in filter.items %}
-                        <label class="form-check">
-                            <input class="form-check-input" type="checkbox" name="{{ filter.name }}" value="{{ item.value }}" {{ item.checked ? "checked" : "" }}>
-                            <span class="form-check-label">{{ item.label }}</span>
-                        </label>
-                    {% endfor %}
-                </div>
-            </div>
-        </div>
-        {% endfor %}
-    </div>
-    <div class="row">
-        <div class="">
-            <button class="btn btn-success btn-sm" type="submit">Применить</button>
-            <span v-html="submitQuery"></span>
-        </div>
-    </div>
-    </form>
+    <table-filter-widget
+        submit-label="{{ 'Submit'|trans }}"
+        filter-data="{{ table.filterData|json_encode()}}"
+    >
+    </table-filter-widget>
 </div>
