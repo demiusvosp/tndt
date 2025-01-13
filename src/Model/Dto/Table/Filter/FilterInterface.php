@@ -14,4 +14,6 @@ interface FilterInterface
     public function getRouteParams(): array;
 
     public function buildSpec(): Specification;
+
+    public function setFromParams(array $request): void;
 }

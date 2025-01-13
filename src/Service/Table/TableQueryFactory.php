@@ -34,6 +34,7 @@ class TableQueryFactory
             // не уверен, что тут уместно сетить новый, бросая старый сорт
             $query->setSort(new SortQuery(key($request['sort']), current($request['sort'])));
         }
+        $query->getFilter()->setFromParams($request);
 
         return $query;
     }

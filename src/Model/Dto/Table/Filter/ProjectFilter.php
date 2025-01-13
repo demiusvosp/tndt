@@ -8,7 +8,6 @@
 namespace App\Model\Dto\Table\Filter;
 
 use App\Specification\InProjectSpec;
-use Happyr\DoctrineSpecification\Spec;
 use Happyr\DoctrineSpecification\Specification\Specification;
 
 class ProjectFilter implements FilterInterface
@@ -28,5 +27,11 @@ class ProjectFilter implements FilterInterface
     public function buildSpec(): Specification
     {
         return new InProjectSpec($this->suffix);
+    }
+
+    public function setFromParams(array $request): void
+    {
+        // not implementation
+        // возможно нужно будет разделить интерфейс, введя тип queryFilter которые зависят от типа таблицы, а не настраиваются фильтрами
     }
 }

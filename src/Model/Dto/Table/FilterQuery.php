@@ -47,4 +47,11 @@ class FilterQuery implements FilterInterface
         }
         return $spec;
     }
+
+    public function setFromParams(array $request): void
+    {
+        foreach ($this->filters as $filter) {
+            $filter->setFromParams($request);
+        }
+    }
 }

@@ -9,6 +9,7 @@ namespace App\Model\Dto\Table\Filter;
 
 use Happyr\DoctrineSpecification\Spec;
 use Happyr\DoctrineSpecification\Specification\Specification;
+use function dump;
 
 class TaskStatusFilter implements FilterInterface
 {
@@ -55,5 +56,12 @@ class TaskStatusFilter implements FilterInterface
             return true;
         }
         return in_array($value, $this->statuses);
+    }
+
+    public function setFromParams(array $request): void
+    {
+        if (isset($request['status'])) {
+            dump($request['status']);
+        }
     }
 }
