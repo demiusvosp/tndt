@@ -3,8 +3,9 @@ import taskStatus from "./task-status.vue";
 export default {
   name: "table-filter-widget",
   props: {
-    submitLabel: String,
     filterData: String,
+    submitLabel: String,
+    resetLabel: String,
   },
   components: {
     taskStatus
@@ -12,7 +13,6 @@ export default {
   data: function () {
     return {
       filters: JSON.parse(this.filterData),
-      query: (new URL(window.location.href)).searchParams,
       url: new URL(window.location.href),
     };
   },
@@ -20,30 +20,38 @@ export default {
     onFilterChange(newVal) {
       let query = this.url.searchParams;
       if (newVal.multiple) {
-        let paramName = newVal.name+'[]';
-        query.delete(paramName);
-        newVal.value.forEach((value) => query.append(paramName, value));
+        for (let param of this.url.searchParams.keys()) {
+          if (param.startsWith(newVal.name)) {
+            this.url.searchParams.delete(param);
+          }
+        }
+        newVal.value.forEach((value) => query.append(newVal.name+'[]', value));
       } else {
         query.set(newVal.name, newVal.value);
       }
-      query.set('page', 1);
     },
-    applyFilter() {
-      let url = new URL(window.location.href);
+    applyFilters() {
+      this.url.searchParams.set('page', '1');
       window.location.href = this.url;
-    }
+    },
+    resetFilters() {
+      for (let filter in this.$refs) {
+        this.$refs[filter].reset();
+      }
+    },
   }
 }
 </script>
 
 <template>
-  <div class="row" v-for="filter in filters">
-    <task-status v-bind="filter" @change="onFilterChange"></task-status>
+  <div class="row">
+    <task-status v-bind="filters.status" @change="onFilterChange" ref="status"></task-status>
   </div>
   <div class="row">
-    <div class="">
-      <button class="btn btn-success btn-sm" type="button" @click="applyFilter">{{ submitLabel }}</button>
-      <span>{{ query.toString() }}</span>
+    <div>
+      <button class="btn btn-success btn-sm me-2" type="button" @click="applyFilters">{{ submitLabel }}</button>
+<!--      пока совершенно не ясно, как дать фильтру команду на сброс, учитывая что фильтры хранят значения в разных структурах-->
+      <button class="btn btn-primary btn-sm me-2" type="button" @click="resetFilters">{{ resetLabel }}</button>
     </div>
   </div>
 </template>

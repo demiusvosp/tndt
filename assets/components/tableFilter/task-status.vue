@@ -12,14 +12,19 @@ export default {
       checked: []
     }
   },
+  emits: [
+    'change'
+  ],
   mounted() {
     this.checked = this.options
         .filter((item => item.checked))
         .map((item) => item.value);
   },
-  emits: [
-      'change'
-  ],
+  methods: {
+    reset() {
+      this.checked = [];
+    }
+  },
   watch: {
     checked(newState) {
       this.$emit('change', {name: this.name, value: newState, multiple: true})

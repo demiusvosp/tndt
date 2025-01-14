@@ -12,8 +12,6 @@ use App\Model\Dto\Table\Filter\TaskStatusFilter;
 use App\Model\Dto\Table\TableQuery;
 use App\Model\Enum\Table\ProjectTaskTable;
 use App\Model\Enum\Table\TableSettingsInterface;
-use App\ViewModel\Table\Filter\StageFilter;
-use App\ViewModel\Table\Filter\ChecksFilter;
 use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 use Symfony\Contracts\Translation\TranslatorInterface;
