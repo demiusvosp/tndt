@@ -97,6 +97,13 @@ class TableQuery
         return $this;
     }
 
+    public function changePage(int $page): TableQuery
+    {
+        $newQuery = clone $this;
+        $newQuery->page->setPage($page);
+        return $newQuery;
+    }
+
     public function getRouteParams(): array
     {
         return array_merge(

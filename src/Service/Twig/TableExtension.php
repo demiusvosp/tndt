@@ -7,17 +7,16 @@
 
 namespace App\Service\Twig;
 
-use App\Service\Table\TableRouter;
 use App\ViewModel\Table\TableView;
+use Symfony\Component\Routing\RouterInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
-use function dump;
 
 class TableExtension extends AbstractExtension
 {
-    private TableRouter $router;
+    private RouterInterface $router;
 
-    public function __construct(TableRouter $router)
+    public function __construct(RouterInterface $router)
     {
         $this->router = $router;
     }
@@ -26,8 +25,8 @@ class TableExtension extends AbstractExtension
     {
         return [
             new TwigFunction(
-                'table_filter_link',
-                [$this, 'filterLink'],
+                'table_link',
+                [$this, 'link'],
                 ['is_safe' => ['html']],
             ),
             new TwigFunction(
@@ -43,20 +42,29 @@ class TableExtension extends AbstractExtension
         ];
     }
 
-    public function filterLink(TableView $tableView): string
+    public function link(TableView $tableView): string
     {
-        $t = $this->router->filterLink($tableView);
-        dump($t);
-        return $t;
+        return $this->router->generate(
+            $tableView->getRoute(),
+            $tableView->getRouteParams()
+        );
     }
 
     public function sortLink(TableView $tableView, string $field): string
     {
-        return $this->router->sortLink($tableView, $field);
+        $newQuery = $tableView->getQuery()->changeSort($field);
+        return $this->router->generate(
+            $tableView->getRoute(),
+            $newQuery->getRouteParams()
+        );
     }
 
     public function paginateLink(TableView $tableView, int $newPage): string
     {
-        return $this->router->paginateLink($tableView, $newPage);
+        $newQuery = $tableView->getQuery()->changePage($newPage);
+        return $this->router->generate(
+            $tableView->getRoute(),
+            $newQuery->getRouteParams()
+        );
     }
 }
