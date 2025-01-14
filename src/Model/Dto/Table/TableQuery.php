@@ -7,6 +7,8 @@
 
 namespace App\Model\Dto\Table;
 
+use function dump;
+
 class TableQuery
 {
     private string $entityClass;
@@ -43,7 +45,7 @@ class TableQuery
         return $this;
     }
 
-    public function getFilter(): ?FilterQuery
+    public function getFilter(): FilterQuery
     {
         return $this->filter;
     }
@@ -65,6 +67,25 @@ class TableQuery
         return $this;
     }
 
+    public function changeSort(string $field): TableQuery
+    {
+        $newQuery = clone $this;
+        if (!$this->sort) {
+            $newQuery->sort = new SortQuery($field, SortQuery::ASC);
+        }
+        if ($this->sort->getField() !== $field) {
+            $newQuery->sort = new SortQuery($field, SortQuery::ASC);
+        } elseif ($this->sort->getDirection() === SortQuery::ASC) {
+            $newQuery->sort = new SortQuery($field, SortQuery::DESC);
+        } else {
+            $newQuery->sort = null;
+        }
+        $newQuery->page->setPage(1);
+
+        return $newQuery;
+    }
+
+
     public function getPage(): PageQuery
     {
         return $this->page;
@@ -80,7 +101,7 @@ class TableQuery
     {
         return array_merge(
             $this->filter->getRouteParams(),
-            $this->sort->getRouteParams(),
+            $this->sort?->getRouteParams() ?? [],
             $this->page->getRouteParams()
         );
     }

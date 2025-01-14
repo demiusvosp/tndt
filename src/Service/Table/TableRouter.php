@@ -37,23 +37,10 @@ class TableRouter
 
     public function sortLink(TableView $tableView, string $field): string
     {
-        $params = $tableView->getRouteParams();
-
-        // не уверен, что это должно решаться в роутере, но где ж еще
-        $newSort = ['sort' => [$field => SortQuery::ASC]];
-        $oldSort = $tableView->getQuery()->getSort();
-        if ($oldSort && $oldSort->getField() === $field) {
-            if ($oldSort->getDirection() === SortQuery::ASC) {
-                $newSort = ['sort' => [$field => SortQuery::DESC]];
-            } else {
-                $newSort = [];
-            }
-        }
-        $params = array_merge($params, $newSort, ['page' => 1]);
-
+        $newQuery = $tableView->getQuery()->changeSort($field);
         return $this->router->generate(
             $tableView->getRoute(),
-            $params
+            $newQuery->getRouteParams()
         );
     }
 

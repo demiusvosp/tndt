@@ -9,20 +9,18 @@ export default {
   },
   data() {
     return {
-      checked: []
+      checked: this.options
+          .filter((item => item.checked))
+          .map((item) => item.value)
     }
   },
   emits: [
     'change'
   ],
-  mounted() {
-    this.checked = this.options
-        .filter((item => item.checked))
-        .map((item) => item.value);
-  },
   methods: {
     reset() {
-      this.checked = [];
+      // по умолчанию показываем все
+      this.checked = ['open', 'close'];
     }
   },
   watch: {

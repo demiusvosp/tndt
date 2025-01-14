@@ -20,9 +20,12 @@ export default {
     onFilterChange(newVal) {
       let query = this.url.searchParams;
       if (newVal.multiple) {
+console.log('del: ' + newVal.name);
         for (let param of this.url.searchParams.keys()) {
+console.log(param);
           if (param.startsWith(newVal.name)) {
             this.url.searchParams.delete(param);
+            console.log('del');
           }
         }
         newVal.value.forEach((value) => query.append(newVal.name+'[]', value));
@@ -50,7 +53,6 @@ export default {
   <div class="row">
     <div>
       <button class="btn btn-success btn-sm me-2" type="button" @click="applyFilters">{{ submitLabel }}</button>
-<!--      пока совершенно не ясно, как дать фильтру команду на сброс, учитывая что фильтры хранят значения в разных структурах-->
       <button class="btn btn-primary btn-sm me-2" type="button" @click="resetFilters">{{ resetLabel }}</button>
     </div>
   </div>
