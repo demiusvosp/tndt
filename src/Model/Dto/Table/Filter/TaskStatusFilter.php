@@ -62,6 +62,7 @@ class TaskStatusFilter implements FilterInterface
     public function setFromParams(array $request): void
     {
         if (isset($request['status'])) {
+            $this->statuses = [];
             if (in_array(self::OPEN, $request['status'])) {
                 $this->statuses[] = self::OPEN;
             }

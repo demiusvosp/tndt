@@ -21,23 +21,20 @@ use App\Model\Enum\FlashMessageTypeEnum;
 use App\Model\Enum\Security\UserPermissionsEnum;
 use App\Model\Enum\Table\ProjectTaskTable;
 use App\Model\Enum\TaskStageTypeEnum;
-use App\Repository\TaskRepository;
 use App\Service\InProjectContext;
-use App\Service\Table\SpecByQueryFactory;
 use App\Service\Table\TableQueryFactory;
 use App\Service\Table\TableFactory;
 use App\Service\TaskService;
 use App\Service\TaskStagesService;
-use App\Specification\InProjectSpec;
 use App\ViewModel\Button\ControlButton;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use function dump;
 
 #[InProjectContext]
 class TaskController extends AbstractController
@@ -46,18 +43,15 @@ class TaskController extends AbstractController
     private const CHANGE_STAGE_TOKEN = 'task-change-stage';
 
     private TranslatorInterface $translator;
-    private TaskRepository $taskRepository;
     private TaskService $taskService;
     private TaskStagesService $taskStagesService;
 
     public function __construct(
         TranslatorInterface $translator,
-        TaskRepository $taskRepository,
         TaskService $taskService,
         TaskStagesService $taskStagesService
     ) {
         $this->translator = $translator;
-        $this->taskRepository = $taskRepository;
         $this->taskService = $taskService;
         $this->taskStagesService = $taskStagesService;
     }
@@ -72,25 +66,18 @@ class TaskController extends AbstractController
     public function list(
         Request $request,
         Project $project,
-        PaginatorInterface $paginator,
+        SessionInterface $session,
         TableQueryFactory $queryFactory,
         TableFactory $tableFactory
     ): Response {
         $template = new ProjectTaskTable($project);
-        $query = $queryFactory->createByTemplate($template);
+        $query = $session->get('taskTable.' . $project->getSuffix(), $queryFactory->createByTemplate($template));
         $queryFactory->modifyFromQueryParams($query, $request->query->all());
-
+        $session->set('taskTable.' . $project->getSuffix(), $query);
         $table = $tableFactory->createTable(
             $template,
             $query,
             'task.list'
-        );
-dump($table);
-
-        $tasks = $paginator->paginate(
-            $this->taskRepository->getQueryBuilder(new InProjectSpec($project), 't'),
-            $request->query->getInt('page', 1),
-            self::TASK_PER_PAGE
         );
 
         return $this->render(
@@ -98,7 +85,6 @@ dump($table);
             [
                 'project' => $project,
                 'table' => $table,
-                'tasks' => $tasks,
             ]
         );
     }

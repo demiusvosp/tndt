@@ -20,9 +20,7 @@ export default {
     onFilterChange(newVal) {
       let query = this.url.searchParams;
       if (newVal.multiple) {
-console.log('del: ' + newVal.name);
         for (let param of this.url.searchParams.keys()) {
-console.log(param);
           if (param.startsWith(newVal.name)) {
             this.url.searchParams.delete(param);
             console.log('del');
@@ -46,6 +44,7 @@ console.log(param);
 }
 </script>
 
+<!-- сейчас когда у нас только один вид table только с одним фильтром, объявляем его явно. Позже сделаем полиморфизм -->
 <template>
   <div class="row">
     <task-status v-bind="filters.status" @change="onFilterChange" ref="status"></task-status>

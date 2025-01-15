@@ -20,11 +20,11 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 #[AsTaggedItem(index: ProjectTaskTable::class)]
 class TaskFilterFactory implements FilterFactoryInterface
 {
-    private TranslatorInterface $translator;
+    private TaskStatusTransformer $taskStatusTransformer;
 
-    public function __construct(TranslatorInterface $translator)
+    public function __construct(TaskStatusTransformer $taskStatusTransformer)
     {
-        $this->translator = $translator;
+        $this->taskStatusTransformer = $taskStatusTransformer;
     }
 
     public function create(TableSettingsInterface $settings, TableQuery $query): array
@@ -33,25 +33,8 @@ class TaskFilterFactory implements FilterFactoryInterface
             throw new DomainException("ProjectTaskTable can render only Task filters set");
         }
 
-        /** @var TaskStatusFilter $queryFilter */
-        $queryFilter = $query->getFilter()->getFilter('status');
         return [
-            'status' => [
-                'name' => 'status',
-                'label' => $this->translator->trans('task.isClosed.label'),
-                'options' => [
-                    [
-                        'label' => $this->translator->trans('task.open.label'),
-                        'value' => TaskStatusFilter::OPEN,
-                        'checked' => $queryFilter->isSelected(TaskStatusFilter::OPEN)
-                    ],
-                    [
-                        'label' => $this->translator->trans('task.close.label'),
-                        'value' => TaskStatusFilter::CLOSE,
-                        'checked' => $queryFilter->isSelected(TaskStatusFilter::CLOSE)
-                    ],
-                ],
-            ],
+            'status' => $this->taskStatusTransformer->transform($query->getFilter()->getFilter('status')),
         ];
     }
 }
