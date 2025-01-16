@@ -75,8 +75,8 @@ class TableFactory
             $this->calculateColumns($settings, $query),
             $result,
             new Pagination(
-                $query->getPage()->getPage(),
-                ceil($count / $query->getPage()->getPerPage())
+                $query->getPage(),
+                ceil($count / $query->getPerPage())
             )
         );
     }
@@ -96,8 +96,8 @@ class TableFactory
     {
         return Spec::andX(
             $spec,
-            Spec::offset($query->getPage()->getOffset()),
-            Spec::limit($query->getPage()->getPerPage())
+            Spec::offset($query->getOffset()),
+            Spec::limit($query->getPerPage())
         );
     }
 

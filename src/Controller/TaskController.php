@@ -35,6 +35,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use TypeError;
 use function serialize;
 
 #[InProjectContext]
@@ -75,10 +76,12 @@ class TaskController extends AbstractController
     ): Response {
         $template = new ProjectTaskTable($project);
         $session = $requestStack->getSession();
-        $query = $session->get(SessionStoredKeys::getTableKey($template));
-        if ($query) {
-            $query = unserialize($query);
-        } else {
+        try {
+            $query = unserialize($session->get(SessionStoredKeys::getTableKey($template)));
+        } catch (TypeError) {
+            $query = null;
+        }
+        if (!$query) {
             $query = $queryFactory->createByTemplate($template);
         }
         $queryFactory->modifyFromQueryParams($query, $request->query->all());

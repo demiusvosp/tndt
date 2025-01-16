@@ -11,17 +11,24 @@ use function dump;
 
 class TableQuery
 {
+    public const DEFAULT_PER_PAGE = 25;
+
     private string $entityClass;
     private array $columns;
     private FilterQuery $filter;
     private ?SortQuery $sort;
-    private PageQuery $page;
+    private int $page;
+    private int $perPage;
 
-    public function __construct(string $entityClass)
-    {
-        $this->filter = new FilterQuery();
+    public function __construct(
+        string $entityClass,
+        int $page = 1,
+        int $perPage = self::DEFAULT_PER_PAGE,
+    ) {
         $this->entityClass = $entityClass;
-        $this->page = new PageQuery();
+        $this->filter = new FilterQuery();
+        $this->page = $page;
+        $this->perPage = $perPage;
     }
 
     public function entityClass(): string
@@ -80,18 +87,18 @@ class TableQuery
         } else {
             $newQuery->sort = null;
         }
-        $newQuery->page->setPage(1);
+        $newQuery->page = 1;
 
         return $newQuery;
     }
 
 
-    public function getPage(): PageQuery
+    public function getPage(): int
     {
         return $this->page;
     }
 
-    public function setPage(PageQuery $page): TableQuery
+    public function setPage(int $page): TableQuery
     {
         $this->page = $page;
         return $this;
@@ -100,8 +107,18 @@ class TableQuery
     public function changePage(int $page): TableQuery
     {
         $newQuery = clone $this;
-        $newQuery->page->setPage($page);
+        $newQuery->page = $page;
         return $newQuery;
+    }
+
+    public function getPerPage(): int
+    {
+        return $this->perPage;
+    }
+
+    public function getOffset(): int
+    {
+        return $this->perPage * ($this->page - 1);
     }
 
     public function getRouteParams(): array
@@ -109,7 +126,7 @@ class TableQuery
         return array_merge(
             $this->filter->getRouteParams(),
             $this->sort?->getRouteParams() ?? [],
-            $this->page->getRouteParams()
+            ['page' => $this->page],
         );
     }
 }

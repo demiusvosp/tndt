@@ -28,8 +28,7 @@ class TableQueryFactory
     public function modifyFromQueryParams(TableQuery $query, array $request): TableQuery
     {
         if (isset($request['page'])) {
-            // какой-то адок вобще-то с такой цеопчкой гетеров и сетеров
-            $query->setPage($query->getPage()->setPage($request['page']));
+            $query->setPage($request['page']);
         }
         if (isset($request['sort']) && is_array($request['sort'])) {
             // не уверен, что тут уместно сетить новый, бросая старый сорт
