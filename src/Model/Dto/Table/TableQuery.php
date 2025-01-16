@@ -7,6 +7,10 @@
 
 namespace App\Model\Dto\Table;
 
+use App\Model\Dto\Table\Filter\FilterInterface;
+use Happyr\DoctrineSpecification\Spec;
+use Happyr\DoctrineSpecification\Specification\Specification;
+use function array_merge;
 use function dump;
 
 class TableQuery
@@ -15,20 +19,22 @@ class TableQuery
 
     private string $entityClass;
     private array $columns;
-    private FilterQuery $filter;
+    private array $filters;
     private ?SortQuery $sort;
     private int $page;
     private int $perPage;
 
     public function __construct(
         string $entityClass,
+        array $filters = [],
         int $page = 1,
         int $perPage = self::DEFAULT_PER_PAGE,
     ) {
         $this->entityClass = $entityClass;
-        $this->filter = new FilterQuery();
+        $this->filters = $filters;
         $this->page = $page;
         $this->perPage = $perPage;
+dump($this);
     }
 
     public function entityClass(): string
@@ -52,14 +58,16 @@ class TableQuery
         return $this;
     }
 
-    public function getFilter(): FilterQuery
+    public function getFilter(string $name): ?FilterInterface
     {
-        return $this->filter;
+        return $this->filters[$name] ?? null;
     }
 
-    public function setFilter(FilterQuery $filter): TableQuery
+    public function setFiltersFromParams(array $params): TableQuery
     {
-        $this->filter = $filter;
+        foreach ($this->filters as $filter) {
+            $filter->setFromParams($params);
+        }
         return $this;
     }
 
@@ -92,7 +100,6 @@ class TableQuery
         return $newQuery;
     }
 
-
     public function getPage(): int
     {
         return $this->page;
@@ -123,10 +130,40 @@ class TableQuery
 
     public function getRouteParams(): array
     {
-        return array_merge(
-            $this->filter->getRouteParams(),
-            $this->sort?->getRouteParams() ?? [],
-            ['page' => $this->page],
-        );
+        $params['page'] = $this->page;
+        foreach ($this->filters as $filter) {
+            $params = array_merge($params, $filter->getRouteParams());
+        }
+        if ($this->sort) {
+            $params = array_merge(
+                $params,
+                $this->sort->getRouteParams()
+            );
+        }
+        return $params;
+    }
+
+    public function buildFilterSpec(): Specification
+    {
+        $spec = Spec::andX();
+        foreach ($this->filters as $filter) {
+            $spec->andX($filter->buildSpec());
+        }
+        return $spec;
+    }
+
+    public function buildSpec(): Specification
+    {
+        $spec = $this->buildFilterSpec();
+        if ($this->sort) {
+            $spec = Spec::andX(
+                $spec,
+                Spec::orderBy($this->sort->getField(), $this->sort->getDirection())
+            );
+        }
+        $spec->andX(Spec::limit($this->perPage));
+        $spec->andX(Spec::offset($this->getOffset()));
+
+        return $spec;
     }
 }

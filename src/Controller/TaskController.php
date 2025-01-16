@@ -37,6 +37,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use TypeError;
 use function serialize;
+use function unserialize;
 
 #[InProjectContext]
 class TaskController extends AbstractController

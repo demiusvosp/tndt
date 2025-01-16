@@ -34,7 +34,7 @@ class TaskFilterFactory implements FilterFactoryInterface
         }
 
         return [
-            'status' => $this->taskStatusTransformer->transform($query->getFilter()->getFilter('status')),
+            'status' => $this->taskStatusTransformer->transform($query->getFilter('status')),
         ];
     }
 }

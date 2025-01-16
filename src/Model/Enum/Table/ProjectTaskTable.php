@@ -12,8 +12,6 @@ use App\Entity\Project;
 use App\Entity\Task;
 use App\Model\Dto\Table\Filter\ProjectFilter;
 use App\Model\Dto\Table\Filter\TaskStatusFilter;
-use App\Model\Dto\Table\FilterQuery;
-use App\Model\Dto\Table\PageQuery;
 use App\Model\Dto\Table\SortQuery;
 
 class ProjectTaskTable implements TableSettingsInterface, WithProjectInterface
@@ -30,8 +28,13 @@ class ProjectTaskTable implements TableSettingsInterface, WithProjectInterface
         return Task::class;
     }
 
+    public function getProject(): Project
+    {
+        return $this->project;
+    }
+
     /**
-     * @return array[]
+     * @return array[] - [<name> => [<label>, <sortable>, <add_css_class>]
      */
     public function getColumns(): array
     {
@@ -61,11 +64,12 @@ class ProjectTaskTable implements TableSettingsInterface, WithProjectInterface
         return $columns;
     }
 
-    public function getDefaultFilterQuery(): FilterQuery
+    public function getDefaultFilters(): array
     {
-        return (new FilterQuery())
-            ->addFilter('project', new ProjectFilter($this->project->getSuffix()))
-            ->addFilter('status', new TaskStatusFilter());
+        return [
+            'project' => new ProjectFilter($this->project->getSuffix()),
+            'status' => new TaskStatusFilter(),
+        ];
     }
 
     public function getDefaultSort(): SortQuery
@@ -73,11 +77,8 @@ class ProjectTaskTable implements TableSettingsInterface, WithProjectInterface
         return new SortQuery('updatedAt', SortQuery::DESC);
     }
 
-    /**
-     * @return Project
-     */
-    public function getProject(): Project
+    public function getDefaultPageSize(): int
     {
-        return $this->project;
+        return 25;
     }
 }

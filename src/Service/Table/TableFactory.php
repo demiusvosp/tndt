@@ -11,14 +11,12 @@ use App\Model\Dto\Table\Column;
 use App\Model\Dto\Table\TableQuery;
 use App\Model\Enum\Table\TableSettingsInterface;
 use App\ViewModel\Table\Pagination;
-use App\ViewModel\Table\TableFilter;
 use App\ViewModel\Table\TableView;
 use App\ViewTransformer\Table\Filter\FilterFactoryInterface;
 use App\ViewTransformer\Table\ModelTransformerInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Happyr\DoctrineSpecification\Repository\EntitySpecificationRepositoryInterface;
 use Happyr\DoctrineSpecification\Spec;
-use Happyr\DoctrineSpecification\Specification\Specification;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use function array_map;
@@ -52,11 +50,9 @@ class TableFactory
         /** @var EntitySpecificationRepositoryInterface $repository */
         $repository = $this->entityManager->getRepository($query->entityClass());
 
-        $spec = $query->getFilter()->buildSpec();
-        $count = $repository->matchSingleScalarResult(Spec::countOf($spec));
+        $count = $repository->matchSingleScalarResult(Spec::countOf($query->buildFilterSpec()));
 
-        $spec = $this->applySorts($spec, $query);
-        $spec = $this->applyPagination($spec, $query);
+        $spec = $query->buildSpec();
         /** @var ModelTransformerInterface $modelTransformer */
         $modelTransformer = $this->modelTransformers->get($settings::class);
         $result = [];
@@ -78,26 +74,6 @@ class TableFactory
                 $query->getPage(),
                 ceil($count / $query->getPerPage())
             )
-        );
-    }
-
-    private function applySorts(Specification $spec, TableQuery $query): Specification
-    {
-        if ($query->getSort()) {
-            $spec = Spec::andX(
-                $spec,
-                Spec::orderBy($query->getSort()->getField(), $query->getSort()->getDirection())
-            );
-        }
-        return $spec;
-    }
-
-    private function applyPagination(Specification $spec, TableQuery $query): Specification
-    {
-        return Spec::andX(
-            $spec,
-            Spec::offset($query->getOffset()),
-            Spec::limit($query->getPerPage())
         );
     }
 
