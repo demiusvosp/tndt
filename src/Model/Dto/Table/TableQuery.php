@@ -11,7 +11,6 @@ use App\Model\Dto\Table\Filter\FilterInterface;
 use Happyr\DoctrineSpecification\Spec;
 use Happyr\DoctrineSpecification\Specification\Specification;
 use function array_merge;
-use function dump;
 
 class TableQuery
 {
@@ -26,15 +25,16 @@ class TableQuery
 
     public function __construct(
         string $entityClass,
+        array $columns,
         array $filters = [],
         int $page = 1,
         int $perPage = self::DEFAULT_PER_PAGE,
     ) {
         $this->entityClass = $entityClass;
         $this->filters = $filters;
+        $this->columns = $columns;
         $this->page = $page;
         $this->perPage = $perPage;
-dump($this);
     }
 
     public function entityClass(): string
@@ -50,12 +50,6 @@ dump($this);
     public function hasColumn(string $column): bool
     {
         return in_array($column, $this->columns);
-    }
-
-    public function setColumns(array $columns): TableQuery
-    {
-        $this->columns = $columns;
-        return $this;
     }
 
     public function getFilter(string $name): ?FilterInterface
@@ -82,6 +76,27 @@ dump($this);
         return $this;
     }
 
+    public function getPage(): int
+    {
+        return $this->page;
+    }
+
+    public function setPage(int $page): TableQuery
+    {
+        $this->page = $page;
+        return $this;
+    }
+
+    public function getPerPage(): int
+    {
+        return $this->perPage;
+    }
+
+    /**
+     * Функция возвращает новый query с измененной сортировкой
+     * @param string $field
+     * @return self - new self
+     */
     public function changeSort(string $field): TableQuery
     {
         $newQuery = clone $this;
@@ -100,17 +115,11 @@ dump($this);
         return $newQuery;
     }
 
-    public function getPage(): int
-    {
-        return $this->page;
-    }
-
-    public function setPage(int $page): TableQuery
-    {
-        $this->page = $page;
-        return $this;
-    }
-
+    /**
+     * Функция возвращает новый query с измененной страницей
+     * @param int $page
+     * @return $this - new self
+     */
     public function changePage(int $page): TableQuery
     {
         $newQuery = clone $this;
@@ -118,15 +127,6 @@ dump($this);
         return $newQuery;
     }
 
-    public function getPerPage(): int
-    {
-        return $this->perPage;
-    }
-
-    public function getOffset(): int
-    {
-        return $this->perPage * ($this->page - 1);
-    }
 
     public function getRouteParams(): array
     {
@@ -143,6 +143,12 @@ dump($this);
         return $params;
     }
 
+
+    private function getOffset(): int
+    {
+        return $this->perPage * ($this->page - 1);
+    }
+
     public function buildFilterSpec(): Specification
     {
         $spec = Spec::andX();
@@ -150,6 +156,11 @@ dump($this);
             $spec->andX($filter->buildSpec());
         }
         return $spec;
+    }
+
+    public function buildCountSpec(): Specification
+    {
+        return Spec::countOf($this->buildFilterSpec());
     }
 
     public function buildSpec(): Specification

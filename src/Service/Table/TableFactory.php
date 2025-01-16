@@ -50,13 +50,13 @@ class TableFactory
         /** @var EntitySpecificationRepositoryInterface $repository */
         $repository = $this->entityManager->getRepository($query->entityClass());
 
-        $count = $repository->matchSingleScalarResult(Spec::countOf($query->buildFilterSpec()));
+        $count = $repository->matchSingleScalarResult($query->buildCountSpec());
 
-        $spec = $query->buildSpec();
         /** @var ModelTransformerInterface $modelTransformer */
         $modelTransformer = $this->modelTransformers->get($settings::class);
+
         $result = [];
-        foreach ($repository->match($spec) as $item) {
+        foreach ($repository->match($query->buildSpec()) as $item) {
             $result[] = $modelTransformer->transform($item, $query);
         };
 

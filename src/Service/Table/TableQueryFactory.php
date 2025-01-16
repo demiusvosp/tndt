@@ -18,11 +18,11 @@ class TableQueryFactory
     {
         $query = new TableQuery(
             $settings->entityClass(),
+            array_keys($settings->getColumns()),
             $settings->getDefaultFilters(),
             1,
             $settings->getDefaultPageSize()
         );
-        $query->setColumns(array_keys($settings->getColumns()));
         $query->setSort($settings->getDefaultSort());
 
         return $query;
