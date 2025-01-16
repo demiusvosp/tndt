@@ -9,14 +9,13 @@ namespace App\Service\Table;
 
 use App\Model\Dto\Table\Column;
 use App\Model\Dto\Table\TableQuery;
-use App\Model\Enum\Table\TableSettingsInterface;
+use App\Model\Template\Table\TableSettingsInterface;
 use App\ViewModel\Table\Pagination;
 use App\ViewModel\Table\TableView;
 use App\ViewTransformer\Table\Filter\FilterFactoryInterface;
 use App\ViewTransformer\Table\ModelTransformerInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Happyr\DoctrineSpecification\Repository\EntitySpecificationRepositoryInterface;
-use Happyr\DoctrineSpecification\Spec;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use function array_map;

@@ -8,7 +8,7 @@
 namespace App\Model\Enum;
 
 use App\Contract\WithProjectInterface;
-use App\Model\Enum\Table\TableSettingsInterface;
+use App\Model\Template\Table\TableSettingsInterface;
 use function strrchr;
 use function substr;
 

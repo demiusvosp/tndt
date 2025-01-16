@@ -8,13 +8,11 @@
 namespace App\ViewTransformer\Table\Filter;
 
 use App\Exception\DomainException;
-use App\Model\Dto\Table\Filter\TaskStatusFilter;
 use App\Model\Dto\Table\TableQuery;
-use App\Model\Enum\Table\ProjectTaskTable;
-use App\Model\Enum\Table\TableSettingsInterface;
+use App\Model\Template\Table\ProjectTaskTable;
+use App\Model\Template\Table\TableSettingsInterface;
 use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[AutoconfigureTag("app.table.filter_factory")]
 #[AsTaggedItem(index: ProjectTaskTable::class)]

@@ -8,7 +8,7 @@
 namespace App\ViewTransformer\Table\Filter;
 
 use App\Model\Dto\Table\TableQuery;
-use App\Model\Enum\Table\TableSettingsInterface;
+use App\Model\Template\Table\TableSettingsInterface;
 
 interface FilterFactoryInterface
 {

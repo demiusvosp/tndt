@@ -12,8 +12,7 @@ use App\Exception\DomainException;
 use App\Model\Dto\Table\Row;
 use App\Model\Dto\Table\TableQuery;
 use App\Model\Enum\DictionaryStyleEnum;
-use App\Model\Enum\DictionaryTypeEnum;
-use App\Model\Enum\Table\ProjectTaskTable;
+use App\Model\Template\Table\ProjectTaskTable;
 use App\Service\Dictionary\Fetcher;
 use App\Service\Dictionary\Stylizer;
 use App\Service\Twig\DictionaryExtension;
@@ -21,7 +20,6 @@ use App\ViewTransformer\TimeTransformer;
 use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 use Symfony\Component\Routing\RouterInterface;
-use Twig\Environment;
 use function sprintf;
 
 #[AutoconfigureTag("app.table.model_transformer")]

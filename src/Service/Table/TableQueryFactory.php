@@ -9,7 +9,7 @@ namespace App\Service\Table;
 
 use App\Model\Dto\Table\SortQuery;
 use App\Model\Dto\Table\TableQuery;
-use App\Model\Enum\Table\TableSettingsInterface;
+use App\Model\Template\Table\TableSettingsInterface;
 use function array_keys;
 
 class TableQueryFactory

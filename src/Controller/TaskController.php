@@ -20,11 +20,11 @@ use App\Form\Type\Task\NewTaskType;
 use App\Model\Enum\FlashMessageTypeEnum;
 use App\Model\Enum\Security\UserPermissionsEnum;
 use App\Model\Enum\SessionStoredKeys;
-use App\Model\Enum\Table\ProjectTaskTable;
 use App\Model\Enum\TaskStageTypeEnum;
+use App\Model\Template\Table\ProjectTaskTable;
 use App\Service\InProjectContext;
-use App\Service\Table\TableQueryFactory;
 use App\Service\Table\TableFactory;
+use App\Service\Table\TableQueryFactory;
 use App\Service\TaskService;
 use App\Service\TaskStagesService;
 use App\ViewModel\Button\ControlButton;
@@ -75,21 +75,21 @@ class TaskController extends AbstractController
         TableQueryFactory $queryFactory,
         TableFactory $tableFactory
     ): Response {
-        $template = new ProjectTaskTable($project);
+        $tableSettings = new ProjectTaskTable($project);
         $session = $requestStack->getSession();
         try {
-            $query = unserialize($session->get(SessionStoredKeys::getTableKey($template)));
+            $query = unserialize($session->get(SessionStoredKeys::getTableKey($tableSettings)));
         } catch (TypeError) {
             $query = null;
         }
         if (!$query) {
-            $query = $queryFactory->createByTemplate($template);
+            $query = $queryFactory->createByTemplate($tableSettings);
         }
         $queryFactory->modifyFromQueryParams($query, $request->query->all());
-        $session->set(SessionStoredKeys::getTableKey($template), serialize($query));
+        $session->set(SessionStoredKeys::getTableKey($tableSettings), serialize($query));
 
         $table = $tableFactory->createTable(
-            $template,
+            $tableSettings,
             $query,
             'task.list'
         );

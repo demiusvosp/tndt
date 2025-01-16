@@ -5,7 +5,7 @@
  * Time: 22:39
  */
 
-namespace App\Model\Enum\Table;
+namespace App\Model\Template\Table;
 
 use App\Model\Dto\Table\SortQuery;
 

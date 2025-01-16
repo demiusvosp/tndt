@@ -5,7 +5,7 @@
  * Time: 22:38
  */
 
-namespace App\Model\Enum\Table;
+namespace App\Model\Template\Table;
 
 use App\Contract\WithProjectInterface;
 use App\Entity\Project;

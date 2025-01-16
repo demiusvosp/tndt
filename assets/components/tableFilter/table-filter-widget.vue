@@ -23,7 +23,6 @@ export default {
         for (let param of this.url.searchParams.keys()) {
           if (param.startsWith(newVal.name)) {
             this.url.searchParams.delete(param);
-            console.log('del');
           }
         }
         newVal.value.forEach((value) => query.append(newVal.name+'[]', value));
