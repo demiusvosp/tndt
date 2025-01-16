@@ -7,6 +7,7 @@
 
 namespace App\Service\Table;
 
+use App\Model\Dto\Table\PageQuery;
 use App\Model\Dto\Table\SortQuery;
 use App\Model\Dto\Table\TableQuery;
 use App\Model\Enum\Table\TableSettingsInterface;

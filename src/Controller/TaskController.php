@@ -19,6 +19,7 @@ use App\Form\Type\Task\EditTaskType;
 use App\Form\Type\Task\NewTaskType;
 use App\Model\Enum\FlashMessageTypeEnum;
 use App\Model\Enum\Security\UserPermissionsEnum;
+use App\Model\Enum\SessionStoredKeys;
 use App\Model\Enum\Table\ProjectTaskTable;
 use App\Model\Enum\TaskStageTypeEnum;
 use App\Service\InProjectContext;
@@ -27,14 +28,14 @@ use App\Service\Table\TableFactory;
 use App\Service\TaskService;
 use App\Service\TaskStagesService;
 use App\ViewModel\Button\ControlButton;
-use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use function serialize;
 
 #[InProjectContext]
 class TaskController extends AbstractController
@@ -59,21 +60,30 @@ class TaskController extends AbstractController
     /**
      * @param Request $request
      * @param Project $project
-     * @param PaginatorInterface $paginator
+     * @param RequestStack $requestStack
+     * @param TableQueryFactory $queryFactory
+     * @param TableFactory $tableFactory
      * @return Response
      */
     #[IsGranted(UserPermissionsEnum::PERM_TASK_VIEW)]
     public function list(
         Request $request,
         Project $project,
-        SessionInterface $session,
+        RequestStack $requestStack,
         TableQueryFactory $queryFactory,
         TableFactory $tableFactory
     ): Response {
         $template = new ProjectTaskTable($project);
-        $query = $session->get('taskTable.' . $project->getSuffix(), $queryFactory->createByTemplate($template));
+        $session = $requestStack->getSession();
+        $query = $session->get(SessionStoredKeys::getTableKey($template));
+        if ($query) {
+            $query = unserialize($query);
+        } else {
+            $query = $queryFactory->createByTemplate($template);
+        }
         $queryFactory->modifyFromQueryParams($query, $request->query->all());
-        $session->set('taskTable.' . $project->getSuffix(), $query);
+        $session->set(SessionStoredKeys::getTableKey($template), serialize($query));
+
         $table = $tableFactory->createTable(
             $template,
             $query,

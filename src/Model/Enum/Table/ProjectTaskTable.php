@@ -7,15 +7,16 @@
 
 namespace App\Model\Enum\Table;
 
+use App\Contract\WithProjectInterface;
 use App\Entity\Project;
 use App\Entity\Task;
 use App\Model\Dto\Table\Filter\ProjectFilter;
 use App\Model\Dto\Table\Filter\TaskStatusFilter;
 use App\Model\Dto\Table\FilterQuery;
+use App\Model\Dto\Table\PageQuery;
 use App\Model\Dto\Table\SortQuery;
-use App\ViewModel\Table\TableFilter;
 
-class ProjectTaskTable implements TableSettingsInterface
+class ProjectTaskTable implements TableSettingsInterface, WithProjectInterface
 {
     private Project $project;
 

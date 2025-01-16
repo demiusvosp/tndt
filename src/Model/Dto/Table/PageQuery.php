@@ -14,10 +14,10 @@ class PageQuery
     private int $page;
     private int $perPage;
 
-    public function __construct()
+    public function __construct(int $page, int $perPage)
     {
-        $this->page = 1;
-        $this->perPage = self::DEFAULT_PER_PAGE;
+        $this->page = $page;
+        $this->perPage = $perPage;
     }
 
     public function getPage(): int
