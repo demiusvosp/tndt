@@ -5,7 +5,7 @@
  * Time: 21:59
  */
 
-namespace App\Model\Dto\Table;
+namespace App\ViewModel\Table;
 
 class Row
 {

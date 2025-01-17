@@ -7,8 +7,8 @@
 
 namespace App\ViewTransformer\Table;
 
-use App\Model\Dto\Table\Row;
 use App\Model\Dto\Table\TableQuery;
+use App\ViewModel\Table\Row;
 
 interface ModelTransformerInterface
 {
