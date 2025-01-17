@@ -35,6 +35,9 @@ class ProjectFilter implements FilterInterface
     public function setFromParams(array $request): void
     {
         // not implementation
-        // возможно нужно будет разделить интерфейс, введя тип queryFilter которые зависят от типа таблицы, а не настраиваются фильтрами
+        /*
+         * возможно нужно будет разделить интерфейс, введя тип queryFilter которые зависят от типа таблицы,
+         * а не настраиваются виджетами фильтров
+         */
     }
 }

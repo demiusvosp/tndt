@@ -17,7 +17,7 @@ interface TableSettingsInterface
     public function entityClass(): string;
 
     /**
-     * Набор столбцов, может быть здесь будет максимально возможный набор, а tableQuery будет менять их порядок и набор
+     * Набор всех столбцов, которые можно вывести в этой таблице.
      * @return array
      */
     public function getColumns(): array;

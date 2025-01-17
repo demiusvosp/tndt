@@ -12,6 +12,10 @@ use App\Model\Template\Table\TableSettingsInterface;
 use function strrchr;
 use function substr;
 
+/**
+ * Утилита генерации ключей данных хранящихся в сессии.
+ * Нужна, чтобы все ключи были в одном месте, и было проще найти какие имена заняты и кто ими пользуется
+ */
 class SessionStoredKeys
 {
     public static function getTableKey(TableSettingsInterface $settings): string

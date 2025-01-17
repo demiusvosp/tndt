@@ -9,7 +9,6 @@ namespace App\Model\Dto\Table\Filter;
 
 use Happyr\DoctrineSpecification\Spec;
 use Happyr\DoctrineSpecification\Specification\Specification;
-use function dump;
 use function in_array;
 
 class TaskStatusFilter implements FilterInterface
@@ -54,6 +53,7 @@ class TaskStatusFilter implements FilterInterface
     public function isSelected(string $value): bool
     {
         if ($this->statuses === null) {
+            // по умолчанию флажки установлены на все статусы
             return true;
         }
         return in_array($value, $this->statuses);

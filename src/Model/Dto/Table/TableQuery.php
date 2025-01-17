@@ -100,9 +100,7 @@ class TableQuery
     public function changeSort(string $field): TableQuery
     {
         $newQuery = clone $this;
-        if (!$this->sort) {
-            $newQuery->sort = new SortQuery($field, SortQuery::ASC);
-        } elseif ($this->sort->getField() !== $field) {
+        if (!$this->sort || $this->sort->getField() !== $field) {
             $newQuery->sort = new SortQuery($field, SortQuery::ASC);
         } elseif ($this->sort->getDirection() === SortQuery::ASC) {
             $newQuery->sort = new SortQuery($field, SortQuery::DESC);
