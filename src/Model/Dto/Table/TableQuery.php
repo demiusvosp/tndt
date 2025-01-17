@@ -70,7 +70,7 @@ class TableQuery
         return $this->sort;
     }
 
-    public function setSort(SortQuery $sort): TableQuery
+    public function setSort(?SortQuery $sort): TableQuery
     {
         $this->sort = $sort;
         return $this;
@@ -102,8 +102,7 @@ class TableQuery
         $newQuery = clone $this;
         if (!$this->sort) {
             $newQuery->sort = new SortQuery($field, SortQuery::ASC);
-        }
-        if ($this->sort->getField() !== $field) {
+        } elseif ($this->sort->getField() !== $field) {
             $newQuery->sort = new SortQuery($field, SortQuery::ASC);
         } elseif ($this->sort->getDirection() === SortQuery::ASC) {
             $newQuery->sort = new SortQuery($field, SortQuery::DESC);

@@ -85,7 +85,7 @@ class TableFactory
                 if ($sortable) {
                     $sorted = null;
                     $sortQuery = $query->getSort();
-                    if ($sortQuery->getField() == $item) {
+                    if ($sortQuery?->getField() == $item) {
                         $sorted = $sortQuery->getDirection();
                     }
                 }

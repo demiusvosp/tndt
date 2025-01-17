@@ -34,8 +34,10 @@ class TableQueryFactory
             $query->setPage($request['page']);
         }
         if (isset($request['sort']) && is_array($request['sort'])) {
-            // не уверен, что тут уместно сетить новый, бросая старый сорт
             $query->setSort(new SortQuery(key($request['sort']), current($request['sort'])));
+        } elseif (count($request) > 0) {
+            // если мы меняли квери от загруженный по умолчанию, сбрасываем сортировку
+            $query->setSort(null);
         }
         $query->setFiltersFromParams($request);
 
