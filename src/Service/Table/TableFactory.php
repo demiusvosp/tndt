@@ -22,7 +22,6 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use function array_map;
 use function ceil;
-use function dump;
 
 class TableFactory
 {
@@ -54,14 +53,6 @@ class TableFactory
         /** @var EntitySpecificationRepositoryInterface $repository */
         $repository = $this->entityManager->getRepository($query->entityClass());
 
-        /** @var ModelTransformerInterface $modelTransformer */
-        $modelTransformer = $this->modelTransformers->get($settings::class);
-
-        $result = [];
-        foreach ($repository->match($query->buildSpec()) as $item) {
-            $result[] = $modelTransformer->transform($item, $query);
-        };
-
         /** @var FilterFactoryInterface $filterFactory */
         $filterFactory = $this->filterFactories->get($settings::class);
 
@@ -69,14 +60,14 @@ class TableFactory
             $route,
             $query,
             $filterFactory->create($settings, $query),
-            $this->createColumns($settings, $query, $route),
-            $result,
-            $this->createPagination($settings, $query, $route, $repository)
+            $this->processColumns($settings, $query, $route),
+            $this->processData($settings, $query, $repository),
+            $this->processPagination($query, $route, $repository)
         );
         return $view;
     }
 
-    private function createColumns(TableSettingsInterface $settings, TableQuery $query, string $route): array
+    private function processColumns(TableSettingsInterface $settings, TableQuery $query, string $route): array
     {
         return array_map(
             function ($item) use ($settings, $query, $route) {
@@ -107,8 +98,7 @@ class TableFactory
         );
     }
 
-    private function createPagination(
-        TableSettingsInterface $settings,
+    private function processPagination(
         TableQuery $query,
         string $route,
         EntitySpecificationRepositoryInterface $repository
@@ -168,5 +158,20 @@ class TableFactory
             $pages,
             $next
         );
+    }
+
+    private function processData(
+        TableSettingsInterface $settings,
+        TableQuery $query,
+        EntitySpecificationRepositoryInterface $repository
+    ): array {
+        /** @var ModelTransformerInterface $modelTransformer */
+        $modelTransformer = $this->modelTransformers->get($settings::class);
+
+        $result = [];
+        foreach ($repository->match($query->buildSpec()) as $item) {
+            $result[] = $modelTransformer->transform($item, $query);
+        };
+        return $result;
     }
 }
