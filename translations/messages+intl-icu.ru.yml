@@ -288,7 +288,7 @@ task:
   isClosed:
     label: Статус
   no:
-    label: "№"
+    label: №
   not_found: Задача не найдена
   open:
     label: Открыта

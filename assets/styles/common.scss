@@ -87,15 +87,18 @@ form {
     font-size: $font-size-100;
   }
 
-  thead .no {
-    font-weight: $font-weight-bold;
+  thead {
+    .no {
+      font-weight: $font-weight-bold;
+      font-size: $font-size-75;
+    }
+    .sort-ctrl {
+      padding: 0 0.5rem 0 0;
+    }
   }
   .no {
     font-weight: $font-weight-bold;
     text-align: right;
-    .sortable {
-      font-weight: normal;
-    }
   }
   .full-id {
     font-weight: $font-weight-bold;

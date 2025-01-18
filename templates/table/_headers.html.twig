@@ -3,7 +3,7 @@
         <th {% if header.style %}class="{{ header.style }}"{% endif %}>
         {% if header.isSortable %}
             <a class="sortable" href="{{ header.link }}">
-                <span class="float-end">
+                <span class="sort-ctrl">
                 {% if header.sortAsc %}
                     <i class="fa fa-sort-up"></i>
                 {% elseif header.sortDesc %}
