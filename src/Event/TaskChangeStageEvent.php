@@ -19,24 +19,11 @@ class TaskChangeStageEvent extends TaskEvent
 
     public function __construct(Task $task, TaskStageItem $oldStage, TaskStageItem $newStage)
     {
-        parent::__construct($task);
+        $isBecameClosed = $oldStage->getType()->equals(TaskStageTypeEnum::STAGE_ON_OPEN())
+            && $newStage->getType()->equals(TaskStageTypeEnum::STAGE_ON_CLOSED());
+        parent::__construct($task, $isBecameClosed);
         $this->oldStage = $oldStage;
         $this->newStage = $newStage;
-    }
-
-    /**
-     * Некоторым обработчикам может быть важно задача закрыта в принципе, или в рамках этого действия её закрыли
-     * @return bool стала закрытой.
-     */
-    public function isBecameClosed(): bool
-    {
-        return $this->oldStage->getType()->equals(TaskStageTypeEnum::STAGE_ON_OPEN())
-            && $this->newStage->getType()->equals(TaskStageTypeEnum::STAGE_ON_CLOSED());
-    }
-
-    public function isObjectArchived(): bool
-    {
-        return $this->getProject()->isArchived() || ($this->getTask()->isClosed() && !$this->isBecameClosed());
     }
 
     public function getOldStage(): TaskStageItem
