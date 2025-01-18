@@ -8,6 +8,7 @@
   - [tndt-161](http://tasks.demius.ru/p/tndt-161) - Обновить фронт до Vue3
 - **Bugfixes**
   - [tndt-184](http://tasks.demius.ru/p/tndt-184) - Страница создания пользователя
+  - [tndt-185](http://tasks.demius.ru/p/tndt-185) - Закрытие задачи не обновляет время проекта
 
 ----
 

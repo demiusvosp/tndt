@@ -15,12 +15,18 @@ use App\Entity\Task;
 
 class TaskEvent extends InProjectEvent implements ActivityEventInterface
 {
-    private Task $task;
+    protected Task $task;
 
+    /**
+     * @var bool
+     * Некоторым обработчикам может быть важно задача закрыта в принципе, или в рамках этого действия её закрыли
+     */
+    protected bool $isBecameClosed;
 
-    public function __construct(Task $task)
+    public function __construct(Task $task, bool $isBecameClosed = false)
     {
         $this->task = $task;
+        $this->isBecameClosed = $isBecameClosed;
     }
 
     /**
@@ -43,6 +49,6 @@ class TaskEvent extends InProjectEvent implements ActivityEventInterface
 
     public function isObjectArchived(): bool
     {
-        return parent::isObjectArchived() || ($this->getTask()->isClosed());
+        return $this->getProject()->isArchived() || ($this->task->isClosed() && !$this->isBecameClosed);
     }
 }
