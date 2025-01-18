@@ -9,6 +9,7 @@ declare(strict_types=1);
 namespace App\Model\Dto\Dictionary;
 
 use App\Contract\JlobObjectInterface;
+use function dump;
 
 /**
  * Объект справочник. Хранит набор элементов, дающих метаинформацию по своему значению (id),
@@ -130,6 +131,7 @@ class Dictionary implements JlobObjectInterface
             return $this->getNoSetItem();
         }
         if (!isset($this->items[$value])) {
+if ($value == 13) {dump($this->items[$value]??'not set'); dump($this);}
             return $this->getNoSetItem();
         }
 
@@ -167,16 +169,11 @@ class Dictionary implements JlobObjectInterface
 
     protected function getNoSetItem(): DictionaryItem
     {
-        static $item = null;
-        if (!$item) {
-            $item = $this->createItem([
-                'id' => 0,
-                'name' => 'dictionaries.not_set.name',
-                'description' => 'dictionaries.not_set.description'
-            ]);
-        }
-
-        return $item;
+        return $this->createItem([
+            'id' => 0,
+            'name' => 'dictionaries.not_set.name',
+            'description' => 'dictionaries.not_set.description'
+        ]);
     }
 
     private function generateNewId(): int
