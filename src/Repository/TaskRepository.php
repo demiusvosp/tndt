@@ -17,10 +17,11 @@ use App\Specification\Task\NotClosedSpec;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Happyr\DoctrineSpecification\Exception\NoResultException;
+use Happyr\DoctrineSpecification\Repository\EntitySpecificationRepositoryInterface;
 use Happyr\DoctrineSpecification\Repository\EntitySpecificationRepositoryTrait;
 use Happyr\DoctrineSpecification\Spec;
 
-class TaskRepository extends ServiceEntityRepository implements NoEntityRepositoryInterface
+class TaskRepository extends ServiceEntityRepository implements EntitySpecificationRepositoryInterface, NoEntityRepositoryInterface
 {
     use EntitySpecificationRepositoryTrait;
 
@@ -63,7 +64,10 @@ class TaskRepository extends ServiceEntityRepository implements NoEntityReposito
     public function getPopularTasks(int $limit, ?User $user = null): array
     {
         return $this->match(Spec::andX(
-            new NotClosedSpec(),
+            // Мы почти не смотрим на задачи внизу этого списка, там несколько месяцев даты,
+            // но, не видя закрытые задачи, не видим работы в проекте, что печалит.
+            // Когда появятся виджеты показывающие сделанное, можно будет вернуть условие
+            //  new NotClosedSpec(),
             Spec::leftJoin('project', 'p'),
                 new VisibleByUserSpec($user, 'project'),
             Spec::orderBy('updatedAt', 'desc'),

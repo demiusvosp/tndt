@@ -26,8 +26,8 @@ class HomeController extends AbstractController
 {
     private const STATIC_PAGE_CACHE_TTL = 3600;
     private const PROJECT_LENGTH = 4;
-    private const TASK_LENGTH = 15;
-    private const DOC_LENGTH = 15;
+    private const TASK_LENGTH = 20;
+    private const DOC_LENGTH = 20;
     private const USER_LENGTH = 15;
 
     public function index(

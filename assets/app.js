@@ -7,6 +7,7 @@
 import './bootstrap.js';
 import {createApp} from "vue";
 import ActivityTimeline from './components/activity/timeline-widget'
+import TableFilter from './components/tableFilter/table-filter-widget'
 
 if (process.env.NODE_ENV === "development") {
     globalThis.__VUE_OPTIONS_API__ = true
@@ -68,4 +69,12 @@ if (activityWidgetPlaceholder) {
     const activityWidget = createApp({});
     activityWidget.component('activity-timeline', ActivityTimeline);
     activityWidget.mount('#activity-widget');
+}
+
+/* Table filter widget */
+var tableFilterWidgetPlaceholder = document.getElementById('table-filter-widget');
+if (tableFilterWidgetPlaceholder) {
+    const tableFilterWidgetVue = createApp({});
+    tableFilterWidgetVue.component('table-filter-widget', TableFilter);
+    tableFilterWidgetVue.mount('#table-filter-widget');
 }

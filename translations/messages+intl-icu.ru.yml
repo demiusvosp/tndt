@@ -129,6 +129,7 @@ doc:
     label: Обновил
 Edit: Редактировать
 Edit_project: Настроить проект
+Filter: фильтрация
 Hidden: cкрыт
 License: Лицензия
 Login: Войти
@@ -161,6 +162,7 @@ menu:
       list: Управление пользователями
 MdHelp: Справка по md
 Never_logined: Ни разу не входил
+Next: Вперед&nbsp;»
 nobody: >-
   {case, select,
     nominative {никто}
@@ -173,6 +175,7 @@ Only_for_authorized:
   comment: Комментарии могут оставлять только авторизованные пользователи
 open: открыта
 Post: Написать
+Prev: «&nbsp;Назад
 Project: Проект
 Projects: Проекты
 project:
@@ -223,6 +226,7 @@ project:
     help: Суффикс является уникальным идентификатором проекта, используемым задачами, документами для идентификации, являясь ссылкой в текстах документации и описаниях задач. После создания его уже нельзя будет изменить. Должен содержать от одного до 8 букв или цифр без пробелов.
   show_archive: Показать архивные
 Profile: Профиль
+Reset: Сбросить
 role:
   at_project: проекта
   pm: PM
@@ -235,6 +239,7 @@ role:
   visitor: посетитель
 search: Поиск
 SpecialActions: Особые действия
+Submit: Применить
 Support: Поддержка
 SystemStat:
   active: Активных
@@ -282,8 +287,11 @@ task:
   edit: Редактирование задачи
   isClosed:
     label: Статус
-  No: "№"
+  no:
+    label: №
   not_found: Задача не найдена
+  open:
+    label: Открыта
   priority:
     label: Приоритет
     help: Важность, приоритетность задачи.

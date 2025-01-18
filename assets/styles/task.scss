@@ -10,9 +10,24 @@
 }
 
 .task-table {
+  .task-filters-ctrl {
+    margin: 0.5em;
+  }
+  #task-filters {
+    .filter-item {
+      margin-top: 1em;
+    }
+  }
+
+  a.task-link {
+    color: $black;
+    outline: none;
+  }
+
   min-width: 1000px;
   td {
     padding: 0.25rem 0.7rem;
+    height: 3em;
   }
 
   .caption {

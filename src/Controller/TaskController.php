@@ -19,20 +19,25 @@ use App\Form\Type\Task\EditTaskType;
 use App\Form\Type\Task\NewTaskType;
 use App\Model\Enum\FlashMessageTypeEnum;
 use App\Model\Enum\Security\UserPermissionsEnum;
+use App\Model\Enum\SessionStoredKeys;
 use App\Model\Enum\TaskStageTypeEnum;
-use App\Repository\TaskRepository;
+use App\Model\Template\Table\ProjectTaskTable;
 use App\Service\InProjectContext;
+use App\Service\Table\TableFactory;
+use App\Service\Table\TableQueryFactory;
 use App\Service\TaskService;
 use App\Service\TaskStagesService;
-use App\Specification\InProjectSpec;
 use App\ViewModel\Button\ControlButton;
-use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use TypeError;
+use function serialize;
+use function unserialize;
 
 #[InProjectContext]
 class TaskController extends AbstractController
@@ -41,18 +46,15 @@ class TaskController extends AbstractController
     private const CHANGE_STAGE_TOKEN = 'task-change-stage';
 
     private TranslatorInterface $translator;
-    private TaskRepository $taskRepository;
     private TaskService $taskService;
     private TaskStagesService $taskStagesService;
 
     public function __construct(
         TranslatorInterface $translator,
-        TaskRepository $taskRepository,
         TaskService $taskService,
         TaskStagesService $taskStagesService
     ) {
         $this->translator = $translator;
-        $this->taskRepository = $taskRepository;
         $this->taskService = $taskService;
         $this->taskStagesService = $taskStagesService;
     }
@@ -60,24 +62,43 @@ class TaskController extends AbstractController
     /**
      * @param Request $request
      * @param Project $project
-     * @param PaginatorInterface $paginator
+     * @param RequestStack $requestStack
+     * @param TableQueryFactory $queryFactory
+     * @param TableFactory $tableFactory
      * @return Response
      */
     #[IsGranted(UserPermissionsEnum::PERM_TASK_VIEW)]
-    public function list(Request $request, Project $project, PaginatorInterface $paginator): Response
-    {
-        $query = $this->taskRepository->getQueryBuilder(new InProjectSpec($project), 't');
-        $tasks = $paginator->paginate(
+    public function list(
+        Request $request,
+        Project $project,
+        RequestStack $requestStack,
+        TableQueryFactory $queryFactory,
+        TableFactory $tableFactory
+    ): Response {
+        $tableSettings = new ProjectTaskTable($project);
+        $session = $requestStack->getSession();
+        try {
+            $query = unserialize($session->get(SessionStoredKeys::getTableKey($tableSettings)));
+        } catch (TypeError) {
+            $query = null;
+        }
+        if (!$query) {
+            $query = $queryFactory->createByTemplate($tableSettings);
+        }
+        $queryFactory->modifyFromQueryParams($query, $request->query->all());
+        $session->set(SessionStoredKeys::getTableKey($tableSettings), serialize($query));
+
+        $table = $tableFactory->createTable(
+            $tableSettings,
             $query,
-            $request->query->getInt('page', 1),
-            self::TASK_PER_PAGE
+            'task.list'
         );
 
         return $this->render(
             'task/list.html.twig',
             [
                 'project' => $project,
-                'tasks' => $tasks,
+                'table' => $table,
             ]
         );
     }
