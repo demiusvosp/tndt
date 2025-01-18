@@ -49,8 +49,7 @@ class TableFactory
     public function createTable(
         TableSettingsInterface $settings,
         TableQuery $query,
-        string $route,
-        array $routeParams = []
+        string $route
     ): TableView {
         /** @var EntitySpecificationRepositoryInterface $repository */
         $repository = $this->entityManager->getRepository($query->entityClass());
@@ -68,7 +67,6 @@ class TableFactory
 
         $view = new TableView(
             $route,
-            $routeParams,
             $query,
             $filterFactory->create($settings, $query),
             $this->createColumns($settings, $query, $route),

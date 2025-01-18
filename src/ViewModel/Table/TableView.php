@@ -14,7 +14,6 @@ use function array_merge;
 class TableView
 {
     private string $route;
-    private array $routeParams;
 
     private TableQuery $query;
     /**
@@ -27,7 +26,6 @@ class TableView
 
     public function __construct(
         string $route,
-        array $routeParams,
         TableQuery $query,
         array $filterData,
         array $headers,
@@ -35,7 +33,6 @@ class TableView
         Pagination $pagination
     ) {
         $this->route = $route;
-        $this->routeParams = $routeParams;
         $this->query = $query;
         $this->filterData = $filterData;
         $this->headers = $headers;
@@ -46,11 +43,6 @@ class TableView
     public function getRoute(): string
     {
         return $this->route;
-    }
-
-    public function getRouteParams(): array
-    {
-        return array_merge($this->routeParams, $this->query->getRouteParams());
     }
 
     public function getQuery(): TableQuery
