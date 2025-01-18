@@ -64,7 +64,10 @@ class TaskRepository extends ServiceEntityRepository implements EntitySpecificat
     public function getPopularTasks(int $limit, ?User $user = null): array
     {
         return $this->match(Spec::andX(
-            new NotClosedSpec(),
+            // Мы почти не смотрим на задачи внизу этого списка, там несколько месяцев даты,
+            // но, не видя закрытые задачи, не видим работы в проекте, что печалит.
+            // Когда появятся виджеты показывающие сделанное, можно будет вернуть условие
+            //  new NotClosedSpec(),
             Spec::leftJoin('project', 'p'),
                 new VisibleByUserSpec($user, 'project'),
             Spec::orderBy('updatedAt', 'desc'),
