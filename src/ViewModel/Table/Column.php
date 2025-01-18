@@ -15,7 +15,10 @@ class Column
     private string $label;
 
     /**
-     * @var string|null - On of SORT_ const. (enum not work in templates)
+     * @var string|null
+     * null - column not sorting
+     * SortItem::SORT_ - sort direction
+     * off - column sorting, but currently not sorted
      */
     private ?string $sorted;
 

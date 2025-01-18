@@ -286,6 +286,8 @@ task:
   no:
     label: "№"
   not_found: Задача не найдена
+  open:
+    label: Open
   priority:
     label: Приоритет
     help: Важность, приоритетность задачи.
