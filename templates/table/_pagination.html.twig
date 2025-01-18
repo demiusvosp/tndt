@@ -1,44 +1,28 @@
 <nav>
-    {% set p = table.pagination %}
     <ul class="pagination">
-        {% if p.currentPage > 1 %}
-            <li class="page-item">
-                <a class="page-link" rel="prev" href="{{ table_paginate_link(table, p.currentPage - 1) }}">
-                    «&nbsp;Назад
-                </a>
-            </li>
-        {% else %}
-            <li class="page-item disabled">
-                <span class="page-link">«&nbsp;Назад</span>
-            </li>
+        {% if table.pagination.previous is not null %}
+            {{ _self.pageButton(table.pagination.previous) }}
         {% endif %}
 
-        {% for i in 1..p.totalPages  %}
-            {% if i == p.currentPage %}
-                <li class="page-item active">
-                    <span class="page-link">
-                        {{ i }}
-                    </span>
-                </li>
-            {% else %}
-                <li class="page-item">
-                    <a class="page-link" href="{{ table_paginate_link(table, i) }}">
-                        {{ i }}
-                    </a>
-                </li>
-            {% endif %}
+        {% for page in table.pagination.pages  %}
+            {{ _self.pageButton(page) }}
         {% endfor %}
 
-        {% if p.currentPage < p.totalPages %}
-            <li class="page-item">
-                <a class="page-link" rel="next" href="{{ table_paginate_link(table, p.currentPage + 1) }}">
-                    Вперед&nbsp;»
-                </a>
-            </li>
-        {% else %}
-            <li class="page-item disabled">
-                <span class="page-link">Вперед&nbsp;»</span>
-            </li>
+        {% if table.pagination.next is not null %}
+            {{ _self.pageButton(table.pagination.next) }}
         {% endif %}
     </ul>
 </nav>
+{% macro pageButton(page) %}
+    {% if page.href is not null %}
+        <li class="page-item {{ page.style }}">
+            <a class="page-link" rel="prev" href="{{ page.href }}">
+                {{ page.label|raw }}
+            </a>
+        </li>
+    {% else %}
+        <li class="page-item {{ page.style }}">
+            <span class="page-link">{{ page.label|raw }}</span>
+        </li>
+    {% endif %}
+{% endmacro %}

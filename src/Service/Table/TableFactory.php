@@ -11,30 +11,36 @@ use App\Model\Dto\Table\TableQuery;
 use App\Model\Template\Table\TableSettingsInterface;
 use App\ViewModel\Table\Column;
 use App\ViewModel\Table\Pagination;
+use App\ViewModel\Table\PaginationButton;
 use App\ViewModel\Table\TableView;
 use App\ViewTransformer\Table\Filter\FilterFactoryInterface;
 use App\ViewTransformer\Table\ModelTransformerInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Happyr\DoctrineSpecification\Repository\EntitySpecificationRepositoryInterface;
 use Symfony\Component\DependencyInjection\ServiceLocator;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use function array_map;
+use function ceil;
+use function dump;
 
 class TableFactory
 {
     private EntityManagerInterface $entityManager;
-
+    private RouterInterface $router;
     private ServiceLocator $modelTransformers;
     private ServiceLocator $filterFactories;
     private TranslatorInterface $translator;
 
     public function __construct(
         EntityManagerInterface $entityManager,
+        RouterInterface $router,
         ServiceLocator $modelTransformers,
         ServiceLocator $filterFactories,
         TranslatorInterface $translator
     ) {
         $this->entityManager = $entityManager;
+        $this->router = $router;
         $this->modelTransformers = $modelTransformers;
         $this->filterFactories = $filterFactories;
         $this->translator = $translator;
@@ -49,8 +55,6 @@ class TableFactory
         /** @var EntitySpecificationRepositoryInterface $repository */
         $repository = $this->entityManager->getRepository($query->entityClass());
 
-        $count = $repository->matchSingleScalarResult($query->buildCountSpec());
-
         /** @var ModelTransformerInterface $modelTransformer */
         $modelTransformer = $this->modelTransformers->get($settings::class);
 
@@ -62,26 +66,25 @@ class TableFactory
         /** @var FilterFactoryInterface $filterFactory */
         $filterFactory = $this->filterFactories->get($settings::class);
 
-        return new TableView(
+        $view = new TableView(
             $route,
             $routeParams,
             $query,
             $filterFactory->create($settings, $query),
-            $this->calculateColumns($settings, $query),
+            $this->createColumns($settings, $query, $route),
             $result,
-            new Pagination(
-                $query->getPage(),
-                ceil($count / $query->getPerPage())
-            )
+            $this->createPagination($settings, $query, $route, $repository)
         );
+        return $view;
     }
 
-    private function calculateColumns(TableSettingsInterface $settings, TableQuery $query): array
+    private function createColumns(TableSettingsInterface $settings, TableQuery $query, string $route): array
     {
         return array_map(
-            function ($item) use ($settings, $query) {
+            function ($item) use ($settings, $query, $route) {
                 $columnSettings = $settings->getColumns()[$item];
                 $sorted = null;
+                $link = null;
                 if ($columnSettings[1]) {
                     $sortQuery = $query->getSort();
                     if ($sortQuery?->getField() == $item) {
@@ -89,15 +92,83 @@ class TableFactory
                     } else {
                         $sorted = 'off';
                     }
+                    $link = $this->router->generate(
+                        $route,
+                        $query->changeSort($item)->getRouteParams()
+                    );
                 }
                 return new Column(
                     $item,
                     $this->translator->trans($columnSettings[0]),
                     $sorted,
+                    $link,
                     $columnSettings[2] ?? ''
                 );
             },
             $query->getColumns()
+        );
+    }
+
+    private function createPagination(
+        TableSettingsInterface $settings,
+        TableQuery $query,
+        string $route,
+        EntitySpecificationRepositoryInterface $repository
+    ): Pagination {
+        $count = $repository->matchSingleScalarResult($query->buildCountSpec());
+        $pagesCount = ceil($count / $query->getPerPage());
+
+        if ($query->getPage() > 1) {
+            $prevQuery = $query->changePage($query->getPage() - 1);
+            $prev = new PaginationButton(
+                $this->translator->trans('Prev'),
+                $this->router->generate($route, $prevQuery->getRouteParams()),
+            );
+        } else {
+            $prev = new PaginationButton(
+                $this->translator->trans('Prev'),
+                null,
+                'disabled'
+            );
+        }
+
+        $pages = [];
+        for($i = 1; $i <= $pagesCount; $i++) {
+            if ($i === $query->getPage()) {
+                $pages[] = new PaginationButton(
+                    $i,
+                    null,
+                    'active'
+                );
+            } else {
+                $pageQuery = $query->changePage($i);
+                $pages[] = new PaginationButton(
+                    $i,
+                    $this->router->generate($route, $pageQuery->getRouteParams())
+                );
+            }
+        }
+
+        if ($query->getPage() < $pagesCount) {
+            $nextQuery = $query->changePage($query->getPage() + 1);
+            $next = new PaginationButton(
+                $this->translator->trans('Next'),
+                $this->router->generate($route, $nextQuery->getRouteParams()),
+            );
+        } else {
+            $next = new PaginationButton(
+                $this->translator->trans('Next'),
+                null,
+                'disabled'
+            );
+        }
+
+        return new Pagination(
+            $query->getPage(),
+            $pagesCount,
+            $prev,
+            $pages,
+            $next
         );
     }
 }

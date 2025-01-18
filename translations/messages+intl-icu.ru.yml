@@ -162,6 +162,7 @@ menu:
       list: Управление пользователями
 MdHelp: Справка по md
 Never_logined: Ни разу не входил
+Next: Вперед&nbsp;»
 nobody: >-
   {case, select,
     nominative {никто}
@@ -174,6 +175,7 @@ Only_for_authorized:
   comment: Комментарии могут оставлять только авторизованные пользователи
 open: открыта
 Post: Написать
+Prev: «&nbsp;Назад
 Project: Проект
 Projects: Проекты
 project:

@@ -1,24 +1,24 @@
 <tr>
     {% for header in table.headers %}
         <th {% if header.style %}class="{{ header.style }}"{% endif %}>
-            {% if header.sorted is null %}
-                <span>
-                    {{ header.label }}
+        {% if header.isSortable %}
+            <a class="sortable" href="{{ header.link }}">
+                <span class="float-end">
+                {% if header.sortAsc %}
+                    <i class="fa fa-sort-up"></i>
+                {% elseif header.sortDesc %}
+                    <i class="fa fa-sort-down"></i>
+                {% else %}
+                    <i class="fa fa-sort"></i>
+                {% endif %}
                 </span>
-            {% else %}
-                <a class="sortable" href="{{ table_sort_link(table, header.field) }}">
-                    <span class="float-end">
-                    {% if header.sorted == header.SORT_ASC %}
-                        <i class="fa fa-sort-up"></i>
-                    {% elseif header.sorted == header.SORT_DESC %}
-                        <i class="fa fa-sort-down"></i>
-                    {% else %}
-                        <i class="fa fa-sort"></i>
-                    {% endif %}
-                    </span>
-                    {{ header.label }}
-                </a>
-            {% endif %}
+                {{ header.label }}
+            </a>
+        {% else %}
+            <span>
+                {{ header.label }}
+            </span>
+        {% endif %}
         </th>
     {% endfor %}
 </tr>
