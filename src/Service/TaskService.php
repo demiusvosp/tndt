@@ -90,10 +90,10 @@ class TaskService
         }
 
         if ($newStage) {
-            // устанавливать флаги состояния и закрытости будет специализированный сервис, он же и выполнит flush
+            // проект с этапами, поэтому закрывать задачу будет сервис работающий с этапами задач
             $this->stagesService->changeStage($task, $newStage->getId());
         } else {
-            // для проектов без stages
+            // для проектов без этапов задач
             $task->setIsClosed(true);
             $this->eventDispatcher->dispatch(
                 new TaskEvent($task, true),
