@@ -28,7 +28,7 @@
   - [tndt-151](http://tasks.demius.ru/p/tndt-151) - Теперь slug документов уникален в пределах проекта
   - [tndt-168](http://tasks.demius.ru/p/tndt-168) - tabler-icons.svg переехал в другой пакет
   - [tndt-179](http://tasks.demius.ru/p/tndt-179) - Закрытие задачи не обновляет её время
-- **Замечания к обновлению в [help/install/upgrade_3.1.md](help/install/upgrade_3.1.md)**
+- **Замечания к обновлению в [help/install/upgrade_3.1.md](docs/install/upgrade_3.1.md)**
 
 
 ## [0.3] - 2024.03.07
@@ -110,7 +110,7 @@
 ## [v0.1.2] - 2021-11-15
 - **New feature** 
   - [tndt-21](http://tasks.demius.ru/p/tndt-21) - Комментарии поддерживают markdown
-  - [tndt-28](http://tasks.demius.ru/p/tndt-28) - Улучшение дашборда. Не отображаем root, показываем скрытые, но доступные пользователю проекты, увеличиваем количество задач и документов.
+  - [tndt-28](http://tasks.demius.ru/p/tndt-28) - Улучшение дашборда. 
 - **Bugfixes**
   - [tndt-22](http://tasks.demius.ru/p/tndt-22) - Не даем писать комментарии неавторизованным пользователям.
   - [tndt-23](http://tasks.demius.ru/p/tndt-23) - Ошибка при открытии редактирования профиля.

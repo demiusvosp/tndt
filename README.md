@@ -40,7 +40,7 @@ REQUIREMENTS
 INSTALLATION
 ------------
 
-подробно описано в [help/install/install.md](help/install/install.md)
+подробно описано в [help/install/install.md](docs/install/install.md)
 
 UPGRADE
 ------------
@@ -50,7 +50,7 @@ UPGRADE
 3. обновлние фронтенд `make front_build`
 
 ### prod-stage
-1. Посмотреть в диреткории `help/install` наличие заметок по особенностям обновления на устанавливаемую версию.
+1. Посмотреть в диреткории `docs/install` наличие заметок по особенностям обновления на устанавливаемую версию.
 2. `docker compose pull`
 3. `docker-compose up -d`
 4. `docker-compose exec php ./bin/console cache:clear`
@@ -58,26 +58,6 @@ UPGRADE
 6. `docker-compose exec php ./bin/console doctrine:migrations:migrate`
 7. `docker-compose exec php chmod 777 -R /app/var/cache/prod`
 
-Особенности обслуживания системы
--------
-
-###База данных
-Для корректной работы с текстами на национальных языках, в частности с русским необходимо проверить, что созданная БД 
-имеет сравнение utf8mb4_general_ci, таблица же migrations для поддержки длинных названий миграций должна иметь 
-сравнение ascii_general_ci в ней никогда не будет русских символов. В будущем при схлопывании миграций будут убраны 
-длинное название миграции создающей root пользователя и данное требование станет неактуальным. 
-
-###Директория var
-Необходимо следить, чтобы поддиректории ./var были доступны для записи. Теоретически они создаются системой 
-автоматически с нужными полномочиями, но при запуске команд в контейнере от root, при работе php-fpm от другого 
-пользователя часть кеш, создаваемый `./bin/console cache:warmup` может быть не от того пользователя. Необходимо либо 
-вызывать команды от того же пользователя системы, под которым работает php-fpm, либо после вызова этих команд делать 
-`chown www-data:www-data -R ./var/`
-
-### Миграции базы данных
-`make back_exec "bin/console doctrine:migration:execute 'App\\Migrations\\Version20230529175045' --up|--down"` - накатить конкретную миграцию
-
-`make back_exec "bin/console doctrine:migration:migrate prev"` - откатить последнюю миграцию
 
 TESTING
 -------

@@ -20,6 +20,7 @@ use App\ViewModel\Statistics\CommonStat;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use function dump;
 
 
 class HomeController extends AbstractController
@@ -98,10 +99,10 @@ class HomeController extends AbstractController
 
     public function helpMd(): Response
     {
-        $help = file_get_contents($this->getParameter('kernel.project_dir') . '/help/md/short.md');
-
+        $help = file_get_contents($this->getParameter('kernel.project_dir') . '/docs/md/short.md');
+dump($help);
         return $this->render('home/help_widget.html.twig', ['text' => $help])
-            ->setPublic()
-            ->setMaxAge(self::STATIC_PAGE_CACHE_TTL);
+            ->setPublic();
+//            ->setMaxAge(self::STATIC_PAGE_CACHE_TTL);
     }
 }
