@@ -54,7 +54,6 @@ monolog:
 и в него кладется значение переменной `APP_HOST`. 
 ```yaml
   environment:
-      ...
       GRAYLOG_TAG: 'tndt:php'
       GRAYLOG_TAGNAME: 'tag'
 ```
