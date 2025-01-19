@@ -25,7 +25,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Table(name: "task")]
 #[ORM\EntityListeners([NoGeneratorListener::class])]
 #[ORM\UniqueConstraint(name: "idx_full_no", columns: ["suffix","no"])]
-#[ORM\Index(columns: ["is_closed"], name: "isClosed")]
+// здесь подразумеваются индексы на is_closed и справочники, но у них слишком низкая селективность
+#[ORM\Index(columns: ["suffix", "created_at"], name: "idx_suffix_created_at")]
+#[ORM\Index(columns: ["suffix", "updated_at"], name: "idx_suffix_updated_at")]
 class Task implements NoInterface, WithProjectInterface, ActivitySubjectInterface, CommentableInterface, HasClosedStatusInterface
 {
     public const TASKID_SEPARATOR = '-';
