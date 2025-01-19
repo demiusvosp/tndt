@@ -25,9 +25,6 @@
 Обновление системы
 ============================
 
-Предварительно проверить в [install/history.md](install/history.md) какие изменения вносят новые версии есть ли особые
-действия которые нужно совершить, например описать новые env.
-
 ### dev-stage
 1. обновление php-пакетов `make back_exec composer install`
 2. `docker-compose exec php ./bin/console doctrine:migrations:migrate`
@@ -41,6 +38,10 @@
 6. `docker-compose exec php ./bin/console doctrine:migrations:migrate`
 7. `docker-compose exec php chmod 777 -R /app/var/cache/prod`
 
+### Обновления требующие дополнительных действий
+ - [версия 0.3.1](upgrade_3.1.md)
+
+[Полный список версий](history.md) 
 
 Особенности обслуживания системы
 -------
