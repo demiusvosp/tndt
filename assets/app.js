@@ -9,13 +9,11 @@ import {createApp} from "vue";
 import ActivityTimeline from './components/activity/timeline-widget'
 import TableFilter from './components/tableFilter/table-filter-widget'
 
+globalThis.__VUE_OPTIONS_API__ = true;
 if (process.env.NODE_ENV === "development") {
-    globalThis.__VUE_OPTIONS_API__ = true
     globalThis.__VUE_PROD_DEVTOOLS__ = true;
     globalThis.__VUE_PROD_HYDRATION_MISMATCH_DETAILS__ = true;
 } else {
-    // different values for production.
-    globalThis.__VUE_OPTIONS_API__ = false;
     globalThis.__VUE_PROD_DEVTOOLS__ = false;
     globalThis.__VUE_PROD_HYDRATION_MISMATCH_DETAILS__ = false;
 }
@@ -61,7 +59,6 @@ $('.confirm-close').on('click', function (event) {
         $('.closeTaskForm', $dialog).submit();
     })
 });
-
 
 /* Activity widget */
 var activityWidgetPlaceholder = document.getElementById('activity-widget');

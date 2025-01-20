@@ -70,11 +70,15 @@ Encore
     // enables Sass/SCSS support
     .enableSassLoader()
 
-    // @todo [tndt-152] - задача перевода всего на jquery на vue
+    // @todo [tndt-152] - задача перевода всего с jquery на vue
     .autoProvidejQuery()
 
     .enableVueLoader(() => {}, {
-        version: 3
+        version: 3,
+        /*
+         Раздувает размер, но необходимо, чтобы получить данные из шаблона в корневой компонент vue
+         */
+        runtimeCompilerBuild: true
     })
 ;
 
