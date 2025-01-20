@@ -15,6 +15,11 @@ monolog:
             type: stream
             path: "php://stderr"
             level: info
+        local_files:
+            type: rotating_file
+            path: "%kernel.logs_dir%/%kernel.environment%.log"
+            level: debug
+            max_files: 3
         console:
             type: console
             process_psr_3_messages: false

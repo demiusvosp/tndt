@@ -50,7 +50,7 @@ front_exec:
 
 front_build:
 	docker compose run --rm front_builder yarn install
-	docker compose run --rm front_builder yarn encore dev $(filter-out $@,$(MAKECMDGOALS))
+	docker compose run --rm front_builder yarn encore $(env) $(filter-out $@,$(MAKECMDGOALS))
 %:
 
 init:
