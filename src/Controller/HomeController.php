@@ -98,7 +98,7 @@ class HomeController extends AbstractController
 
     public function helpMd(): Response
     {
-        $help = file_get_contents($this->getParameter('kernel.project_dir') . '/help/md/short.md');
+        $help = file_get_contents($this->getParameter('kernel.project_dir') . '/docs/md/short.md');
 
         return $this->render('home/help_widget.html.twig', ['text' => $help])
             ->setPublic()
