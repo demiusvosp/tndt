@@ -103,9 +103,9 @@ class WikiService
         }
         return new WikiLink(
             $this->router->generate('doc.index', ['suffix' => $suffix, 'slug' => $doc->getSlug()]),
-            $doc->getCaption(),
+            $doc->getDocId() . ' - ' . $doc->getCaption(),
             $doc->isArchived() ? LinkStyleEnum::DocArchived : LinkStyleEnum::Normal,
-            $doc->getDocId()
+            $doc->getCaption()
         );
     }
 }
