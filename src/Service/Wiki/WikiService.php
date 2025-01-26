@@ -18,13 +18,11 @@ use App\Specification\Task\ByTaskIdSpec;
 use Doctrine\ORM\EntityManagerInterface;
 use Happyr\DoctrineSpecification\Exception\NoResultException;
 use Happyr\DoctrineSpecification\Repository\EntitySpecificationRepositoryInterface;
-use Happyr\DoctrineSpecification\Spec;
 use Happyr\DoctrineSpecification\Specification\Specification;
 use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use function dump;
 use function implode;
 use function preg_match;
 
