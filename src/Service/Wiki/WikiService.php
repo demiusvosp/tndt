@@ -24,6 +24,7 @@ use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use function dump;
 use function implode;
 use function preg_match;
 
@@ -53,15 +54,19 @@ class WikiService
 
     public function getWikiLinkRegEx()
     {
-        return implode('|', [Task::TASKID_REGEX, Doc::DOCID_REGEX, 'p:\w+']);
+        return implode('|', [Task::TASKID_REGEX, Doc::DOCID_REGEX, 'p:\w+', '\w+?:\w+?:\w+']);
     }
 
     public function getLink(string $linkTag): ?WikiLink
     {
-        if (preg_match('/(\w+)-(\d+)/', $linkTag, $matches)) {
+        if (preg_match('/(\w+)-(\d+)/', $linkTag, $matches) ||
+            preg_match('/t:(\w+?):(\d+)/', $linkTag, $matches)
+        ) {
             return $this->createTaskLink($matches[1], $matches[2]);
         }
-        if (preg_match('/(\w+)#(\w+)/', $linkTag, $matches)) {
+        if (preg_match('/(\w+)#(\w+)/', $linkTag, $matches) ||
+            preg_match('/d:(\w+?):(\w+)/', $linkTag, $matches)
+        ) {
             return $this->createDocLink($matches[1], $matches[2]);
         }
         if (preg_match('/(\w+):(\w+)/', $linkTag, $matches) && $matches[1] == 'p') {
