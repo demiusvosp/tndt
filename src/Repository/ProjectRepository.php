@@ -12,12 +12,13 @@ use App\Entity\Project;
 use App\Specification\Project\VisibleByUserSpec;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Happyr\DoctrineSpecification\Repository\EntitySpecificationRepositoryInterface;
 use Happyr\DoctrineSpecification\Repository\EntitySpecificationRepositoryTrait;
 use Happyr\DoctrineSpecification\Result\AsArray;
 use Happyr\DoctrineSpecification\Spec;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-class ProjectRepository extends ServiceEntityRepository
+class ProjectRepository extends ServiceEntityRepository implements EntitySpecificationRepositoryInterface
 {
     use EntitySpecificationRepositoryTrait;
 
