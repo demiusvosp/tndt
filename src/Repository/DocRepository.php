@@ -18,11 +18,12 @@ use App\Specification\Project\VisibleByUserSpec;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Happyr\DoctrineSpecification\Exception\NoResultException;
+use Happyr\DoctrineSpecification\Repository\EntitySpecificationRepositoryInterface;
 use Happyr\DoctrineSpecification\Repository\EntitySpecificationRepositoryTrait;
 use Happyr\DoctrineSpecification\Spec;
 
 
-class DocRepository extends ServiceEntityRepository implements NoEntityRepositoryInterface
+class DocRepository extends ServiceEntityRepository implements EntitySpecificationRepositoryInterface, NoEntityRepositoryInterface
 {
     use EntitySpecificationRepositoryTrait;
 

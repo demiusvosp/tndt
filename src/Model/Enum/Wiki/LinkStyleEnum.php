@@ -14,6 +14,7 @@ enum LinkStyleEnum: string
 
     case TaskClosed = 'task_closed';
     case DocArchived = 'doc_archived';
+    case ProjectArchived = 'project_archived';
 
     public function getCssClass(): string
     {
@@ -21,6 +22,7 @@ enum LinkStyleEnum: string
             self::NotFound => 'not_found',
             self::TaskClosed => 'task-closed',
             self::DocArchived => 'doc-archived',
+            self::ProjectArchived => 'doc-archived', // @todo tndt-175 когда будет стиль переключить на него
             default => '',
         };
     }
