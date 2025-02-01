@@ -97,5 +97,8 @@ services:
     League\CommonMark\Extension\ExternalLink\ExternalLinkExtension:
         tags: [ 'wiki.extension' ]
 
+    League\CommonMark\Extension\Table\TableExtension:
+        tags: [ 'wiki.extension' ]
+
     App\Service\Wiki\MdExtension\WikiLink\WikiLinkExtension:
         tags: [ 'wiki.extension' ]
