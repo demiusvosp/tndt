@@ -35,7 +35,9 @@ services:
 
   redis:
     volumes:
-      - './var/storage/dev/redis:/var/lib/redis:rw'
+      - './var/storage/dev/redis:/data:rw'
+    ports:
+      - 4004:6379
 
   pma:
     profiles: [dev]
