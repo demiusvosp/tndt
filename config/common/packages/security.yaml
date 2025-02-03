@@ -27,8 +27,3 @@ security:
 
             login_throttling:
                 max_attempts: 3
-
-#services:
-#
-# Хотелось бы здесь вписывать свои сервисы, но в случае с security.yaml это не работает
-#
