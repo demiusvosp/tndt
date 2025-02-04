@@ -18,6 +18,8 @@ framework:
             cache.statistics:
                 adapter: cache.app
 
+            cache.doctrine.orm.default.query:
+                adapter: cache.app
             doctrine.result_cache_pool:
                 adapter: cache.app
             doctrine.system_cache_pool:
