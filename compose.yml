@@ -29,6 +29,6 @@ services:
       MYSQL_DATABASE: '${DB_NAME}'
 
   redis:
-    build:
-      context: ./
-      dockerfile: './docker/redis.dockerfile'
+    image: redis:7-alpine
+    volumes:
+      - './docker/redis.conf:/usr/local/etc/redis/redis.conf:ro'
