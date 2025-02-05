@@ -20,8 +20,10 @@ services:
     environment:
       APP_ENV: 'prod'
       APP_DEBUG: 'false'
+      REDIS_URL: 'redis'
     links:
       - mysql
+      - redis
 
   mysql:
     image: mysql:5.7
@@ -35,5 +37,12 @@ services:
       MYSQL_PASSWORD: '${DB_PASSWORD}'
       MYSQL_DATABASE: '${DB_NAME}'
 
+  redis:
+    image: redis:7-alpine
+    volumes:
+      - './docker/redis.conf:/usr/local/etc/redis/redis.conf:ro'
+      - 'redis:/data:rw'
+
 volumes:
   storage:
+  redis:

@@ -195,8 +195,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Activit
     {
         $roles = $this->globalRoles;
 
-        // общая роль любого зарегистрированного пользователя, если у него нет более специфичной роли
-        if(count($roles) === 0) {
+        if(!$this->locked) {
             $roles[] = UserRolesEnum::ROLE_USER;
         }
 

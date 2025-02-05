@@ -33,6 +33,12 @@ services:
       MYSQL_ROOT_PASSWORD: '123'
       MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
 
+  redis:
+    volumes:
+      - './var/storage/dev/redis:/data:rw'
+    ports:
+      - 4004:6379
+
   pma:
     profiles: [dev]
     image: phpmyadmin/phpmyadmin

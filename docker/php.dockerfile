@@ -33,6 +33,11 @@ RUN apt-get install libonig-dev -y \
 
 RUN docker-php-ext-install opcache
 
+# Redis
+RUN pecl install --onlyreqdeps --force redis \
+    && rm -rf /tmp/pear \
+    && docker-php-ext-enable redis
+
 RUN mkdir -p /app/var/log && mkdir -p /app/var/cache  \
     && chown www-data:www-data -R /app/var && chmod 775 -R /app/var
 

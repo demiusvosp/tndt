@@ -1,5 +1,5 @@
 #!make
-.PHONY: help up down ps back_bash back_exec front_build front_exec init tests
+.PHONY: help up down ps back_bash back_exec front_build front_exec redis_console init tests
 
 # default arguments
 env = dev
@@ -25,6 +25,7 @@ help:
 	$(info   back_exec [<command>] - exec comand into php container)
 	$(info   front_build [watch] - exec yarn install and compile and deploy front o public (one or watches changes) )
 	$(info   front_exec [<command>] - exec command into front_builder container)
+	$(info   redis_console - run redis-cli and connect to tndt redis container)
 	$(info   init - initialize stage. (create db, migrates, create root user))
 	$(info   tests type=behat (default unit) - run test suites)
 	$(info )
@@ -52,6 +53,9 @@ front_build:
 	docker compose run --rm front_builder yarn install
 	docker compose run --rm front_builder yarn encore $(env) $(filter-out $@,$(MAKECMDGOALS))
 %:
+
+redis_console:
+	redis-cli -h localhost -p 4004
 
 init:
 	docker compose exec php composer install

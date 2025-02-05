@@ -7,6 +7,24 @@ services:
     App\Repository\:
         resource: '%kernel.project_dir%/src/Repository'
 
+    redis_client.cache:
+        class: \Redis
+        calls:
+            - connect:
+                  $host: '%env(REDIS_URL)%'
+            - select: [0]
+
+    redis_client.session:
+        class: \Redis
+        calls:
+            - connect:
+                $host: '%env(REDIS_URL)%'
+            - select: [1]
+
+    Symfony\Component\HttpFoundation\Session\Storage\Handler\RedisSessionHandler:
+        arguments:
+            - '@redis_client.session'
+
     monolog.handler.graylog:
         class: Monolog\Handler\GelfHandler
         arguments:
