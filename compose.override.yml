@@ -6,6 +6,7 @@ services:
     volumes:
       - './docker/dev.nginx.conf:/etc/nginx/conf.d/default.conf'
       - './public:/app/public'
+      - './var/storage/dev/files:/data:ro'
       - './var/log/nginx:/var/log/nginx'
     ports:
       - 4001:80
@@ -15,6 +16,7 @@ services:
       target: 'dev'
     volumes:
       - './:/app'
+      - './var/storage/dev/files:/data:ro'
     environment:
       APP_ENV: 'dev'
       APP_DEBUG: 'true'
