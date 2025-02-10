@@ -8,6 +8,7 @@ services:
       target: 'prod_stage'
     volumes:
       - './docker/prod.nginx.conf:/etc/nginx/conf.d/default.conf'
+      - './var/storage/dev/files:/data:ro'
     links:
       - php
     ports:
@@ -17,6 +18,8 @@ services:
     build:
       dockerfile: './docker/php.dockerfile'
       target: 'prod_stage'
+    volumes:
+      - './var/storage/dev/files:/data:ro'
     environment:
       APP_ENV: 'prod'
       APP_DEBUG: 'false'
@@ -46,3 +49,4 @@ services:
 volumes:
   storage:
   redis:
+  files:
