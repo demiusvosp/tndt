@@ -7,6 +7,7 @@
 
 namespace App\Entity;
 
+use App\Model\Enum\File\FileTargetEnum;
 use App\Model\Enum\File\FileTypeEnum;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
@@ -31,6 +32,9 @@ class File
     #[Assert\Length(min: 1, max: 80)]
     private string $filename = '';
 
+    #[ORM\Column(type: "string", length: 8, nullable: false, enumType: FileTargetEnum::class)]
+    private FileTargetEnum $target;
+
     #[ORM\Column(type: "string", length: 8, nullable: false, enumType: FileTypeEnum::class)]
     private FileTypeEnum $type;
 
@@ -50,12 +54,21 @@ class File
     #[ORM\JoinColumn(name: "created_by", referencedColumnName: "username", nullable: true)]
     private ?User $createdBy;
 
-    public function __construct(string $filename, fileTypeEnum $type, string $mimeType, int $sizeBytes)
-    {
+    public function __construct(
+        string $filename,
+        FileTypeEnum $type,
+        string $mimeType,
+        int $sizeBytes,
+        FileTargetEnum $target,
+        User $author
+    ) {
         $this->filename = $filename;
         $this->type = $type;
         $this->mimeType = $mimeType;
         $this->sizeBytes = $sizeBytes;
+        $this->target = $target;
+        $this->createdBy = $author;
+        $this->createdAt = new DateTime();
     }
 
     public function getCaption(): string
@@ -74,6 +87,11 @@ class File
         return $this->filename;
     }
 
+    public function getTarget(): FileTargetEnum
+    {
+        return $this->target;
+    }
+
     public function getType(): FileTypeEnum
     {
         return $this->type;
@@ -84,21 +102,9 @@ class File
         return $this->mimeType;
     }
 
-    public function setMimeType(string $mimeType): File
-    {
-        $this->mimeType = $mimeType;
-        return $this;
-    }
-
     public function getSizeBytes(): int
     {
         return $this->sizeBytes;
-    }
-
-    public function setSizeBytes(int $sizeBytes): File
-    {
-        $this->sizeBytes = $sizeBytes;
-        return $this;
     }
 
     public function getDescription(): string
