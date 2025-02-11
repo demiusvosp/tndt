@@ -2,11 +2,11 @@
 
 ## [current] - весна 25
 - **New features**
-  - [tndt-196] - Redis
+  - [tndt-196](http://tasks.demius.ru/p/tndt-196) - Redis
 - **New small features**
-  - [tndt-159] - [wiki] Таблицы
-  - [tndt-173] - [wiki] Ссылка на проект
-  - [tndt-182] - [wiki] Ссылка на документ в проекте не очевидна
+  - [tndt-159](http://tasks.demius.ru/p/tndt-159) - [wiki] Таблицы
+  - [tndt-173](http://tasks.demius.ru/p/tndt-173) - [wiki] Ссылка на проект
+  - [tndt-182](http://tasks.demius.ru/p/tndt-182) - [wiki] Ссылка на документ в проекте не очевидна
 - **Замечания к обновлению в [docs/install/upgrade_4.0.md]**
 
 ----
