@@ -32,7 +32,7 @@ class WikiLinkProcessor implements InlineParserInterface
         $tagRegex = implode('', [
             '\[(',
             $this->wikiService->getWikiLinkRegEx(),
-            ')\]'
+            ')\][^(].'
         ]);
         return InlineParserMatch::regex($tagRegex);
     }
