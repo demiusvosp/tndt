@@ -17,6 +17,12 @@ app.logout:
     path: /auth/logout
     controller: App\Controller\AuthController::logout
 
+#File
+file.get:
+    path: /storage/{path}
+    methods: GET
+    controller: App\Controller\FileController::get
+
 #User
 user.list:
     path: /user/list
