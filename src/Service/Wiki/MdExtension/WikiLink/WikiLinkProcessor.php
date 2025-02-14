@@ -40,6 +40,12 @@ class WikiLinkProcessor implements InlineParserInterface
     public function parse(InlineParserContext $inlineContext): bool
     {
         $this->stopwatch->start('link', 'wiki.parser');
+
+        $nextChar = $inlineContext->getCursor()->peek($inlineContext->getFullMatchLength());
+        if ($nextChar == '(') {
+            return false;// external link, not wiki link
+        }
+
         $linkTag = $inlineContext->getSubMatches()[0];
         $wikiLink = $this->wikiService->getLink($linkTag);
         if ($wikiLink) {
