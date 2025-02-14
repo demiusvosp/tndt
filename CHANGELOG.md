@@ -8,7 +8,7 @@
   - [tndt-173](http://tasks.demius.ru/p/tndt-173) - [wiki] Ссылка на проект
   - [tndt-182](http://tasks.demius.ru/p/tndt-182) - [wiki] Ссылка на документ в проекте не очевидна
 - **Bugfixes**
-  - [tndt-206](http://tasks.demius.ru/p/tndt-206) - Ссылки в changelog
+  - [tndt-206](http://tasks.demius.ru/p/tndt-206) - Ссылки в changelog. []( - делает ссылку внешней
 - **Замечания к обновлению в [docs/install/upgrade_4.0.md]**
 
 ----
