@@ -8,6 +8,7 @@ import './bootstrap.js';
 import {createApp} from "vue";
 import ActivityTimeline from './components/activity/timeline-widget'
 import TableFilter from './components/tableFilter/table-filter-widget'
+import FileUpload from './components/file/upload-widget.vue'
 
 globalThis.__VUE_OPTIONS_API__ = true;
 if (process.env.NODE_ENV === "development") {
@@ -74,4 +75,11 @@ if (tableFilterWidgetPlaceholder) {
     const tableFilterWidgetVue = createApp({});
     tableFilterWidgetVue.component('table-filter-widget', TableFilter);
     tableFilterWidgetVue.mount('#table-filter-widget');
+}
+
+/* File Upload */
+var fileUploadWidget = document.getElementById('file-upload-widget');
+if (fileUploadWidget) {
+    const fileUploadWidgetVue = createApp(FileUpload);
+    fileUploadWidgetVue.mount('#file-upload-widget');
 }

@@ -22,6 +22,9 @@ file.get:
     path: /storage/{path}
     methods: GET
     controller: App\Controller\FileController::get
+file.upload:
+    path: /storage/upload
+    controller: App\Controller\FileController::upload
 
 #User
 user.list:

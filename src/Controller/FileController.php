@@ -10,6 +10,7 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use function dump;
 
@@ -25,5 +26,10 @@ dump($path);
         $response->headers->set('X-Accel-Redirect', 'private-area/'.$path);
 dump($response); //die();
         return $response;
+    }
+
+    public function upload(Request $request): Response
+    {
+        return new Response();
     }
 }

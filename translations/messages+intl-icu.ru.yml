@@ -129,6 +129,7 @@ doc:
     label: Обновил
 Edit: Редактировать
 Edit_project: Настроить проект
+Files: Файлы
 Filter: фильтрация
 Hidden: cкрыт
 License: Лицензия
@@ -323,6 +324,7 @@ To_actual: Отметить актуальным
 To_archive: Убрать в архив
 To_deprecated: Отметить устаревшим
 UpdatedAt: Обновлена
+Upload: Загрузить
 user:
   about: О пользователе
   controls:

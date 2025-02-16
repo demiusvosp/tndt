@@ -129,6 +129,7 @@ doc:
     label: Обновлен
 Edit: Редактировать
 Edit_project: Настроить проект
+Files: Files
 Filter: filters
 Hidden: hidden
 License: License
@@ -367,6 +368,7 @@ user:
 Users: Users
 User_list: User list
 Unarchive: Вернуть из архива
+Upload: Upload
 Works:
   title: Works
   activity: Activity
