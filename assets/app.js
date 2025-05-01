@@ -80,6 +80,7 @@ if (tableFilterWidgetPlaceholder) {
 /* File Upload */
 var fileUploadWidget = document.getElementById('file-upload-widget');
 if (fileUploadWidget) {
-    const fileUploadWidgetVue = createApp(FileUpload);
+    const fileUploadWidgetVue = createApp({});
+    fileUploadWidgetVue.component('file-upload-widget', FileUpload);
     fileUploadWidgetVue.mount('#file-upload-widget');
 }

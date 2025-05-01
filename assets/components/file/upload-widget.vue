@@ -1,19 +1,31 @@
 <script setup>
+import { onMounted, useAttrs } from "vue";
+const props = defineProps({
+  action: String,
+  project: String
+});
 
+function onSubmit(event) {
+  console.log(event);
+  console.log(props);
+}
 </script>
 
 <template>
-  <div class="card">
+  <div class="card" v-bind="$attrs">
+    <form autocomplete="off" novalidate @submit.prevent="onSubmit">
     <div class="card-header">
       Загрузить
     </div>
     <div class="card-body">
-      <form autocomplete="off" novalidate>
         <div class="fallback">
           <input name="file" type="file" />
         </div>
-      </form>
     </div>
+    <div class="card-footer">
+        <button type="submit" class="btn btn-success">Загрузить</button>
+    </div>
+  </form>
   </div>
 </template>
 
