@@ -30,6 +30,7 @@ dump($response); //die();
 
     public function upload(Request $request): Response
     {
+dump($request);
         return new Response();
     }
 }
