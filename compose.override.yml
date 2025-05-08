@@ -16,7 +16,7 @@ services:
       target: 'dev'
     volumes:
       - './:/app'
-      - './var/storage/dev/files:/data:ro'
+      - './var/storage/dev/files:/data:rw'
     environment:
       APP_ENV: 'dev'
       APP_DEBUG: 'true'

@@ -12,4 +12,11 @@ enum FileTargetEnum: string
     case Attachment = 'attachment';
     case Avatar = 'avatar';
 
+    public function isPublic(): bool
+    {
+        return match ($this) {
+            self::Avatar => true,
+            default => false,
+        };
+    }
 }

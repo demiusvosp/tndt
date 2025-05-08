@@ -9,13 +9,15 @@ const state = ref(State.toselect);
 const props = defineProps({
   action: String,
   target: String,
-  project: String
+  project: String,
+  entityType: String,
+  entityId: String,
 });
 
 function onSelect(event)
 {
   state.value = State.selected;
-
+console.log(props.entityType);
 console.log(event);
 console.log(fileInput);
 console.log(fileInput.value.files);
@@ -26,6 +28,8 @@ function onSubmit(event) {
     formData.append('file', fileInput.value.files[0]);
     formData.append('target', props.target);
     formData.append('project', props.project);
+    formData.append('entityType', props.entityType);
+    formData.append('entityId', props.entityId);
 
     axios.post(
         props.action,
@@ -59,7 +63,7 @@ function onSubmit(event) {
     <div class="card-footer">
         <button type="submit" class="btn btn-success" :disabled="state !== State.selected">Загрузить</button>
     </div>
-  </form>
+    </form>
   </div>
 </template>
 
