@@ -58,7 +58,7 @@ class FileController extends AbstractController
             if (!$project) {
                 throw new NotInProjectContextException();
             }
-            $this->fileService->uploadAttachment(
+            $attachment = $this->fileService->uploadAttachment(
                 $request->files->get('file'),
                 FileTargetEnum::from($request->request->get('target')),
                 $owner,
@@ -66,7 +66,10 @@ class FileController extends AbstractController
                 AttachmentEntityEnum::from($request->request->get('entityType')),
                 (int)$request->request->get('entityId')
             );
-            return new Response();
+            return new JsonResponse([
+                'id' => $attachment->getFile()->getId(),
+                ''
+            ]);
         } catch (DomainException $e) { // @todo пока не будет решено всюду в рамках tndt-135
             try {
                 $errorType = ErrorCodesEnum::from($e->getCode());

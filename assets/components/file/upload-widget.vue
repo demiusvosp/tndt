@@ -17,10 +17,6 @@ const props = defineProps({
 function onSelect(event)
 {
   state.value = State.selected;
-console.log(props.entityType);
-console.log(event);
-console.log(fileInput);
-console.log(fileInput.value.files);
 }
 
 function onSubmit(event) {
