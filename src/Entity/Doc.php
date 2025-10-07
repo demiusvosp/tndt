@@ -10,7 +10,9 @@ namespace App\Entity;
 
 use App\Contract\ActivitySubjectInterface;
 use App\Contract\CommentableInterface;
+use App\Contract\InProjectInterface;
 use App\Contract\NoInterface;
+use App\Contract\WithFilesInterface;
 use App\Contract\WithProjectInterface;
 use App\EventSubscriber\NoGeneratorListener;
 use App\Model\Enum\DocStateEnum;
@@ -27,7 +29,12 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Table(name: "doc")]
 #[ORM\UniqueConstraint(name: "slug", columns: ["suffix", "slug"])]
 #[ORM\EntityListeners([NoGeneratorListener::class])]
-class Doc implements NoInterface, WithProjectInterface, ActivitySubjectInterface, CommentableInterface
+class Doc implements
+    NoInterface,
+    WithProjectInterface,
+    ActivitySubjectInterface,
+    CommentableInterface,
+    WithFilesInterface
 {
     public const DOCID_SEPARATOR = '#';
     public const DOCID_REGEX = '\w+#[\w\-]+';
