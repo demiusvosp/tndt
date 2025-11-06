@@ -4,12 +4,12 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
-    app.version: 0.3.2
+    app.version: 0.3.2.1
     app.version_year: 2025
     app.host: '%env(APP_HOST)%'
-    app.support_url: http://tasks.demius.ru/p/tndt
+    app.support_url: http://tasks.demiusvosp.ru/p/tndt
 
-    mail.sender_user: service@tasks.demius.ru
+    mail.sender_user: service@tasks.demiusvosp.ru
 
 services:
     # default configuration for services in *this* file
