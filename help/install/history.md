@@ -30,7 +30,7 @@
     - [tndt-151](http://tasks.demiusvosp.ru/p/tndt-151) - Теперь slug документов уникален в пределах проекта
     - [tndt-168](http://tasks.demiusvosp.ru/p/tndt-168) - tabler-icons.svg переехал в другой пакет
     - [tndt-179](http://tasks.demiusvosp.ru/p/tndt-179) - Закрытие задачи не обновляет её время
-- **Замечания к обновлению в [help/install/upgrade_3.1.md](docs/install/upgrade_3.1.md)**
+- **Замечания к обновлению в [upgrade_3.1.md](upgrade_3.1.md)**
 
 
 ## [0.3] - 2024.03.07

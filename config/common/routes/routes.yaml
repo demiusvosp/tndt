@@ -2,9 +2,27 @@
 home:
     path: /
     controller: App\Controller\HomeController::index
-static:
-    path: /static/{page<\w+>}
+
+static.about:
+    path: /about
     controller: App\Controller\HomeController::static
+    defaults:
+        page: "about"
+static.changelog:
+    path: /about
+    controller: App\Controller\HomeController::static
+    defaults:
+        page: "changelog"
+static.license:
+    path: /about
+    controller: App\Controller\HomeController::static
+    defaults:
+        page: "license"
+help:
+    path: /help/{page<\w+>}
+    controller: App\Controller\HomeController::help
+    requirements:
+        page: .+
 system_stat:
     path: /system/stat
     controller: App\Controller\HomeController::systemStat
@@ -102,7 +120,7 @@ task.change_stage:
 
 #Docs
 doc.list:
-    path: /p/{suffix<\w+>}/docs
+    path: /p/{suffix<\w+>}/help
     controller: App\Controller\DocController::list
 #doc.global_create:
 #    path: /doc/create

@@ -40,7 +40,7 @@ REQUIREMENTS
 INSTALLATION
 ------------
 
-подробно описано в [help/install/install.md](docs/install/install.md)
+подробно описано в [help/install/install.md](help/install/install.md)
 
 UPGRADE
 ------------
