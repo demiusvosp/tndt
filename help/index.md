@@ -6,8 +6,8 @@
 
 
 ### INSTALLATION
-подробно описано в [install/install.md](install/install.md)
+подробно описано в [help/install/install.md](help/install/install.md)
 
 ### Справка по используемому в проекте markdown
- - [Краткий хелп](md/short.md)
- - [Подробная документация](md/index.md)
+ - [Краткий хелп](help/md/short.md)
+ - [Подробная документация](help/md/index.md)

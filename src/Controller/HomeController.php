@@ -9,7 +9,6 @@ namespace App\Controller;
 
 
 use App\Entity\User;
-use App\Exception\NotFoundException;
 use App\Model\Enum\StatisticItemEnum;
 use App\Model\Enum\Security\UserRolesEnum;
 use App\Repository\DocRepository;
@@ -24,7 +23,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use function dump;
 use function file_get_contents;
 use function preg_split;
 
@@ -99,7 +97,7 @@ class HomeController extends AbstractController
             ->setMaxAge(self::STATIC_PAGE_CACHE_TTL);
     }
 
-    public function help(string $page): Response
+    public function help(string $page = 'index.md'): Response
     {
         try {
             $file = file_get_contents($this->getParameter('kernel.project_dir') . '/help/' . $page);

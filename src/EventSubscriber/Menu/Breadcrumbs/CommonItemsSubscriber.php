@@ -44,6 +44,13 @@ class CommonItemsSubscriber implements EventSubscriberInterface
             $this->router->generate('home'),
             'tabler-home'
         ));
+        if ($route === 'help') {
+            $event->addItem(new BreadcrumbItem(
+                $this->translator->trans('breadcrumb.help'),
+                $this->router->generate('help'),
+                'tabler-help'
+            ));
+        }
 
     }
 }

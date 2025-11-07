@@ -23,6 +23,8 @@ help:
     controller: App\Controller\HomeController::help
     requirements:
         page: .+
+    defaults:
+        page: "index.md"
 system_stat:
     path: /system/stat
     controller: App\Controller\HomeController::systemStat
