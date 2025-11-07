@@ -4,34 +4,25 @@ LABEL description="Task and Doc Tracker application backend part"
 
 WORKDIR /app
 
-# install GD
 RUN apt-get update && apt-get install -y \
         libfreetype6-dev \
         libjpeg62-turbo-dev \
         libpng-dev \
     && docker-php-ext-install -j$(nproc) iconv \
     && docker-php-ext-configure gd --with-freetype=/usr/include/ --with-jpeg=/usr/include/ \
-    && docker-php-ext-install -j$(nproc) gd
-
-# install MYSQL SQL client
-RUN docker-php-ext-install pdo pdo_mysql
-
-#install ICU INTL
-RUN apt-get install -y libicu-dev \
-  && docker-php-ext-configure intl \
-  && docker-php-ext-install intl
-
-# install zip
-RUN apt-get install -y \
+    && docker-php-ext-install -j$(nproc) gd \
+    && docker-php-ext-install pdo pdo_mysql \
+    && apt-get install -y libicu-dev \
+    && docker-php-ext-configure intl \
+    && docker-php-ext-install intl \
+    && apt-get install -y \
     zlib1g-dev \
     libzip-dev \
     unzip \
-  && docker-php-ext-install zip
-
-RUN apt-get install libonig-dev -y \
-    && docker-php-ext-install mbstring
-
-RUN docker-php-ext-install opcache
+    && docker-php-ext-install zip \
+    && apt-get install libonig-dev -y \
+    && docker-php-ext-install mbstring \
+    && docker-php-ext-install opcache
 
 # Redis
 RUN pecl install --onlyreqdeps --force redis \
@@ -64,7 +55,7 @@ FROM dev AS dev_stage
 
 COPY ./bin /app/bin
 COPY ./config /app/config
-COPY ./docs /app/docs
+COPY ./help /app/help
 COPY ./public/index.php /app/public/index.php
 COPY ./public/build /app/public/build
 COPY ./src /app/src
@@ -92,16 +83,15 @@ FROM prod AS prod_stage
 VOLUME ["/app/var/cache"]
 
 COPY ./bin /app/bin
-# для работы страницы about
 COPY ./README.md /app/README.md
-COPY ./CHANGELOG.md /app/CHANGELOG.md
 COPY ./LICENSE /app/LICENSE
-COPY ./vendor /app/vendor
+COPY ./help /app/help
 COPY ./.env /app/.env
-COPY ./config /app/config
-COPY ./docs /app/docs
-COPY ./translations /app/translations
 COPY ./public/index.php /app/public/index.php
-COPY ./templates /app/templates
 COPY ./public/build /app/public/build
+COPY ./vendor /app/vendor
+COPY ./config /app/config
+COPY ./translations /app/translations
+COPY ./CHANGELOG.md /app/CHANGELOG.md
+COPY ./templates /app/templates
 COPY ./src /app/src

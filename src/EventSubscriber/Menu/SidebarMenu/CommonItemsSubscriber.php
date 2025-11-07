@@ -55,8 +55,8 @@ class CommonItemsSubscriber implements EventSubscriberInterface
             ));
         } else {
             $event->addItem(new MenuItem(
-                $this->router->generate('static', ['page' => 'about']),
-                $route === 'static',
+                $this->router->generate('static.about'),
+                $route === 'static.about',
                 $this->translator->trans('menu.dashboard.about'),
                 'fa fa-info fa-fw'
             ));

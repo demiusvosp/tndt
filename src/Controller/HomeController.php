@@ -17,9 +17,14 @@ use App\Repository\TaskRepository;
 use App\Repository\UserRepository;
 use App\Service\Statistics\StatisticsService;
 use App\ViewModel\Statistics\CommonStat;
+use ErrorException;
+use Psr\Cache\InvalidArgumentException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Contracts\Translation\TranslatorInterface;
+use function file_get_contents;
+use function preg_split;
 
 
 class HomeController extends AbstractController
@@ -66,21 +71,55 @@ class HomeController extends AbstractController
         );
     }
 
-    public function static(string $page): Response
+    public function static(string $page, TranslatorInterface $translator): Response
     {
         [$title, $file] = match ($page) {
+            'about' => ['About', '/README.md'],
             'changelog' => ['Changelog', '/CHANGELOG.md'],
             'license' => ['License', '/LICENSE'],
-            default => ['About', '/README.md']
+            default => $this->createNotFoundException('static page not found'),
         };
 
-        $text = file_get_contents($this->getParameter('kernel.project_dir') . $file);
+        try {
+            $text = file_get_contents($this->getParameter('kernel.project_dir') . '/' . $file);
+        } catch (ErrorException $e) {
+            throw $this->createNotFoundException('page not found', $e);
+        }
 
-        return $this->render('home/static.html.twig', ['title' => $title, 'text' => $text])
+        return $this->render(
+                'home/static.html.twig',
+                [
+                    'title' => $translator->trans($title),
+                    'text' => $text
+                ]
+            )
             ->setPublic()
             ->setMaxAge(self::STATIC_PAGE_CACHE_TTL);
     }
 
+    public function help(string $page = 'index.md'): Response
+    {
+        try {
+            $file = file_get_contents($this->getParameter('kernel.project_dir') . '/help/' . $page);
+        } catch (ErrorException $e) {
+            throw $this->createNotFoundException('help page not found', $e);
+        }
+        $content = preg_split('/\r\n|\n|\r/', $file, 3);
+
+        return $this->render(
+                'home/static.html.twig',
+                [
+                    'title' => $content[0],
+                    'text' => $content[2],
+                ]
+            )
+            ->setPublic()
+            ->setMaxAge(self::STATIC_PAGE_CACHE_TTL);
+    }
+
+    /**
+     * @throws InvalidArgumentException
+     */
     #[IsGranted(UserRolesEnum::ROLE_USER)]
     public function systemStat(StatisticsService $statisticsService): Response
     {
@@ -98,7 +137,7 @@ class HomeController extends AbstractController
 
     public function helpMd(): Response
     {
-        $help = file_get_contents($this->getParameter('kernel.project_dir') . '/docs/md/short.md');
+        $help = file_get_contents($this->getParameter('kernel.project_dir') . '/help/md/short.md');
 
         return $this->render('home/help_widget.html.twig', ['text' => $help])
             ->setPublic()
