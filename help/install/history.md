@@ -2,16 +2,20 @@
 ============================
 
 
-## [current]
-- **New features**
-    - [tndt-19](http://tasks.demiusvosp.ru/p/tndt-19) - Фильтрация и сортировка списка задач
-    - [tndt-46](http://tasks.demiusvosp.ru/p/tndt-46) - Отдельные роли работы менеджмента проектов и пользователей
-- **Refactoring**
-    - [tndt-161](http://tasks.demiusvosp.ru/p/tndt-161) - Обновить фронт до Vue3
-- **Bugfixes**
-    - [tndt-184](http://tasks.demiusvosp.ru/p/tndt-184) - Страница создания пользователя
-    - [tndt-185](http://tasks.demiusvosp.ru/p/tndt-185) - Закрытие задачи не обновляет время проекта
+## [0.3.2.1] - 2025.11.07
+- [tndt-223](http://tasks.demiusvosp.ru/p/tndt-223) - Поменять ссылки на demius.ru в связи с уступкой домена demius.ru
 
+## [0.3.2] - 2025.01.23
+- **New features**
+  - [tndt-19](http://tasks.demiusvosp.ru/p/tndt-19) - Фильтрация и сортировка списка задач
+  - [tndt-46](http://tasks.demiusvosp.ru/p/tndt-46) - Отдельные роли работы менеджмента проектов и пользователей
+- **Refactoring**
+  - [tndt-72](http://tasks.demiusvosp.ru/p/tndt-72) - Индексы на таблицу task
+  - [tndt-161](http://tasks.demiusvosp.ru/p/tndt-161) - Обновить фронт до Vue3
+  - [tndt-169](http://tasks.demiusvosp.ru/p/tndt-169) - Структурировали документацию и вынесли историю
+- **Bugfixes**
+  - [tndt-184](http://tasks.demiusvosp.ru/p/tndt-184) - Страница создания пользователя
+  - [tndt-185](http://tasks.demiusvosp.ru/p/tndt-185) - Закрытие задачи не обновляет время проекта
 ----
 
 ## [0.3.1] - 2024.11.10

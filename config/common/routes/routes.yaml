@@ -9,12 +9,12 @@ static.about:
     defaults:
         page: "about"
 static.changelog:
-    path: /about
+    path: /changelog
     controller: App\Controller\HomeController::static
     defaults:
         page: "changelog"
 static.license:
-    path: /about
+    path: /license
     controller: App\Controller\HomeController::static
     defaults:
         page: "license"
